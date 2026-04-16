@@ -122,8 +122,8 @@ private extension URL {
 #if DEBUG
 private extension AboutView {
     struct DebugView: View {
-        /// The message to show in the API key expiration date alert.
-        @State private var apiKeyExpirationDateMessage = ""
+        /// The result to show in the API key expiration date alert.
+        @State private var apiKeyExpirationDate: Result<Date, any Error>?
         /// The API key entered in the alert.
         @State private var apiKeyInput = ""
         /// A Boolean value indicating whether the API key alert is presented.
@@ -154,41 +154,51 @@ private extension AboutView {
             }
             
             Button("View API Key Expiration Date") {
-                apiKeyExpirationDateMessage.removeAll()
+                apiKeyExpirationDate = nil
                 verifyingAPIKey = true
             }
             .disabled(verifyingAPIKey)
             .task(id: verifyingAPIKey) {
                 guard verifyingAPIKey else { return }
                 defer { verifyingAPIKey = false }
-                do {
-                    let apiKeyExpirationDate = try await getAPIKeyExpirationDate()
-                    apiKeyExpirationDateMessage = apiKeyExpirationDate.formatted(date: .abbreviated, time: .omitted)
-                } catch let error as ArcGISAuthenticationError {
-                    switch error {
-                    case .invalidAPIKey, .invalidToken:
-                        apiKeyExpirationDateMessage = "Invalid API key"
-                    default:
-                        apiKeyExpirationDateMessage = "Authentication error: \(error.localizedDescription)"
-                    }
-                } catch let error as DecodingError {
-                    switch error {
-                    case .keyNotFound:
-                        apiKeyExpirationDateMessage = "Failed to get expiration date. Check if you are using a legacy key"
-                    default:
-                        apiKeyExpirationDateMessage = "Decoding error: \(error.localizedDescription)"
-                    }
-                } catch {
-                    apiKeyExpirationDateMessage = "Error: \(error.localizedDescription)"
-                }
+                
+                apiKeyExpirationDate = await Result { try await getAPIKeyExpirationDate() }
                 isExpirationDateAlertPresented = true
             }
-            .alert("API Key Expiration Date", isPresented: $isExpirationDateAlertPresented) {
+            .alert(
+                "API Key Expiration Date",
+                isPresented: $isExpirationDateAlertPresented,
+                presenting: apiKeyExpirationDate
+            ) { _ in
                 // An alert shows the expiration date for the API key in-use.
                 // Compare it with the date in the Swift Sample Viewer Release
                 // portal item.
-            } message: {
-                Text(apiKeyExpirationDateMessage)
+            } message: { apiKeyExpirationDate in
+                switch apiKeyExpirationDate {
+                case .success(let expirationDate):
+                    // Shows the expiration date of the API key in-use.
+                    Text(expirationDate, format: .dateTime.year().month().day())
+                case .failure(let error):
+                    // Shows the error when fail to get the expiration date.
+                    switch error {
+                    case let error as ArcGISAuthenticationError:
+                        switch error {
+                        case .invalidAPIKey, .invalidToken:
+                            Text("Invalid API key")
+                        default:
+                            Text("Authentication error: \(error.localizedDescription)")
+                        }
+                    case let error as DecodingError:
+                        switch error {
+                        case .keyNotFound:
+                            Text("Failed to get expiration date. Check if you are using a legacy key")
+                        default:
+                            Text("Decoding error: \(error.localizedDescription)")
+                        }
+                    default:
+                        Text("Error: \(error.localizedDescription)")
+                    }
+                }
             }
         }
         
