@@ -210,7 +210,7 @@ private extension AboutView {
                 throw ArcGISAuthenticationError.invalidAPIKey
             }
             
-            struct APIResponse: Decodable {
+            struct APIKeyInfoResponse: Decodable {
                 let appInfo: AppInfo
                 
                 struct AppInfo: Decodable {
@@ -229,7 +229,7 @@ private extension AboutView {
             
             let decoder = JSONDecoder()
             decoder.dateDecodingStrategy = .millisecondsSince1970
-            let jsonResponse = try decoder.decode(APIResponse.self, from: data)
+            let jsonResponse = try decoder.decode(APIKeyInfoResponse.self, from: data)
             let expirationDate = jsonResponse.appInfo.expirationDate
             return expirationDate
         }
