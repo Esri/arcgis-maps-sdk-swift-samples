@@ -222,10 +222,11 @@ private extension AboutView {
             // API key access token. The response contains an `appInfo` object,
             // which has the expiration date of the API key.
             // https://developers.arcgis.com/rest/users-groups-and-items/self/
-            let (data, _) = try await ArcGISEnvironment.urlSession.data(
-                from: URL(string: "https://www.arcgis.com/sharing/rest/Community/self")!,
-                queryParameters: ["f": "json", "token": apiKey.rawValue]
+            var request = URLRequest(
+                url: URL(string: "https://www.arcgis.com/sharing/rest/Community/self?f=json")!
             )
+            request.setValue("Bearer \(apiKey.rawValue)", forHTTPHeaderField: "X-Esri-Authorization")
+            let (data, _) = try await ArcGISEnvironment.urlSession.data(for: request)
             
             let decoder = JSONDecoder()
             decoder.dateDecodingStrategy = .millisecondsSince1970
