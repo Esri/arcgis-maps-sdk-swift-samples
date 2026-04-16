@@ -166,7 +166,7 @@ private extension AboutView {
                     apiKeyExpirationDateMessage = apiKeyExpirationDate.formatted(date: .abbreviated, time: .omitted)
                 } catch let error as ArcGISAuthenticationError {
                     switch error {
-                    case .invalidAPIKey:
+                    case .invalidAPIKey, .invalidToken:
                         apiKeyExpirationDateMessage = "Invalid API key"
                     default:
                         apiKeyExpirationDateMessage = "Authentication error: \(error.localizedDescription)"
