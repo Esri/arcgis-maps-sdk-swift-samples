@@ -177,11 +177,11 @@ private extension AboutView {
                 switch apiKeyExpirationDate {
                 case .success(let expirationDate):
                     // Shows the expiration date of the API key in-use.
-                    if let monthsRemaining = Calendar.current.dateComponents([.month], from: .now, to: expirationDate).month,
-                       monthsRemaining <= 4 {
+                    let monthsRemaining = Calendar.current.dateComponents([.month], from: .now, to: expirationDate).month!
+                    if monthsRemaining <= 4 {
                         // Reminder when the API key is expiring within 4 months,
                         // which is the typical release cycle.
-                        Text("\(expirationDate, format: .dateTime.year().month().day()). Expires in ^[\(monthsRemaining) month](inflect: true).")
+                        Text("\(expirationDate, format: .dateTime.year().month().day()). Expires in ^[\(max(monthsRemaining, 0)) month](inflect: true).")
                     } else {
                         Text(expirationDate, format: .dateTime.year().month().day())
                     }
