@@ -122,7 +122,7 @@ struct SampleDetailView: View {
                     NavigationStack {
                         SampleInfoView(sample: sample)
                     }
-                    .pagePresentation()
+                    .presentationSizing(.page)
                 }
             }
         }
