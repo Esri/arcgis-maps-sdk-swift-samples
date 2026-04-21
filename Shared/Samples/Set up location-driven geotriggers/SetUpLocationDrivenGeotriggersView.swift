@@ -26,12 +26,6 @@ struct SetUpLocationDrivenGeotriggersView: View {
     /// A Boolean value indicating whether to show the popup.
     @State private var isShowingPopup = false
     
-    /// A string for the fence geotrigger notification status.
-    @State private var fenceGeotriggerText = ""
-    
-    /// A string for the display name of the currently nearby feature.
-    @State private var nearbyFeaturesText = ""
-    
     /// Starts the geotrigger monitors and handles posted notifications.
     /// - Parameter geotriggerMonitors: The geotrigger monitors to start.
     private func startGeotriggerMonitors(_ geotriggerMonitors: [GeotriggerMonitor]) async throws {
@@ -69,25 +63,19 @@ struct SetUpLocationDrivenGeotriggersView: View {
                     self.error = error
                 }
             }
-            .task(id: model.fenceGeotriggerStatus) {
-                // Set fence geotrigger text.
-                fenceGeotriggerText = model.fenceGeotriggerStatus.label
-                
-                // Set nearby features text.
-                let features = model.nearbyFeatures
-                if features.isEmpty {
-                    nearbyFeaturesText = "No nearby features."
-                } else {
-                    nearbyFeaturesText = String(format: "Nearby: %@", ListFormatter.localizedString(byJoining: features.keys.sorted()))
-                }
-            }
             .overlay(alignment: .top) {
                 // Status text overlay.
                 VStack {
-                    Text(fenceGeotriggerText)
+                    Text(model.fenceGeotriggerStatus.label)
                         .frame(maxWidth: .infinity, alignment: .leading)
                     
-                    Text(nearbyFeaturesText)
+                    let nearbyFeatures = model.nearbyFeatures
+                    let nearbyFeaturesText = if !nearbyFeatures.isEmpty {
+                        Text("Nearby: \(nearbyFeatures.keys.sorted(), format: .list(type: .and))")
+                    } else {
+                        Text("No nearby features.")
+                    }
+                    nearbyFeaturesText
                         .foregroundStyle(.orange)
                         .frame(maxWidth: .infinity, alignment: .leading)
                 }

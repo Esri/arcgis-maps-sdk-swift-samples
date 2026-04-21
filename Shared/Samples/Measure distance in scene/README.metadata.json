@@ -11,12 +11,12 @@
         "distance",
         "measure",
         "AnalysisOverlay",
-        "LocationDistanceMeasurement"
+        "ExploratoryLocationDistanceMeasurement"
     ],
     "redirect_from": [],
     "relevant_apis": [
         "AnalysisOverlay",
-        "LocationDistanceMeasurement"
+        "ExploratoryLocationDistanceMeasurement"
     ],
     "snippets": [
         "MeasureDistanceInSceneView.swift"

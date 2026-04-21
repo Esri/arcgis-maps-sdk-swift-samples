@@ -233,7 +233,7 @@ extension StyleSymbolsFromMobileStyleFileView {
 extension StyleSymbolsFromMobileStyleFileView.SymbolDetails {
     /// The human-readable label of the symbol name.
     var label: String {
-        let splitName = name.replacingOccurrences(of: "-", with: " ").split(separator: " ")
+        let splitName = name.replacingOccurrences(of: "-", with: " ").components(separatedBy: " ")
         return splitName.last?.capitalized ?? name
     }
 }

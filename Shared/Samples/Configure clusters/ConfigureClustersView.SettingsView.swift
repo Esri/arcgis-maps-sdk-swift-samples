@@ -17,7 +17,7 @@ import SwiftUI
 extension ConfigureClustersView {
     struct SettingsView: View {
         /// The model for the sample.
-        @ObservedObject var model: Model
+        @Bindable var model: Model
         
         /// The action to dismiss the settings sheet.
         @Environment(\.dismiss) private var dismiss: DismissAction
@@ -25,11 +25,11 @@ extension ConfigureClustersView {
         /// The map view's scale.
         let mapViewScale: Double
         
-        /// The radius of feature clusters selected by the user.
-        @State private var selectedRadius = 60
+        /// The radius options for feature clusters.
+        let radii: [Double] = [30, 45, 60, 75, 90]
         
-        /// The maximum scale of feature clusters selected by the user.
-        @State private var selectedMaxScale = 0
+        /// The maximum scale options for feature clusters.
+        let scales: [Double] = [0, 1000, 5000, 10000, 50000, 100000, 500000]
         
         var body: some View {
             NavigationStack {
@@ -40,22 +40,15 @@ extension ConfigureClustersView {
                     }
                     
                     Section("Clustering Properties") {
-                        Picker("Cluster Radius", selection: $selectedRadius) {
-                            ForEach([30, 45, 60, 75, 90], id: \.self) { radius in
-                                Text("\(radius)")
+                        Picker("Cluster Radius", selection: $model.radius) {
+                            ForEach(radii, id: \.self) { radius in
+                                Text(radius, format: .number)
                             }
                         }
-                        .onChange(of: selectedRadius) {
-                            model.radius = Double(selectedRadius)
-                        }
-                        
-                        Picker("Cluster Max Scale", selection: $selectedMaxScale) {
-                            ForEach([0, 1000, 5000, 10000, 50000, 100000, 500000], id: \.self) { scale in
-                                Text(("\(scale)"))
+                        Picker("Cluster Max Scale", selection: $model.maxScale) {
+                            ForEach(scales, id: \.self) { scale in
+                                Text(scale, format: .number)
                             }
-                        }
-                        .onChange(of: selectedMaxScale) {
-                            model.maxScale = Double(selectedMaxScale)
                         }
                         
                         LabeledContent(

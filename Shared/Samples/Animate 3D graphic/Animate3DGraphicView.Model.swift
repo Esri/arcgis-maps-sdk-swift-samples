@@ -288,7 +288,7 @@ extension Animate3DGraphicView {
             // Create a frame for each line.
             frames = lines.map { line in
                 // Spilt the line data into an array.
-                let details = line.split(separator: ",")
+                let details = line.components(separatedBy: ",")
                 let position = Point(
                     x: Double(details[0])!,
                     y: Double(details[1])!,

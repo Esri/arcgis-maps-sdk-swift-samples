@@ -1,0 +1,37 @@
+{
+    "category": "Analysis",
+    "description": "Analyze the exploratory viewshed for a camera showing the visible and obstructed areas from an observer's vantage point.",
+    "ignore": false,
+    "images": [
+        "show-exploratory-viewshed-from-camera-in-scene.png"
+    ],
+    "keywords": [
+        "3D",
+        "exploratory viewshed",
+        "integrated mesh",
+        "visibility analysis",
+        "AnalysisOverlay",
+        "ArcGISTiledElevationSource",
+        "Camera",
+        "ExploratoryLocationViewshed",
+        "IntegratedMeshLayer",
+        "Scene",
+        "SceneView"
+    ],
+    "redirect_from": [
+        "/swift/sample-code/show-viewshed-from-camera-in-scene/"
+    ],
+    "relevant_apis": [
+        "AnalysisOverlay",
+        "ArcGISTiledElevationSource",
+        "Camera",
+        "ExploratoryLocationViewshed",
+        "IntegratedMeshLayer",
+        "Scene",
+        "SceneView"
+    ],
+    "snippets": [
+        "ShowExploratoryViewshedFromCameraInSceneView.swift"
+    ],
+    "title": "Show exploratory viewshed from camera in scene"
+}

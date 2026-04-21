@@ -106,8 +106,8 @@ struct EditFeaturesUsingFeatureFormsView: View {
                                     isShowingFeatureForm = false
                                 case .savedEdits:
                                     isApplyingEdits = true
-                                @unknown default:
-                                    fatalError("Unknown form editing event: \(event)")
+                                default:
+                                    break
                                 }
                             }
                             .task(id: isApplyingEdits) {

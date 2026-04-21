@@ -17,7 +17,34 @@ import SwiftUI
 
 struct GetElevationAtPointOnSurfaceView: View {
     /// The view model for the sample.
-    @StateObject private var model = Model()
+    @State private var scene: ArcGIS.Scene = {
+        let scene = Scene(basemapStyle: .arcGISImagery)
+        
+        // Sets the initial viewpoint of the scene to northern Nepal.
+        scene.initialViewpoint = Viewpoint(
+            latitude: .nan,
+            longitude: .nan,
+            scale: .nan,
+            camera: Camera(
+                latitude: 28.42,
+                longitude: 83.9,
+                altitude: 1e4,
+                heading: 10,
+                pitch: 80,
+                roll: 0
+            )
+        )
+        
+        // Creates a surface.
+        let surface = Surface()
+        
+        // Adds the elevation source to the surface.
+        surface.addElevationSource(.worldElevationSource())
+        
+        // Sets the surface to the scene's base surface.
+        scene.baseSurface = surface
+        return scene
+    }()
     
     /// The location callout placement.
     @State private var calloutPlacement: CalloutPlacement?
@@ -33,7 +60,7 @@ struct GetElevationAtPointOnSurfaceView: View {
     
     var body: some View {
         SceneViewReader { sceneViewProxy in
-            SceneView(scene: model.scene)
+            SceneView(scene: scene)
                 .onSingleTapGesture { screenPoint, scenePoint in
                     self.screenPoint = screenPoint
                     self.scenePoint = scenePoint
@@ -42,7 +69,21 @@ struct GetElevationAtPointOnSurfaceView: View {
                     VStack(alignment: .leading) {
                         Text("Elevation")
                             .font(.headline)
-                        Text(model.elevationString(elevation: elevation))
+                        let elevationText = if let elevation {
+                            Text(
+                                Measurement<UnitLength>(
+                                    value: elevation,
+                                    unit: .meters
+                                ),
+                                format: .measurement(
+                                    width: .abbreviated,
+                                    numberFormatStyle: .number.precision(.fractionLength(3))
+                                )
+                            )
+                        } else {
+                            Text("Invalid Elevation")
+                        }
+                        elevationText
                             .font(.callout)
                     }
                     .padding(5)
@@ -69,64 +110,16 @@ struct GetElevationAtPointOnSurfaceView: View {
     /// in the same spatial reference as the scene view.
     /// - Returns: The elevation in meters.
     private func elevation(at surfacePoint: Point) async -> Double? {
-        try? await model.scene.baseSurface.elevation(at: surfacePoint)
-    }
-}
-
-private extension GetElevationAtPointOnSurfaceView {
-    /// The model used to store the geo model and other expensive objects
-    /// used in this view.
-    class Model: ObservableObject {
-        /// A scene with imagery basemap.
-        let scene: ArcGIS.Scene = {
-            let scene = Scene(basemapStyle: .arcGISImagery)
-            
-            // Sets the initial viewpoint of the scene to northern Nepal.
-            scene.initialViewpoint = Viewpoint(
-                latitude: .nan,
-                longitude: .nan,
-                scale: .nan,
-                camera: Camera(
-                    latitude: 28.42,
-                    longitude: 83.9,
-                    altitude: 1e4,
-                    heading: 10,
-                    pitch: 80,
-                    roll: 0
-                )
-            )
-            
-            // Creates a surface.
-            let surface = Surface()
-            
-            // Adds the elevation source to the surface.
-            surface.addElevationSource(.worldElevationSource)
-            
-            // Sets the surface to the scene's base surface.
-            scene.baseSurface = surface
-            return scene
-        }()
-        
-        /// A formatter that provides localized descriptions of a linear distance.
-        private let lengthFormatter = LengthFormatter()
-        
-        /// Gets a elevation description from an optional value.
-        /// - Parameter elevation: The optional elevation.
-        /// - Returns: A localized elevation string, or "invalid" if it is `nil`.
-        func elevationString(elevation: Double?) -> String {
-            if let elevation {
-                return lengthFormatter.string(fromMeters: elevation)
-            } else {
-                return "Invalid Elevation"
-            }
-        }
+        try? await scene.baseSurface.elevation(at: surfacePoint)
     }
 }
 
 private extension ElevationSource {
     /// A tiled elevation source that provides global elevation.
-    static var worldElevationSource: ArcGISTiledElevationSource {
-        .init(url: URL(string: "https://elevation3d.arcgis.com/arcgis/rest/services/WorldElevation3D/Terrain3D/ImageServer")!)
+    static func worldElevationSource() -> ElevationSource {
+        return ArcGISTiledElevationSource(
+            url: URL(string: "https://elevation3d.arcgis.com/arcgis/rest/services/WorldElevation3D/Terrain3D/ImageServer")!
+        )
     }
 }
 

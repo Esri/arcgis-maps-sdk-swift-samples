@@ -131,14 +131,6 @@ private extension NavigateRouteView {
         /// The graphics overlay for the route.
         private let routeGraphicsOverlay: GraphicsOverlay
         
-        /// Formats the time remaining for display.
-        private let timeFormatter: DateComponentsFormatter = {
-            let formatter = DateComponentsFormatter()
-            formatter.allowedUnits = [.hour, .minute, .second]
-            formatter.unitsStyle = .full
-            return formatter
-        }()
-        
         /// The map's graphics overlays.
         var graphicsOverlays: [GraphicsOverlay] {
             return [stopGraphicsOverlay, routeGraphicsOverlay]
@@ -242,6 +234,14 @@ private extension NavigateRouteView {
         
         /// Starts monitoring multiple asynchronous streams of information.
         private func startTracking() async {
+            do {
+                // The category is set so that the navigation instructions are spoken even when silent mode is turned on.
+                let session = AVAudioSession.sharedInstance()
+                try session.setCategory(.playback, mode: .voicePrompt)
+                try session.setActive(true)
+            } catch {
+                self.error = error
+            }
             await withTaskGroup(of: Void.self) { group in
                 group.addTask { await self.trackAutoPanMode() }
                 group.addTask { await self.trackStatus() }
@@ -260,9 +260,12 @@ private extension NavigateRouteView {
                     
                     switch status.destinationStatus {
                     case .notReached, .approaching:
+                        let currentDate = Date()
+                        let arrivalDate = currentDate.addingTimeInterval(status.routeProgress.remainingTime)
+                        let interval = currentDate..<arrivalDate
                         statusText = """
                         Distance remaining: \(status.routeProgress.remainingDistance.distanceRemainingText)
-                        Time remaining: \(timeFormatter.string(from: status.routeProgress.remainingTime)!)
+                        Time remaining: \(interval.formatted(.components(style: .wide, fields: [.hour, .minute, .second])))
                         """
                         if status.currentManeuverIndex + 1 < directions.count {
                             statusText.append("\nNext direction: \(directions[status.currentManeuverIndex + 1].text)")

@@ -63,6 +63,7 @@ private extension FindClosestFacilityToMultiplePointsView {
         let map = {
             let map = Map(basemapStyle: .arcGISStreets)
             map.initialViewpoint = Viewpoint(latitude: 32.727, longitude: -117.175, scale: 144_400)
+            map.maxExtent = .sanDiegoCityLimits
             return map
         }()
         
@@ -182,6 +183,17 @@ private extension URL {
     /// The URL to an image of a hospital symbol on ArcGIS Online.
     static var hospitalImage: URL {
         URL(string: "https://static.arcgis.com/images/Symbols/SafetyHealth/Hospital.png")!
+    }
+}
+
+private extension Envelope {
+    /// An envelope of the San Diego city limits.
+    static var sanDiegoCityLimits: Envelope {
+        Envelope(
+            xRange: -13_049_024 ... -13_039_785,
+            yRange: 3_856_693...3_862_925,
+            spatialReference: .webMercator
+        )
     }
 }
 

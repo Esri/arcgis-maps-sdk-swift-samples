@@ -29,12 +29,13 @@ The contents of the KML file are shown in a tree. Tap on a disclosure to reveal 
 * KMLLayer
 * KMLNetworkLink
 * KMLNode
+* KMLPhotoOverlay
 * KMLPlacemark
 * KMLScreenOverlay
 
 ## Offline data
 
-This sample uses the [esri_test_data](https://www.arcgis.com/home/item.html?id=da301cb122874d5497f8a8f6c81eb36e) KML file. It is downloaded from ArcGIS Online automatically.
+This sample uses the [Esri KML Sample Data](https://www.arcgis.com/home/item.html?id=b3ebedc3bed940fa985d824d55c44a2f) KML file. It is downloaded from ArcGIS Online automatically.
 
 ## Tags
 

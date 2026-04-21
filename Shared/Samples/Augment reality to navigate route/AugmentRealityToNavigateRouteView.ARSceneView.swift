@@ -217,6 +217,12 @@ extension AugmentRealityToNavigateRouteView {
             }
             
             statusText = "Navigation will start."
+            
+            // The category is set so that the navigation instructions are spoken even when silent mode is turned on.
+            let session = AVAudioSession.sharedInstance()
+            try session.setCategory(.playback, mode: .voicePrompt)
+            try session.setActive(true)
+            
             await startTracking()
         }
         

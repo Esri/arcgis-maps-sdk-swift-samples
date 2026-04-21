@@ -19,7 +19,8 @@ extension ConfigureClustersView {
     /// The model used to store the geo model and other expensive objects
     /// used in this view.
     @MainActor
-    class Model: ObservableObject {
+    @Observable
+    class Model {
         /// A Zurich buildings web map.
         let map = Map(
             item: PortalItem(

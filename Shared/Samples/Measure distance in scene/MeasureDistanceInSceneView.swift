@@ -89,16 +89,18 @@ struct MeasureDistanceInSceneView: View {
             Text("Direct: \(directDistanceText)")
             Text("Horizontal: \(horizontalDistanceText)")
             Text("Vertical: \(verticalDistanceText)")
-            
-            // Unit system picker.
-            Picker("", selection: $unitSystemSelection) {
-                Text("Imperial").tag(UnitSystem.imperial)
-                Text("Metric").tag(UnitSystem.metric)
-            }
-            .pickerStyle(.segmented)
-            .padding()
-            .onChange(of: unitSystemSelection) {
-                model.locationDistanceMeasurement.unitSystem = unitSystemSelection
+        }
+        .toolbar {
+            ToolbarItem(placement: .bottomBar) {
+                // Unit system picker.
+                Picker("Unit System", selection: $unitSystemSelection) {
+                    Text("Imperial").tag(UnitSystem.imperial)
+                    Text("Metric").tag(UnitSystem.metric)
+                }
+                .pickerStyle(.segmented)
+                .onChange(of: unitSystemSelection) {
+                    model.locationDistanceMeasurement.unitSystem = unitSystemSelection
+                }
             }
         }
     }
@@ -126,7 +128,7 @@ private extension MeasureDistanceInSceneView {
         let analysisOverlay = AnalysisOverlay()
         
         /// The location distance measurement.
-        let locationDistanceMeasurement = LocationDistanceMeasurement(
+        let locationDistanceMeasurement = ExploratoryLocationDistanceMeasurement(
             startLocation: Point(x: -4.494677, y: 48.384472, z: 24.772694, spatialReference: .wgs84),
             endLocation: Point(x: -4.495646, y: 48.384377, z: 58.501115, spatialReference: .wgs84)
         )

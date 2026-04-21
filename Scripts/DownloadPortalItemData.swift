@@ -22,6 +22,7 @@
 // To delete and re-downloaded an item, remove its entry from the plist.
 
 import Foundation
+import UniformTypeIdentifiers
 
 // MARK: Model
 
@@ -138,7 +139,16 @@ func downloadFile(from sourceURL: URL, to downloadDirectory: URL) async throws -
     let (temporaryURL, response) = try await URLSession.shared.download(from: sourceURL)
     
     guard let suggestedFilename = response.suggestedFilename else { fatalError("No suggested filename from server.") }
-    let isArchive = NSString(string: suggestedFilename).pathExtension == "zip"
+    let fileType = UTType(filenameExtension: NSString(string: suggestedFilename).pathExtension)
+    let isArchive = fileType?.conforms(to: .zip) ?? false
+    
+    // Xcode's build system can emit "Build input file cannot be found" errors
+    // for standalone TIFF files that are tracked in the project but not
+    // declared as outputs of the script phase that generates them. To avoid
+    // this, the script encloses a standalone TIFF file in a folder so Xcode
+    // tracks the enclosing directory instead of the individual file.
+    // https://github.com/Esri/arcgis-maps-sdk-swift-samples/pull/757
+    let isTiff = fileType?.conforms(to: .tiff) ?? false
     
     let downloadName: String = try {
         // If the downloaded file is an archive and contains
@@ -164,6 +174,15 @@ func downloadFile(from sourceURL: URL, to downloadDirectory: URL) async throws -
         : downloadURL.deletingLastPathComponent()
         
         try uncompressArchive(at: temporaryURL, to: extractURL)
+    } else if isTiff {
+        // Encloses the tiff file in a folder to work around the issue with
+        // iOS On-Demand Resources.
+        let enclosingFolderURL = downloadURL.deletingPathExtension()
+        try FileManager.default.createDirectory(at: enclosingFolderURL, withIntermediateDirectories: true)
+        try FileManager.default.moveItem(
+            at: temporaryURL,
+            to: enclosingFolderURL.appendingPathComponent(downloadName, isDirectory: false)
+        )
     } else {
         try FileManager.default.moveItem(at: temporaryURL, to: downloadURL)
     }

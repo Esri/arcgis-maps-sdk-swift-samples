@@ -33,7 +33,7 @@ extension AddCustomDynamicEntityDataSourceView.Vessel: Decodable {
     init(from decoder: Decoder) throws {
         /// The attributes that define meta data for the vessel.
         struct Attributes: Decodable {
-            enum CodingKeys: String, CodingKey { // swiftlint:disable:this nesting
+            enum CodingKeys: String, CodingKey {
                 case mmsi = "MMSI"
                 case sog = "SOG"
                 case cog = "COG"

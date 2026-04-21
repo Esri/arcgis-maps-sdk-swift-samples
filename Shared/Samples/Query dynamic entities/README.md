@@ -6,7 +6,7 @@ Find dynamic entities from a data source that match a query.
 
 ## Use case
 
-Developers can query a `DynamicEntityDataSource` to find dynamic entities that meet spatial and/or attribute criteria. The query returns a collection of dynamic entities matching the `DynamicEntityQueryParameters` at the moment the query is executed. An example of this is a flight tracking app that monitors airspace near a particular airport, allowing the user to monitor flights based on different criteria such as arrival airport or flight number.
+Developers can query a `DynamicEntityDataSource` to find dynamic entities that meet spatial and/or attribute criteria. The query returns a collection of dynamic entities matching the `DynamicEntityQueryParameters` or track IDs at the moment the query is executed. An example of this is a flight tracking app that monitors airspace near a particular airport, allowing the user to monitor flights based on different criteria such as arrival airport or flight number.
 
 ## How to use the sample
 
@@ -19,7 +19,7 @@ Tap the "Query Flights" button and select a query to perform from the menu. Once
     1. To spatially filter results, set the `geometry` and `spatialRelationship`. The spatial relationship is `intersects` by default.
     2. To query entities with certain attribute values, set the `whereClause`.
     3. To get entities with specific track IDs, modify the `trackIDs` collection.
-3. To perform a dynamic entities query, call `DynamicEntityDataSource.queryDynamicEntities(using:)` passing in the parameters.
+3. To perform a dynamic entities query, use `DynamicEntityDataSource.queryDynamicEntities(using:)` to query with multiple criteria (such as track IDs, spatial, and/or attribute filters), or use `DynamicEntityDataSource.queryDynamicEntities(withTrackIDs:)` if you want to query *only* by track IDs.
 4. When complete, get the dynamic entities from the result using `DynamicEntityQueryResult.entities()`.
 5. Use `DynamicEntity.changes` to get the entities' change notifications.
 6. Get the new observation from the resulting `DynamicEntityChangedInfo` objects using `receivedObservation` and use `dynamicEntityWasPurged` to determine whether a dynamic entity has been purged.

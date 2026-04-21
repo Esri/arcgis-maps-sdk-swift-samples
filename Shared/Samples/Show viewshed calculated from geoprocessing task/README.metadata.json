@@ -1,0 +1,35 @@
+{
+    "category": "Analysis",
+    "description": "Calculate a viewshed using a geoprocessing service, in this case showing what parts of a landscape are visible from points on mountainous terrain.",
+    "ignore": false,
+    "images": [
+        "show-viewshed-calculated-from-geoprocessing-task.png"
+    ],
+    "keywords": [
+        "geoprocessing",
+        "heat map",
+        "heatmap",
+        "viewshed",
+        "FeatureCollectionTable",
+        "GeoprocessingFeatures",
+        "GeoprocessingJob",
+        "GeoprocessingParameters",
+        "GeoprocessingResult",
+        "GeoprocessingTask"
+    ],
+    "redirect_from": [
+        "/swift/sample-code/show-viewshed-from-point-on-map/"
+    ],
+    "relevant_apis": [
+        "FeatureCollectionTable",
+        "GeoprocessingFeatures",
+        "GeoprocessingJob",
+        "GeoprocessingParameters",
+        "GeoprocessingResult",
+        "GeoprocessingTask"
+    ],
+    "snippets": [
+        "ShowViewshedCalculatedFromGeoprocessingTaskView.swift"
+    ],
+    "title": "Show viewshed calculated from geoprocessing task"
+}

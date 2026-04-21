@@ -1,0 +1,32 @@
+{
+    "category": "Analysis",
+    "description": "Show an exploratory line of sight between two moving objects.",
+    "ignore": false,
+    "images": [
+        "show-exploratory-line-of-sight-between-geoelements.png"
+    ],
+    "keywords": [
+        "3D",
+        "exploratory line of sight",
+        "visibility",
+        "visibility analysis",
+        "AnalysisOverlay",
+        "ExploratoryGeoElementLineOfSight",
+        "ExploratoryGeoElementLineOfSight.TargetVisibility"
+    ],
+    "redirect_from": [
+        "/swift/sample-code/show-line-of-sight-between-geoelements/"
+    ],
+    "offline_data": [
+        "3af5cfec0fd24dac8d88aea679027cb9"
+    ],
+    "relevant_apis": [
+        "AnalysisOverlay",
+        "ExploratoryGeoElementLineOfSight",
+        "ExploratoryGeoElementLineOfSight.TargetVisibility"
+    ],
+    "snippets": [
+        "ShowExploratoryLineOfSightBetweenGeoelementsView.swift"
+    ],
+    "title": "Show exploratory line of sight between geoelements"
+}

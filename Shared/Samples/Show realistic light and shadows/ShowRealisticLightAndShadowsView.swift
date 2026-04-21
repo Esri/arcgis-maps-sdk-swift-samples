@@ -22,18 +22,11 @@ struct ShowRealisticLightAndShadowsView: View {
     /// The date second value controlled by the slider.
     @State private var dateSecond: Float = Model.dateSecondsNoon
     
-    /// The formatted text of the date controlled by the slider.
-    @State private var dateTimeText: String = DateFormatter.localizedString(
-        from: .startOfDay.advanced(by: TimeInterval(Model.dateSecondsNoon)),
-        dateStyle: .medium,
-        timeStyle: .short
-    )
-    
     /// The sun lighting mode of the scene view.
     @State private var lightingMode: SceneView.SunLighting = .lightAndShadows
     
     /// The sun date that gets passed into the scene view.
-    @State private var sunDate = Date.startOfDay.advanced(by: TimeInterval(Model.dateSecondsNoon))
+    var sunDate: Date { .startOfDay.advanced(by: TimeInterval(dateSecond)) }
     
     var body: some View {
         VStack {
@@ -50,9 +43,6 @@ struct ShowRealisticLightAndShadowsView: View {
                 Text("PM")
             }
             .frame(maxWidth: 540)
-            .onChange(of: dateSecond) {
-                sliderValueChanged(toValue: dateSecond)
-            }
             .padding(.horizontal)
         }
         .overlay(alignment: .top) {
@@ -71,19 +61,10 @@ struct ShowRealisticLightAndShadowsView: View {
     
     /// An overlay showing the date time adjusted by the slider.
     private var dateTimeOverlay: some View {
-        Text(dateTimeText)
+        Text(sunDate, format: Date.FormatStyle(date: .abbreviated, time: .shortened))
             .frame(maxWidth: .infinity)
             .padding(.vertical, 6)
             .background(.thinMaterial, ignoresSafeAreaEdges: .horizontal)
-    }
-    
-    /// Handles slider value changed event and set the scene view's sun date.
-    /// - Parameter value: The slider's value.
-    private func sliderValueChanged(toValue value: Float) {
-        // A DateComponents struct to encapsulate the second value from the slider.
-        let dateComponents = DateComponents(second: Int(value))
-        sunDate = Calendar.current.date(byAdding: dateComponents, to: .startOfDay)!
-        dateTimeText = DateFormatter.localizedString(from: sunDate, dateStyle: .medium, timeStyle: .short)
     }
 }
 
@@ -140,7 +121,7 @@ private extension SceneView.SunLighting {
 }
 
 private extension Date {
-    static let startOfDay = Calendar.current.startOfDay(for: .now)
+    static var startOfDay: Self { Calendar.current.startOfDay(for: .now) }
 }
 
 #Preview {
