@@ -68,7 +68,7 @@ struct AuthenticateWithPKICertificateView: View {
             }
             .interactiveDismissDisabled()
             .highPriorityGesture(DragGesture())
-            .pagePresentation()
+            .presentationSizing(.page)
         }
         .animation(.default, value: model.isConnecting)
         .authenticator(model.authenticator)
