@@ -108,13 +108,13 @@ extension GeocodeOfflineView {
             reverseGeocodeParameters.maxResults = 1
             
             // Perform reverse geocode using the locator task with the point and parameters.
-            let geocodeResults = try? await locatorTask.reverseGeocode(
+            let geocodeResults = try await locatorTask.reverseGeocode(
                 forLocation: normalizedPoint,
                 parameters: reverseGeocodeParameters
             )
             
             let resultText: String
-            if let result = geocodeResults?.first {
+            if let result = geocodeResults.first {
                 // If a result is found, extract the address from the attributes.
                 let cityString = result.attributes["City"] as? String ?? ""
                 let streetString = result.attributes["StAddr"] as? String ?? ""
