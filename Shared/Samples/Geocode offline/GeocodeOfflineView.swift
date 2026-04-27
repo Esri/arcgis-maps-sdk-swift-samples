@@ -75,17 +75,18 @@ struct GeocodeOfflineView: View {
                 // Geocode the text when a search is submitted.
                 if let submittedSearchText {
                     do {
-                        if let resultExtent = try await model.geocodeSearch(address: submittedSearchText) {
+                        let resultExtent = try await model.geocodeSearch(address: submittedSearchText)
+                        if let resultExtent {
                             // If found, zoom to the extent of the result's location.
                             viewpoint = Viewpoint(boundingGeometry: resultExtent)
+                        } else {
+                            // If no result was found, inform the user with an alert.
+                            resultAlertIsShowing = true
                         }
                     } catch {
                         self.error = error
-                        // If no result was found, inform the user with an alert.
-                        resultAlertIsShowing = true
                     }
                 }
-                
                 submittedSearchText = nil
             }
             .alert("No results found.", isPresented: $resultAlertIsShowing, actions: {})
