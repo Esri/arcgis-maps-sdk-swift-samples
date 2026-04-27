@@ -13,6 +13,7 @@
 // limitations under the License.
 
 import ArcGIS
+import Combine
 import UIKit
 
 extension GeocodeOfflineView {
