@@ -49,8 +49,8 @@ extension GeocodeOfflineView {
             return Graphic(symbol: markerSymbol)
         }()
         
-        /// The locator task used to preform the geocode operations, loaded from a local file.
-        private let locatorTask = LocatorTask(name: "SanDiego_StreetAddress", bundle: .main)
+        /// The locator task used to perform the geocode operations, loaded from a local file.
+        private let locatorTask = LocatorTask(url: .sanDiegoStreetAddressLocator)
         
         /// The placement of the callout on the map.
         @Published var calloutPlacement: CalloutPlacement?
@@ -70,26 +70,23 @@ extension GeocodeOfflineView {
         /// Geocodes a given address and adds a marker with the corresponding address at the result's location.
         /// - Parameter address: The given text address to geocode.
         /// - Returns: The extent of the result's display location.
-        func geocodeSearch(address: String) async -> Envelope? {
-            guard let locatorTask else { return nil }
-            
+        func geocodeSearch(address: String) async throws -> Envelope? {
             // Create geocode parameters.
             let geocodeParameters = GeocodeParameters()
             geocodeParameters.addResultAttributeName("Match_addr")
             geocodeParameters.minScore = 75
             
             // Perform geocode using the locator task with the text address and parameters.
-            let geocodeResults = try? await locatorTask.geocode(
+            let geocodeResults = try await locatorTask.geocode(
                 forSearchText: address,
                 using: geocodeParameters
             )
             
-            if let result = geocodeResults?.first,
+            if let result = geocodeResults.first,
                let displayLocation = result.displayLocation {
                 // If a result is found, place a marker at the result's location.
                 let resultText = result.attributes["Match_addr"] as? String ?? ""
                 updateMarker(to: displayLocation, withText: resultText)
-                
                 return displayLocation.extent
             }
             
@@ -98,9 +95,7 @@ extension GeocodeOfflineView {
         
         /// Reverse geocodes a given location and adds a marker with the corresponding address at the result's location.
         /// - Parameter mapPoint: The point on the map to reverse geocode.
-        func reverseGeocode(mapPoint: Point) async {
-            guard let locatorTask else { return }
-            
+        func reverseGeocode(mapPoint: Point) async throws {
             //  Normalized the map point.
             guard let normalizedPoint = GeometryEngine.normalizeCentralMeridian(
                 of: mapPoint
@@ -112,13 +107,13 @@ extension GeocodeOfflineView {
             reverseGeocodeParameters.maxResults = 1
             
             // Perform reverse geocode using the locator task with the point and parameters.
-            let geocodeResults = try? await locatorTask.reverseGeocode(
+            let geocodeResults = try await locatorTask.reverseGeocode(
                 forLocation: normalizedPoint,
                 parameters: reverseGeocodeParameters
             )
             
             let resultText: String
-            if let result = geocodeResults?.first {
+            if let result = geocodeResults.first {
                 // If a result is found, extract the address from the attributes.
                 let cityString = result.attributes["City"] as? String ?? ""
                 let streetString = result.attributes["StAddr"] as? String ?? ""
@@ -164,6 +159,15 @@ extension GeocodeOfflineView {
 }
 
 private extension URL {
+    /// A URL to the San Diego street address locator.
+    static var sanDiegoStreetAddressLocator: Self {
+        Bundle.main.url(
+            forResource: "SanDiego_StreetAddress",
+            withExtension: "loc",
+            subdirectory: "san-diego-eagle-locator"
+        )!
+    }
+    
     /// A URL to the local tile package of the streets in San Diego, CA, USA.
     static var streetMap: Self {
         Bundle.main.url(forResource: "streetmap_SD", withExtension: "tpkx")!
