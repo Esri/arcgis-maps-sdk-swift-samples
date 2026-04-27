@@ -24,7 +24,7 @@ struct GeocodeOfflineView: View {
         center: Point(x: -13_042_250, y: 3_857_970, spatialReference: .webMercator),
         scale: 2e4
     )
-
+    
     /// The text in the search bar.
     @State private var searchText = ""
     
