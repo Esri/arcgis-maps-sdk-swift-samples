@@ -69,7 +69,7 @@ extension GeocodeOfflineView {
         /// Geocodes a given address and adds a marker with the corresponding address at the result's location.
         /// - Parameter address: The given text address to geocode.
         /// - Returns: The extent of the result's display location.
-        func geocodeSearch(address: String) async -> Envelope? {
+        func geocodeSearch(address: String) async throws -> Envelope? {
             // Create geocode parameters.
             let geocodeParameters = GeocodeParameters()
             geocodeParameters.addResultAttributeName("Match_addr")
