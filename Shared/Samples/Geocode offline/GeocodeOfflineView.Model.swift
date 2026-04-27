@@ -77,17 +77,16 @@ extension GeocodeOfflineView {
             geocodeParameters.minScore = 75
             
             // Perform geocode using the locator task with the text address and parameters.
-            let geocodeResults = try? await locatorTask.geocode(
+            let geocodeResults = try await locatorTask.geocode(
                 forSearchText: address,
                 using: geocodeParameters
             )
         
-            if let result = geocodeResults?.first,
+            if let result = geocodeResults.first,
                let displayLocation = result.displayLocation {
                 // If a result is found, place a marker at the result's location.
                 let resultText = result.attributes["Match_addr"] as? String ?? ""
                 updateMarker(to: displayLocation, withText: resultText)
-                
                 return displayLocation.extent
             }
             
