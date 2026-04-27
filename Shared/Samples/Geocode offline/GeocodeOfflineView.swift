@@ -34,7 +34,7 @@ struct GeocodeOfflineView: View {
     /// A Boolean value indicating whether the "No results found." alert is showing.
     @State private var resultAlertIsShowing = false
     
-    /// The error that occurred during reverse geocoding.
+    /// The error that occurred during geocoding.
     @State private var error: (any Error)?
     
     /// A pre-populated list of example addresses.
@@ -47,7 +47,7 @@ struct GeocodeOfflineView: View {
     ]
     
     var body: some View {
-        GeocodeMapView(model: model, viewpoint: $viewpoint, error: $error)
+        GeocodeMapView(model: model, viewpoint: $viewpoint)
             .searchable(text: $searchText, prompt: "Type in an address")
             .autocorrectionDisabled()
             .onSubmit(of: .search) {
@@ -90,6 +90,7 @@ struct GeocodeOfflineView: View {
                 submittedSearchText = nil
             }
             .alert("No results found.", isPresented: $resultAlertIsShowing, actions: {})
+            .errorAlert(presentingError: $error)
     }
 }
 
@@ -106,7 +107,7 @@ private extension GeocodeOfflineView {
         @Binding var viewpoint: Viewpoint
         
         /// The error that occurred during reverse geocoding.
-        @Binding var error: (any Error)?
+        @State private var error: (any Error)?
         
         /// The point on the map where the user tapped.
         @State private var tapLocation: Point?
