@@ -105,7 +105,7 @@ private extension GeocodeOfflineView {
         /// The current viewpoint of the map view.
         @Binding var viewpoint: Viewpoint
         
-        /// The error that occurred during reverse geocoding.
+        /// The error that occurred during geocoding or reverse geocoding.
         @Binding var error: (any Error)?
         
         /// The point on the map where the user tapped.
