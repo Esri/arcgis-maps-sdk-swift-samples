@@ -135,7 +135,7 @@ private extension GeocodeOfflineView {
                         dismissSearch()
                         do {
                             try await model.reverseGeocode(mapPoint: tapLocation)
-                        } catch let error {
+                        } catch {
                             self.error = error
                         }
                     }

@@ -13,7 +13,6 @@
 // limitations under the License.
 
 import ArcGIS
-import Combine
 import UIKit
 
 extension GeocodeOfflineView {
@@ -81,7 +80,7 @@ extension GeocodeOfflineView {
                 forSearchText: address,
                 using: geocodeParameters
             )
-            
+        
             if let result = geocodeResults?.first,
                let displayLocation = result.displayLocation {
                 // If a result is found, place a marker at the result's location.
