@@ -17,7 +17,12 @@ import Combine
 import Foundation
 
 extension AddFeaturesWithContingentValuesView {
-    /// The view model for the sample.
+    /// Manages contingent-value editing for bird nest features stored in a local geodatabase.
+    ///
+    /// The sample creates or removes a nest feature, updates contingent fields in
+    /// response to UI selections, validates the resulting contingency rules, and
+    /// keeps a derived buffer graphic synchronized with the feature's current
+    /// buffer size attribute.
     @MainActor
     class Model: ObservableObject {
         // MARK: Properties
@@ -64,7 +69,7 @@ extension AddFeaturesWithContingentValuesView {
         
         // MARK: Methods
         
-        /// Loads the features from the geodatabase.
+        /// Loads the geodatabase, exposes its table as a map layer, and builds buffer graphics.
         func loadFeatures() async throws {
             // Get the feature table from the geodatabase.
             try await geodatabaseFile?.geodatabase.load()
@@ -114,7 +119,11 @@ extension AddFeaturesWithContingentValuesView {
             contingenciesAreValid = false
         }
         
-        /// Sets an attribute on the feature to a given value.
+        /// Applies an edited attribute value and immediately re-evaluates the contingency rules.
+        ///
+        /// The sample keeps validation and derived graphics in the same method so
+        /// the UI always reflects whether the current combination of status,
+        /// protection, and buffer size remains valid.
         /// - Parameters:
         ///   - value: The value.
         ///   - key: The key associated with the attribute.
