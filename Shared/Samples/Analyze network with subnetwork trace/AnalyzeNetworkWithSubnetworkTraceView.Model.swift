@@ -17,7 +17,11 @@ import Combine
 import Foundation
 
 extension AnalyzeNetworkWithSubnetworkTraceView {
-    /// The view model for this sample.
+    /// Builds and executes subnetwork traces that use conditional traversability expressions.
+    ///
+    /// The model loads the utility network, exposes user-selectable network
+    /// attributes, and maintains a chain of conditional expressions that are
+    /// applied as barriers before each subnetwork trace.
     @MainActor
     class Model: ObservableObject {
         /// An electric utility network in Naperville, Illinois.
@@ -197,7 +201,11 @@ extension AnalyzeNetworkWithSubnetworkTraceView {
             statusText = ""
         }
         
-        /// Chains the conditional expressions together with AND or OR operators.
+        /// Combines the configured conditional expressions into a single traversability rule.
+        ///
+        /// The sample currently uses OR semantics so any expression can block
+        /// traversal. This helper is the single place where that chaining logic
+        /// is assembled before being assigned to the trace configuration.
         /// - Parameter expressions: An array of `UtilityTraceConditionalExpression`s.
         /// - Returns: The chained conditional expression.
         func chainExpressions(
@@ -291,7 +299,11 @@ extension AnalyzeNetworkWithSubnetworkTraceView {
             }
         }
         
-        /// Adds a conditional expression.
+        /// Creates and stores a new attribute comparison for the next trace.
+        ///
+        /// User input may come from either coded value domains or free-form
+        /// numeric input, so the value is first normalized to the attribute's
+        /// data type before the comparison expression is constructed.
         func addConditionalExpression(
             attribute: UtilityNetworkAttribute,
             comparison: UtilityNetworkAttributeComparison.Operator,

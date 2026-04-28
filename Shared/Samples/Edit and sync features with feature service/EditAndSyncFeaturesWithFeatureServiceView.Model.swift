@@ -16,7 +16,11 @@ import ArcGIS
 import Foundation
 
 extension EditAndSyncFeaturesWithFeatureServiceView {
-    /// The view model for the sample.
+    /// Coordinates the offline geodatabase generation, editing, and sync workflow.
+    ///
+    /// The model can display live service layers, generate a local geodatabase
+    /// clipped to the current extent, apply geometry edits locally, and then push
+    /// those edits back to the backing feature service through a sync job.
     @MainActor
     final class Model: ObservableObject {
         // MARK: Properties
@@ -53,7 +57,10 @@ extension EditAndSyncFeaturesWithFeatureServiceView {
         
         // MARK: Methods
         
-        /// Adds feature layers from the feature service to the map.
+        /// Loads the sync task metadata and adds the service's point layers to the map.
+        ///
+        /// This establishes the online starting state before the sample switches
+        /// over to locally generated geodatabase layers.
         func setUpMap() async throws {
             try await geodatabaseSyncTask.load()
             
@@ -150,7 +157,10 @@ extension EditAndSyncFeaturesWithFeatureServiceView {
             currentJob = nil
         }
         
-        /// Runs a given job.
+        /// Starts a job, exposes it to the UI, and executes follow-up work tied to its output.
+        ///
+        /// Centralizing job startup here keeps generate and sync operations
+        /// consistent and ensures the active job can be cancelled from the view.
         /// - Parameters:
         ///   - job: The job to run.
         ///   - onStartAction: The action to run after the job is started.
