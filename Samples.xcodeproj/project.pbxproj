@@ -5075,7 +5075,7 @@
 			repositoryURL = "https://github.com/Esri/arcgis-maps-sdk-swift-toolkit/";
 			requirement = {
 				kind = upToNextMinorVersion;
-				minimumVersion = 200.8.1;
+				minimumVersion = 200.8.2;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
