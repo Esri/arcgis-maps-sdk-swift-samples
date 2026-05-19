@@ -110,13 +110,43 @@ private extension ShowDeviceLocationView {
                 locationManager.requestWhenInUseAuthorization()
             }
             // Starts the location display data source.
-            try await locationDisplay.dataSource.start()
+            do {
+                try await locationDisplay.dataSource.start()
+            } catch {
+#if targetEnvironment(macCatalyst)
+                // On Mac Catalyst, provide a more helpful error message when location
+                // permissions are not enabled.
+                if (error as NSError).domain == kCLErrorDomain && (error as NSError).code == 1 {
+                    throw LocationError.macCatalystPermissionDenied
+                }
+#endif
+                throw error
+            }
         }
         
         /// Stops the location data source.
         func stopLocationDataSource() {
             Task {
                 await locationDisplay.dataSource.stop()
+            }
+        }
+        
+        /// Errors that can occur when working with location services.
+        enum LocationError: LocalizedError {
+            case macCatalystPermissionDenied
+            
+            var errorDescription: String? {
+                switch self {
+                case .macCatalystPermissionDenied:
+                    return "Location services are not enabled for this app. Please enable location permissions in System Settings."
+                }
+            }
+            
+            var recoverySuggestion: String? {
+                switch self {
+                case .macCatalystPermissionDenied:
+                    return "Open System Settings > Privacy & Security > Location Services and ensure this app has permission to access your location."
+                }
             }
         }
     }
