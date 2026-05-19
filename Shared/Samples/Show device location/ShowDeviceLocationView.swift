@@ -116,7 +116,7 @@ private extension ShowDeviceLocationView {
 #if targetEnvironment(macCatalyst)
                 // On Mac Catalyst, provide a more helpful error message when location
                 // permissions are not enabled.
-                if (error as NSError).domain == kCLErrorDomain && (error as NSError).code == 1 {
+                if (error as NSError).domain == kCLErrorDomain && (error as NSError).code == CLError.Code.denied.rawValue {
                     throw LocationError.macCatalystPermissionDenied
                 }
 #endif
@@ -138,14 +138,7 @@ private extension ShowDeviceLocationView {
             var errorDescription: String? {
                 switch self {
                 case .macCatalystPermissionDenied:
-                    return "Location services are not enabled for this app. Please enable location permissions in System Settings."
-                }
-            }
-            
-            var recoverySuggestion: String? {
-                switch self {
-                case .macCatalystPermissionDenied:
-                    return "Open System Settings > Privacy & Security > Location Services and ensure this app has permission to access your location."
+                    return "Location services are not enabled for this app. Please enable location permissions in System Settings.\n Open System Settings > Privacy & Security > Location Services and ensure this app has permission to access your location."
                 }
             }
         }
