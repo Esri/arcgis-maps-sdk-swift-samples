@@ -116,7 +116,8 @@ private extension ShowDeviceLocationView {
 #if targetEnvironment(macCatalyst)
                 // On Mac Catalyst, provide a more helpful error message when location
                 // permissions are not enabled.
-                if (error as NSError).domain == kCLErrorDomain && (error as NSError).code == CLError.Code.denied.rawValue {
+                let nsError = error as NSError
+                if nsError.domain == kCLErrorDomain && nsError.code == CLError.Code.denied.rawValue {
                     throw LocationError.macCatalystPermissionDenied
                 }
 #endif
