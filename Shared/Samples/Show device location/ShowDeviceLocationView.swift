@@ -138,7 +138,7 @@ private extension ShowDeviceLocationView {
             var errorDescription: String? {
                 switch self {
                 case .macCatalystPermissionDenied:
-                    return "Location services are not enabled for this app. Please enable location permissions in System Settings.\n Open System Settings > Privacy & Security > Location Services and ensure this app has permission to access your location."
+                    return "Location services are not enabled for this app. Please enable location permissions in System Settings.\nOpen System Settings > Privacy & Security > Location Services and ensure this app has permission to access your location."
                 }
             }
         }
