@@ -133,7 +133,7 @@ private extension ShowDeviceLocationView {
     /// An error that occurs when location display fails due to a permission denied error.
     struct LocationPermissionDeniedError: LocalizedError {
         var errorDescription: String? {
-            return "Location permission denied. Please enable location access for this app in Settings."
+            return "Location permission denied. Please authorize location access for this application in Settings."
         }
     }
 }
