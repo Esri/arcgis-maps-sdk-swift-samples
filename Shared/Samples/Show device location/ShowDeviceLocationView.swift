@@ -114,11 +114,11 @@ private extension ShowDeviceLocationView {
                 try await locationDisplay.dataSource.start()
             } catch {
                 // Provide a more helpful error message when location permissions are denied.
-                let nsError = error as NSError
-                if nsError.domain == kCLErrorDomain && nsError.code == CLError.Code.denied.rawValue {
+                if let clError = error as? CLError, clError.code == .denied {
                     throw LocationPermissionDeniedError()
+                } else {
+                    throw error
                 }
-                throw error
             }
         }
         
