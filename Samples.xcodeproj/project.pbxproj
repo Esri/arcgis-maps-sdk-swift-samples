@@ -1928,9 +1928,9 @@
 				D74C8BFA2ABA5572007C76B8 /* Style symbols from mobile style file */,
 				002056C22DD7F6C70016B8A9 /* Take screenshot */,
 				7573E81229D6134C00BEED9C /* Trace utility network */,
+				95DF31812FD37D3A005D06E7 /* Update basemap for contrast accessibility */,
 				9563324D2E3950960091C877 /* Update related features */,
 				D74EA7802B6DADA5008F6C7C /* Validate utility network topology */,
-				95DF31812FD37D3A005D06E7 /* Update basemap for contrast accessibility */,
 			);
 			path = Samples;
 			sourceTree = "<group>";
