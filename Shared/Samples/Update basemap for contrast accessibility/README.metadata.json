@@ -3,7 +3,7 @@
     "description": "Display a map view that updates between authored light, dark, and high-contrast basemaps.",
     "ignore": false,
     "images": [
-        "update-basemap-for-contrast-accessibility-view.png"
+        "update-basemap-for-contrast-accessibility.png"
     ],
     "keywords": [
         "accessibility",
