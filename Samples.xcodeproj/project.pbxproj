@@ -738,10 +738,10 @@
 				"$(DERIVED_FILE_DIR)/$(INPUT_FILE_BASE)",
 			);
 			runOncePerArchitecture = 0;
-				script = (
-					"xcrun --sdk macosx swift \"${SRCROOT}/Scripts/GenerateSampleViewSourceCode.swift\" \"${SCRIPT_INPUT_FILE_0}\" \"${INPUT_FILE_PATH}\" \"${SCRIPT_OUTPUT_FILE_0}\" ",
-					"",
-				);
+			script = (
+				"xcrun --sdk macosx swift \"${SRCROOT}/Scripts/GenerateSampleViewSourceCode.swift\" \"${SCRIPT_INPUT_FILE_0}\" \"${INPUT_FILE_PATH}\" \"${SCRIPT_OUTPUT_FILE_0}\" ",
+				"",
+			);
 		};
 		0083586F27FE3BCF00192A15 /* PBXBuildRule */ = {
 			isa = PBXBuildRule;
@@ -756,10 +756,10 @@
 				"$(DERIVED_FILE_DIR)/$(INPUT_FILE_BASE)",
 			);
 			runOncePerArchitecture = 0;
-				script = (
-					"\"${SRCROOT}/Scripts/masquerade\" -i \"${INPUT_FILE_PATH}\" -o \"${SCRIPT_OUTPUT_FILE_0}\" -s \"${SCRIPT_INPUT_FILE_0}\" -f",
-					"",
-				);
+		        script = (
+				"\"${SRCROOT}/Scripts/masquerade\" -i \"${INPUT_FILE_PATH}\" -o \"${SCRIPT_OUTPUT_FILE_0}\" -s \"${SCRIPT_INPUT_FILE_0}\" -f",
+				"",
+			);
 		};
 /* End PBXBuildRule section */
 
