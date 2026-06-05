@@ -1,0 +1,39 @@
+{
+    "category": "Accessibility",
+    "description": "Display a map view that updates between authored light, dark, and high-contrast basemaps.",
+    "ignore": false,
+    "images": [
+        "update-basemap-for-contrast-accessibility-view.png"
+    ],
+    "keywords": [
+        "accessibility",
+        "accessible",
+        "basemap",
+        "colorblind",
+        "contrast",
+        "dark",
+        "enhanced",
+        "high",
+        "inclusive",
+        "legibility",
+        "light",
+        "living atlas",
+        "readability",
+        "vision",
+        "visual impairment",
+        "wcag",
+        "Basemap",
+        "BasemapStyle",
+        "Map"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "Basemap",
+        "BasemapStyle",
+        "Map"
+    ],
+    "snippets": [
+        "UpdateBasemapForContrastAccessibilityView.swift"
+    ],
+    "title": "Update basemap for contrast accessibility"
+}
