@@ -231,11 +231,23 @@ private extension UpdateBasemapForContrastAccessibilityView {
             case .dark:
                 Basemap(style: .arcGISDarkGray)
             case .highContrastLight:
-                Basemap(url: URL(string: "https://www.arcgis.com/home/item.html?id=084291b0ecad4588b8c8853898d72445")!)!
+                Basemap(url: .highContrastDarkBasemap)!
             case .highContrastDark:
-                Basemap(url: URL(string: "https://www.arcgis.com/home/item.html?id=3e23478909194c54992eaaee78b5f754")!)!
+                Basemap(url: .highContrastDarkBasemap)!
             }
         }
+    }
+}
+
+private extension URL {
+    /// The URL of the high-contrast light basemap item.
+    static var highContrastLightBasemap: URL {
+        URL(string: "https://www.arcgis.com/home/item.html?id=084291b0ecad4588b8c8853898d72445")!
+    }
+   
+    /// The URL of the high-contrast dark basemap item.
+    static var highContrastDarkBasemap: URL {
+        URL(string: "https://www.arcgis.com/home/item.html?id=3e23478909194c54992eaaee78b5f754")!
     }
 }
 
