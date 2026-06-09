@@ -19,6 +19,9 @@ struct UpdateBasemapForContrastAccessibilityView: View {
     /// The view model for the sample.
     @State private var model = Model()
     
+    /// The error shown in an alert, if any.
+    @State var error: Error?
+    
     /// A Boolean value indicating whether the settings sheet is presented.
     @State private var isShowingSettings = false
     
@@ -57,7 +60,9 @@ struct UpdateBasemapForContrastAccessibilityView: View {
         MapView(map: model.map)
             .toolbar {
                 ToolbarItem(placement: .bottomBar) {
-                    Button("Contrast Options") { isShowingSettings = true }
+                    Button("Contrast Options") {
+                        isShowingSettings = true
+                    }
                 }
             }
             .sheet(isPresented: $isShowingSettings) {
@@ -67,32 +72,32 @@ struct UpdateBasemapForContrastAccessibilityView: View {
                         .navigationBarTitleDisplayMode(.inline)
                         .toolbar {
                             ToolbarItem(placement: .confirmationAction) {
-                                Button("Done") { isShowingSettings = false }
+                                Button("Done") {
+                                    isShowingSettings = false
+                                }
                             }
                         }
                 }
                 .presentationDetents([.medium, .large])
             }
-            .alert(
-                "Error",
-                isPresented: Binding(
-                    get: { model.error != nil },
-                    set: { if !$0 { model.error = nil } }
-                ),
-                presenting: model.error
-            ) { _ in
-                Button("OK", role: .cancel) { model.error = nil }
-            } message: { error in
-                Text(error.localizedDescription)
-            }
+        
             .onChange(of: effectiveAppearance) { _, newAppearance in
                 Task {
-                    await model.update(to: newAppearance)
+                    do {
+                        try await model.update(to: newAppearance)
+                    } catch {
+                        self.error = error
+                    }
                 }
             }
             .task {
                 // Initial load.
-                await model.update(to: effectiveAppearance)
+                do {
+                    try await model.update(to: effectiveAppearance)
+                } catch {
+                    self.error = error
+                }
+                
             }
     }
 }
@@ -101,7 +106,6 @@ private extension UpdateBasemapForContrastAccessibilityView {
     // MARK: - Settings View
     
     /// The controls that drive the displayed map, presented as a settings sheet
-    /// (the iOS counterpart to the Android supporting pane).
     struct ContrastSettingsView: View {
         /// The view model for the sample.
         @Bindable var model: Model
@@ -174,11 +178,10 @@ private extension UpdateBasemapForContrastAccessibilityView {
         
         /// Whether the basemap's reference layers are visible.
         var areReferenceLayersEnabled = true {
-            didSet { applyReferenceLayersVisibility() }
+            didSet {
+                applyReferenceLayersVisibility()
+            }
         }
-        
-        /// The error shown in an alert, if any.
-        var error: Error?
         
         init() {
             map = Self.makeMap(for: contrastAppearance)
@@ -186,20 +189,15 @@ private extension UpdateBasemapForContrastAccessibilityView {
         
         /// Ensures the displayed basemap matches `contrast`, then loads it and
         /// applies the current reference-layer visibility.
-        func update(to contrast: ContrastAppearance) async {
+        func update(to contrast: ContrastAppearance) async throws {
             // Always update the contrast appearance to keep it in sync.
             contrastAppearance = contrast
             
             // Create a new map with the appropriate basemap.
             map = Self.makeMap(for: contrast)
-            
-            do {
-                // Reference layers are only available once the basemap has loaded.
-                try await map.load()
-                applyReferenceLayersVisibility()
-            } catch {
-                self.error = error
-            }
+            // Reference layers are only available once the basemap has loaded.
+            try await map.load()
+            applyReferenceLayersVisibility()
         }
         
         /// Applies the current reference-layer visibility flag to the loaded basemap.
@@ -212,16 +210,10 @@ private extension UpdateBasemapForContrastAccessibilityView {
         /// Builds an unloaded map for the given appearance.
         private static func makeMap(for contrast: ContrastAppearance) -> Map {
             let map = Map(basemap: basemap(for: contrast))
-            map.initialViewpoint = sampleViewpoint
+            map.initialViewpoint = .initialViewpoint
             return map
         }
         
-        /// The default viewpoint used for the map.
-        private static let sampleViewpoint = Viewpoint(
-            latitude: 34.05,
-            longitude: -117.19,
-            scale: 2e6
-        )
         
         /// Maps the selected appearance to its contrast-accessibility basemap.
         private static func basemap(for contrast: ContrastAppearance) -> Basemap {
@@ -239,20 +231,7 @@ private extension UpdateBasemapForContrastAccessibilityView {
     }
 }
 
-private extension URL {
-    /// The URL of the high-contrast light basemap item.
-    static var highContrastLightBasemap: URL {
-        URL(string: "https://www.arcgis.com/home/item.html?id=084291b0ecad4588b8c8853898d72445")!
-    }
-   
-    /// The URL of the high-contrast dark basemap item.
-    static var highContrastDarkBasemap: URL {
-        URL(string: "https://www.arcgis.com/home/item.html?id=3e23478909194c54992eaaee78b5f754")!
-    }
-}
-
 private extension UpdateBasemapForContrastAccessibilityView {
-    // MARK: - Helper Types
     
     /// Tracks whether the appearance comes from device settings or the manual picker.
     enum ContrastMode: CaseIterable {
@@ -298,6 +277,30 @@ private extension UpdateBasemapForContrastAccessibilityView {
             case .highContrastDark: "High-contrast dark basemap for enhanced dark theme."
             }
         }
+    }
+}
+
+
+private extension Viewpoint {
+    /// The default viewpoint used for the map.
+    static let initialViewpoint = Viewpoint(
+        latitude: 34.05,
+        longitude: -117.19,
+        scale: 2e6
+    )
+    
+}
+
+
+private extension URL {
+    /// The URL of the high-contrast light basemap item.
+    static var highContrastLightBasemap: URL {
+        URL(string: "https://www.arcgis.com/home/item.html?id=084291b0ecad4588b8c8853898d72445")!
+    }
+    
+    /// The URL of the high-contrast dark basemap item.
+    static var highContrastDarkBasemap: URL {
+        URL(string: "https://www.arcgis.com/home/item.html?id=3e23478909194c54992eaaee78b5f754")!
     }
 }
 
