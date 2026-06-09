@@ -58,11 +58,12 @@ struct UpdateBasemapForContrastAccessibilityView: View {
     
     var body: some View {
         MapView(map: model.map)
-            .toolbar {
-                ToolbarItem(placement: .bottomBar) {
-                    Button("Contrast Options") {
-                        isShowingSettings = true
-                    }
+            .task {
+                // Initial load.
+                do {
+                    try await model.update(to: effectiveAppearance)
+                } catch {
+                    self.error = error
                 }
             }
             .sheet(isPresented: $isShowingSettings) {
@@ -80,7 +81,13 @@ struct UpdateBasemapForContrastAccessibilityView: View {
                 }
                 .presentationDetents([.medium, .large])
             }
-        
+            .toolbar {
+                ToolbarItem(placement: .bottomBar) {
+                    Button("Contrast Options") {
+                        isShowingSettings = true
+                    }
+                }
+            }
             .onChange(of: effectiveAppearance) { _, newAppearance in
                 Task {
                     do {
@@ -89,15 +96,6 @@ struct UpdateBasemapForContrastAccessibilityView: View {
                         self.error = error
                     }
                 }
-            }
-            .task {
-                // Initial load.
-                do {
-                    try await model.update(to: effectiveAppearance)
-                } catch {
-                    self.error = error
-                }
-                
             }
     }
 }
@@ -214,7 +212,6 @@ private extension UpdateBasemapForContrastAccessibilityView {
             return map
         }
         
-        
         /// Maps the selected appearance to its contrast-accessibility basemap.
         private static func basemap(for contrast: ContrastAppearance) -> Basemap {
             switch contrast {
@@ -232,7 +229,6 @@ private extension UpdateBasemapForContrastAccessibilityView {
 }
 
 private extension UpdateBasemapForContrastAccessibilityView {
-    
     /// Tracks whether the appearance comes from device settings or the manual picker.
     enum ContrastMode: CaseIterable {
         case automatic
@@ -280,7 +276,6 @@ private extension UpdateBasemapForContrastAccessibilityView {
     }
 }
 
-
 private extension Viewpoint {
     /// The default viewpoint used for the map.
     static let initialViewpoint = Viewpoint(
@@ -290,7 +285,6 @@ private extension Viewpoint {
     )
     
 }
-
 
 private extension URL {
     /// The URL of the high-contrast light basemap item.
