@@ -124,7 +124,7 @@ private extension UpdateBasemapForContrastAccessibilityView {
                             Text(mode.displayName).tag(mode)
                         }
                     }
-                    .pickerStyle(.inline)
+                    .pickerStyle(.segmented)
                 } header: {
                     Text("Visual Contrast Mode")
                 } footer: {
