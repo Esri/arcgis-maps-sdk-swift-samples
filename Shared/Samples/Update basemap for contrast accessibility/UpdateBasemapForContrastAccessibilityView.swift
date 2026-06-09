@@ -58,12 +58,14 @@ struct UpdateBasemapForContrastAccessibilityView: View {
     
     var body: some View {
         MapView(map: model.map)
-            .task {
-                // Initial load.
-                do {
-                    try await model.update(to: effectiveAppearance)
-                } catch {
-                    self.error = error
+            .onAppear {
+                Task {
+                    // Initial load.
+                    do {
+                        try await model.update(to: effectiveAppearance)
+                    } catch {
+                        self.error = error
+                    }
                 }
             }
             .sheet(isPresented: $isShowingSettings) {
@@ -190,7 +192,6 @@ private extension UpdateBasemapForContrastAccessibilityView {
         func update(to contrast: ContrastAppearance) async throws {
             // Always update the contrast appearance to keep it in sync.
             contrastAppearance = contrast
-            
             // Create a new map with the appropriate basemap.
             map = Self.makeMap(for: contrast)
             // Reference layers are only available once the basemap has loaded.
@@ -283,7 +284,6 @@ private extension Viewpoint {
         longitude: -117.19,
         scale: 2e6
     )
-    
 }
 
 private extension URL {
