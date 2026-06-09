@@ -32,7 +32,6 @@ struct UpdateBasemapForContrastAccessibilityView: View {
     /// The system contrast setting (standard or increased).
     ///
     /// Reflects the "Increase Contrast" accessibility preference and is the iOS
-    /// counterpart to Android's `UiModeManager.contrast` / high-text-contrast secure settings.
     @Environment(\.colorSchemeContrast) private var colorSchemeContrast
     
     /// The appearance resolved purely from the current device settings.
