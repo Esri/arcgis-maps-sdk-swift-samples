@@ -99,7 +99,7 @@ struct UpdateBasemapForContrastAccessibilityView: View {
                     }
                 }
             }
-            .errorAlert(presentingError: $error)
+    }
 }
 
 private extension UpdateBasemapForContrastAccessibilityView {
@@ -228,13 +228,14 @@ private extension UpdateBasemapForContrastAccessibilityView {
                 Basemap(url: .highContrastLightBasemap)!
             case .highContrastDark:
                 Basemap(url: .highContrastDarkBasemap)!
+            }
         }
     }
 }
 
 private extension UpdateBasemapForContrastAccessibilityView {
     /// Tracks whether the appearance comes from device settings or the manual picker.
-    enum ContrastMode: CaseIterable {
+    enum ContrastMode: CaseIterable, Hashable {
         case automatic
         case manual
         
@@ -254,7 +255,7 @@ private extension UpdateBasemapForContrastAccessibilityView {
     }
     
     /// The four contrast appearance variants.
-    enum ContrastAppearance: CaseIterable {
+    enum ContrastAppearance: CaseIterable, Hashable {
         case light
         case highContrastLight
         case dark
