@@ -20,7 +20,7 @@ struct UpdateBasemapForContrastAccessibilityView: View {
     @State private var model = Model()
     
     /// The error shown in an alert, if any.
-    @State var error: Error?
+    @State private var error: (any Error)?
     
     /// A Boolean value indicating whether the settings sheet is presented.
     @State private var isShowingSettings = false
@@ -99,7 +99,7 @@ struct UpdateBasemapForContrastAccessibilityView: View {
                     }
                 }
             }
-    }
+            .errorAlert(presentingError: $error)
 }
 
 private extension UpdateBasemapForContrastAccessibilityView {
@@ -192,11 +192,15 @@ private extension UpdateBasemapForContrastAccessibilityView {
         func update(to contrast: ContrastAppearance) async throws {
             // Always update the contrast appearance to keep it in sync.
             contrastAppearance = contrast
-            // Create a new map with the appropriate basemap.
-            map = Self.makeMap(for: contrast)
+            // Create and load a new map with the appropriate basemap.
+            let newMap = Self.makeMap(for: contrast)
+            map = newMap
             // Reference layers are only available once the basemap has loaded.
-            try await map.load()
-            applyReferenceLayersVisibility()
+            try await newMap.load()
+            // Apply the current reference-layer visibility to the loaded basemap.
+            newMap.basemap?.referenceLayers.forEach { layer in
+                layer.isVisible = areReferenceLayersEnabled
+            }
         }
         
         /// Applies the current reference-layer visibility flag to the loaded basemap.
@@ -221,10 +225,9 @@ private extension UpdateBasemapForContrastAccessibilityView {
             case .dark:
                 Basemap(style: .arcGISDarkGray)
             case .highContrastLight:
-                Basemap(url: .highContrastDarkBasemap)!
+                Basemap(url: .highContrastLightBasemap)!
             case .highContrastDark:
                 Basemap(url: .highContrastDarkBasemap)!
-            }
         }
     }
 }
