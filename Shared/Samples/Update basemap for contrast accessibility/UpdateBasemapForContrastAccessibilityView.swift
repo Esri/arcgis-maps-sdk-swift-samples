@@ -31,7 +31,7 @@ struct UpdateBasemapForContrastAccessibilityView: View {
     
     /// The system contrast setting (standard or increased).
     ///
-    /// Reflects the "Increase Contrast" accessibility preference and is the iOS
+    /// Reflects the "Increase Contrast" accessibility preference.
     @Environment(\.colorSchemeContrast) private var colorSchemeContrast
     
     /// The appearance resolved purely from the current device settings.
@@ -188,15 +188,16 @@ private extension UpdateBasemapForContrastAccessibilityView {
         func update(to contrast: ContrastAppearance) async throws {
             // Always update the contrast appearance to keep it in sync.
             contrastAppearance = contrast
-            // Create and load a new map with the appropriate basemap.
-            let newMap = Self.makeMap(for: contrast)
-            map = newMap
+
+            // Update the existing map's basemap so the current viewpoint is preserved.
+            let newBasemap = Self.basemap(for: contrast)
+            map.basemap = newBasemap
+
             // Reference layers are only available once the basemap has loaded.
-            try await newMap.load()
+            try await newBasemap.load()
+
             // Apply the current reference-layer visibility to the loaded basemap.
-            newMap.basemap?.referenceLayers.forEach { layer in
-                layer.isVisible = areReferenceLayersEnabled
-            }
+            applyReferenceLayersVisibility()
         }
         
         /// Applies the current reference-layer visibility flag to the loaded basemap.
