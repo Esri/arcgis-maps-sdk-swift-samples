@@ -156,10 +156,6 @@ private extension UpdateBasemapForContrastAccessibilityView {
 }
 
 private extension UpdateBasemapForContrastAccessibilityView {
-    // MARK: - Model
-    
-    /// The model for the sample. It owns the displayed map and keeps it in sync
-    /// with the selected contrast appearance.
     @MainActor
     @Observable
     final class Model {
