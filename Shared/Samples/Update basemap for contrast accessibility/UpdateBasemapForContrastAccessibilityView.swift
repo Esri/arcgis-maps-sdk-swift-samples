@@ -98,6 +98,7 @@ struct UpdateBasemapForContrastAccessibilityView: View {
                     }
                 }
             }
+            .errorAlert(presentingError: $error)
     }
 }
 
