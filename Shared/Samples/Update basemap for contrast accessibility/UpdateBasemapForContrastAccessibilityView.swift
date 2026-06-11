@@ -30,7 +30,7 @@ struct UpdateBasemapForContrastAccessibilityView: View {
     
     /// The system contrast setting (standard or increased).
     ///
-    /// Reflects the "Increase Contrast" accessibility preference and is the iOS
+    /// Reflects the "Increase Contrast" accessibility preference.
     @Environment(\.colorSchemeContrast) private var colorSchemeContrast
     
     /// The appearance resolved purely from the current device settings.
@@ -51,7 +51,7 @@ struct UpdateBasemapForContrastAccessibilityView: View {
     
     var body: some View {
         MapView(map: model.map)
-            .task {
+            .task(id: effectiveAppearance) {
                 do {
                     try await model.updateBasemap(for: effectiveAppearance)
                 } catch {
@@ -77,15 +77,6 @@ struct UpdateBasemapForContrastAccessibilityView: View {
                 ToolbarItem(placement: .bottomBar) {
                     Button("Contrast Options") {
                         isShowingSettings = true
-                    }
-                }
-            }
-            .onChange(of: effectiveAppearance) { _, newAppearance in
-                Task {
-                    do {
-                        try await model.updateBasemap(for: newAppearance)
-                    } catch {
-                        self.error = error
                     }
                 }
             }
