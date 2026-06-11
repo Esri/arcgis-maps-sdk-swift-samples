@@ -170,13 +170,15 @@ private extension UpdateBasemapForContrastAccessibilityView {
         func updateBasemap(for contrast: ContrastAppearance) async throws {
             // Always update the contrast appearance to keep it in sync.
             contrastAppearance = contrast
-            // Create and load a new map with the appropriate basemap.
-            let newMap = Self.makeMap(for: contrast)
-            map = newMap
+
+            let basemap = Self.basemap(for: contrast)
+            map.basemap = basemap
+
             // Reference layers are only available once the basemap has loaded.
-            try await newMap.load()
+            try await basemap.load()
+
             // Apply the current reference-layer visibility to the loaded basemap.
-            newMap.basemap?.referenceLayers.forEach { layer in
+            basemap.referenceLayers.forEach { layer in
                 layer.isVisible = referenceLayersAreVisible
             }
         }
