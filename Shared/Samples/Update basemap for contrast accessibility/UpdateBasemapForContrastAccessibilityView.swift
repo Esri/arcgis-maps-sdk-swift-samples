@@ -31,7 +31,7 @@ struct UpdateBasemapForContrastAccessibilityView: View {
     
     /// The system contrast setting (standard or increased).
     ///
-    /// Reflects the "Increase Contrast" accessibility preference.
+    /// Reflects the "Increase Contrast" accessibility preference and is the iOS
     @Environment(\.colorSchemeContrast) private var colorSchemeContrast
     
     /// The appearance resolved purely from the current device settings.
@@ -39,12 +39,7 @@ struct UpdateBasemapForContrastAccessibilityView: View {
     /// SwiftUI re-evaluates this whenever the user changes Dark Mode or Increase
     /// Contrast, so no `ContentObserver` or change listener is required.
     private var automaticAppearance: ContrastAppearance {
-        switch (colorSchemeContrast, colorScheme) {
-        case (.increased, .dark): .highContrastDark
-        case (.increased, _): .highContrastLight
-        case (_, .dark): .dark
-        default: .light
-        }
+        ContrastAppearance(colorScheme: colorScheme, contrast: colorSchemeContrast)
     }
     
     /// The appearance that should drive the displayed basemap, honoring the selected mode.
@@ -188,16 +183,15 @@ private extension UpdateBasemapForContrastAccessibilityView {
         func update(to contrast: ContrastAppearance) async throws {
             // Always update the contrast appearance to keep it in sync.
             contrastAppearance = contrast
-
-            // Update the existing map's basemap so the current viewpoint is preserved.
-            let newBasemap = Self.basemap(for: contrast)
-            map.basemap = newBasemap
-
+            // Create and load a new map with the appropriate basemap.
+            let newMap = Self.makeMap(for: contrast)
+            map = newMap
             // Reference layers are only available once the basemap has loaded.
-            try await newBasemap.load()
-
+            try await newMap.load()
             // Apply the current reference-layer visibility to the loaded basemap.
-            applyReferenceLayersVisibility()
+            newMap.basemap?.referenceLayers.forEach { layer in
+                layer.isVisible = areReferenceLayersEnabled
+            }
         }
         
         /// Applies the current reference-layer visibility flag to the loaded basemap.
@@ -257,6 +251,16 @@ private extension UpdateBasemapForContrastAccessibilityView {
         case highContrastLight
         case dark
         case highContrastDark
+        
+        /// Creates an appearance from the current SwiftUI environment settings.
+        init(colorScheme: ColorScheme, contrast: ColorSchemeContrast) {
+            switch colorScheme {
+            case .dark:
+                self = contrast == .increased ? .highContrastDark : .dark
+            default:
+                self = contrast == .increased ? .highContrastLight : .light
+            }
+        }
         
         var displayName: String {
             switch self {
