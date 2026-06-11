@@ -10,13 +10,13 @@ Use this pattern when your app needs contrast-responsive basemaps to switch betw
 
 ## How to use the sample
 
-When the sample is launched, it displays the chosen contrast basemap. When automatic mode is selected for the sample, changing the device appearance in the device system settings between light and dark theme, or turn high contrast on and off, will result in the appropriate basemap being loaded to match settings. Toggle the device settings to see the different basemaps.
+When the sample is launched, it displays the chosen contrast basemap. When automatic mode is selected for the sample, changing the device appearance in the device system settings between light and dark themes, or turning high contrast on and off, will result in the appropriate basemap being loaded to match settings. Toggle the device settings to see the different basemaps.
 
-Switch to manual mode to choose Light, Dark, High contrast light, or High contrast dark directly. Show or hide the basemap's reference layers to compare how labels and boundaries read in each contrast appearance mode.
+Switch to manual mode to choose Light, Dark, High Contrast Light, or High Contrast Dark directly. Show or hide the basemap's reference layers to compare how labels and boundaries read in each contrast appearance mode.
 
 ## How it works
 
-1. Provide four authored basemaps that represent the supported contrast appearances: Light, Dark, High contrast light, and High contrast dark.
+1. Provide four authored basemaps that represent the supported contrast appearances: Light, Dark, High Contrast Light, and High Contrast Dark.
 2. Resolve which contrast appearance should be active based on the current mode and device settings.
     * In manual mode, use the appearance selected in the supporting pane.
     * In automatic mode, resolve the appearance from the device's current light, dark, and increased-contrast settings using SwiftUI environment values (for example, `@Environment(\.colorScheme)` and `@Environment(\.colorSchemeContrast)`).
