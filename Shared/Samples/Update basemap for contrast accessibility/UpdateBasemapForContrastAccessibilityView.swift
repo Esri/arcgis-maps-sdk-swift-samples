@@ -107,10 +107,10 @@ private extension UpdateBasemapForContrastAccessibilityView {
         var body: some View {
             Form {
                 Section {
-                    Toggle("Reference Layers", isOn: $model.areReferenceLayersEnabled)
+                    Toggle("Reference Layers", isOn: $model.referenceLayersAreVisible)
                 } footer: {
                     Text(
-                        model.areReferenceLayersEnabled
+                        model.referenceLayersAreVisible
                         ? "Labels and boundary reference layers are visible."
                         : "Labels and boundary reference layers are hidden."
                     )
@@ -167,7 +167,7 @@ private extension UpdateBasemapForContrastAccessibilityView {
         var contrastAppearance: ContrastAppearance = .highContrastLight
         
         /// Whether the basemap's reference layers are visible.
-        var areReferenceLayersEnabled = true {
+        var referenceLayersAreVisible = true {
             didSet {
                 applyReferenceLayersVisibility()
             }
@@ -189,21 +189,21 @@ private extension UpdateBasemapForContrastAccessibilityView {
             try await newMap.load()
             // Apply the current reference-layer visibility to the loaded basemap.
             newMap.basemap?.referenceLayers.forEach { layer in
-                layer.isVisible = areReferenceLayersEnabled
+                layer.isVisible = referenceLayersAreVisible
             }
         }
         
         /// Applies the current reference-layer visibility flag to the loaded basemap.
         private func applyReferenceLayersVisibility() {
             map.basemap?.referenceLayers.forEach { layer in
-                layer.isVisible = areReferenceLayersEnabled
+                layer.isVisible = referenceLayersAreVisible
             }
         }
         
         /// Builds an unloaded map for the given appearance.
         private static func makeMap(for contrast: ContrastAppearance) -> Map {
             let map = Map(basemap: basemap(for: contrast))
-            map.initialViewpoint = .initialViewpoint
+            map.initialViewpoint = initialViewpoint
             return map
         }
         
@@ -221,6 +221,13 @@ private extension UpdateBasemapForContrastAccessibilityView {
             }
         }
     }
+    
+    /// The default viewpoint used for the map.
+    static let initialViewpoint = Viewpoint(
+        latitude: 34.05,
+        longitude: -117.19,
+        scale: 2e6
+    )
 }
 
 private extension UpdateBasemapForContrastAccessibilityView {
@@ -279,15 +286,6 @@ private extension UpdateBasemapForContrastAccessibilityView {
             }
         }
     }
-}
-
-private extension Viewpoint {
-    /// The default viewpoint used for the map.
-    static let initialViewpoint = Viewpoint(
-        latitude: 34.05,
-        longitude: -117.19,
-        scale: 2e6
-    )
 }
 
 private extension URL {
