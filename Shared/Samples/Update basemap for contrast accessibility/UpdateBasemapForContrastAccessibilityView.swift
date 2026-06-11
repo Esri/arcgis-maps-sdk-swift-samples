@@ -26,7 +26,6 @@ struct UpdateBasemapForContrastAccessibilityView: View {
     @State private var isShowingSettings = false
     
     /// The system color scheme (light or dark).
-    ///
     @Environment(\.colorScheme) private var colorScheme
     
     /// The system contrast setting (standard or increased).
