@@ -155,7 +155,7 @@ private extension UpdateBasemapForContrastAccessibilityView {
     @Observable
     final class Model {
         /// The map displayed in the map view.
-        var map = Map(basemapStyle: .arcGISStreets)
+        var map: Map
         
         /// Whether the appearance is resolved automatically or chosen manually.
         var contrastMode: ContrastMode = .automatic
