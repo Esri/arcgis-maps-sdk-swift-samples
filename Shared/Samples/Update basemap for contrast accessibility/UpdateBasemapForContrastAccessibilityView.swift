@@ -58,25 +58,25 @@ struct UpdateBasemapForContrastAccessibilityView: View {
                     self.error = error
                 }
             }
-            .sheet(isPresented: $isShowingSettings) {
-                NavigationStack {
-                    ContrastSettingsView(model: model)
-                        .navigationTitle("Contrast Options")
-                        .navigationBarTitleDisplayMode(.inline)
-                        .toolbar {
-                            ToolbarItem(placement: .confirmationAction) {
-                                Button("Done") {
-                                    isShowingSettings = false
-                                }
-                            }
-                        }
-                }
-                .presentationDetents([.medium, .large])
-            }
             .toolbar {
                 ToolbarItem(placement: .bottomBar) {
                     Button("Contrast Options") {
                         isShowingSettings = true
+                    }
+                    .sheet(isPresented: $isShowingSettings) {
+                        NavigationStack {
+                            ContrastSettingsView(model: model)
+                                .navigationTitle("Contrast Options")
+                                .navigationBarTitleDisplayMode(.inline)
+                                .toolbar {
+                                    ToolbarItem(placement: .confirmationAction) {
+                                        Button("Done") {
+                                            isShowingSettings = false
+                                        }
+                                    }
+                                }
+                        }
+                        .presentationDetents([.medium, .large])
                     }
                 }
             }
@@ -87,7 +87,7 @@ struct UpdateBasemapForContrastAccessibilityView: View {
 private extension UpdateBasemapForContrastAccessibilityView {
     // MARK: - Settings View
     
-    /// The controls that drive the displayed map, presented as a settings sheet
+    /// The appearance settings for the map.
     struct ContrastSettingsView: View {
         /// The view model for the sample.
         @Bindable var model: Model
@@ -107,7 +107,7 @@ private extension UpdateBasemapForContrastAccessibilityView {
                 Section {
                     Picker("Mode", selection: $model.contrastMode) {
                         ForEach(ContrastMode.allCases, id: \.self) { mode in
-                            Text(mode.displayName).tag(mode)
+                            Text(mode.displayName)
                         }
                     }
                     .pickerStyle(.segmented)
@@ -127,10 +127,10 @@ private extension UpdateBasemapForContrastAccessibilityView {
                                         .font(.caption)
                                         .foregroundStyle(.secondary)
                                 }
-                                .tag(appearance)
                             }
                         }
                         .pickerStyle(.inline)
+                        .labelsHidden()
                     }
                 }
             }
@@ -162,7 +162,7 @@ private extension UpdateBasemapForContrastAccessibilityView {
         }
         
         init() {
-            map = Self.makeMap(for: .highContrastLight)
+            map = Self.makeMap(for: .light)
         }
         
         /// Ensures the displayed basemap matches `contrast`, then loads it and
@@ -188,7 +188,7 @@ private extension UpdateBasemapForContrastAccessibilityView {
             }
         }
         
-        /// Builds an unloaded map for the given appearance.
+        /// Create a map for the given contrast appearance.
         private static func makeMap(for contrast: ContrastAppearance) -> Map {
             let map = Map(basemap: basemap(for: contrast))
             map.initialViewpoint = initialViewpoint
@@ -219,7 +219,7 @@ private extension UpdateBasemapForContrastAccessibilityView {
 }
 
 private extension UpdateBasemapForContrastAccessibilityView {
-    /// Tracks whether the appearance comes from device settings or the manual picker.
+    /// The mode of the device's color and contrast appearance, chosen automatically or manually.
     enum ContrastMode: CaseIterable, Hashable {
         case automatic
         case manual
@@ -239,7 +239,7 @@ private extension UpdateBasemapForContrastAccessibilityView {
         }
     }
     
-    /// The four contrast appearance variants.
+    /// The contrast appearance variants.
     enum ContrastAppearance: CaseIterable, Hashable {
         case light
         case highContrastLight

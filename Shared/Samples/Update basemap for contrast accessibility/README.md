@@ -44,8 +44,6 @@ The enhanced contrast web maps are designed for accessibility-focused presentati
 
 For more background information on the cartographic approach behind the enhanced contrast basemaps, see [Working with Enhanced Contrast basemaps to improve accessibility](https://www.esri.com/arcgis-blog/products/arcgis-living-atlas/mapping/working-with-enhanced-contrast-basemaps-to-improve-accessibility/).
 
-On Android, automatic mode responds to system light and dark theme changes and to high-contrast settings. Android 14 and later uses `UiModeManager`, while earlier versions read the accessibility high-text-contrast setting.
-
 ## Tags
 
 accessibility, accessible, basemap, colorblind, contrast, dark, enhanced, high, inclusive, legibility, light, living atlas, readability, vision, visual impairment, wcag
