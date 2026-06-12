@@ -191,7 +191,7 @@ private extension UpdateBasemapForContrastAccessibilityView {
         /// Create a map for the given contrast appearance.
         private static func makeMap(for contrast: ContrastAppearance) -> Map {
             let map = Map(basemap: basemap(for: contrast))
-            map.initialViewpoint = initialViewpoint
+            map.initialViewpoint = .redlands
             return map
         }
         
@@ -209,13 +209,6 @@ private extension UpdateBasemapForContrastAccessibilityView {
             }
         }
     }
-    
-    /// The default viewpoint used for the map.
-    static let initialViewpoint = Viewpoint(
-        latitude: 34.05,
-        longitude: -117.19,
-        scale: 2e6
-    )
 }
 
 private extension UpdateBasemapForContrastAccessibilityView {
@@ -285,6 +278,12 @@ private extension URL {
     /// The URL of the high-contrast dark basemap item.
     static var highContrastDarkBasemap: URL {
         URL(string: "https://www.arcgis.com/home/item.html?id=3e23478909194c54992eaaee78b5f754")!
+    }
+}
+
+private extension Viewpoint {
+    static var redlands: Viewpoint {
+        Viewpoint(latitude: 34.05, longitude: -117.19, scale: 2e6)
     }
 }
 
