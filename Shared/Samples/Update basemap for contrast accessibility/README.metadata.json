@@ -6,6 +6,7 @@
         "update-basemap-for-contrast-accessibility.png"
     ],
     "keywords": [
+        "WCAG",
         "accessibility",
         "accessible",
         "basemap",
@@ -21,7 +22,6 @@
         "readability",
         "vision",
         "visual impairment",
-        "WCAG",
         "Basemap",
         "BasemapStyle",
         "Map"
