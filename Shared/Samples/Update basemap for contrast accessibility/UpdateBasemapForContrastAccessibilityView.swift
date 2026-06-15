@@ -190,7 +190,7 @@ private extension UpdateBasemapForContrastAccessibilityView {
         
         /// Create a map for the given contrast appearance.
         private static func makeMap(for contrast: ContrastAppearance) -> Map {
-            let map = Map(basemap: basemap(for: contrast))
+            let map = Map(basemap: makeBasemap(for: contrast))
             map.initialViewpoint = .redlands
             return map
         }
