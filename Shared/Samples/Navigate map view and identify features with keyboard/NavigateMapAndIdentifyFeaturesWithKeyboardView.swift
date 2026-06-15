@@ -262,12 +262,12 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
                 }
             Button("Done") {
                 hideKeyboard()
-                    }
+            }
         }
         .padding(8)
         .background(.regularMaterial)
         .clipShape(.rect(cornerRadius: 8))
-            }
+    }
     
     /// The instructions shown above the map.
     private var instructionsOverlay: some View {
