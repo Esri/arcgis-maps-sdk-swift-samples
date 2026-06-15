@@ -13,12 +13,6 @@
         "keyboard",
         "navigation",
         "selection",
-        "Envelope",
-        "FeatureLayer",
-        "Graphic",
-        "GraphicsOverlay",
-        "Map",
-        "MapView",
         "WCAG"
     ],
     "redirect_from": [],
