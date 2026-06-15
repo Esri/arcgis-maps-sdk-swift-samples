@@ -142,7 +142,8 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
     }
     
     /// Refreshes the selected and numbered restaurant features for the current rectangle.
-    @MainActor private func refreshSelection(mapSize: CGSize, mapViewProxy: MapViewProxy) async {
+    @MainActor
+    private func refreshSelection(mapSize: CGSize, mapViewProxy: MapViewProxy) async {
         do {
             try await model.selectFeatures(
                 in: selectionEnvelope(mapSize: mapSize, mapViewProxy: mapViewProxy),
@@ -214,7 +215,8 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
     }
     
     /// Gives keyboard focus to the map after SwiftUI finishes the current update.
-    @MainActor private func focusMap() async {
+    @MainActor
+    private func focusMap() async {
         mapHasFocus = false
         await Task.yield()
         try? await Task.sleep(for: .milliseconds(100))
@@ -222,7 +224,8 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
     }
     
     /// Shows the software keyboard by focusing the hidden number input field.
-    @MainActor private func showKeyboard() async {
+    @MainActor
+    private func showKeyboard() async {
         isKeyboardInputActive = true
         mapHasFocus = false
         keyboardInputHasFocus = false
