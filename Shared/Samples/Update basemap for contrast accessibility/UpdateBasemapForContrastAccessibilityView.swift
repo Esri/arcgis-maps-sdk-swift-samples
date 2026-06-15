@@ -157,7 +157,9 @@ private extension UpdateBasemapForContrastAccessibilityView {
         /// Whether the basemap's reference layers are visible.
         var referenceLayersAreVisible = true {
             didSet {
-                applyReferenceLayersVisibility()
+                map.basemap?.referenceLayers.forEach { layer in
+                    layer.isVisible = referenceLayersAreVisible
+                }
             }
         }
         
@@ -178,13 +180,6 @@ private extension UpdateBasemapForContrastAccessibilityView {
             try await basemap.load()
             // Apply the current reference-layer visibility to the loaded basemap.
             basemap.referenceLayers.forEach { layer in
-                layer.isVisible = referenceLayersAreVisible
-            }
-        }
-        
-        /// Applies the current reference-layer visibility flag to the loaded basemap.
-        private func applyReferenceLayersVisibility() {
-            map.basemap?.referenceLayers.forEach { layer in
                 layer.isVisible = referenceLayersAreVisible
             }
         }
