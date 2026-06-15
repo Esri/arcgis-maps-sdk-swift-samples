@@ -31,6 +31,7 @@
         "MapView"
     ],
     "snippets": [
+        "NavigateMapAndIdentifyFeaturesWithKeyboardView.Model.swift",
         "NavigateMapAndIdentifyFeaturesWithKeyboardView.swift"
     ],
     "title": "Navigate map view and identify features with keyboard"
