@@ -14,7 +14,6 @@
 
 import ArcGIS
 import SwiftUI
-import UIKit
 
 struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
     /// The view model for the sample.
@@ -34,6 +33,18 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
     
     /// The feature shown in the callout.
     @State private var calloutFeature: Feature?
+    
+    /// A Boolean value indicating whether the map has keyboard focus.
+    @FocusState private var mapHasFocus: Bool
+    
+    /// A Boolean value indicating whether the software keyboard input is active.
+    @State private var isKeyboardInputActive = false
+    
+    /// The text used to receive software keyboard input.
+    @State private var keyboardInput = ""
+    
+    /// A Boolean value indicating whether the keyboard input field has focus.
+    @FocusState private var keyboardInputHasFocus: Bool
     
     /// The status message shown when a number key has no matching restaurant.
     @State private var statusMessage = ""
@@ -69,11 +80,14 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
                     .task(id: initialDrawCompleted) {
                         guard initialDrawCompleted else { return }
                         await refreshSelection(mapSize: mapSize, mapViewProxy: mapViewProxy)
+                        await focusMap()
                     }
                     .task(id: isNavigating) {
                         guard !isNavigating, initialDrawCompleted else { return }
                         await refreshSelection(mapSize: mapSize, mapViewProxy: mapViewProxy)
                     }
+                    .focusable()
+                    .focused($mapHasFocus)
                     .onKeyPress(.escape) {
                         dismissCallout()
                         return .handled
@@ -106,11 +120,21 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
                             if !statusMessage.isEmpty {
                                 statusMessageOverlay
                             }
+                            if isKeyboardInputActive {
+                                keyboardInputBar(mapViewProxy: mapViewProxy)
+                            }
                         }
                         .padding(.bottom)
                     }
-                    .overlay {
-                        keyboardInputField(mapViewProxy: mapViewProxy)
+                    .toolbar {
+                        ToolbarItem(placement: .bottomBar) {
+                            Button("Show Keyboard") {
+                                Task { await showKeyboard() }
+                            }
+                        }
+                    }
+                    .task {
+                        await focusMap()
                     }
                     .errorAlert(presentingError: $error)
             }
@@ -172,6 +196,7 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
         statusMessage = ""
         calloutFeature = feature
         calloutPlacement = .geoElement(feature, tapLocation: anchor)
+        Task { await focusMap() }
     }
     
     /// Dismisses the details callout and restores the selection rectangle.
@@ -179,20 +204,64 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
         calloutFeature = nil
         calloutPlacement = nil
         statusMessage = ""
+        Task { await focusMap() }
     }
     
-    /// A hidden text field that receives keyboard input and forwards number input.
-    private func keyboardInputField(mapViewProxy: MapViewProxy) -> some View {
-        KeyboardInputField(
-            onNumber: { number in
-                showCalloutForFeature(at: number - 1, mapViewProxy: mapViewProxy)
-            },
-            onEscape: dismissCallout
-        )
-            .frame(width: 1, height: 1)
-            .opacity(0.01)
-            .accessibilityHidden(true)
+    /// Gives keyboard focus to the map after SwiftUI finishes the current update.
+    private func focusMap() async {
+        mapHasFocus = false
+        await Task.yield()
+        try? await Task.sleep(for: .milliseconds(100))
+        mapHasFocus = true
     }
+    
+    /// Shows the software keyboard by focusing the hidden number input field.
+    private func showKeyboard() async {
+        isKeyboardInputActive = true
+        mapHasFocus = false
+        keyboardInputHasFocus = false
+        await Task.yield()
+        try? await Task.sleep(for: .milliseconds(100))
+        keyboardInputHasFocus = true
+    }
+    
+    /// Hides the software keyboard input bar and returns focus to the map.
+    private func hideKeyboard() {
+        keyboardInput = ""
+        keyboardInputHasFocus = false
+        isKeyboardInputActive = false
+        Task { await focusMap() }
+    }
+    
+    /// A visible text field used to receive software keyboard input.
+    private func keyboardInputBar(mapViewProxy: MapViewProxy) -> some View {
+        HStack(spacing: 8) {
+            TextField("1–9", text: $keyboardInput)
+                .keyboardType(.numberPad)
+                .textInputAutocapitalization(.never)
+                .autocorrectionDisabled()
+                .focused($keyboardInputHasFocus)
+                .textFieldStyle(.roundedBorder)
+                .frame(width: 72)
+                .multilineTextAlignment(.center)
+                .accessibilityLabel("Restaurant number")
+                .onChange(of: keyboardInput) { _, newValue in
+                    guard let featureIndex = featureIndex(for: newValue) else {
+                        keyboardInput = ""
+                        return
+                    }
+                    keyboardInput = ""
+                    showCalloutForFeature(at: featureIndex, mapViewProxy: mapViewProxy)
+                    Task { await showKeyboard() }
+                }
+            Button("Done") {
+                hideKeyboard()
+                    }
+        }
+        .padding(8)
+        .background(.regularMaterial)
+        .clipShape(.rect(cornerRadius: 8))
+            }
     
     /// The instructions shown above the map.
     private var instructionsOverlay: some View {
@@ -243,90 +312,6 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
 }
 
 private extension NavigateMapAndIdentifyFeaturesWithKeyboardView {
-    /// A hidden UIKit text field that emits each typed digit as an event.
-    struct KeyboardInputField: UIViewRepresentable {
-        /// The action to perform when the user enters a number.
-        var onNumber: (Int) -> Void
-        
-        /// The action to perform when the Escape key is pressed.
-        var onEscape: () -> Void
-        
-        func makeUIView(context: Context) -> KeyboardTextField {
-            let textField = KeyboardTextField()
-            textField.delegate = context.coordinator
-            textField.keyboardType = .numberPad
-            textField.textContentType = .oneTimeCode
-            textField.autocorrectionType = .no
-            textField.tintColor = .clear
-            textField.textColor = .clear
-            textField.backgroundColor = .clear
-            textField.onEscape = onEscape
-            DispatchQueue.main.async {
-                textField.becomeFirstResponder()
-            }
-            return textField
-        }
-        
-        func updateUIView(_ textField: KeyboardTextField, context: Context) {
-            context.coordinator.onNumber = onNumber
-            textField.onEscape = onEscape
-            if !textField.isFirstResponder {
-                DispatchQueue.main.async {
-                    textField.becomeFirstResponder()
-                }
-            }
-        }
-        
-        func makeCoordinator() -> Coordinator {
-            Coordinator(onNumber: onNumber)
-        }
-        
-        /// The UIKit text field coordinator.
-        final class Coordinator: NSObject, UITextFieldDelegate {
-            /// The action to perform when the user enters a number.
-            var onNumber: (Int) -> Void
-            
-            init(onNumber: @escaping (Int) -> Void) {
-                self.onNumber = onNumber
-            }
-            
-            func textField(
-                _ textField: UITextField,
-                shouldChangeCharactersIn range: NSRange,
-                replacementString string: String
-            ) -> Bool {
-                for character in string {
-                    guard let number = character.wholeNumberValue,
-                          (1...9).contains(number) else { continue }
-                    onNumber(number)
-                }
-                textField.text = ""
-                return false
-            }
-        }
-    }
-    
-    /// A text field that forwards hardware Escape key presses.
-    final class KeyboardTextField: UITextField {
-        /// The action to perform when the Escape key is pressed.
-        var onEscape: (() -> Void)?
-        
-        override var keyCommands: [UIKeyCommand]? {
-            return [
-                UIKeyCommand(
-                    input: UIKeyCommand.inputEscape,
-                    modifierFlags: [],
-                    action: #selector(handleEscapeKey)
-                )
-            ]
-        }
-        
-        @objc
-        private func handleEscapeKey() {
-            onEscape?()
-        }
-    }
-    
     /// The model for the sample.
     @MainActor
     @Observable
