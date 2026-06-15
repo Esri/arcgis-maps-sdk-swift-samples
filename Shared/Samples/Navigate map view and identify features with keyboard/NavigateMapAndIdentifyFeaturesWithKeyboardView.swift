@@ -199,7 +199,7 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
         let wgs84Point = anchor.flatMap { GeometryEngine.project($0, into: .wgs84) }
         
         return VStack(alignment: .leading) {
-            Text(model.name(for: feature, fallback: "Restaurant"))
+            Text(model.name(for: feature, fallback: "Restaurant")!)
                 .font(.headline)
             if let wgs84Point {
                 Text("Lat: \(wgs84Point.y, format: .number.precision(.fractionLength(6)))")
