@@ -157,33 +157,27 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
     /// Creates an envelope matching the centered selection rectangle's map footprint.
     private func selectionEnvelope(mapSize: CGSize, mapViewProxy: MapViewProxy) -> Envelope? {
         let screenCenter = CGPoint(x: mapSize.width / 2, y: mapSize.height / 2)
-        let half = selectionRectangleLength / 2
-
-        let topLeftScreenPoint = CGPoint(x: screenCenter.x - half, y: screenCenter.y - half)
-        let topRightScreenPoint = CGPoint(x: screenCenter.x + half, y: screenCenter.y - half)
-        let bottomLeftScreenPoint = CGPoint(x: screenCenter.x - half, y: screenCenter.y + half)
-        let bottomRightScreenPoint = CGPoint(x: screenCenter.x + half, y: screenCenter.y + half)
-
-        guard let topLeft = mapViewProxy.location(fromScreenPoint: topLeftScreenPoint),
-              let topRight = mapViewProxy.location(fromScreenPoint: topRightScreenPoint),
-              let bottomLeft = mapViewProxy.location(fromScreenPoint: bottomLeftScreenPoint),
-              let bottomRight = mapViewProxy.location(fromScreenPoint: bottomRightScreenPoint),
-              let spatialReference = topLeft.spatialReference else {
+        let rightScreenPoint = CGPoint(
+            x: screenCenter.x + selectionRectangleLength / 2,
+            y: screenCenter.y
+        )
+        let topScreenPoint = CGPoint(
+            x: screenCenter.x,
+            y: screenCenter.y - selectionRectangleLength / 2
+        )
+        
+        guard let mapCenter = mapViewProxy.location(fromScreenPoint: screenCenter),
+              let rightMapPoint = mapViewProxy.location(fromScreenPoint: rightScreenPoint),
+              let topMapPoint = mapViewProxy.location(fromScreenPoint: topScreenPoint),
+              let spatialReference = mapCenter.spatialReference else {
             return nil
         }
-
-        let xs = [topLeft.x, topRight.x, bottomLeft.x, bottomRight.x]
-        let ys = [topLeft.y, topRight.y, bottomLeft.y, bottomRight.y]
-        guard let minX = xs.min(),
-              let maxX = xs.max(),
-              let minY = ys.min(),
-              let maxY = ys.max() else {
-            return nil
-        }
-
+        
+        let halfWidth = abs(rightMapPoint.x - mapCenter.x)
+        let halfHeight = abs(topMapPoint.y - mapCenter.y)
         return Envelope(
-            xRange: minX ... maxX,
-            yRange: minY ... maxY,
+            xRange: mapCenter.x - halfWidth ... mapCenter.x + halfWidth,
+            yRange: mapCenter.y - halfHeight ... mapCenter.y + halfHeight,
             spatialReference: spatialReference
         )
     }
@@ -209,7 +203,11 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
         statusMessage = ""
         calloutFeature = feature
         calloutPlacement = .geoElement(feature, tapLocation: anchor)
-        Task { await focusMap() }
+        if isKeyboardInputActive {
+            keyboardInputHasFocus = true
+        } else {
+            Task { await focusMap() }
+        }
     }
     
     /// Dismisses the details callout and restores the selection rectangle.
@@ -250,15 +248,14 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
     
     /// A visible text field used to receive software keyboard input.
     private func keyboardInputBar(mapViewProxy: MapViewProxy) -> some View {
-        HStack(spacing: 8) {
+        HStack {
             TextField("1–9", text: $keyboardInput)
                 .keyboardType(.numberPad)
                 .textInputAutocapitalization(.never)
                 .autocorrectionDisabled()
                 .focused($keyboardInputHasFocus)
-                .textFieldStyle(.roundedBorder)
-                .frame(width: 72)
-                .multilineTextAlignment(.center)
+                .frame(width: 1, height: 1)
+                .opacity(0.01)
                 .accessibilityLabel("Restaurant number")
                 .onChange(of: keyboardInput) { _, newValue in
                     guard let featureIndex = featureIndex(for: newValue) else {
@@ -267,7 +264,7 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
                     }
                     keyboardInput = ""
                     showCalloutForFeature(at: featureIndex, mapViewProxy: mapViewProxy)
-                    Task { await showKeyboard() }
+                    keyboardInputHasFocus = true
                 }
             Button("Done") {
                 hideKeyboard()
