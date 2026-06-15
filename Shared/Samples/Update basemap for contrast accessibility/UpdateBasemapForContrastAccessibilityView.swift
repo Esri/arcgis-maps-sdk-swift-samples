@@ -162,7 +162,8 @@ private extension UpdateBasemapForContrastAccessibilityView {
         }
         
         init() {
-            map = Self.makeMap(for: .light)
+            self.map = Map(basemap: Self.makeBasemap(for: .light))
+            map.initialViewpoint = .redlands
         }
         
         /// Ensures the displayed basemap matches `contrast`, then loads it and
@@ -171,12 +172,13 @@ private extension UpdateBasemapForContrastAccessibilityView {
             // Always update the contrast appearance to keep it in sync.
             contrastAppearance = contrast
             // Create and load a new map with the appropriate basemap.
-            let newMap = Self.makeMap(for: contrast)
-            map = newMap
+//            let newMap = Self.makeMap(for: contrast)
+//            map = newMap
+            map.basemap = Self.makeBasemap(for: contrast)
             // Reference layers are only available once the basemap has loaded.
-            try await newMap.load()
+            try await map.load()
             // Apply the current reference-layer visibility to the loaded basemap.
-            newMap.basemap?.referenceLayers.forEach { layer in
+            map.basemap?.referenceLayers.forEach { layer in
                 layer.isVisible = referenceLayersAreVisible
             }
         }
@@ -186,13 +188,6 @@ private extension UpdateBasemapForContrastAccessibilityView {
             map.basemap?.referenceLayers.forEach { layer in
                 layer.isVisible = referenceLayersAreVisible
             }
-        }
-        
-        /// Create a map for the given contrast appearance.
-        private static func makeMap(for contrast: ContrastAppearance) -> Map {
-            let map = Map(basemap: makeBasemap(for: contrast))
-            map.initialViewpoint = .redlands
-            return map
         }
         
         /// Maps the selected appearance to its contrast-accessibility basemap.
