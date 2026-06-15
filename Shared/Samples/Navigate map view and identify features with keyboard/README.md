@@ -33,18 +33,12 @@ If more than nine restaurants are inside the rectangle, an overflow message is s
 
 ## Relevant API
 
-* CalloutPlacement
-* Feature
+* Envelope
 * FeatureLayer
 * Graphic
 * GraphicsOverlay
+* Map
 * MapView
-* MapViewReader
-* QueryParameters
-* ServiceFeatureTable
-* SimpleMarkerSymbol
-* SimpleRenderer
-* TextSymbol
 
 ## About the data
 
