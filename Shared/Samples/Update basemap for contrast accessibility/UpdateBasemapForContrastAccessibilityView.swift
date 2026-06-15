@@ -53,7 +53,7 @@ struct UpdateBasemapForContrastAccessibilityView: View {
         MapView(map: model.map)
             .task(id: effectiveAppearance) {
                 do {
-                    try await model.updateBasemap(for: effectiveAppearance)
+                    try await model.setBasemap(for: effectiveAppearance)
                 } catch {
                     self.error = error
                 }
@@ -162,23 +162,21 @@ private extension UpdateBasemapForContrastAccessibilityView {
         }
         
         init() {
-            self.map = Map(basemap: Self.makeBasemap(for: .light))
-            map.initialViewpoint = .redlands
+            map = Self.makeMap(for: .light)
         }
         
-        /// Ensures the displayed basemap matches `contrast`, then loads it and
-        /// applies the current reference-layer visibility.
-        func updateBasemap(for contrast: ContrastAppearance) async throws {
+        /// Sets the map's basemap to match `contrast`, then loads it and applies
+        /// the current reference-layer visibility.
+        func setBasemap(for contrast: ContrastAppearance) async throws {
             // Always update the contrast appearance to keep it in sync.
             contrastAppearance = contrast
-            // Create and load a new map with the appropriate basemap.
-//            let newMap = Self.makeMap(for: contrast)
-//            map = newMap
-            map.basemap = Self.makeBasemap(for: contrast)
+            // Create and load a new basemap for the existing map.
+            let basemap = Self.makeBasemap(for: contrast)
+            map.basemap = basemap
             // Reference layers are only available once the basemap has loaded.
-            try await map.load()
+            try await basemap.load()
             // Apply the current reference-layer visibility to the loaded basemap.
-            map.basemap?.referenceLayers.forEach { layer in
+            basemap.referenceLayers.forEach { layer in
                 layer.isVisible = referenceLayersAreVisible
             }
         }
@@ -188,6 +186,13 @@ private extension UpdateBasemapForContrastAccessibilityView {
             map.basemap?.referenceLayers.forEach { layer in
                 layer.isVisible = referenceLayersAreVisible
             }
+        }
+        
+        /// Create a map for the given contrast appearance.
+        private static func makeMap(for contrast: ContrastAppearance) -> Map {
+            let map = Map(basemap: makeBasemap(for: contrast))
+            map.initialViewpoint = .redlands
+            return map
         }
         
         /// Maps the selected appearance to its contrast-accessibility basemap.
