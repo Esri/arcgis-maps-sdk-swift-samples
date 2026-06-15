@@ -46,4 +46,4 @@ This sample uses a Redlands restaurants feature service hosted by Esri.
 
 ## Tags
 
-accessibility, accessible, identify, inclusive, keyboard, navigation, selection, WCAG
+accessibility, accessible, identify, inclusive, keyboard, navigation, selection, Envelope, FeatureLayer, Graphic, GraphicsOverlay, Map, MapView, WCAG
