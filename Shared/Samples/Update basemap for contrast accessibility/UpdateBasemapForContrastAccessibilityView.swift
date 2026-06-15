@@ -165,7 +165,7 @@ private extension UpdateBasemapForContrastAccessibilityView {
         }
         
         init() {
-            map = Map(basemap: Self.makeBasemap(for: .light))
+            map = Map()
             map.initialViewpoint = .redlands
         }
         
