@@ -21,8 +21,10 @@
         "living atlas",
         "readability",
         "vision",
-        "Map",
-        "visual impairment"
+        "visual impairment",
+        "Basemap",
+        "BasemapStyle",
+        "Map"
     ],
     "redirect_from": [],
     "relevant_apis": [
