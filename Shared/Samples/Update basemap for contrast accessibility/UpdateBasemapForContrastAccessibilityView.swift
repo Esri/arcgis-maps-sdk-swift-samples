@@ -153,7 +153,7 @@ private extension UpdateBasemapForContrastAccessibilityView {
         ///
         /// In manual mode this is bound to the picker; in automatic mode it tracks
         /// whatever the device settings most recently resolved to.
-        var contrastAppearance: ContrastAppearance = .highContrastLight
+        var contrastAppearance: ContrastAppearance = .light
         
         /// Whether the basemap's reference layers are visible.
         var referenceLayersAreVisible = true {
@@ -225,8 +225,8 @@ private extension UpdateBasemapForContrastAccessibilityView {
     /// The contrast appearance variants.
     enum ContrastAppearance: CaseIterable, Hashable {
         case light
-        case highContrastLight
         case dark
+        case highContrastLight
         case highContrastDark
         
         /// Creates an appearance from the current SwiftUI environment settings.
