@@ -6,22 +6,15 @@
         "navigate-map-view-and-identify-features-with-keyboard.png"
     ],
     "keywords": [
-        "WCAG",
+        
         "accessibility",
         "accessible",
         "identify",
         "inclusive",
-        "input",
-        "interaction",
         "keyboard",
         "navigation",
         "selection",
-        "Envelope",
-        "FeatureLayer",
-        "Graphic",
-        "GraphicsOverlay",
-        "Map",
-        "MapView"
+        "WCAG"
     ],
     "redirect_from": [],
     "relevant_apis": [
