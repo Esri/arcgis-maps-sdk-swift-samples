@@ -1,46 +1,55 @@
 # Navigate map view and identify features with keyboard
 
-Perform all map navigation operations using only the keyboard.
+Perform map navigation and identify nearby features using only the keyboard.
 
-![Image of navigate map view and identify features with keyboard](NavigateMapViewAndIdentifyFeaturesWithKeyboard.jpg)
+![Screenshot of navigate map view and identify features with keyboard sample](navigate-map-view-and-identify-features-with-keyboard.png)
 
 ## Use case
 
-Use this pattern when your app must remain fully usable without a pointing device. Supporting keyboard-only pan, zoom, rotate, and identify is a core accessibility requirement for users who rely on assistive technologies or cannot use a mouse, and it also benefits users who prefer keyboard-driven workflows.
+Keyboard access is an important part of building inclusive GIS applications. Users who cannot or prefer not to use touch or pointer input need a way to move around the map, discover features, and read feature details from the keyboard.
+
+This sample shows restaurants in Redlands, California. Restaurants inside the centered area-of-interest rectangle are selected and labeled with number keys so they can be identified without tapping the map.
 
 ## How to use the sample
 
-When the sample is launched, a fixed area of interest appears centered over the map, and any features inside it are automatically selected and labeled <kbd>1</kbd> – <kbd>9</kbd>. As you navigate, the selection and labels update to match the features currently inside the area of interest.
+Use keyboard navigation to pan and zoom the map until restaurants appear inside the rectangle. Restaurants inside the rectangle are selected and labeled in reading order, from top-to-bottom and left-to-right.
 
-Use the arrow keys to pan and <kbd>+</kbd> / <kbd>-</kbd> to zoom. Use <kbd>Alt</kbd> + <kbd>←</kbd> / <kbd>→</kbd> to rotate, with <kbd>Alt</kbd> + <kbd>↑</kbd> resetting the map to north. Press <kbd>1</kbd> – <kbd>9</kbd> to show a callout for the matching numbered feature, and press <kbd>Esc</kbd> to dismiss the callout.
+Press number keys `1` through `9` to show details for the matching restaurant. Press `Esc` to dismiss the callout and show the selection rectangle again.
+
+If more than nine restaurants are inside the rectangle, an overflow message is shown. Only the first nine restaurants can be identified with number keys.
 
 ## How it works
 
-1. Create a `Map` with a basemap and add a `FeatureLayer`.
-2. Overlay a fixed-size rectangle on the `MapView` to mark the area of interest.
-3. Listen for `GeoView.NavigationCompleted` to re-run the selection after every pan, zoom, or rotation.
-4. Convert the rectangle's screen bounds to a map-space `Envelope` using `MapView.ScreenToLocation` and `GeometryEngine.Distance`.
-5. Build `QueryParameters` with the envelope geometry and `SpatialRelationship.Intersects`, then call `FeatureTable.QueryFeaturesAsync`.
-6. Call `FeatureLayer.SelectFeature` on each returned feature, and add a numbered `TextSymbol` graphic to a `GraphicsOverlay` at each feature's location.
-7. Handle `PreviewKeyDown` to show callouts via the number keys and to dismiss the callout on <kbd>Esc</kbd>.
+1. Create a `Map` with an `ArcGISLightGray` basemap centered on Redlands.
+2. Create a `ServiceFeatureTable` from the Redlands restaurants feature service.
+3. Create a `FeatureLayer` from the service feature table and apply a `SimpleRenderer` with a circular marker symbol.
+4. Display the map and a `GraphicsOverlay` in a `MapView`.
+5. Use `MapViewReader` to convert the centered rectangle from screen coordinates to a map-space `Envelope`.
+6. Query the restaurant feature table with `QueryParameters` using the rectangle envelope and an intersects spatial relationship.
+7. Sort queried point features by their screen position so labels match reading order.
+8. Select the queried features on the `FeatureLayer`.
+9. Add numbered `TextSymbol` graphics for the first nine features to the graphics overlay.
+10. Handle keyboard input with SwiftUI key press modifiers. Number keys show a `Callout` for the matching feature, and `Esc` dismisses it.
 
 ## Relevant API
 
-* Envelope
+* CalloutPlacement
+* Feature
 * FeatureLayer
 * Graphic
 * GraphicsOverlay
-* Map
 * MapView
+* MapViewReader
+* QueryParameters
+* ServiceFeatureTable
+* SimpleMarkerSymbol
+* SimpleRenderer
+* TextSymbol
 
 ## About the data
 
-This sample uses a [Redlands restaurants](https://www.arcgis.com/home/item.html?id=46119989eccd46a58b8f3d7aedadeb90) feature layer covering food establishments in Redlands, California. Each feature represents a single restaurant.
-
-## Additional information
-
-The map view supports built-in keyboard shortcuts for pan (arrow keys), zoom (<kbd>+</kbd> / <kbd>-</kbd>), rotate (<kbd>Alt</kbd> + <kbd>←</kbd> / <kbd>→</kbd>), and reset to north (<kbd>Alt</kbd> + <kbd>↑</kbd>). On macOS, use <kbd>Option</kbd> in place of <kbd>Alt</kbd>. See [Navigate a map view](https://developers.arcgis.com/net/maps-2d/navigate-a-map-view/) for the complete list of built-in interactions.
+This sample uses a Redlands restaurants feature service hosted by Esri.
 
 ## Tags
 
-accessibility, accessible, identify, inclusive, input, interaction, keyboard, navigation, selection, WCAG
+accessibility, accessible, identify, inclusive, keyboard, navigation, selection, WCAG

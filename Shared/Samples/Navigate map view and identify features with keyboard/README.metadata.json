@@ -3,7 +3,7 @@
     "description": "Perform all map navigation operations using only the keyboard.",
     "ignore": false,
     "images": [
-        "navigate-mapview-and-identify-features-with-keyboard.png"
+        "navigate-map-view-and-identify-features-with-keyboard.png"
     ],
     "keywords": [
         "WCAG",
