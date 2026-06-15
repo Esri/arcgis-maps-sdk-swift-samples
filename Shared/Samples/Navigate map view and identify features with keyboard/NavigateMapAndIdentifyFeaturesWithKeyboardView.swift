@@ -246,38 +246,38 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
         Task { await focusMap() }
     }
     
-    /// A visible text field used to receive software keyboard input.
+    /// A hidden text field used to receive software keyboard input.
     private func keyboardInputBar(mapViewProxy: MapViewProxy) -> some View {
-        HStack {
-            TextField("1–9", text: $keyboardInput)
-                .keyboardType(.numberPad)
-                .textInputAutocapitalization(.never)
-                .autocorrectionDisabled()
-                .focused($keyboardInputHasFocus)
-                .frame(width: 1, height: 1)
-                .opacity(0.01)
-                .accessibilityLabel("Restaurant number")
-                .onChange(of: keyboardInput) { _, newValue in
-                    guard let featureIndex = featureIndex(for: newValue) else {
-                        keyboardInput = ""
-                        return
-                    }
+        TextField("1–9", text: $keyboardInput)
+            .keyboardType(.numberPad)
+            .textInputAutocapitalization(.never)
+            .autocorrectionDisabled()
+            .focused($keyboardInputHasFocus)
+            .frame(width: 1, height: 1)
+            .opacity(0.01)
+            .accessibilityLabel("Restaurant number")
+            .onChange(of: keyboardInput) { _, newValue in
+                guard let featureIndex = featureIndex(for: newValue) else {
                     keyboardInput = ""
-                    showCalloutForFeature(at: featureIndex, mapViewProxy: mapViewProxy)
-                    keyboardInputHasFocus = true
+                    return
                 }
-            Button("Done") {
-                hideKeyboard()
+                keyboardInput = ""
+                showCalloutForFeature(at: featureIndex, mapViewProxy: mapViewProxy)
+                keyboardInputHasFocus = true
             }
-        }
-        .padding(8)
-        .background(.regularMaterial)
-        .clipShape(.rect(cornerRadius: 8))
+            .toolbar {
+                ToolbarItemGroup(placement: .keyboard) {
+                    Spacer()
+                    Button("Done") {
+                        hideKeyboard()
+                    }
+                }
+            }
     }
     
     /// The instructions shown above the map.
     private var instructionsOverlay: some View {
-        Text("Pan and zoom with the keyboard to bring restaurants into the rectangle. Press 1–9 for details, Esc to dismiss.")
+        Text("Pan and zoom with the keyboard to bring restaurants into the rectangle. Press 1–9 for details, Done to dismiss.")
             .font(.footnote)
             .multilineTextAlignment(.center)
             .padding(8)
