@@ -196,7 +196,7 @@ private extension UpdateBasemapForContrastAccessibilityView {
         }
         
         /// Maps the selected appearance to its contrast-accessibility basemap.
-        private static func basemap(for contrast: ContrastAppearance) -> Basemap {
+        private static func makeBasemap(for contrast: ContrastAppearance) -> Basemap {
             switch contrast {
             case .light:
                 Basemap(style: .arcGISLightGray)
