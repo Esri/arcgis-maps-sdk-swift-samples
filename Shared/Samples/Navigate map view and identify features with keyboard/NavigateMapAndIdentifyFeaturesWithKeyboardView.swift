@@ -14,6 +14,7 @@
 
 import ArcGIS
 import SwiftUI
+import UIKit
 
 struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
     /// The view model for the sample.
@@ -34,11 +35,14 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
     /// The feature shown in the callout.
     @State private var calloutFeature: Feature?
     
-    /// A Boolean value indicating whether the map view has keyboard focus.
-    @FocusState private var mapHasFocus: Bool
+    /// The status message shown when a number key has no matching restaurant.
+    @State private var statusMessage = ""
     
     /// The side length of the centered area-of-interest rectangle, in screen points.
-    private let selectionRectangleLength: CGFloat = 240
+    private let selectionRectangleLength: CGFloat = 420
+    
+    /// The number keys that can identify features.
+    private let featureNumberKeys = CharacterSet(charactersIn: "123456789")
     
     var body: some View {
         MapViewReader { mapViewProxy in
@@ -70,13 +74,11 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
                         guard !isNavigating, initialDrawCompleted else { return }
                         await refreshSelection(mapSize: mapSize, mapViewProxy: mapViewProxy)
                     }
-                    .focusable()
-                    .focused($mapHasFocus)
                     .onKeyPress(.escape) {
                         dismissCallout()
                         return .handled
                     }
-                    .onKeyPress(characters: .decimalDigits) { keyPress in
+                    .onKeyPress(characters: featureNumberKeys) { keyPress in
                         guard let featureIndex = featureIndex(for: keyPress.characters) else {
                             return .ignored
                         }
@@ -97,12 +99,18 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
                         instructionsOverlay
                     }
                     .overlay(alignment: .bottom) {
-                        if model.hasMoreThanNineSelectedFeatures {
-                            overflowMessage
+                        VStack(spacing: 8) {
+                            if model.hasMoreThanNineSelectedFeatures {
+                                overflowMessage
+                            }
+                            if !statusMessage.isEmpty {
+                                statusMessageOverlay
+                            }
                         }
+                        .padding(.bottom)
                     }
-                    .task {
-                        mapHasFocus = true
+                    .overlay {
+                        keyboardInputField(mapViewProxy: mapViewProxy)
                     }
                     .errorAlert(presentingError: $error)
             }
@@ -128,31 +136,25 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
             x: screenCenter.x + selectionRectangleLength / 2,
             y: screenCenter.y
         )
-        let topScreenPoint = CGPoint(
-            x: screenCenter.x,
-            y: screenCenter.y - selectionRectangleLength / 2
-        )
         
         guard let mapCenter = mapViewProxy.location(fromScreenPoint: screenCenter),
               let rightMapPoint = mapViewProxy.location(fromScreenPoint: rightScreenPoint),
-              let topMapPoint = mapViewProxy.location(fromScreenPoint: topScreenPoint),
               let spatialReference = mapCenter.spatialReference else {
             return nil
         }
         
         let halfWidth = abs(rightMapPoint.x - mapCenter.x)
-        let halfHeight = abs(topMapPoint.y - mapCenter.y)
         return Envelope(
             xRange: mapCenter.x - halfWidth ... mapCenter.x + halfWidth,
-            yRange: mapCenter.y - halfHeight ... mapCenter.y + halfHeight,
+            yRange: mapCenter.y - halfWidth ... mapCenter.y + halfWidth,
             spatialReference: spatialReference
         )
     }
     
     /// Maps a pressed number key to a zero-based feature index.
     private func featureIndex(for characters: String) -> Int? {
-        guard let firstCharacter = characters.first,
-              let number = firstCharacter.wholeNumberValue,
+        guard let lastCharacter = characters.last,
+              let number = lastCharacter.wholeNumberValue,
               (1...9).contains(number) else {
             return nil
         }
@@ -163,19 +165,33 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
     private func showCalloutForFeature(at index: Int, mapViewProxy: MapViewProxy) {
         guard let feature = model.numberedFeatures[safe: index],
               let anchor = feature.geometry as? Point else {
+            statusMessage = "No restaurant is assigned to \(index + 1)."
             return
         }
         
+        statusMessage = ""
         calloutFeature = feature
         calloutPlacement = .geoElement(feature, tapLocation: anchor)
-        mapHasFocus = true
     }
     
     /// Dismisses the details callout and restores the selection rectangle.
     private func dismissCallout() {
         calloutFeature = nil
         calloutPlacement = nil
-        mapHasFocus = true
+        statusMessage = ""
+    }
+    
+    /// A hidden text field that receives keyboard input and forwards number input.
+    private func keyboardInputField(mapViewProxy: MapViewProxy) -> some View {
+        KeyboardInputField(
+            onNumber: { number in
+                showCalloutForFeature(at: number - 1, mapViewProxy: mapViewProxy)
+            },
+            onEscape: dismissCallout
+        )
+            .frame(width: 1, height: 1)
+            .opacity(0.01)
+            .accessibilityHidden(true)
     }
     
     /// The instructions shown above the map.
@@ -199,13 +215,23 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
             .padding()
     }
     
+    /// The status message shown when a number key has no matching restaurant.
+    private var statusMessageOverlay: some View {
+        Text(statusMessage)
+            .font(.footnote)
+            .multilineTextAlignment(.center)
+            .padding(8)
+            .background(.regularMaterial)
+            .clipShape(.rect(cornerRadius: 8))
+    }
+    
     /// The callout content for a restaurant feature.
     private func calloutContent(for feature: Feature) -> some View {
         let anchor = feature.geometry as? Point
         let wgs84Point = anchor.flatMap { GeometryEngine.project($0, into: .wgs84) }
         
         return VStack(alignment: .leading) {
-            Text(model.name(for: feature, fallback: "Restaurant")!)
+            Text(model.name(for: feature, fallback: "Restaurant") ?? "Restaurant")
                 .font(.headline)
             if let wgs84Point {
                 Text("Lat: \(wgs84Point.y, format: .number.precision(.fractionLength(6)))")
@@ -217,6 +243,90 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
 }
 
 private extension NavigateMapAndIdentifyFeaturesWithKeyboardView {
+    /// A hidden UIKit text field that emits each typed digit as an event.
+    struct KeyboardInputField: UIViewRepresentable {
+        /// The action to perform when the user enters a number.
+        var onNumber: (Int) -> Void
+        
+        /// The action to perform when the Escape key is pressed.
+        var onEscape: () -> Void
+        
+        func makeUIView(context: Context) -> KeyboardTextField {
+            let textField = KeyboardTextField()
+            textField.delegate = context.coordinator
+            textField.keyboardType = .numberPad
+            textField.textContentType = .oneTimeCode
+            textField.autocorrectionType = .no
+            textField.tintColor = .clear
+            textField.textColor = .clear
+            textField.backgroundColor = .clear
+            textField.onEscape = onEscape
+            DispatchQueue.main.async {
+                textField.becomeFirstResponder()
+            }
+            return textField
+        }
+        
+        func updateUIView(_ textField: KeyboardTextField, context: Context) {
+            context.coordinator.onNumber = onNumber
+            textField.onEscape = onEscape
+            if !textField.isFirstResponder {
+                DispatchQueue.main.async {
+                    textField.becomeFirstResponder()
+                }
+            }
+        }
+        
+        func makeCoordinator() -> Coordinator {
+            Coordinator(onNumber: onNumber)
+        }
+        
+        /// The UIKit text field coordinator.
+        final class Coordinator: NSObject, UITextFieldDelegate {
+            /// The action to perform when the user enters a number.
+            var onNumber: (Int) -> Void
+            
+            init(onNumber: @escaping (Int) -> Void) {
+                self.onNumber = onNumber
+            }
+            
+            func textField(
+                _ textField: UITextField,
+                shouldChangeCharactersIn range: NSRange,
+                replacementString string: String
+            ) -> Bool {
+                for character in string {
+                    guard let number = character.wholeNumberValue,
+                          (1...9).contains(number) else { continue }
+                    onNumber(number)
+                }
+                textField.text = ""
+                return false
+            }
+        }
+    }
+    
+    /// A text field that forwards hardware Escape key presses.
+    final class KeyboardTextField: UITextField {
+        /// The action to perform when the Escape key is pressed.
+        var onEscape: (() -> Void)?
+        
+        override var keyCommands: [UIKeyCommand]? {
+            return [
+                UIKeyCommand(
+                    input: UIKeyCommand.inputEscape,
+                    modifierFlags: [],
+                    action: #selector(handleEscapeKey)
+                )
+            ]
+        }
+        
+        @objc
+        private func handleEscapeKey() {
+            onEscape?()
+        }
+    }
+    
     /// The model for the sample.
     @MainActor
     @Observable
@@ -254,7 +364,7 @@ private extension NavigateMapAndIdentifyFeaturesWithKeyboardView {
             let map = Map(basemapStyle: .arcGISLightGray)
             map.initialViewpoint = Viewpoint(
                 center: Point(x: -117.1825, y: 34.0556, spatialReference: .wgs84),
-                scale: 2_500
+                scale: 5_000
             )
             map.addOperationalLayer(restaurantsLayer)
             self.map = map
@@ -265,12 +375,12 @@ private extension NavigateMapAndIdentifyFeaturesWithKeyboardView {
             in envelope: Envelope?,
             screenPointForLocation: (Point) -> CGPoint?
         ) async throws {
+            guard let envelope else { return }
+            
             restaurantsLayer.clearSelection()
             labelOverlay.removeAllGraphics()
             numberedFeatures.removeAll()
             hasMoreThanNineSelectedFeatures = false
-            
-            guard let envelope else { return }
             
             let queryParameters = QueryParameters()
             queryParameters.geometry = envelope
