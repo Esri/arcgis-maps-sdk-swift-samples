@@ -157,27 +157,33 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
     /// Creates an envelope matching the centered selection rectangle's map footprint.
     private func selectionEnvelope(mapSize: CGSize, mapViewProxy: MapViewProxy) -> Envelope? {
         let screenCenter = CGPoint(x: mapSize.width / 2, y: mapSize.height / 2)
-        let rightScreenPoint = CGPoint(
-            x: screenCenter.x + selectionRectangleLength / 2,
-            y: screenCenter.y
-        )
-        let topScreenPoint = CGPoint(
-            x: screenCenter.x,
-            y: screenCenter.y - selectionRectangleLength / 2
-        )
-        
-        guard let mapCenter = mapViewProxy.location(fromScreenPoint: screenCenter),
-              let rightMapPoint = mapViewProxy.location(fromScreenPoint: rightScreenPoint),
-              let topMapPoint = mapViewProxy.location(fromScreenPoint: topScreenPoint),
-              let spatialReference = mapCenter.spatialReference else {
+        let half = selectionRectangleLength / 2
+
+        let topLeftScreenPoint = CGPoint(x: screenCenter.x - half, y: screenCenter.y - half)
+        let topRightScreenPoint = CGPoint(x: screenCenter.x + half, y: screenCenter.y - half)
+        let bottomLeftScreenPoint = CGPoint(x: screenCenter.x - half, y: screenCenter.y + half)
+        let bottomRightScreenPoint = CGPoint(x: screenCenter.x + half, y: screenCenter.y + half)
+
+        guard let topLeft = mapViewProxy.location(fromScreenPoint: topLeftScreenPoint),
+              let topRight = mapViewProxy.location(fromScreenPoint: topRightScreenPoint),
+              let bottomLeft = mapViewProxy.location(fromScreenPoint: bottomLeftScreenPoint),
+              let bottomRight = mapViewProxy.location(fromScreenPoint: bottomRightScreenPoint),
+              let spatialReference = topLeft.spatialReference else {
             return nil
         }
-        
-        let halfWidth = abs(rightMapPoint.x - mapCenter.x)
-        let halfHeight = abs(topMapPoint.y - mapCenter.y)
+
+        let xs = [topLeft.x, topRight.x, bottomLeft.x, bottomRight.x]
+        let ys = [topLeft.y, topRight.y, bottomLeft.y, bottomRight.y]
+        guard let minX = xs.min(),
+              let maxX = xs.max(),
+              let minY = ys.min(),
+              let maxY = ys.max() else {
+            return nil
+        }
+
         return Envelope(
-            xRange: mapCenter.x - halfWidth ... mapCenter.x + halfWidth,
-            yRange: mapCenter.y - halfHeight ... mapCenter.y + halfHeight,
+            xRange: minX ... maxX,
+            yRange: minY ... maxY,
             spatialReference: spatialReference
         )
     }
