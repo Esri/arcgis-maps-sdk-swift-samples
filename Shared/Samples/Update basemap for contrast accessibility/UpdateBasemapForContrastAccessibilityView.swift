@@ -102,6 +102,7 @@ private extension UpdateBasemapForContrastAccessibilityView {
                         ? "Labels and boundary reference layers are visible."
                         : "Labels and boundary reference layers are hidden."
                     )
+                    .font(.caption)
                 }
                 
                 Section {
