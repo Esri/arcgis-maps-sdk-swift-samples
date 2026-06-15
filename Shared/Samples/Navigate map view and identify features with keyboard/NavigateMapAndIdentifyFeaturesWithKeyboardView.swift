@@ -160,17 +160,23 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
             x: screenCenter.x + selectionRectangleLength / 2,
             y: screenCenter.y
         )
+        let topScreenPoint = CGPoint(
+            x: screenCenter.x,
+            y: screenCenter.y - selectionRectangleLength / 2
+        )
         
         guard let mapCenter = mapViewProxy.location(fromScreenPoint: screenCenter),
               let rightMapPoint = mapViewProxy.location(fromScreenPoint: rightScreenPoint),
+              let topMapPoint = mapViewProxy.location(fromScreenPoint: topScreenPoint),
               let spatialReference = mapCenter.spatialReference else {
             return nil
         }
         
         let halfWidth = abs(rightMapPoint.x - mapCenter.x)
+        let halfHeight = abs(topMapPoint.y - mapCenter.y)
         return Envelope(
             xRange: mapCenter.x - halfWidth ... mapCenter.x + halfWidth,
-            yRange: mapCenter.y - halfWidth ... mapCenter.y + halfWidth,
+            yRange: mapCenter.y - halfHeight ... mapCenter.y + halfHeight,
             spatialReference: spatialReference
         )
     }
@@ -360,13 +366,12 @@ private extension NavigateMapAndIdentifyFeaturesWithKeyboardView {
             in envelope: Envelope?,
             screenPointForLocation: (Point) -> CGPoint?
         ) async throws {
-            guard let envelope else { return }
-            
             restaurantsLayer.clearSelection()
             labelOverlay.removeAllGraphics()
             numberedFeatures.removeAll()
             hasMoreThanNineSelectedFeatures = false
             
+            guard let envelope else { return }
             let queryParameters = QueryParameters()
             queryParameters.geometry = envelope
             queryParameters.spatialRelationship = .intersects
