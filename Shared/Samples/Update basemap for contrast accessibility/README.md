@@ -10,7 +10,7 @@ Use this pattern when your app needs contrast-responsive basemaps to switch betw
 
 ## How to use the sample
 
-When the sample is launched, it displays the chosen contrast basemap. When automatic mode is selected for the sample, changing the device appearance in the device system settings between light and dark themes, or turning high contrast on and off, will result in the appropriate basemap being loaded to match settings. Toggle the device settings to see the different basemaps.
+When the sample is launched, it displays the chosen contrast basemap. When automatic mode is selected for the sample, changing the device appearance in the device system settings between light and dark themes, or turning high contrast on and off, will result in the appropriate basemap being loaded to match settings. A tip in the settings sheet reminds users to change the device appearance and contrast settings to test the automatic behavior.
 
 Switch to manual mode to choose Light, Dark, High Contrast Light, or High Contrast Dark directly. Show or hide the basemap's reference layers to compare how labels and boundaries read in each contrast appearance mode.
 
@@ -20,8 +20,9 @@ Switch to manual mode to choose Light, Dark, High Contrast Light, or High Contra
 2. Resolve which contrast appearance should be active based on the current mode and device settings.
     * In manual mode, use the appearance selected in the supporting pane.
     * In automatic mode, resolve the appearance from the device's current light, dark, and increased-contrast settings using SwiftUI environment values (for example, `@Environment(\.colorScheme)` and `@Environment(\.colorSchemeContrast)`).
-3. Map the resolved appearance to an ArcGIS Online `Basemap` or a `BasemapStyle` and create a `Map`.
-4. Apply the current reference-layer visibility setting to the basemap's labels and boundary layers.
+3. Display a TipKit tip when automatic mode is selected to guide users to test the sample by changing device appearance settings.
+4. Map the resolved appearance to an ArcGIS Online `Basemap` or a `BasemapStyle` and create a `Map`.
+5. Apply the current reference-layer visibility setting to the basemap's labels and boundary layers.
 
 ## Relevant API
 
