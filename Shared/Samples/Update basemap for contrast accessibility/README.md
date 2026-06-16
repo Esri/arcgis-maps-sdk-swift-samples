@@ -20,9 +20,8 @@ Switch to manual mode to choose Light, Dark, High Contrast Light, or High Contra
 2. Resolve which contrast appearance should be active based on the current mode and device settings.
     * In manual mode, use the appearance selected in the supporting pane.
     * In automatic mode, resolve the appearance from the device's current light, dark, and increased-contrast settings using SwiftUI environment values (for example, `@Environment(\.colorScheme)` and `@Environment(\.colorSchemeContrast)`).
-3. Display a TipKit tip when automatic mode is selected to guide users to test the sample by changing device appearance settings.
-4. Map the resolved appearance to an ArcGIS Online `Basemap` or a `BasemapStyle` and create a `Map`.
-5. Apply the current reference-layer visibility setting to the basemap's labels and boundary layers.
+3. Map the resolved appearance to an ArcGIS Online `Basemap` or a `BasemapStyle` and create a `Map`.
+4. Apply the current reference-layer visibility setting to the basemap's labels and boundary layers.
 
 ## Relevant API
 

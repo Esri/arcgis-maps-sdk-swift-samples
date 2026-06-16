@@ -14,14 +14,8 @@
 
 import ArcGIS
 import SwiftUI
-import TipKit
 
 struct UpdateBasemapForContrastAccessibilityView: View {
-    /// The one-time TipKit configuration for this sample.
-    private static let tipConfiguration: Void = {
-        try? Tips.configure([.displayFrequency(.immediate)])
-    }()
-    
     /// The view model for the sample.
     @State private var model = Model()
     
@@ -53,10 +47,6 @@ struct UpdateBasemapForContrastAccessibilityView: View {
         case .automatic: automaticAppearance
         case .manual: model.contrastAppearance
         }
-    }
-    
-    init() {
-        _ = Self.tipConfiguration
     }
     
     var body: some View {
@@ -101,10 +91,7 @@ private extension UpdateBasemapForContrastAccessibilityView {
     struct ContrastSettingsView: View {
         /// The view model for the sample.
         @Bindable var model: Model
-        
-        /// A tip explaining how the automatic contrast mode responds to OS settings.
-        private let automaticModeTip = AutomaticModeTip()
-        
+
         var body: some View {
             Form {
                 Section {
@@ -128,13 +115,7 @@ private extension UpdateBasemapForContrastAccessibilityView {
                 } header: {
                     Text("Visual Contrast Mode")
                 } footer: {
-                    VStack(alignment: .leading, spacing: 8) {
-                        Text(model.contrastMode.detail)
-                        
-                        if model.contrastMode == .automatic {
-                            TipView(automaticModeTip)
-                        }
-                    }
+                    Text(model.contrastMode.detail)
                 }
                 
                 if model.contrastMode == .manual {
@@ -154,26 +135,6 @@ private extension UpdateBasemapForContrastAccessibilityView {
                     }
                 }
             }
-        }
-    }
-}
-
-private extension UpdateBasemapForContrastAccessibilityView {
-    /// A tip that guides users to test automatic mode using OS appearance settings.
-    struct AutomaticModeTip: Tip {
-        var title: Text {
-            Text("Try changing device appearance")
-        }
-        
-        var message: Text? {
-            Text(
-                "Change Light/Dark Mode or Increase Contrast in the Settings app " +
-                "to see the basemap update automatically."
-            )
-        }
-        
-        var image: Image? {
-            Image(systemName: "gearshape")
         }
     }
 }
