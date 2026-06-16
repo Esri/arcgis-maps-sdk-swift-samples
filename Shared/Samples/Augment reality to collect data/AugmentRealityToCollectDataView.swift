@@ -20,6 +20,9 @@ import SwiftUI
 struct AugmentRealityToCollectDataView: View {
     /// The view model for this sample.
     @StateObject private var model = Model()
+    
+    /// The world-tracking provider used by this sample.
+    @State private var provider = AppleWorldTracking(mode: .worldTracking)
     /// The status text displayed to the user.
     @State private var statusText = "Tap to create a feature"
     /// A Boolean value indicating whether a feature can be added .
@@ -31,8 +34,13 @@ struct AugmentRealityToCollectDataView: View {
     
     var body: some View {
         VStack(spacing: 0) {
-            WorldScaleSceneView { _ in
-                SceneView(scene: model.scene, graphicsOverlays: [model.graphicsOverlay])
+            WorldScaleSceneView(provider: provider) { context in
+                AppleWorldTrackingCameraFeedView(context: context)
+            } sceneView: { _ in
+                SceneView(
+                    scene: model.scene,
+                    graphicsOverlays: [model.graphicsOverlay]
+                )
             }
             .calibrationButtonAlignment(.bottomLeading)
             .onCalibratingChanged { newCalibrating in
