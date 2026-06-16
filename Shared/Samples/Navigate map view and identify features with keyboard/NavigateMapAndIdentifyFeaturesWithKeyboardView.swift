@@ -177,14 +177,15 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
     
     /// Creates an envelope matching the centered selection rectangle's map footprint.
     private func selectionEnvelope(mapSize: CGSize, mapViewProxy: MapViewProxy) -> Envelope? {
+        let clampedRectangleLength = min(selectionRectangleLength, min(mapSize.width, mapSize.height))
         let screenCenter = CGPoint(x: mapSize.width / 2, y: mapSize.height / 2)
         let rightScreenPoint = CGPoint(
-            x: screenCenter.x + selectionRectangleLength / 2,
+            x: screenCenter.x + clampedRectangleLength / 2,
             y: screenCenter.y
         )
         let topScreenPoint = CGPoint(
             x: screenCenter.x,
-            y: screenCenter.y - selectionRectangleLength / 2
+            y: screenCenter.y - clampedRectangleLength / 2
         )
         
         guard let mapCenter = mapViewProxy.location(fromScreenPoint: screenCenter),
