@@ -10,7 +10,7 @@ Use this pattern when your app needs contrast-responsive basemaps to switch betw
 
 ## How to use the sample
 
-When the sample is launched, it displays the chosen contrast basemap. When automatic mode is selected for the sample, changing the device appearance in the device system settings between light and dark themes, or turning high contrast on and off, will result in the appropriate basemap being loaded to match settings. A tip in the settings sheet reminds users to change the device appearance and contrast settings to test the automatic behavior.
+When the sample is launched, it displays the chosen contrast basemap. When automatic mode is selected for the sample, changing the device appearance in the device system settings between light and dark themes, or turning high contrast on and off, will result in the appropriate basemap being loaded to match settings.
 
 Switch to manual mode to choose Light, Dark, High Contrast Light, or High Contrast Dark directly. Show or hide the basemap's reference layers to compare how labels and boundaries read in each contrast appearance mode.
 
