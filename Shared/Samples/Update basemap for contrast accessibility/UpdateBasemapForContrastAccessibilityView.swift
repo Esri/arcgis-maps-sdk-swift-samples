@@ -34,7 +34,7 @@ struct UpdateBasemapForContrastAccessibilityView: View {
     @Environment(\.colorSchemeContrast) private var colorSchemeContrast
     
     /// SwiftUI re-evaluates this whenever the color scheme or contrast
-    /// environment values change..
+    /// environment values change.
     private var automaticAppearance: ContrastAppearance {
         ContrastAppearance(colorScheme: colorScheme, contrast: colorSchemeContrast)
     }
