@@ -35,8 +35,8 @@ struct UpdateBasemapForContrastAccessibilityView: View {
     
     /// The appearance resolved purely from the current device settings.
     ///
-    /// SwiftUI re-evaluates this whenever the user changes Dark Mode or Increase
-    /// Contrast, so no `ContentObserver` or change listener is required.
+    /// SwiftUI re-evaluates this whenever the color scheme or contrast
+    /// environment values change.
     private var automaticAppearance: ContrastAppearance {
         ContrastAppearance(colorScheme: colorScheme, contrast: colorSchemeContrast)
     }
@@ -115,7 +115,13 @@ private extension UpdateBasemapForContrastAccessibilityView {
                 } header: {
                     Text("Visual Contrast Mode")
                 } footer: {
-                    Text(model.contrastMode.detail)
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text(model.contrastMode.detail)
+                        
+                        if model.contrastMode == .automatic {
+                            TipView(automaticModeTip)
+                        }
+                    }
                 }
                 
                 if model.contrastMode == .manual {
@@ -133,8 +139,8 @@ private extension UpdateBasemapForContrastAccessibilityView {
                         .pickerStyle(.inline)
                         .labelsHidden()
                     }
-                }
-            }
+        var image: Image? {
+            Image(systemName: "gearshape")
         }
     }
 }
