@@ -33,10 +33,8 @@ struct UpdateBasemapForContrastAccessibilityView: View {
     /// Reflects the "Increase Contrast" accessibility preference.
     @Environment(\.colorSchemeContrast) private var colorSchemeContrast
     
-    /// The appearance resolved purely from the current device settings.
-    ///
     /// SwiftUI re-evaluates this whenever the color scheme or contrast
-    /// environment values change.
+    /// environment values change..
     private var automaticAppearance: ContrastAppearance {
         ContrastAppearance(colorScheme: colorScheme, contrast: colorSchemeContrast)
     }
@@ -115,13 +113,7 @@ private extension UpdateBasemapForContrastAccessibilityView {
                 } header: {
                     Text("Visual Contrast Mode")
                 } footer: {
-                    VStack(alignment: .leading, spacing: 8) {
-                        Text(model.contrastMode.detail)
-                        
-                        if model.contrastMode == .automatic {
-                            TipView(automaticModeTip)
-                        }
-                    }
+                    Text(model.contrastMode.detail)
                 }
                 
                 if model.contrastMode == .manual {
@@ -139,8 +131,8 @@ private extension UpdateBasemapForContrastAccessibilityView {
                         .pickerStyle(.inline)
                         .labelsHidden()
                     }
-        var image: Image? {
-            Image(systemName: "gearshape")
+                }
+            }
         }
     }
 }
