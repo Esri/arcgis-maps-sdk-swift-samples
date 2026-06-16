@@ -279,7 +279,7 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
     
     /// The instructions shown above the map.
     private var instructionsOverlay: some View {
-        Text("Pan and zoom with the keyboard to bring restaurants into the rectangle. Press 1–9 for details. Press Esc to dismiss the callout, or Done to hide the keyboard.")
+        Text("Pan and zoom with the keyboard to bring restaurants into the rectangle. Press 1–9 for details. Done to hide the keyboard.")
             .font(.footnote)
             .multilineTextAlignment(.center)
             .padding(8)
