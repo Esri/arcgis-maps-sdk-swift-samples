@@ -120,11 +120,11 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
                     }
                     .ignoresSafeArea(.keyboard, edges: .bottom)
                     .overlay(alignment: .center) {
-                        if calloutPlacement == nil || isKeyboardInputActive {
+                        if calloutPlacement == nil {
                             RoundedRectangle(cornerRadius: 4)
                                 .stroke(.pink, lineWidth: 2)
                                 .background(.pink.opacity(0.08))
-                                .frame(width: selectionRectangleLength, height: selectionRectangleLength)
+                                .frame(width: min(selectionRectangleLength, min(mapSize.width, mapSize.height)), height: min(selectionRectangleLength, min(mapSize.width, mapSize.height)))
                                 .allowsHitTesting(false)
                                 .accessibilityHidden(true)
                         }
