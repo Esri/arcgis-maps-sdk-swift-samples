@@ -96,7 +96,7 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
                         guard let featureIndex = featureIndex(for: keyPress.characters) else {
                             return .ignored
                         }
-                        showCalloutForFeature(at: featureIndex, mapViewProxy: mapViewProxy)
+                        showCalloutForFeature(at: featureIndex)
                         return .handled
                     }
                     .overlay(alignment: .center) {
@@ -121,7 +121,7 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
                                 statusMessageOverlay
                             }
                             if isKeyboardInputActive {
-                                keyboardInputBar(mapViewProxy: mapViewProxy)
+                                keyboardInputBar()
                             }
                         }
                         .padding(.bottom)
@@ -193,10 +193,12 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
     }
     
     /// Shows the details callout for the selected numbered feature.
-    private func showCalloutForFeature(at index: Int, mapViewProxy: MapViewProxy) {
+    private func showCalloutForFeature(at index: Int) {
         guard let feature = model.numberedFeatures[safe: index],
               let anchor = feature.geometry as? Point else {
             statusMessage = "No restaurant is assigned to \(index + 1)."
+            calloutFeature = nil
+            calloutPlacement = nil
             return
         }
         
@@ -247,7 +249,7 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
     }
     
     /// A hidden text field used to receive software keyboard input.
-    private func keyboardInputBar(mapViewProxy: MapViewProxy) -> some View {
+    private func keyboardInputBar() -> some View {
         TextField("1–9", text: $keyboardInput)
             .keyboardType(.numberPad)
             .textInputAutocapitalization(.never)
@@ -262,7 +264,7 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
                     return
                 }
                 keyboardInput = ""
-                showCalloutForFeature(at: featureIndex, mapViewProxy: mapViewProxy)
+                showCalloutForFeature(at: featureIndex)
                 keyboardInputHasFocus = true
             }
             .toolbar {
@@ -277,7 +279,7 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
     
     /// The instructions shown above the map.
     private var instructionsOverlay: some View {
-        Text("Pan and zoom with the keyboard to bring restaurants into the rectangle. Press 1–9 for details, Done to dismiss.")
+        Text("Pan and zoom with the keyboard to bring restaurants into the rectangle. Press 1–9 for details. Press Esc to dismiss the callout, or Done to hide the keyboard.")
             .font(.footnote)
             .multilineTextAlignment(.center)
             .padding(8)
