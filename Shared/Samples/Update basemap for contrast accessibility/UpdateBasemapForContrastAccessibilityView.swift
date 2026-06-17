@@ -13,8 +13,10 @@
 // limitations under the License.
 
 import ArcGIS
+import Accessibility
 import SwiftUI
 import TipKit
+import UIKit
 
 struct UpdateBasemapForContrastAccessibilityView: View {
     /// The one-time TipKit configuration for this sample.
@@ -132,7 +134,11 @@ private extension UpdateBasemapForContrastAccessibilityView {
                         Text(model.contrastMode.detail)
                         
                         if model.contrastMode == .automatic {
-                            TipView(automaticModeTip)
+                            TipView(automaticModeTip) { action in
+                                if action.id == AutomaticModeTip.openSettingsActionID {
+                                    openAccessibilitySettings()
+                                }
+                            }
                         }
                     }
                 }
@@ -155,12 +161,40 @@ private extension UpdateBasemapForContrastAccessibilityView {
                 }
             }
         }
+        
+        /// Opens the Settings app to an Accessibility feature when supported.
+        private func openAccessibilitySettings() {
+            Task {
+                do {
+                    if #available(iOS 26.0, *) {
+                        let feature: AccessibilitySettings.Feature = .assistiveTouch
+                        try await AccessibilitySettings.openSettings(for: feature)
+                    } else if #available(iOS 18.0, *) {
+                        let feature: AccessibilitySettings.Feature = .personalVoiceAllowAppsToRequestToUse
+                        try await AccessibilitySettings.openSettings(for: feature)
+                    } else {
+                        openAppSettings()
+                    }
+                } catch {
+                    print("Unable to open Accessibility Settings: \(error)")
+                    openAppSettings()
+                }
+            }
+        }
+        
+        /// Opens this app's page in the Settings app.
+        private func openAppSettings() {
+            UIApplication.shared.open(.appSettings)
+        }
     }
 }
 
 private extension UpdateBasemapForContrastAccessibilityView {
     /// A tip that guides users to test automatic mode using OS appearance settings.
     struct AutomaticModeTip: Tip {
+        /// The ID of the action that opens the Settings app.
+        static let openSettingsActionID = "openSettings"
+        
         var title: Text {
             Text("Try changing device appearance")
         }
@@ -168,12 +202,22 @@ private extension UpdateBasemapForContrastAccessibilityView {
         var message: Text? {
             Text(
                 "Change Light/Dark Mode or Increase Contrast in the Settings app " +
-                "to see the basemap update automatically."
+                "to see the basemap update automatically. Increase Contrast is in " +
+                "Accessibility > Display & Text Size."
             )
         }
         
         var image: Image? {
             Image(systemName: "gearshape")
+        }
+        
+        var actions: [Action] {
+            [
+                Action(
+                    id: Self.openSettingsActionID,
+                    title: "Open Accessibility Settings"
+                )
+            ]
         }
     }
 }
@@ -299,6 +343,11 @@ private extension UpdateBasemapForContrastAccessibilityView {
 }
 
 private extension URL {
+    /// The URL of this app's page in the Settings app.
+    static var appSettings: URL {
+        URL(string: UIApplication.openSettingsURLString)!
+    }
+    
     /// The URL of the high-contrast light basemap item.
     static var highContrastLightBasemap: URL {
         URL(string: "https://www.arcgis.com/home/item.html?id=084291b0ecad4588b8c8853898d72445")!
