@@ -83,7 +83,7 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
                     .selectionColor(Model.selectionHaloColor)
                     .callout(placement: $calloutPlacement.animation(.default.speed(2))) { _ in
                         if let calloutFeature {
-                            calloutContent(for: calloutFeature)
+                            makeCalloutContent(feature: calloutFeature)
                         }
                     }
                     .onDrawStatusChanged { drawStatus in
@@ -142,7 +142,7 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
                             }
                             TipView(keyboardInputTip)
                             if isKeyboardInputActive {
-                                keyboardInputBar()
+                                makeKeyboardInputBar()
                             }
                         }
                         .padding(.bottom)
@@ -167,16 +167,16 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
     private func refreshSelection(mapSize: CGSize, mapViewProxy: MapViewProxy) async {
         do {
             try await model.selectFeatures(
-                in: selectionEnvelope(mapSize: mapSize, mapViewProxy: mapViewProxy),
-                screenPointForLocation: { mapViewProxy.screenPoint(fromLocation: $0) }
+                in: makeSelectionEnvelope(mapSize: mapSize, mapViewProxy: mapViewProxy),
+                screenPointFor: { mapViewProxy.screenPoint(fromLocation: $0) }
             )
         } catch {
             self.error = error
         }
     }
     
-    /// Creates an envelope matching the centered selection rectangle's map footprint.
-    private func selectionEnvelope(mapSize: CGSize, mapViewProxy: MapViewProxy) -> Envelope? {
+    /// Makes an envelope matching the centered selection rectangle's map footprint.
+    private func makeSelectionEnvelope(mapSize: CGSize, mapViewProxy: MapViewProxy) -> Envelope? {
         let clampedRectangleLength = min(selectionRectangleLength, min(mapSize.width, mapSize.height))
         let screenCenter = CGPoint(x: mapSize.width / 2, y: mapSize.height / 2)
         let rightScreenPoint = CGPoint(
@@ -267,11 +267,11 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
         keyboardInput = ""
         keyboardInputHasFocus = false
         isKeyboardInputActive = false
-        Task { await focusMap() }
+        dismissCallout()
     }
     
     /// A hidden text field used to receive software keyboard input.
-    private func keyboardInputBar() -> some View {
+    private func makeKeyboardInputBar() -> some View {
         TextField("1–9", text: $keyboardInput)
             .keyboardType(.numberPad)
             .textInputAutocapitalization(.never)
@@ -315,7 +315,7 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
     }
     
     /// The callout content for a restaurant feature.
-    private func calloutContent(for feature: Feature) -> some View {
+    private func makeCalloutContent(feature: Feature) -> some View {
         let anchor = feature.geometry as? Point
         let wgs84Point = anchor.flatMap { GeometryEngine.project($0, into: .wgs84) }
         

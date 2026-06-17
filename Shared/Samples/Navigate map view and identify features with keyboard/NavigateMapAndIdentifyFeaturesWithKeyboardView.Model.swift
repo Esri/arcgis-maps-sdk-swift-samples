@@ -13,13 +13,18 @@
 // limitations under the License.
 
 import ArcGIS
+import Foundation
 import SwiftUI
+import UIKit.UIColor
 
 extension NavigateMapAndIdentifyFeaturesWithKeyboardView {
     /// The model for the sample.
     @MainActor
     @Observable
     final class Model {
+        /// The maximum number of features that can be identified with number keys.
+        private static let maximumNumberedFeatures = 9
+        
         /// Attribute used to title and label each feature.
         private static let nameAttribute = "name"
         
@@ -32,10 +37,10 @@ extension NavigateMapAndIdentifyFeaturesWithKeyboardView {
         let map: Map
         
         /// The feature table of restaurants in Redlands.
-        let restaurantsTable = ServiceFeatureTable(url: .redlandsRestaurants)
+        private let restaurantsTable = ServiceFeatureTable(url: .redlandsRestaurants)
         
         /// The feature layer holding the restaurants displayed and identified by the sample.
-        let restaurantsLayer: FeatureLayer
+        private let restaurantsLayer: FeatureLayer
         
         /// The overlay for the numbered 1-9 labels.
         let labelOverlay = GraphicsOverlay()
@@ -59,40 +64,86 @@ extension NavigateMapAndIdentifyFeaturesWithKeyboardView {
             self.map = map
         }
         
-        /// Selects, numbers, and labels restaurant features intersecting the given envelope.
+        /// Selects, numbers, and labels restaurant features that intersect a given envelope.
+        /// - Parameters:
+        ///   - envelope: The envelope used to query restaurant features.
+        ///   - screenPointFor: A closure that converts a map location to a screen point.
         func selectFeatures(
             in envelope: Envelope?,
-            screenPointForLocation: (Point) -> CGPoint?
+            screenPointFor: (Point) -> CGPoint?
         ) async throws {
+            resetSelection()
+            
+            guard let envelope else { return }
+            
+            let orderedFeatures = try await makeOrderedFeatures(
+                intersecting: envelope,
+                screenPointFor: screenPointFor
+            )
+            
+            hasMoreThanNineSelectedFeatures = orderedFeatures.count > Self.maximumNumberedFeatures
+            restaurantsLayer.selectFeatures(orderedFeatures.map(\.feature))
+            addNumberedLabels(for: orderedFeatures)
+        }
+        
+        /// Reads the feature's name attribute, returning the fallback when it is missing or blank.
+        /// - Parameters:
+        ///   - feature: The feature whose name is read.
+        ///   - fallback: The value to return when the feature has no name.
+        /// - Returns: The feature's name, or the fallback if no name exists.
+        func name(for feature: Feature, fallback: String?) -> String? {
+            guard let name = feature.attributes[Self.nameAttribute] as? String,
+                  !name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
+                return fallback
+            }
+            return name
+        }
+        
+        /// Clears selected features, label graphics, and numbered feature state.
+        private func resetSelection() {
             restaurantsLayer.clearSelection()
             labelOverlay.removeAllGraphics()
             numberedFeatures.removeAll()
             hasMoreThanNineSelectedFeatures = false
-            
-            guard let envelope else { return }
+        }
+        
+        /// Queries and sorts restaurant features from top-to-bottom, then left-to-right in screen space.
+        /// - Parameters:
+        ///   - envelope: The envelope used to query restaurant features.
+        ///   - screenPointFor: A closure that converts a map location to a screen point.
+        /// - Returns: The ordered restaurant features with their map and screen positions.
+        private func makeOrderedFeatures(
+            intersecting envelope: Envelope,
+            screenPointFor: (Point) -> CGPoint?
+        ) async throws -> [OrderedFeature] {
             let queryParameters = QueryParameters()
             queryParameters.geometry = envelope
             queryParameters.spatialRelationship = .intersects
             
             let queryResult = try await restaurantsTable.queryFeatures(using: queryParameters)
-            let orderedFeatures = queryResult.features()
+            return queryResult.features()
                 .compactMap { feature -> OrderedFeature? in
                     guard let anchor = feature.geometry as? Point,
-                          let screenPoint = screenPointForLocation(anchor) else {
+                          let screenPoint = screenPointFor(anchor) else {
                         return nil
                     }
                     return OrderedFeature(feature: feature, anchor: anchor, screenPoint: screenPoint)
                 }
                 .sorted { lhs, rhs in
-                    lhs.screenPoint.y == rhs.screenPoint.y
-                    ? lhs.screenPoint.x < rhs.screenPoint.x
-                    : lhs.screenPoint.y < rhs.screenPoint.y
+                    if lhs.screenPoint.y != rhs.screenPoint.y {
+                        lhs.screenPoint.y < rhs.screenPoint.y
+                    } else {
+                        lhs.screenPoint.x < rhs.screenPoint.x
+                    }
                 }
+        }
+        
+        /// Adds numbered text labels for the first restaurant features.
+        /// - Parameter orderedFeatures: The ordered restaurant features to label.
+        private func addNumberedLabels(for orderedFeatures: [OrderedFeature]) {
+            let numberedOrderedFeatures = orderedFeatures.prefix(Self.maximumNumberedFeatures)
             
-            hasMoreThanNineSelectedFeatures = orderedFeatures.count > 9
-            restaurantsLayer.selectFeatures(orderedFeatures.map(\.feature))
-            
-            for (offset, orderedFeature) in orderedFeatures.prefix(9).enumerated() {
+            for (offset, orderedFeature) in numberedOrderedFeatures.enumerated() {
                 let number = offset + 1
                 let text = name(for: orderedFeature.feature, fallback: nil).map { "\(number): \($0)" } ?? "\(number)"
                 let labelSymbol = TextSymbol(
@@ -110,29 +161,19 @@ extension NavigateMapAndIdentifyFeaturesWithKeyboardView {
             }
         }
         
-        /// Reads the feature's name attribute, returning the fallback when it is missing or blank.
-        func name(for feature: Feature, fallback: String?) -> String? {
-            if let name = feature.attributes[Self.nameAttribute] as? String,
-               !name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-                return name
-            } else {
-                return fallback
-            }
-        }
-        
         /// The restaurant marker symbol.
         private static var restaurantSymbol: SimpleMarkerSymbol {
             let symbol = SimpleMarkerSymbol(style: .circle, color: markerFillColor, size: 12)
             symbol.outline = SimpleLineSymbol(style: .solid, color: .white, width: 1.5)
             return symbol
         }
-    }
-    
-    /// A feature and its screen-space ordering information.
-    struct OrderedFeature {
-        let feature: Feature
-        let anchor: Point
-        let screenPoint: CGPoint
+        
+        /// A feature and its screen-space ordering information.
+        private struct OrderedFeature {
+            let feature: Feature
+            let anchor: Point
+            let screenPoint: CGPoint
+        }
     }
 }
 
