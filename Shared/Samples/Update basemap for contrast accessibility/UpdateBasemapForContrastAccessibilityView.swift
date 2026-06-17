@@ -30,7 +30,7 @@ struct UpdateBasemapForContrastAccessibilityView: View {
     /// The error shown in an alert, if any.
     @State private var error: (any Error)?
     
-    /// A Boolean value indicating whether the settings sheet is presented.
+    /// A Boolean value indicating whether the settings view should be presented.
     @State private var isShowingSettings = false
     
     /// The system color scheme (light or dark).
@@ -41,17 +41,17 @@ struct UpdateBasemapForContrastAccessibilityView: View {
     /// Reflects the "Increase Contrast" accessibility preference.
     @Environment(\.colorSchemeContrast) private var colorSchemeContrast
     
-    /// The appearance resolved purely from the current device settings.
+    /// The contrast appearance resolved from the current SwiftUI environment values.
     ///
-    /// SwiftUI re-evaluates this whenever the user changes Dark Mode or increases constrast.
-    private var automaticAppearance: ContrastAppearance {
+    /// SwiftUI re-evaluates this whenever the color scheme or contrast values change.
+    private var appearanceForDeviceSettings: ContrastAppearance {
         ContrastAppearance(colorScheme: colorScheme, contrast: colorSchemeContrast)
     }
     
-    /// The appearance that should drive the displayed basemap, honoring the selected mode.
-    private var effectiveAppearance: ContrastAppearance {
+    /// The contrast appearance that should be displayed for the current mode.
+    private var appearanceForCurrentMode: ContrastAppearance {
         switch model.contrastMode {
-        case .automatic: automaticAppearance
+        case .automatic: appearanceForDeviceSettings
         case .manual: model.contrastAppearance
         }
     }
@@ -62,9 +62,9 @@ struct UpdateBasemapForContrastAccessibilityView: View {
     
     var body: some View {
         MapView(map: model.map)
-            .task(id: effectiveAppearance) {
+            .task(id: appearanceForCurrentMode) {
                 do {
-                    try await model.setBasemap(for: effectiveAppearance)
+                    try await model.setBasemap(for: appearanceForCurrentMode)
                 } catch {
                     self.error = error
                 }
@@ -75,19 +75,8 @@ struct UpdateBasemapForContrastAccessibilityView: View {
                         isShowingSettings = true
                     }
                     .sheet(isPresented: $isShowingSettings) {
-                        NavigationStack {
-                            ContrastSettingsView(model: model)
-                                .navigationTitle("Contrast Options")
-                                .navigationBarTitleDisplayMode(.inline)
-                                .toolbar {
-                                    ToolbarItem(placement: .confirmationAction) {
-                                        Button("Done") {
-                                            isShowingSettings = false
-                                        }
-                                    }
-                                }
-                        }
-                        .presentationDetents([.medium, .large])
+                        SettingsView(model: model)
+                            .presentationDetents([.medium, .large])
                     }
                 }
             }
@@ -99,63 +88,76 @@ private extension UpdateBasemapForContrastAccessibilityView {
     // MARK: - Settings View
     
     /// The appearance settings for the map.
-    struct ContrastSettingsView: View {
+    struct SettingsView: View {
         /// The view model for the sample.
         @Bindable var model: Model
+        
+        /// The action to dismiss the view.
+        @Environment(\.dismiss) private var dismiss
         
         /// A tip explaining how the automatic contrast mode responds to OS settings.
         private let automaticModeTip = AutomaticModeTip()
         
         var body: some View {
-            Form {
-                Section {
-                    Toggle("Reference Layers", isOn: $model.referenceLayersAreVisible)
-                } footer: {
-                    Text(
-                        model.referenceLayersAreVisible
-                        ? "Labels and boundary reference layers are visible."
-                        : "Labels and boundary reference layers are hidden."
-                    )
-                    .font(.caption)
-                }
-                
-                Section {
-                    Picker("Mode", selection: $model.contrastMode) {
-                        ForEach(ContrastMode.allCases, id: \.self) { mode in
-                            Text(mode.displayName)
-                        }
+            NavigationStack {
+                Form {
+                    Section {
+                        Toggle("Reference Layers", isOn: $model.referenceLayersAreVisible)
+                    } footer: {
+                        Text(
+                            model.referenceLayersAreVisible
+                            ? "Labels and boundary reference layers are visible."
+                            : "Labels and boundary reference layers are hidden."
+                        )
+                        .font(.caption)
                     }
-                    .pickerStyle(.segmented)
-                } header: {
-                    Text("Visual Contrast Mode")
-                } footer: {
-                    VStack(alignment: .leading, spacing: 8) {
-                        Text(model.contrastMode.detail)
-                        
-                        if model.contrastMode == .automatic {
-                            TipView(automaticModeTip) { action in
-                                if action.id == AutomaticModeTip.openSettingsActionID {
-                                    openAccessibilitySettings()
+                    
+                    Section {
+                        Picker("Mode", selection: $model.contrastMode) {
+                            ForEach(ContrastMode.allCases, id: \.self) { mode in
+                                Text(mode.displayName)
+                            }
+                        }
+                        .pickerStyle(.segmented)
+                    } header: {
+                        Text("Visual Contrast Mode")
+                    } footer: {
+                        VStack(alignment: .leading, spacing: 8) {
+                            Text(model.contrastMode.detail)
+                            
+                            if model.contrastMode == .automatic {
+                                TipView(automaticModeTip) { action in
+                                    if action.id == AutomaticModeTip.openSettingsActionID {
+                                        openAccessibilitySettings()
+                                    }
                                 }
                             }
                         }
                     }
-                }
-                
-                if model.contrastMode == .manual {
-                    Section("Manual Contrast") {
-                        Picker("Appearance", selection: $model.contrastAppearance) {
-                            ForEach(ContrastAppearance.allCases, id: \.self) { appearance in
-                                VStack(alignment: .leading) {
-                                    Text(appearance.displayName)
-                                    Text(appearance.detail)
-                                        .font(.caption)
-                                        .foregroundStyle(.secondary)
+                    if model.contrastMode == .manual {
+                        Section("Manual Contrast") {
+                            Picker("Appearance", selection: $model.contrastAppearance) {
+                                ForEach(ContrastAppearance.allCases, id: \.self) { appearance in
+                                    VStack(alignment: .leading) {
+                                        Text(appearance.displayName)
+                                        Text(appearance.detail)
+                                            .font(.caption)
+                                            .foregroundStyle(.secondary)
+                                    }
                                 }
                             }
+                            .pickerStyle(.inline)
+                            .labelsHidden()
                         }
-                        .pickerStyle(.inline)
-                        .labelsHidden()
+                    }
+                }
+                .navigationTitle("Contrast Options")
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    ToolbarItem(placement: .confirmationAction) {
+                        Button("Done") {
+                            dismiss()
+                        }
                     }
                 }
             }
@@ -210,12 +212,14 @@ private extension UpdateBasemapForContrastAccessibilityView {
             Image(systemName: "gearshape")
         }
         
-        var actions: [Action] { [
-            Action(
-                id: Self.openSettingsActionID,
-                title: "Open Accessibility Settings"
-            )
-        ] }
+        var actions: [Action] {
+            return [
+                Action(
+                    id: Self.openSettingsActionID,
+                    title: "Open Accessibility Settings"
+                )
+            ]
+        }
     }
 }
 
@@ -238,8 +242,8 @@ private extension UpdateBasemapForContrastAccessibilityView {
         /// Whether the basemap's reference layers are visible.
         var referenceLayersAreVisible = true {
             didSet {
-                map.basemap?.referenceLayers.forEach { layer in
-                    layer.isVisible = referenceLayersAreVisible
+                if let basemap = map.basemap {
+                    Self.setReferenceLayersVisible(referenceLayersAreVisible, in: basemap)
                 }
             }
         }
@@ -249,25 +253,26 @@ private extension UpdateBasemapForContrastAccessibilityView {
             map.initialViewpoint = .redlands
         }
         
-        /// Sets the map's basemap to match `contrast`, then loads it and applies
-        /// the current reference-layer visibility.
-        func setBasemap(for contrast: ContrastAppearance) async throws {
-            // Always update the contrast appearance to keep it in sync.
-            contrastAppearance = contrast
-            // Create and load a new basemap for the existing map.
-            let basemap = Self.makeBasemap(for: contrast)
+        /// Sets the map's basemap to match `appearance` and applies the current
+        /// reference-layer visibility.
+        func setBasemap(for appearance: ContrastAppearance) async throws {
+            // Keep the model in sync with the basemap being displayed.
+            contrastAppearance = appearance
+            
+            // Set a new basemap on the existing map instead of replacing the map.
+            let basemap = Self.makeBasemap(for: appearance)
             map.basemap = basemap
+            
             // Reference layers are only available once the basemap has loaded.
             try await basemap.load()
+            
             // Apply the current reference-layer visibility to the loaded basemap.
-            basemap.referenceLayers.forEach { layer in
-                layer.isVisible = referenceLayersAreVisible
-            }
+            Self.setReferenceLayersVisible(referenceLayersAreVisible, in: basemap)
         }
         
         /// Maps the selected appearance to its contrast-accessibility basemap.
-        private static func makeBasemap(for contrast: ContrastAppearance) -> Basemap {
-            switch contrast {
+        private static func makeBasemap(for appearance: ContrastAppearance) -> Basemap {
+            switch appearance {
             case .light:
                 Basemap(style: .arcGISLightGray)
             case .dark:
@@ -276,6 +281,13 @@ private extension UpdateBasemapForContrastAccessibilityView {
                 Basemap(url: .highContrastLightBasemap)!
             case .highContrastDark:
                 Basemap(url: .highContrastDarkBasemap)!
+            }
+        }
+        
+        /// Sets the visibility of all reference layers in a basemap.
+        private static func setReferenceLayersVisible(_ isVisible: Bool, in basemap: Basemap) {
+            basemap.referenceLayers.forEach { layer in
+                layer.isVisible = isVisible
             }
         }
     }
