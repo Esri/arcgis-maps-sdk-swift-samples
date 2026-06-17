@@ -163,15 +163,27 @@ private extension UpdateBasemapForContrastAccessibilityView {
         
         /// Opens the Settings app to an Accessibility feature when supported.
         private func openAccessibilitySettings() {
-            Task { @MainActor in
+            Task {
                 do {
-                    let feature: AccessibilitySettings.Feature = .assistiveTouch
-                    try await AccessibilitySettings.openSettings(for: feature)
+                    if #available(iOS 26.0, *) {
+                        let feature: AccessibilitySettings.Feature = .assistiveTouch
+                        try await AccessibilitySettings.openSettings(for: feature)
+                    } else if #available(iOS 18.0, *) {
+                        let feature: AccessibilitySettings.Feature = .personalVoiceAllowAppsToRequestToUse
+                        try await AccessibilitySettings.openSettings(for: feature)
+                    } else {
+                        openAppSettings()
+                    }
                 } catch {
                     print("Unable to open Accessibility Settings: \(error)")
-                    UIApplication.shared.open(.appSettings)
+                    openAppSettings()
                 }
             }
+        }
+        
+        /// Opens this app's page in the Settings app.
+        private func openAppSettings() {
+            UIApplication.shared.open(.appSettings)
         }
     }
 }
