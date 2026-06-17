@@ -43,8 +43,7 @@ struct UpdateBasemapForContrastAccessibilityView: View {
     
     /// The appearance resolved purely from the current device settings.
     ///
-    /// SwiftUI re-evaluates this whenever the user changes Dark Mode or Increase
-    /// Contrast, so no `ContentObserver` or change listener is required.
+    /// SwiftUI re-evaluates this whenever the user changes Dark Mode or increases constrast.
     private var automaticAppearance: ContrastAppearance {
         ContrastAppearance(colorScheme: colorScheme, contrast: colorSchemeContrast)
     }
