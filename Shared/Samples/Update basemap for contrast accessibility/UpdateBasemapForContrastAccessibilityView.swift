@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import ArcGIS
 import Accessibility
+import ArcGIS
 import SwiftUI
 import TipKit
 import UIKit
@@ -211,14 +211,12 @@ private extension UpdateBasemapForContrastAccessibilityView {
             Image(systemName: "gearshape")
         }
         
-        var actions: [Action] {
-            [
-                Action(
-                    id: Self.openSettingsActionID,
-                    title: "Open Accessibility Settings"
-                )
-            ]
-        }
+        var actions: [Action] { [
+            Action(
+                id: Self.openSettingsActionID,
+                title: "Open Accessibility Settings"
+            )
+        ] }
     }
 }
 
