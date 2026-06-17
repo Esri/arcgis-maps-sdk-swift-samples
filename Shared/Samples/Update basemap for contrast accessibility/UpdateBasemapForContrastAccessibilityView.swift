@@ -242,8 +242,8 @@ private extension UpdateBasemapForContrastAccessibilityView {
         /// Whether the basemap's reference layers are visible.
         var referenceLayersAreVisible = true {
             didSet {
-                if let basemap = map.basemap {
-                    Self.setReferenceLayersVisible(referenceLayersAreVisible, in: basemap)
+                map.basemap?.referenceLayers.forEach { layer in
+                    layer.isVisible = referenceLayersAreVisible
                 }
             }
         }
@@ -253,26 +253,26 @@ private extension UpdateBasemapForContrastAccessibilityView {
             map.initialViewpoint = .redlands
         }
         
-        /// Sets the map's basemap to match `appearance` and applies the current
-        /// reference-layer visibility.
-        func setBasemap(for appearance: ContrastAppearance) async throws {
-            // Keep the model in sync with the basemap being displayed.
-            contrastAppearance = appearance
-            
-            // Set a new basemap on the existing map instead of replacing the map.
-            let basemap = Self.makeBasemap(for: appearance)
+        /// Sets the map's basemap to match `contrast`, then loads it and applies
+        /// the current reference-layer visibility.
+        func setBasemap(for contrast: ContrastAppearance) async throws {
+            // Always update the contrast appearance to keep it in sync.
+            contrastAppearance = contrast
+            // Create and load a new basemap for the existing map.
+            let basemap = Self.makeBasemap(for: contrast)
             map.basemap = basemap
-            
             // Reference layers are only available once the basemap has loaded.
             try await basemap.load()
-            
             // Apply the current reference-layer visibility to the loaded basemap.
-            Self.setReferenceLayersVisible(referenceLayersAreVisible, in: basemap)
+            basemap.referenceLayers.forEach { layer in
+                layer.isVisible = referenceLayersAreVisible
+            }
         }
         
+        
         /// Maps the selected appearance to its contrast-accessibility basemap.
-        private static func makeBasemap(for appearance: ContrastAppearance) -> Basemap {
-            switch appearance {
+        private static func makeBasemap(for contrast: ContrastAppearance) -> Basemap {
+            switch contrast {
             case .light:
                 Basemap(style: .arcGISLightGray)
             case .dark:
@@ -281,13 +281,6 @@ private extension UpdateBasemapForContrastAccessibilityView {
                 Basemap(url: .highContrastLightBasemap)!
             case .highContrastDark:
                 Basemap(url: .highContrastDarkBasemap)!
-            }
-        }
-        
-        /// Sets the visibility of all reference layers in a basemap.
-        private static func setReferenceLayersVisible(_ isVisible: Bool, in basemap: Basemap) {
-            basemap.referenceLayers.forEach { layer in
-                layer.isVisible = isVisible
             }
         }
     }
