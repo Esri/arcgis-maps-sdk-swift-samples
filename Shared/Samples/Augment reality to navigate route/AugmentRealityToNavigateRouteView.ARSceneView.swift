@@ -24,15 +24,18 @@ extension AugmentRealityToNavigateRouteView {
         /// The view model for scene view in the sample.
         @ObservedObject var model: SceneModel
         
+        /// The world-tracking provider used by this view.
+        @State private var provider = AppleWorldTracking(mode: .worldTracking)
         /// A Boolean value indicating whether the use is navigating the route.
         @State private var isNavigating = false
-        
         /// The error shown in the error alert.
         @State private var error: (any Error)?
         
         var body: some View {
             VStack(spacing: 0) {
-                WorldScaleSceneView { _ in
+                WorldScaleSceneView(provider: provider) { context in
+                    AppleWorldTrackingCameraFeedView(context: context)
+                } sceneView: { _ in
                     SceneView(
                         scene: model.scene,
                         graphicsOverlays: [model.routeGraphicsOverlay]
