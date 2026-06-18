@@ -122,8 +122,11 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
                     .overlay(alignment: .center) {
                         if calloutPlacement == nil {
                             RoundedRectangle(cornerRadius: 4)
-                                .stroke(.pink, lineWidth: 2)
-                                .background(.pink.opacity(0.08))
+                                .fill(.pink.opacity(0.08))
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 4)
+                                        .stroke(.pink, lineWidth: 2)
+                                )
                                 .frame(width: min(selectionRectangleLength, min(mapSize.width, mapSize.height)), height: min(selectionRectangleLength, min(mapSize.width, mapSize.height)))
                                 .allowsHitTesting(false)
                                 .accessibilityHidden(true)
@@ -134,9 +137,14 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
                     }
                     .overlay(alignment: .bottom) {
                         VStack(spacing: 8) {
-//                            if model.hasMoreThanNineSelectedFeatures {
-//                                overflowMessage
-//                            }
+                            if model.hasMoreThanNineSelectedFeatures {
+                                Text("More than 9 restaurants are in the search area. Zoom in or pan to narrow the results.")
+                                    .font(.footnote)
+                                    .multilineTextAlignment(.center)
+                                    .padding(8)
+                                    .background(.regularMaterial)
+                                    .clipShape(.rect(cornerRadius: 8))
+                            }
                             if !statusMessage.isEmpty {
                                 statusMessageOverlay
                             }
