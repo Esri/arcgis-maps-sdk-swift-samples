@@ -54,11 +54,9 @@ struct UpdateBasemapForContrastAccessibilityView: View {
     var body: some View {
         MapView(map: model.map)
             .onAppear {
-                do {
-                    try Tips.configure([.displayFrequency(.immediate)])
-                } catch {
-                    self.error = error
-                }
+                // TipKit configuration is intended to happen once per process.
+                // Avoid showing an alert if this view appears multiple times.
+                try? Tips.configure([.displayFrequency(.immediate)])
             }
             .task(id: appearanceForCurrentMode) {
                 do {
