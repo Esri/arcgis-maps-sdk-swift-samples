@@ -124,7 +124,7 @@ private extension UpdateBasemapForContrastAccessibilityView {
                             Text(model.contrastMode.detail)
                             
                             if model.contrastMode == .automatic {
-                                TipView(automaticModeTip) { action in
+                                TipView(automaticModeTip) { _ in
                                     openAccessibilitySettings()
                                 }
                             }
@@ -180,7 +180,11 @@ private extension UpdateBasemapForContrastAccessibilityView {
         
         /// Opens this app's page in the Settings app.
         private func openAppSettings() {
+        #if targetEnvironment(macCatalyst)
+            UIApplication.shared.open(.macOSAccessibilitySettings)
+        #else
             UIApplication.shared.open(.appSettings)
+        #endif
         }
     }
 }
@@ -342,6 +346,11 @@ private extension URL {
     /// The URL of this app's page in the Settings app.
     static var appSettings: URL {
         URL(string: UIApplication.openSettingsURLString)!
+    }
+    
+    /// The URL of the Accessibility pane in the macOS System Settings app.
+    static var macOSAccessibilitySettings: URL {
+        URL(string: "x-apple.systempreferences:com.apple.Accessibility-Settings.extension")!
     }
     
     /// The URL of the high-contrast light basemap item.
