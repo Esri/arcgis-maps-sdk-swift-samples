@@ -47,9 +47,9 @@ struct ShowScaleBarView: View {
         return map
     }()
     
-    /// The `ScalebarSettings` add the shadow to the scale bar.
-    @State private var scaleBarSettings: ScalebarSettings = {
-        let settings = ScalebarSettings(
+    /// The `Scalebar.Settings` adds the shadow to the scale bar.
+    @State private var scaleBarSettings: Scalebar.Settings = {
+        let settings = Scalebar.Settings(
             shadowColor: Color.black,
             shadowRadius: 6
         )
