@@ -68,10 +68,7 @@ extension NavigateMapAndIdentifyFeaturesWithKeyboardView {
         /// - Parameters:
         ///   - envelope: The envelope used to query restaurant features.
         ///   - screenPointFor: A closure that converts a map location to a screen point.
-        func selectFeatures(
-            in envelope: Envelope?,
-            screenPointFor: (Point) -> CGPoint?
-        ) async throws {
+        func selectFeatures(in envelope: Envelope?, screenPointFor: (Point) -> CGPoint?) async throws {
             resetSelection()
             
             guard let envelope else { return }
@@ -112,10 +109,7 @@ extension NavigateMapAndIdentifyFeaturesWithKeyboardView {
         ///   - envelope: The envelope used to query restaurant features.
         ///   - screenPointFor: A closure that converts a map location to a screen point.
         /// - Returns: The ordered restaurant features with their map and screen positions.
-        private func makeOrderedFeatures(
-            intersecting envelope: Envelope,
-            screenPointFor: (Point) -> CGPoint?
-        ) async throws -> [OrderedFeature] {
+        private func makeOrderedFeatures(intersecting envelope: Envelope, screenPointFor: (Point) -> CGPoint?) async throws -> [OrderedFeature] {
             let queryParameters = QueryParameters()
             queryParameters.geometry = envelope
             queryParameters.spatialRelationship = .intersects
