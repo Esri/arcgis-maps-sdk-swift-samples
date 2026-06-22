@@ -18,8 +18,7 @@ import SwiftUI
 import TipKit
 import UIKit
 
-struct UpdateBasemapForContrastAccessibilityView: View {
-    
+struct UpdateBasemapForContrastAccessibilityView: View {    
     /// The view model for the sample.
     @State private var model = Model()
     
