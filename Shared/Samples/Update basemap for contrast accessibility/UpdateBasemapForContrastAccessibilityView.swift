@@ -18,7 +18,7 @@ import SwiftUI
 import TipKit
 import UIKit
 
-struct UpdateBasemapForContrastAccessibilityView: View {    
+struct UpdateBasemapForContrastAccessibilityView: View {
     /// The view model for the sample.
     @State private var model = Model()
     
@@ -125,7 +125,7 @@ private extension UpdateBasemapForContrastAccessibilityView {
                             
                             if model.contrastMode == .automatic {
                                 TipView(automaticModeTip) { action in
-                                openAccessibilitySettings()
+                                    openAccessibilitySettings()
                                 }
                             }
                         }
@@ -173,7 +173,6 @@ private extension UpdateBasemapForContrastAccessibilityView {
                         openAppSettings()
                     }
                 } catch {
-                    print("Unable to open Accessibility Settings: \(error)")
                     openAppSettings()
                 }
             }
