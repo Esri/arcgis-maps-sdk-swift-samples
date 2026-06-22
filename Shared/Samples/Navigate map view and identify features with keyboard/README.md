@@ -20,7 +20,7 @@ If more than nine restaurants are inside the rectangle, an overflow message is s
 
 ## How it works
 
-1. Create a `Map` with an `ArcGISLightGray` basemap centered on Redlands.
+1. Create a `Map` with an `arcGISLightGray` basemap centered on Redlands.
 2. Create a `ServiceFeatureTable` from the Redlands restaurants feature service.
 3. Create a `FeatureLayer` from the service feature table and apply a `SimpleRenderer` with a circular marker symbol.
 4. Display the map and a `GraphicsOverlay` in a `MapView`.
