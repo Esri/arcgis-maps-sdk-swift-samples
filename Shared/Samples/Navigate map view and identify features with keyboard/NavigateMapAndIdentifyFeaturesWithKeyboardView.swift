@@ -17,14 +17,6 @@ import SwiftUI
 import TipKit
 
 struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
-    /// Configures TipKit for this sample.
-    private static let tipConfiguration: Void = {
-        #if DEBUG
-        try? Tips.resetDatastore()
-        #endif
-        try? Tips.configure([.displayFrequency(.immediate)])
-    }()
-
     /// The view model for the sample.
     @State private var model = Model()
     
@@ -70,9 +62,9 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
     /// A tip explaining how to show and use the software keyboard.
     private let keyboardInputTip = KeyboardInputTip()
 
-    init() {
-        _ = Self.tipConfiguration
-    }
+////    init() {
+//        _ = Self.tipConfiguration
+//    }
     
     var body: some View {
         MapViewReader { mapViewProxy in
@@ -161,6 +153,11 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
                                 Task { await showKeyboard() }
                             }
                         }
+                    }
+                    .onAppear {
+                        // TipKit configuration is intended to happen once per process.
+                        // Avoid showing an alert if this view appears multiple times.
+                        try? Tips.configure([.displayFrequency(.immediate)])
                     }
                     .task {
                         await focusMap()
