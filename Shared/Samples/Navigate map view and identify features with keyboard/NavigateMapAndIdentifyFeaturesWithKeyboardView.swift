@@ -23,9 +23,6 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
     /// The error shown in the error alert.
     @State private var error: (any Error)?
     
-    /// A Boolean value indicating whether the map view is navigating.
-    @State private var isNavigating = false
-    
     /// A Boolean value indicating whether the initial draw has completed.
     @State private var initialDrawCompleted = false
     
@@ -55,21 +52,12 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
     
     /// The number keys that can identify features.
     private let featureNumberKeys = CharacterSet(charactersIn: "123456789")
-
-    /// A tip explaining the area of interest rectangle.
-    private let areaOfInterestTip = AreaOfInterestTip()
-
-    /// A tip explaining how to show and use the software keyboard.
-    private let keyboardInputTip = KeyboardInputTip()
-
-////    init() {
-//        _ = Self.tipConfiguration
-//    }
     
     var body: some View {
         MapViewReader { mapViewProxy in
             GeometryReader { geometryProxy in
                 let mapSize = geometryProxy.size
+                let rectangleLength = min(selectionRectangleLength, min(mapSize.width, mapSize.height))
                 
                 MapView(map: model.map, graphicsOverlays: [model.labelOverlay])
                     .selectionColor(Model.selectionHaloColor)
@@ -79,23 +67,21 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
                         }
                     }
                     .onDrawStatusChanged { drawStatus in
-                        guard drawStatus == .completed else { return }
+                        guard drawStatus == .completed, !initialDrawCompleted else { return }
                         initialDrawCompleted = true
-                    }
-                    .onNavigatingChanged { navigating in
-                        isNavigating = navigating
-                        if navigating {
-                            dismissCallout()
+                        Task {
+                            await refreshSelection(mapSize: mapSize, mapViewProxy: mapViewProxy)
+                            await focusMap()
                         }
                     }
-                    .task(id: initialDrawCompleted) {
-                        guard initialDrawCompleted else { return }
-                        await refreshSelection(mapSize: mapSize, mapViewProxy: mapViewProxy)
-                        await focusMap()
-                    }
-                    .task(id: isNavigating) {
-                        guard !isNavigating, initialDrawCompleted else { return }
-                        await refreshSelection(mapSize: mapSize, mapViewProxy: mapViewProxy)
+                    .onNavigatingChanged { navigating in
+                        if navigating {
+                            dismissCallout()
+                        } else if initialDrawCompleted {
+                            Task {
+                                await refreshSelection(mapSize: mapSize, mapViewProxy: mapViewProxy)
+                            }
+                        }
                     }
                     .focusable()
                     .focused($mapHasFocus)
@@ -119,13 +105,13 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
                                     RoundedRectangle(cornerRadius: 4)
                                         .stroke(.pink, lineWidth: 2)
                                 )
-                                .frame(width: min(selectionRectangleLength, min(mapSize.width, mapSize.height)), height: min(selectionRectangleLength, min(mapSize.width, mapSize.height)))
+                                .frame(width: rectangleLength, height: rectangleLength)
                                 .allowsHitTesting(false)
                                 .accessibilityHidden(true)
                         }
                     }
                     .overlay(alignment: .top) {
-                        instructionsOverlay
+                        TipView(AreaOfInterestTip())
                     }
                     .overlay(alignment: .bottom) {
                         VStack(spacing: 8) {
@@ -138,9 +124,14 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
                                     .clipShape(.rect(cornerRadius: 8))
                             }
                             if !statusMessage.isEmpty {
-                                statusMessageOverlay
+                                Text(statusMessage)
+                                    .font(.footnote)
+                                    .multilineTextAlignment(.center)
+                                    .padding(8)
+                                    .background(.regularMaterial)
+                                    .clipShape(.rect(cornerRadius: 8))
                             }
-                            TipView(keyboardInputTip)
+                            TipView(KeyboardInputTip())
                             if isKeyboardInputActive {
                                 makeKeyboardInputBar()
                             }
@@ -302,21 +293,6 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
                     }
                 }
             }
-    }
-    
-    /// The instructions shown above the map.
-    private var instructionsOverlay: some View {
-        TipView(areaOfInterestTip)
-    }
-    
-    /// The status message shown when a number key has no matching restaurant.
-    private var statusMessageOverlay: some View {
-        Text(statusMessage)
-            .font(.footnote)
-            .multilineTextAlignment(.center)
-            .padding(8)
-            .background(.regularMaterial)
-            .clipShape(.rect(cornerRadius: 8))
     }
     
     /// The callout content for a restaurant feature.
