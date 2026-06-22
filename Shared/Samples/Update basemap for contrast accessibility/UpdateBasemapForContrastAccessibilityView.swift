@@ -12,8 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import Accessibility
 import ArcGIS
 import SwiftUI
+import TipKit
+import UIKit
 
 struct UpdateBasemapForContrastAccessibilityView: View {
     /// The view model for the sample.
@@ -22,7 +25,7 @@ struct UpdateBasemapForContrastAccessibilityView: View {
     /// The error shown in an alert, if any.
     @State private var error: (any Error)?
     
-    /// A Boolean value indicating whether the settings sheet is presented.
+    /// A Boolean value indicating whether the settings view should be presented.
     @State private var isShowingSettings = false
     
     /// The system color scheme (light or dark).
@@ -33,25 +36,31 @@ struct UpdateBasemapForContrastAccessibilityView: View {
     /// Reflects the "Increase Contrast" accessibility preference.
     @Environment(\.colorSchemeContrast) private var colorSchemeContrast
     
-    /// SwiftUI re-evaluates this whenever the color scheme or contrast
-    /// environment values change.
-    private var automaticAppearance: ContrastAppearance {
+    /// The contrast appearance resolved from the current SwiftUI environment values.
+    ///
+    /// SwiftUI re-evaluates this whenever the color scheme or contrast values change.
+    private var appearanceForDeviceSettings: ContrastAppearance {
         ContrastAppearance(colorScheme: colorScheme, contrast: colorSchemeContrast)
     }
     
-    /// The appearance that should drive the displayed basemap, honoring the selected mode.
-    private var effectiveAppearance: ContrastAppearance {
+    /// The contrast appearance that should be displayed for the current mode.
+    private var appearanceForCurrentMode: ContrastAppearance {
         switch model.contrastMode {
-        case .automatic: automaticAppearance
+        case .automatic: appearanceForDeviceSettings
         case .manual: model.contrastAppearance
         }
     }
     
     var body: some View {
         MapView(map: model.map)
-            .task(id: effectiveAppearance) {
+            .onAppear {
+                // TipKit configuration is intended to happen once per process.
+                // Avoid showing an alert if this view appears multiple times.
+                try? Tips.configure([.displayFrequency(.immediate)])
+            }
+            .task(id: appearanceForCurrentMode) {
                 do {
-                    try await model.setBasemap(for: effectiveAppearance)
+                    try await model.setBasemap(for: appearanceForCurrentMode)
                 } catch {
                     self.error = error
                 }
@@ -62,19 +71,8 @@ struct UpdateBasemapForContrastAccessibilityView: View {
                         isShowingSettings = true
                     }
                     .sheet(isPresented: $isShowingSettings) {
-                        NavigationStack {
-                            ContrastSettingsView(model: model)
-                                .navigationTitle("Contrast Options")
-                                .navigationBarTitleDisplayMode(.inline)
-                                .toolbar {
-                                    ToolbarItem(placement: .confirmationAction) {
-                                        Button("Done") {
-                                            isShowingSettings = false
-                                        }
-                                    }
-                                }
-                        }
-                        .presentationDetents([.medium, .large])
+                        SettingsView(model: model)
+                            .presentationDetents([.medium, .large])
                     }
                 }
             }
@@ -86,53 +84,131 @@ private extension UpdateBasemapForContrastAccessibilityView {
     // MARK: - Settings View
     
     /// The appearance settings for the map.
-    struct ContrastSettingsView: View {
+    struct SettingsView: View {
         /// The view model for the sample.
         @Bindable var model: Model
-
+        
+        /// The action to dismiss the view.
+        @Environment(\.dismiss) private var dismiss
+        
+        /// A tip explaining how the automatic contrast mode responds to OS settings.
+        private let automaticModeTip = AutomaticModeTip()
+        
         var body: some View {
-            Form {
-                Section {
-                    Toggle("Reference Layers", isOn: $model.referenceLayersAreVisible)
-                } footer: {
-                    Text(
-                        model.referenceLayersAreVisible
-                        ? "Labels and boundary reference layers are visible."
-                        : "Labels and boundary reference layers are hidden."
-                    )
-                    .font(.caption)
-                }
-                
-                Section {
-                    Picker("Mode", selection: $model.contrastMode) {
-                        ForEach(ContrastMode.allCases, id: \.self) { mode in
-                            Text(mode.displayName)
-                        }
+            NavigationStack {
+                Form {
+                    Section {
+                        Toggle("Reference Layers", isOn: $model.referenceLayersAreVisible)
+                    } footer: {
+                        Text(
+                            model.referenceLayersAreVisible
+                            ? "Labels and boundary reference layers are visible."
+                            : "Labels and boundary reference layers are hidden."
+                        )
+                        .font(.caption)
                     }
-                    .pickerStyle(.segmented)
-                } header: {
-                    Text("Visual Contrast Mode")
-                } footer: {
-                    Text(model.contrastMode.detail)
-                }
-                
-                if model.contrastMode == .manual {
-                    Section("Manual Contrast") {
-                        Picker("Appearance", selection: $model.contrastAppearance) {
-                            ForEach(ContrastAppearance.allCases, id: \.self) { appearance in
-                                VStack(alignment: .leading) {
-                                    Text(appearance.displayName)
-                                    Text(appearance.detail)
-                                        .font(.caption)
-                                        .foregroundStyle(.secondary)
+                    
+                    Section {
+                        Picker("Mode", selection: $model.contrastMode) {
+                            ForEach(ContrastMode.allCases, id: \.self) { mode in
+                                Text(mode.displayName)
+                            }
+                        }
+                        .pickerStyle(.segmented)
+                    } header: {
+                        Text("Visual Contrast Mode")
+                    } footer: {
+                        VStack(alignment: .leading, spacing: 8) {
+                            Text(model.contrastMode.detail)
+                            
+                            if model.contrastMode == .automatic {
+                                TipView(automaticModeTip) { _ in
+                                    openAccessibilitySettings()
                                 }
                             }
                         }
-                        .pickerStyle(.inline)
-                        .labelsHidden()
+                    }
+                    if model.contrastMode == .manual {
+                        Section("Manual Contrast") {
+                            Picker("Appearance", selection: $model.contrastAppearance) {
+                                ForEach(ContrastAppearance.allCases, id: \.self) { appearance in
+                                    VStack(alignment: .leading) {
+                                        Text(appearance.displayName)
+                                        Text(appearance.detail)
+                                            .font(.caption)
+                                            .foregroundStyle(.secondary)
+                                    }
+                                }
+                            }
+                            .pickerStyle(.inline)
+                            .labelsHidden()
+                        }
+                    }
+                }
+                .navigationTitle("Contrast Options")
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    ToolbarItem(placement: .confirmationAction) {
+                        Button("Done") {
+                            dismiss()
+                        }
                     }
                 }
             }
+        }
+        
+        /// Opens the Settings app to an Accessibility feature when supported.
+        private func openAccessibilitySettings() {
+            Task {
+                do {
+                    let feature: AccessibilitySettings.Feature = .personalVoiceAllowAppsToRequestToUse
+                    try await AccessibilitySettings.openSettings(for: feature)
+                } catch {
+                    openAppSettings()
+                }
+            }
+        }
+        
+        /// Opens this app's page in the Settings app.
+        private func openAppSettings() {
+        #if targetEnvironment(macCatalyst)
+            UIApplication.shared.open(.macOSAccessibilitySettings)
+        #else
+            UIApplication.shared.open(.appSettings)
+        #endif
+        }
+    }
+}
+
+private extension UpdateBasemapForContrastAccessibilityView {
+    /// A tip that guides users to test automatic mode using OS appearance settings.
+    struct AutomaticModeTip: Tip {
+        /// The ID of the action that opens the Settings app.
+        static let openSettingsActionID = "openSettings"
+        
+        var title: Text {
+            Text("Try changing device appearance")
+        }
+        
+        var message: Text? {
+            Text(
+                """
+                Change Light/Dark Mode or Increase Contrast in the Settings app
+                to see the basemap update automatically. Increase Contrast is in
+                Accessibility > Display & Text Size.
+                """
+            )
+        }
+        
+        var image: Image? {
+            Image(systemName: "gearshape")
+        }
+        
+        var actions: [Action] {
+            Action(
+                id: Self.openSettingsActionID,
+                title: "Open Accessibility Settings"
+            )
         }
     }
 }
@@ -258,6 +334,16 @@ private extension UpdateBasemapForContrastAccessibilityView {
 }
 
 private extension URL {
+    /// The URL of this app's page in the Settings app.
+    static var appSettings: URL {
+        URL(string: UIApplication.openSettingsURLString)!
+    }
+    
+    /// The URL of the Accessibility pane in the macOS System Settings app.
+    static var macOSAccessibilitySettings: URL {
+        URL(string: "x-apple.systempreferences:com.apple.Accessibility-Settings.extension")!
+    }
+    
     /// The URL of the high-contrast light basemap item.
     static var highContrastLightBasemap: URL {
         URL(string: "https://www.arcgis.com/home/item.html?id=084291b0ecad4588b8c8853898d72445")!
