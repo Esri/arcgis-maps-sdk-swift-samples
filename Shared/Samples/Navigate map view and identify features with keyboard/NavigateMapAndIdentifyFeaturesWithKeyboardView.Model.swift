@@ -13,34 +13,29 @@
 // limitations under the License.
 
 import ArcGIS
-import Foundation
 import SwiftUI
-import UIKit.UIColor
 
 extension NavigateMapAndIdentifyFeaturesWithKeyboardView {
-    /// The model for the sample.
+    // MARK: - Model
+    
+    /// The view model for the sample.
     @MainActor
     @Observable
     final class Model {
         /// The maximum number of features that can be identified with number keys.
         private static let maximumNumberedFeatures = 9
         
-        /// Attribute used to title and label each feature.
+        /// The attribute used to title and label each feature.
         private static let nameAttribute = "name"
-        
-        /// Colors used for the marker, selection halo, and label.
-        private static let markerFillColor = UIColor(red: 11 / 255, green: 79 / 255, blue: 138 / 255, alpha: 1)
-        static let selectionHaloColor = Color(red: 190 / 255, green: 24 / 255, blue: 93 / 255)
-        private static let labelTextColor = UIColor(red: 31 / 255, green: 35 / 255, blue: 40 / 255, alpha: 1)
         
         /// The map displayed in the map view.
         let map: Map
         
-        /// The feature table of restaurants in Redlands.
-        private let restaurantsTable = ServiceFeatureTable(url: .redlandsRestaurants)
-        
         /// The feature layer holding the restaurants displayed and identified by the sample.
         private let restaurantsLayer: FeatureLayer
+        
+        /// The feature table of restaurants in Redlands.
+        private let restaurantsTable = ServiceFeatureTable(url: .redlandsRestaurants)
         
         /// The overlay for the numbered 1-9 labels.
         let labelOverlay = GraphicsOverlay()
@@ -52,9 +47,11 @@ extension NavigateMapAndIdentifyFeaturesWithKeyboardView {
         private(set) var hasMoreThanNineSelectedFeatures = false
         
         init() {
+            // Creates and configures the restaurants layer.
             restaurantsLayer = FeatureLayer(featureTable: restaurantsTable)
-            restaurantsLayer.renderer = SimpleRenderer(symbol: Self.restaurantSymbol)
+            restaurantsLayer.renderer = SimpleRenderer(symbol: Self.makeRestaurantSymbol())
             
+            // Creates the map and adds the restaurants layer.
             let map = Map(basemapStyle: .arcGISLightGray)
             map.initialViewpoint = Viewpoint(
                 center: Point(x: -117.1825, y: 34.0556, spatialReference: .wgs84),
@@ -68,10 +65,7 @@ extension NavigateMapAndIdentifyFeaturesWithKeyboardView {
         /// - Parameters:
         ///   - envelope: The envelope used to query restaurant features.
         ///   - screenPointFor: A closure that converts a map location to a screen point.
-        func selectFeatures(
-            in envelope: Envelope?,
-            screenPointFor: (Point) -> CGPoint?
-        ) async throws {
+        func selectFeatures(in envelope: Envelope?, screenPointFor: (Point) -> CGPoint?) async throws {
             resetSelection()
             
             guard let envelope else { return }
@@ -146,34 +140,55 @@ extension NavigateMapAndIdentifyFeaturesWithKeyboardView {
             for (offset, orderedFeature) in numberedOrderedFeatures.enumerated() {
                 let number = offset + 1
                 let text = name(for: orderedFeature.feature, fallback: nil).map { "\(number): \($0)" } ?? "\(number)"
-                let labelSymbol = TextSymbol(
-                    text: text,
-                    color: Self.labelTextColor,
-                    size: 15,
-                    horizontalAlignment: .center,
-                    verticalAlignment: .top
-                )
-                labelSymbol.haloColor = .white
-                labelSymbol.haloWidth = 2
-                labelSymbol.offsetY = -14
+                let labelSymbol = makeTextSymbol(text: text)
                 labelOverlay.addGraphic(Graphic(geometry: orderedFeature.anchor, symbol: labelSymbol))
                 numberedFeatures.append(orderedFeature.feature)
             }
         }
         
-        /// The restaurant marker symbol.
-        private static var restaurantSymbol: SimpleMarkerSymbol {
+        /// Creates a restaurant marker symbol.
+        /// - Returns: A simple marker symbol for restaurants.
+        private static func makeRestaurantSymbol() -> SimpleMarkerSymbol {
+            let markerFillColor = UIColor(red: 11 / 255, green: 79 / 255, blue: 138 / 255, alpha: 1)
             let symbol = SimpleMarkerSymbol(style: .circle, color: markerFillColor, size: 12)
             symbol.outline = SimpleLineSymbol(style: .solid, color: .white, width: 1.5)
             return symbol
         }
         
-        /// A feature and its screen-space ordering information.
-        private struct OrderedFeature {
-            let feature: Feature
-            let anchor: Point
-            let screenPoint: CGPoint
+        /// Creates a text symbol for a numbered label.
+        /// - Parameter text: The text to display in the label.
+        /// - Returns: A text symbol for the numbered label.
+        private func makeTextSymbol(text: String) -> TextSymbol {
+            let labelTextColor = UIColor(red: 31 / 255, green: 35 / 255, blue: 40 / 255, alpha: 1)
+            let labelSymbol = TextSymbol(
+                text: text,
+                color: labelTextColor,
+                size: 15,
+                horizontalAlignment: .center,
+                verticalAlignment: .top
+            )
+            labelSymbol.haloColor = .white
+            labelSymbol.haloWidth = 2
+            labelSymbol.offsetY = -14
+            return labelSymbol
         }
+    }
+}
+
+// MARK: - Helper Types
+
+extension NavigateMapAndIdentifyFeaturesWithKeyboardView.Model {
+    /// The color used for the selection halo.
+    static let selectionHaloColor = Color(red: 190 / 255, green: 24 / 255, blue: 93 / 255)
+    
+    /// A feature and its screen-space ordering information.
+    struct OrderedFeature {
+        /// The feature from the feature table.
+        let feature: Feature
+        /// The map location of the feature.
+        let anchor: Point
+        /// The screen location of the feature.
+        let screenPoint: CGPoint
     }
 }
 
