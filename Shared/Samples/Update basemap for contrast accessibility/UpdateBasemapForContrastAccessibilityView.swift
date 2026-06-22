@@ -19,10 +19,6 @@ import TipKit
 import UIKit
 
 struct UpdateBasemapForContrastAccessibilityView: View {
-    /// The one-time TipKit configuration for this sample.
-    private static let tipConfiguration: Void = {
-        try? Tips.configure([.displayFrequency(.immediate)])
-    }()
     
     /// The view model for the sample.
     @State private var model = Model()
@@ -56,12 +52,15 @@ struct UpdateBasemapForContrastAccessibilityView: View {
         }
     }
     
-    init() {
-        _ = Self.tipConfiguration
-    }
-    
     var body: some View {
         MapView(map: model.map)
+            .onAppear {
+                do {
+                    try Tips.configure([.displayFrequency(.immediate)])
+                } catch {
+                    self.error = error
+                }
+            }
             .task(id: appearanceForCurrentMode) {
                 do {
                     try await model.setBasemap(for: appearanceForCurrentMode)
