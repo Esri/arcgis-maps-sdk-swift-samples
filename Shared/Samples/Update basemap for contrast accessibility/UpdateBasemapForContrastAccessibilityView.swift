@@ -127,9 +127,7 @@ private extension UpdateBasemapForContrastAccessibilityView {
                             
                             if model.contrastMode == .automatic {
                                 TipView(automaticModeTip) { action in
-                                    if action.id == AutomaticModeTip.openSettingsActionID {
-                                        openAccessibilitySettings()
-                                    }
+                                openAccessibilitySettings()
                                 }
                             }
                         }
@@ -202,9 +200,11 @@ private extension UpdateBasemapForContrastAccessibilityView {
         
         var message: Text? {
             Text(
-                "Change Light/Dark Mode or Increase Contrast in the Settings app " +
-                "to see the basemap update automatically. Increase Contrast is in " +
-                "Accessibility > Display & Text Size."
+                """
+                Change Light/Dark Mode or Increase Contrast in the Settings app
+                to see the basemap update automatically. Increase Contrast is in
+                Accessibility > Display & Text Size.
+                """
             )
         }
         
@@ -213,12 +213,10 @@ private extension UpdateBasemapForContrastAccessibilityView {
         }
         
         var actions: [Action] {
-            return [
-                Action(
-                    id: Self.openSettingsActionID,
-                    title: "Open Accessibility Settings"
-                )
-            ]
+            Action(
+                id: Self.openSettingsActionID,
+                title: "Open Accessibility Settings"
+            )
         }
     }
 }
@@ -268,7 +266,6 @@ private extension UpdateBasemapForContrastAccessibilityView {
                 layer.isVisible = referenceLayersAreVisible
             }
         }
-        
         
         /// Maps the selected appearance to its contrast-accessibility basemap.
         private static func makeBasemap(for contrast: ContrastAppearance) -> Basemap {
