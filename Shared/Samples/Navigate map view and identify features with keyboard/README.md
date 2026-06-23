@@ -42,6 +42,10 @@ If more than nine restaurants are inside the rectangle, an overflow message is s
 
 This sample uses a [Redlands restaurants](https://www.arcgis.com/home/item.html?id=46119989eccd46a58b8f3d7aedadeb90) feature layer covering food establishments in Redlands, California. Each feature represents a single restaurant.
 
+## Additional information
+
+The map view supports built-in keyboard shortcuts for pan (arrow keys), zoom (<kbd>+</kbd> / <kbd>-</kbd>), rotate (<kbd>Alt</kbd> + <kbd>←</kbd> / <kbd>→</kbd>), and reset to north (<kbd>Alt</kbd> + <kbd>↑</kbd>). On macOS, use <kbd>Option</kbd> in place of <kbd>Alt</kbd>. See [Navigate a map view](https://developers.arcgis.com/net/maps-2d/navigate-a-map-view/) for the complete list of built-in interactions.
+
 ## Tags
 
 accessibility, accessible, identify, inclusive, keyboard, navigation, selection, WCAG
