@@ -47,6 +47,9 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
     /// The status message shown when a number key has no matching restaurant.
     @State private var statusMessage = ""
     
+    /// A task for delayed selection refresh after navigation ends.
+    @State private var refreshTask: Task<Void, Never>?
+    
     /// The side length of the centered area-of-interest rectangle, in screen points.
     private let selectionRectangleLength: CGFloat = 420
     
@@ -70,15 +73,35 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
                         guard drawStatus == .completed, !initialDrawCompleted else { return }
                         initialDrawCompleted = true
                         Task {
-                            await refreshSelection(mapSize: mapSize, mapViewProxy: mapViewProxy)
-                            await focusMap()
+                            do {
+                                // Ensure feature layer is fully loaded before querying
+                                try await model.ensureLayerLoaded()
+                                
+                                // Additional delay to ensure map view proxy is fully ready and settled
+                                try? await Task.sleep(for: .milliseconds(500))
+                                await refreshSelection(mapSize: mapSize, mapViewProxy: mapViewProxy)
+                                await focusMap()
+                            } catch {
+                                self.error = error
+                            }
                         }
                     }
                     .onNavigatingChanged { navigating in
                         if navigating {
                             dismissCallout()
+                            // Cancel any pending refresh when navigation starts
+                            refreshTask?.cancel()
                         } else if initialDrawCompleted {
-                            Task {
+                            // Cancel any previous pending refresh
+                            refreshTask?.cancel()
+                            
+                            // Debounce: wait for map to fully settle after navigation
+                            refreshTask = Task {
+                                // Wait for coordinate transforms to stabilize
+                                try? await Task.sleep(for: .milliseconds(200))
+                                
+                                guard !Task.isCancelled else { return }
+                                
                                 await refreshSelection(mapSize: mapSize, mapViewProxy: mapViewProxy)
                             }
                         }
@@ -175,27 +198,38 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
     private func makeSelectionEnvelope(mapSize: CGSize, mapViewProxy: MapViewProxy) -> Envelope? {
         let clampedRectangleLength = min(selectionRectangleLength, min(mapSize.width, mapSize.height))
         let screenCenter = CGPoint(x: mapSize.width / 2, y: mapSize.height / 2)
-        let rightScreenPoint = CGPoint(
-            x: screenCenter.x + clampedRectangleLength / 2,
-            y: screenCenter.y
-        )
-        let topScreenPoint = CGPoint(
-            x: screenCenter.x,
-            y: screenCenter.y - clampedRectangleLength / 2
-        )
+        let halfLength = clampedRectangleLength / 2
         
-        guard let mapCenter = mapViewProxy.location(fromScreenPoint: screenCenter),
-              let rightMapPoint = mapViewProxy.location(fromScreenPoint: rightScreenPoint),
-              let topMapPoint = mapViewProxy.location(fromScreenPoint: topScreenPoint),
-              let spatialReference = mapCenter.spatialReference else {
+        // Sample all four corners of the rectangle to ensure complete coverage
+        let topLeft = CGPoint(x: screenCenter.x - halfLength, y: screenCenter.y - halfLength)
+        let topRight = CGPoint(x: screenCenter.x + halfLength, y: screenCenter.y - halfLength)
+        let bottomRight = CGPoint(x: screenCenter.x + halfLength, y: screenCenter.y + halfLength)
+        let bottomLeft = CGPoint(x: screenCenter.x - halfLength, y: screenCenter.y + halfLength)
+        
+        // Convert all corners to map coordinates
+        let corners = [topLeft, topRight, bottomRight, bottomLeft]
+        let mapPoints = corners.compactMap { mapViewProxy.location(fromScreenPoint: $0) }
+
+        // Ensure we got all 4 corners converted
+        guard mapPoints.count == 4,
+              let spatialReference = mapPoints.first?.spatialReference else {
             return nil
         }
         
-        let halfWidth = abs(rightMapPoint.x - mapCenter.x)
-        let halfHeight = abs(topMapPoint.y - mapCenter.y)
+        // Find the bounding envelope that encompasses all corners
+        let xValues = mapPoints.map { $0.x }
+        let yValues = mapPoints.map { $0.y }
+        
+        guard let minX = xValues.min(),
+              let maxX = xValues.max(),
+              let minY = yValues.min(),
+              let maxY = yValues.max() else {
+            return nil
+        }
+
         return Envelope(
-            xRange: mapCenter.x - halfWidth ... mapCenter.x + halfWidth,
-            yRange: mapCenter.y - halfHeight ... mapCenter.y + halfHeight,
+            xRange: minX...maxX,
+            yRange: minY...maxY,
             spatialReference: spatialReference
         )
     }

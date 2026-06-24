@@ -25,6 +25,9 @@ extension NavigateMapAndIdentifyFeaturesWithKeyboardView {
         /// The maximum number of features that can be identified with number keys.
         private static let maximumNumberedFeatures = 9
         
+        /// Buffer distance around the selection envelope to account for edge cases.
+        private static let selectionBufferDistance = LinearUnit.meters.convert(to: .meters, value: 60)
+        
         /// Attribute used to title and label each feature.
         private static let nameAttribute = "name"
         
@@ -64,23 +67,34 @@ extension NavigateMapAndIdentifyFeaturesWithKeyboardView {
             self.map = map
         }
         
+        /// Ensures the feature layer is fully loaded before querying.
+        func ensureLayerLoaded() async throws {
+            // Load the feature table to ensure metadata and features are available
+            try await restaurantsTable.load()
+        }
+        
         /// Selects, numbers, and labels restaurant features that intersect a given envelope.
         /// - Parameters:
         ///   - envelope: The envelope used to query restaurant features.
         ///   - screenPointFor: A closure that converts a map location to a screen point.
         func selectFeatures(in envelope: Envelope?, screenPointFor: (Point) -> CGPoint?) async throws {
-            resetSelection()
+            clearSelection()
             
             guard let envelope else { return }
             
-            let orderedFeatures = try await makeOrderedFeatures(
-                intersecting: envelope,
-                screenPointFor: screenPointFor
-            )
+            let orderedFeatures = try await makeOrderedFeatures(intersecting: envelope)
             
             hasMoreThanNineSelectedFeatures = orderedFeatures.count > Self.maximumNumberedFeatures
             restaurantsLayer.selectFeatures(orderedFeatures.map(\.feature))
             addNumberedLabels(for: orderedFeatures)
+        }
+        
+        /// Clears selected features, label graphics, and numbered feature state.
+        func clearSelection() {
+            restaurantsLayer.clearSelection()
+            labelOverlay.removeAllGraphics()
+            numberedFeatures.removeAll()
+            hasMoreThanNineSelectedFeatures = false
         }
         
         /// Reads the feature's name attribute, returning the fallback when it is missing or blank.
@@ -96,39 +110,33 @@ extension NavigateMapAndIdentifyFeaturesWithKeyboardView {
             return name
         }
         
-        /// Clears selected features, label graphics, and numbered feature state.
-        private func resetSelection() {
-            restaurantsLayer.clearSelection()
-            labelOverlay.removeAllGraphics()
-            numberedFeatures.removeAll()
-            hasMoreThanNineSelectedFeatures = false
-        }
-        
-        /// Queries and sorts restaurant features from top-to-bottom, then left-to-right in screen space.
-        /// - Parameters:
-        ///   - envelope: The envelope used to query restaurant features.
-        ///   - screenPointFor: A closure that converts a map location to a screen point.
-        /// - Returns: The ordered restaurant features with their map and screen positions.
-        private func makeOrderedFeatures(intersecting envelope: Envelope, screenPointFor: (Point) -> CGPoint?) async throws -> [OrderedFeature] {
+        /// Queries and sorts restaurant features from top-to-bottom, then left-to-right in geographic space.
+        /// - Parameter envelope: The envelope used to query restaurant features.
+        /// - Returns: The ordered restaurant features with their map positions.
+        private func makeOrderedFeatures(intersecting envelope: Envelope) async throws -> [OrderedFeature] {
+            // Add a buffer to catch features near the rectangle edges.
+            // This accounts for projection distortions and rendering tolerances.
+            let bufferedEnvelope = GeometryEngine.buffer(around: envelope, distance: Self.selectionBufferDistance)?.extent ?? envelope
+            
             let queryParameters = QueryParameters()
-            queryParameters.geometry = envelope
+            queryParameters.geometry = bufferedEnvelope
             queryParameters.spatialRelationship = .intersects
+            queryParameters.maxFeatures = 1000
             
             let queryResult = try await restaurantsTable.queryFeatures(using: queryParameters)
-            return queryResult.features()
+            let allFeatures = Array(queryResult.features())
+            
+            return allFeatures
                 .compactMap { feature -> OrderedFeature? in
-                    guard let anchor = feature.geometry as? Point,
-                          let screenPoint = screenPointFor(anchor) else {
-                        return nil
-                    }
-                    return OrderedFeature(feature: feature, anchor: anchor, screenPoint: screenPoint)
+                    guard let anchor = feature.geometry as? Point else { return nil }
+                    return OrderedFeature(feature: feature, anchor: anchor)
                 }
                 .sorted { lhs, rhs in
-                    if lhs.screenPoint.y != rhs.screenPoint.y {
-                        lhs.screenPoint.y < rhs.screenPoint.y
-                    } else {
-                        lhs.screenPoint.x < rhs.screenPoint.x
+                    // Sort by geographic coordinates (north to south, then west to east).
+                    if lhs.anchor.y != rhs.anchor.y {
+                        return lhs.anchor.y > rhs.anchor.y
                     }
+                    return lhs.anchor.x < rhs.anchor.x
                 }
         }
         
@@ -162,11 +170,10 @@ extension NavigateMapAndIdentifyFeaturesWithKeyboardView {
             return symbol
         }
         
-        /// A feature and its screen-space ordering information.
+        /// A feature and its map location.
         private struct OrderedFeature {
             let feature: Feature
             let anchor: Point
-            let screenPoint: CGPoint
         }
     }
 }
