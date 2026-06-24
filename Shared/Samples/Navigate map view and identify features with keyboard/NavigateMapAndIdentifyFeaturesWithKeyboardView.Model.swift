@@ -85,7 +85,11 @@ extension NavigateMapAndIdentifyFeaturesWithKeyboardView {
             let orderedFeatures = try await makeOrderedFeatures(intersecting: envelope)
             
             hasMoreThanNineSelectedFeatures = orderedFeatures.count > Self.maximumNumberedFeatures
-            restaurantsLayer.selectFeatures(orderedFeatures.map(\.feature))
+            
+            // Only select the numbered features (first 9)
+            let numberedOrderedFeatures = orderedFeatures.prefix(Self.maximumNumberedFeatures)
+            restaurantsLayer.selectFeatures(numberedOrderedFeatures.map(\.feature))
+            
             addNumberedLabels(for: orderedFeatures)
         }
         

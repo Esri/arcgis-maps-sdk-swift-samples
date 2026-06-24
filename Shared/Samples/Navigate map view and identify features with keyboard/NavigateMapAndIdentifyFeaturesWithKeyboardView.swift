@@ -217,8 +217,8 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
         }
         
         // Find the bounding envelope that encompasses all corners
-        let xValues = mapPoints.map { $0.x }
-        let yValues = mapPoints.map { $0.y }
+        let xValues = mapPoints.map(\.x)
+        let yValues = mapPoints.map(\.y)
         
         guard let minX = xValues.min(),
               let maxX = xValues.max(),
