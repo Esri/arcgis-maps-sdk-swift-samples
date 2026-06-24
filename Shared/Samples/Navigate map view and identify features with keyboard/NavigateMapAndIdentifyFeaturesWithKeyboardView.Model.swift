@@ -61,7 +61,7 @@ extension NavigateMapAndIdentifyFeaturesWithKeyboardView {
             let map = Map(basemapStyle: .arcGISLightGray)
             map.initialViewpoint = Viewpoint(
                 center: Point(x: -117.1825, y: 34.0556, spatialReference: .wgs84),
-                scale: 5_000
+                scale: 4_500
             )
             map.addOperationalLayer(restaurantsLayer)
             self.map = map
