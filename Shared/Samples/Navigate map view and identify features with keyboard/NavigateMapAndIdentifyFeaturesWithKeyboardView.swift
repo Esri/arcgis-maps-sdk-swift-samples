@@ -154,8 +154,8 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
                                     .background(.regularMaterial)
                                     .clipShape(.rect(cornerRadius: 8))
                             }
-                            TipView(KeyboardInputTip())
                             if isKeyboardInputActive {
+                                TipView(KeyboardInputTip())
                                 makeKeyboardInputBar()
                             }
                         }
