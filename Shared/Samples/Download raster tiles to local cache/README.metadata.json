@@ -1,0 +1,30 @@
+{
+    "category": "Edit and Manage Data",
+    "description": "Download tiles to a local tile cache file stored on the device.",
+    "ignore": false,
+    "images": [
+        "download-raster-tiles-to-local-cache.png"
+    ],
+    "keywords": [
+        "cache",
+        "download",
+        "offline",
+        "ArcGISTiledLayer",
+        "ExportTileCacheJob",
+        "ExportTileCacheParameters",
+        "ExportTileCacheTask",
+        "TileCache"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "ArcGISTiledLayer",
+        "ExportTileCacheJob",
+        "ExportTileCacheParameters",
+        "ExportTileCacheTask",
+        "TileCache"
+    ],
+    "snippets": [
+        "DownloadRasterTilesToLocalCacheView.swift"
+    ],
+    "title": "Download raster tiles to local cache"
+}
