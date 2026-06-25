@@ -132,7 +132,7 @@ extension CreateLoadReportView {
                 operator: .exists
             )
             let addLoadAttributeFunction = UtilityTraceFunction(
-                functionType: .add,
+                kind: .add,
                 networkAttribute: loadAttribute,
                 condition: serviceCategoryComparison
             )
