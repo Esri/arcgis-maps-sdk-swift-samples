@@ -257,23 +257,6 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
         statusMessage = ""
         calloutFeature = feature
         calloutPlacement = .geoElement(feature, tapLocation: anchor)
-        
-        // Announce the feature details for accessibility
-        let featureTitle = model.name(for: feature, fallback: "Restaurant") ?? "Restaurant"
-        let wgs84Point = GeometryEngine.project(anchor, into: .wgs84)
-        let latLong: String
-        if let wgs84Point {
-            let formattedLat = wgs84Point.y.formatted(.number.precision(.fractionLength(6)))
-            let formattedLon = wgs84Point.x.formatted(.number.precision(.fractionLength(6)))
-            latLong = "Latitude \(formattedLat), Longitude \(formattedLon)"
-        } else {
-            latLong = "Location unavailable"
-        }
-        
-        var highPriority = AttributedString("\(featureTitle), Location, \(latLong)")
-        highPriority.accessibilitySpeechAnnouncementPriority = .high
-        AccessibilityNotification.Announcement(highPriority).post()
-        
         if isKeyboardInputActive {
             keyboardInputHasFocus = true
         } else {
