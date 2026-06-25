@@ -67,7 +67,7 @@ extension NavigateMapAndIdentifyFeaturesWithKeyboardView {
             self.map = map
         }
         
-        /// Ensures the feature layer is fully loaded before querying.
+        /// Ensures the feature table is fully loaded before querying.
         func ensureLayerLoaded() async throws {
             // Load the feature table to ensure metadata and features are available
             try await restaurantsTable.load()
