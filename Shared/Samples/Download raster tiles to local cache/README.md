@@ -35,7 +35,7 @@ The sample uses a [World Ocean Base (for Export)](https://www.arcgis.com/home/it
 
 ## Additional information
 
-ArcGIS tiled layers do not support reprojection, query, select, identify, or editing. See the [Layer types](https://developers.arcgis.com/net/layers/#layer-types) discussion in the developers guide to learn more about the characteristics of ArcGIS tiled layers. The map service behind a tiled layer may support [Export Tiles](https://developers.arcgis.com/rest/services-reference/enterprise/export-tiles-map-service/) operation. You can also specify the maximum tiles clients will be allowed to download for the service. 
+ArcGIS tiled layers do not support reprojection, query, select, identify, or editing. See the [Layer types](https://developers.arcgis.com/swift/layers/#layer-types) discussion in the developers guide to learn more about the characteristics of ArcGIS tiled layers. The map service behind a tiled layer may support [Export Tiles](https://developers.arcgis.com/rest/services-reference/enterprise/export-tiles-map-service/) operation. You can also specify the maximum tiles clients will be allowed to download for the service. 
 
 ## Tags
 
