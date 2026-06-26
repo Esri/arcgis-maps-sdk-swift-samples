@@ -19,18 +19,21 @@ struct DownloadRasterTilesToLocalCacheView: View {
     /// The view model for the sample.
     @State private var model = Model()
 
-    
     /// A Boolean value indicating whether the exported tiles preview is showing.
     @State private var isShowingPreview = false
 
     /// The error shown in the error alert.
-    @State private var error: Error?
+    @State private var error: (any Error)?
 
     var body: some View {
-        MapViewReader { mapViewProxy in
-            GeometryReader { geometryProxy in
+        GeometryReader { geometryProxy in
+            MapViewReader { mapViewProxy in
                 MapView(map: model.map)
+                    .interactionModes(model.exportTileCacheJob == nil ? [.pan, .zoom] : [])
                     .onScaleChanged { model.mapViewScale = $0 }
+                    .onDisappear {
+                        Task { await model.cancelExport() }
+                    }
                     .overlay {
                         // Draws a red rectangle to emphasize the extent that
                         // will be exported.
@@ -103,18 +106,11 @@ struct DownloadRasterTilesToLocalCacheView: View {
     ///   - mapViewProxy: The proxy used to convert screen points to locations.
     ///   - size: The size of the map view, used to locate the export extent.
     private func exportTiles(mapViewProxy: MapViewProxy, size: CGSize) async {
-        // Converts the centered square's corners to a geographic envelope.
-        let rect = exportExtentRect(in: size)
-        guard
-            let min = mapViewProxy.location(fromScreenPoint: CGPoint(x: rect.minX, y: rect.maxY)),
-            let max = mapViewProxy.location(fromScreenPoint: CGPoint(x: rect.maxX, y: rect.minY))
-        else { return }
+        // Creates an envelope from the centered square.
+        guard let extent = mapViewProxy.envelope(fromViewRect: exportExtentRect(in: size)) else { return }
 
         do {
-            try await model.exportTiles(
-                extent: Envelope(min: min, max: max),
-                currentScale: model.mapViewScale
-            )
+            try await model.exportTiles(extent: extent)
             isShowingPreview = true
         } catch {
             self.error = error
@@ -181,10 +177,8 @@ extension DownloadRasterTilesToLocalCacheView {
 
         /// Exports the tiles within an extent to a local tile package and builds
         /// a preview map from the result.
-        /// - Parameters:
-        ///   - extent: The geographic area of interest to export.
-        ///   - currentScale: The map's current scale, used as the minimum scale.
-        func exportTiles(extent: Envelope, currentScale: Double) async throws {
+        /// - Parameter extent: The geographic area of interest to export.
+        func exportTiles(extent: Envelope) async throws {
             // Loads the task to access its service metadata.
             try await exportTask.load()
             guard
@@ -194,24 +188,9 @@ extension DownloadRasterTilesToLocalCacheView {
                 throw ExportError.notSupported
             }
 
-            // Uses the current scale as the min scale and the tiled layer's max
-            // scale as the max scale.
-            var maxScale = tiledLayer.maxScale ?? 0
-            var minScale = Swift.max(currentScale, maxScale)
-            
-            // Adjusts the scale range based on the current map view scale.
-            if mapViewScale > 0 {
-                maxScale = mapViewScale / 2
-                minScale = mapViewScale * 2
-            }
-            
-            // Builds the default parameters for the extent and scale range.
-            let parameters = try await exportTask.makeDefaultExportTileCacheParameters(
-                areaOfInterest: extent,
-                minScale: minScale,
-                maxScale: maxScale
-            )
-            
+            // Creates the parameters for the export tile cache job.
+            let parameters = try await makeExportTileCacheParameters(areaOfInterest: extent)
+
             // Uses the compact V2 format (.tpkx) when supported, otherwise the
             // legacy compact format (.tpk).
             let fileExtension = mapServiceInfo.allowsExportTileCacheCompactV2 ? "tpkx" : "tpk"
@@ -221,27 +200,50 @@ extension DownloadRasterTilesToLocalCacheView {
                     isDirectory: false
                 )
                 .appendingPathExtension(fileExtension)
-            try? FileManager.default.createDirectory(
-                at: temporaryDirectory,
-                withIntermediateDirectories: true
-            )
             try? FileManager.default.removeItem(at: downloadURL)
 
-            // Creates and starts the export job.
-            let job = exportTask.makeExportTileCacheJob(
+            // Creates the export job based on the parameters and temporary URL.
+            exportTileCacheJob = exportTask.makeExportTileCacheJob(
                 parameters: parameters,
                 downloadFileURL: downloadURL
             )
-            exportTileCacheJob = job
-            job.start()
-            defer { exportTileCacheJob = nil }
+            defer {
+                exportTileCacheJob = nil
+            }
+            guard let exportTileCacheJob else { return }
+
+            // Starts the job.
+            exportTileCacheJob.start()
 
             // Awaits the resulting tile cache and builds a preview map from it.
-            let tileCache = try await job.output
+            let tileCache = try await exportTileCacheJob.output
             let previewLayer = ArcGISTiledLayer(tileCache: tileCache)
             let previewMap = Map(basemap: Basemap(baseLayer: previewLayer))
             previewMap.initialViewpoint = Viewpoint(boundingGeometry: extent)
             self.previewMap = previewMap
+        }
+
+        /// Creates the export tile cache parameters.
+        /// - Parameter areaOfInterest: The area of interest to create the parameters for.
+        /// - Returns: An `ExportTileCacheParameters` if there are no errors.
+        private func makeExportTileCacheParameters(areaOfInterest: Envelope) async throws -> ExportTileCacheParameters {
+            // Uses the current scale as the min scale and the tiled layer's max
+            // scale as the max scale.
+            var maxScale = tiledLayer.maxScale ?? 0
+            var minScale = Swift.max(mapViewScale, maxScale)
+
+            // Adjusts the scale range based on the current map view scale.
+            if mapViewScale > 0 {
+                maxScale = mapViewScale / 2
+                minScale = mapViewScale * 2
+            }
+
+            // Returns the default parameters for the export tile cache task.
+            return try await exportTask.makeDefaultExportTileCacheParameters(
+                areaOfInterest: areaOfInterest,
+                minScale: minScale,
+                maxScale: maxScale
+            )
         }
 
         /// Cancels the running export job, if one exists.
@@ -279,17 +281,15 @@ private extension DownloadRasterTilesToLocalCacheView.Model {
 }
 
 private extension FileManager {
-    /// Creates a uniquely named temporary directory and returns its URL.
+    /// Creates a temporary directory.
+    /// - Returns: The URL of the created directory.
     static func createTemporaryDirectory() -> URL {
-        let url = FileManager.default.temporaryDirectory
-            .appendingPathComponent(
-                ProcessInfo().globallyUniqueString
-            )
-        try? FileManager.default.createDirectory(
-            at: url,
-            withIntermediateDirectories: true
+        try! FileManager.default.url(
+            for: .itemReplacementDirectory,
+            in: .userDomainMask,
+            appropriateFor: FileManager.default.temporaryDirectory,
+            create: true
         )
-        return url
     }
 }
 
@@ -297,5 +297,11 @@ private extension URL {
     /// The URL of the World Ocean Base (for Export) tile service.
     static var worldOceanBase: URL {
         URL(string: "https://tiledbasemaps.arcgis.com/arcgis/rest/services/Ocean/World_Ocean_Base/MapServer")!
+    }
+}
+
+#Preview {
+    NavigationStack {
+        DownloadRasterTilesToLocalCacheView()
     }
 }
