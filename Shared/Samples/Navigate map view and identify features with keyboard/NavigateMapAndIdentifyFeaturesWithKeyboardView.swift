@@ -185,8 +185,10 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
     @MainActor
     private func refreshSelection(mapSize: CGSize, mapViewProxy: MapViewProxy) async {
         do {
+            let selectionRectangle = makeSelectionRectangle(mapSize: mapSize)
             try await model.selectFeatures(
-                in: makeSelectionEnvelope(mapSize: mapSize, mapViewProxy: mapViewProxy),
+                intersecting: makeSelectionPolygon(mapSize: mapSize, mapViewProxy: mapViewProxy),
+                containsScreenPoint: selectionRectangle.contains,
                 screenPointFor: { mapViewProxy.screenPoint(fromLocation: $0) }
             )
         } catch {
@@ -194,19 +196,33 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
         }
     }
     
-    /// Makes an envelope matching the centered selection rectangle's map footprint.
-    private func makeSelectionEnvelope(mapSize: CGSize, mapViewProxy: MapViewProxy) -> Envelope? {
+    /// Makes the centered selection rectangle in screen coordinates.
+    private func makeSelectionRectangle(mapSize: CGSize) -> CGRect {
         let clampedRectangleLength = min(selectionRectangleLength, min(mapSize.width, mapSize.height))
         let screenCenter = CGPoint(x: mapSize.width / 2, y: mapSize.height / 2)
         let halfLength = clampedRectangleLength / 2
         
-        // Sample all four corners of the rectangle to ensure complete coverage
+        return CGRect(
+            x: screenCenter.x - halfLength,
+            y: screenCenter.y - halfLength,
+            width: clampedRectangleLength,
+            height: clampedRectangleLength
+        )
+    }
+    
+    /// Makes a polygon matching the centered selection rectangle's map footprint.
+    private func makeSelectionPolygon(mapSize: CGSize, mapViewProxy: MapViewProxy) -> Polygon? {
+        let selectionRectangle = makeSelectionRectangle(mapSize: mapSize)
+        let screenCenter = CGPoint(x: selectionRectangle.midX, y: selectionRectangle.midY)
+        let halfLength = selectionRectangle.width / 2
+        
+        // Sample all four corners so the query geometry matches the rotated screen rectangle.
         let topLeft = CGPoint(x: screenCenter.x - halfLength, y: screenCenter.y - halfLength)
         let topRight = CGPoint(x: screenCenter.x + halfLength, y: screenCenter.y - halfLength)
         let bottomRight = CGPoint(x: screenCenter.x + halfLength, y: screenCenter.y + halfLength)
         let bottomLeft = CGPoint(x: screenCenter.x - halfLength, y: screenCenter.y + halfLength)
         
-        // Convert all corners to map coordinates
+        // Convert all corners to map coordinates.
         let corners = [topLeft, topRight, bottomRight, bottomLeft]
         let mapPoints = corners.compactMap { mapViewProxy.location(fromScreenPoint: $0) }
 
@@ -216,22 +232,11 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
             return nil
         }
         
-        // Find the bounding envelope that encompasses all corners
-        let xValues = mapPoints.map(\.x)
-        let yValues = mapPoints.map(\.y)
-        
-        guard let minX = xValues.min(),
-              let maxX = xValues.max(),
-              let minY = yValues.min(),
-              let maxY = yValues.max() else {
-            return nil
+        let polygonBuilder = PolygonBuilder(spatialReference: spatialReference)
+        for point in mapPoints {
+            polygonBuilder.add(point)
         }
-
-        return Envelope(
-            xRange: minX...maxX,
-            yRange: minY...maxY,
-            spatialReference: spatialReference
-        )
+        return polygonBuilder.toGeometry()
     }
     
     /// Maps a pressed number key to a zero-based feature index.

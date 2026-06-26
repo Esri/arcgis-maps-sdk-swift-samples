@@ -25,7 +25,7 @@ extension NavigateMapAndIdentifyFeaturesWithKeyboardView {
         /// The maximum number of features that can be identified with number keys.
         private static let maximumNumberedFeatures = 9
         
-        /// Buffer distance around the selection envelope to account for edge cases.
+        /// Buffer distance around the selection geometry to account for edge cases.
         private static let selectionBufferDistance = LinearUnit.meters.convert(to: .meters, value: 60)
         
         /// Attribute used to title and label each feature.
@@ -73,12 +73,20 @@ extension NavigateMapAndIdentifyFeaturesWithKeyboardView {
             try await restaurantsTable.load()
         }
         
-        func selectFeatures(in envelope: Envelope?, screenPointFor: (Point) -> CGPoint?) async throws {
+        func selectFeatures(
+            intersecting selectionGeometry: Geometry?,
+            containsScreenPoint: (CGPoint) -> Bool,
+            screenPointFor: (Point) -> CGPoint?
+        ) async throws {
             clearSelection()
             
-            guard let envelope else { return }
+            guard let selectionGeometry else { return }
             
-            let unorderedFeatures = try await makeOrderedFeatures(intersecting: envelope)
+            let unorderedFeatures = try await makeFeatures(intersecting: selectionGeometry)
+                .filter { orderedFeature in
+                    guard let screenPoint = screenPointFor(orderedFeature.anchor) else { return false }
+                    return containsScreenPoint(screenPoint)
+                }
             let orderedFeatures = unorderedFeatures.sorted { lhs, rhs in
                 let lhsScreenPoint = screenPointFor(lhs.anchor)
                 let rhsScreenPoint = screenPointFor(rhs.anchor)
@@ -86,11 +94,10 @@ extension NavigateMapAndIdentifyFeaturesWithKeyboardView {
                 switch (lhsScreenPoint, rhsScreenPoint) {
                 case let (l?, r?):
                     if l.y != r.y { return l.y < r.y }
-                    return l.x < r.x
+                    if l.x != r.x { return l.x < r.x }
+                    return Self.isEarlierInGeographicReadingOrder(lhs.anchor, than: rhs.anchor)
                 case (nil, nil):
-                    // Fall back to geographic order when screen points are unavailable.
-                    if lhs.anchor.y != rhs.anchor.y { return lhs.anchor.y > rhs.anchor.y }
-                    return lhs.anchor.x < rhs.anchor.x
+                    return Self.isEarlierInGeographicReadingOrder(lhs.anchor, than: rhs.anchor)
                 case (nil, _?):
                     return false
                 case (_?, nil):
@@ -127,16 +134,16 @@ extension NavigateMapAndIdentifyFeaturesWithKeyboardView {
             return name
         }
         
-        /// Queries and sorts restaurant features from top-to-bottom, then left-to-right in geographic space.
-        /// - Parameter envelope: The envelope used to query restaurant features.
-        /// - Returns: The ordered restaurant features with their map positions.
-        private func makeOrderedFeatures(intersecting envelope: Envelope) async throws -> [OrderedFeature] {
+        /// Queries restaurant features intersecting the given geometry.
+        /// - Parameter geometry: The geometry used to query restaurant features.
+        /// - Returns: The restaurant features with their map positions.
+        private func makeFeatures(intersecting geometry: Geometry) async throws -> [OrderedFeature] {
             // Add a buffer to catch features near the rectangle edges.
             // This accounts for projection distortions and rendering tolerances.
-            let bufferedEnvelope = GeometryEngine.buffer(around: envelope, distance: Self.selectionBufferDistance)?.extent ?? envelope
+            let queryGeometry = GeometryEngine.buffer(around: geometry, distance: Self.selectionBufferDistance) ?? geometry
             
             let queryParameters = QueryParameters()
-            queryParameters.geometry = bufferedEnvelope
+            queryParameters.geometry = queryGeometry
             queryParameters.spatialRelationship = .intersects
             queryParameters.maxFeatures = 1000
             
@@ -148,13 +155,12 @@ extension NavigateMapAndIdentifyFeaturesWithKeyboardView {
                     guard let anchor = feature.geometry as? Point else { return nil }
                     return OrderedFeature(feature: feature, anchor: anchor)
                 }
-                .sorted { lhs, rhs in
-                    // Sort by geographic coordinates (north to south, then west to east).
-                    if lhs.anchor.y != rhs.anchor.y {
-                        return lhs.anchor.y > rhs.anchor.y
-                    }
-                    return lhs.anchor.x < rhs.anchor.x
-                }
+        }
+        
+        /// Returns whether a map point is earlier in north-to-south, west-to-east order.
+        private static func isEarlierInGeographicReadingOrder(_ lhs: Point, than rhs: Point) -> Bool {
+            if lhs.y != rhs.y { return lhs.y > rhs.y }
+            return lhs.x < rhs.x
         }
         
         /// Adds numbered text labels for the first restaurant features.
