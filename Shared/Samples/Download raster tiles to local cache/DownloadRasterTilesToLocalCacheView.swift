@@ -152,7 +152,7 @@ extension DownloadRasterTilesToLocalCacheView {
         /// A URL to the temporary directory storing the exported tile package.
         private let temporaryDirectory = FileManager.createTemporaryDirectory()
 
-        /// The current scale of the map view, used as the export's minimum scale.
+        /// The current scale of the map view, used to derive the export scale range.
         var mapViewScale = 0.0
         
         init() {
