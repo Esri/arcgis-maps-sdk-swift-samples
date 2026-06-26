@@ -28,9 +28,6 @@ struct DownloadRasterTilesToLocalCacheView: View {
     /// The error shown in the error alert.
     @State private var error: Error?
 
-    /// The insets that define the export extent within the map view.
-    private let extentInsets = EdgeInsets(top: 20, leading: 20, bottom: 44, trailing: 20)
-
     var body: some View {
         MapViewReader { mapViewProxy in
             GeometryReader { geometryProxy in
@@ -39,9 +36,11 @@ struct DownloadRasterTilesToLocalCacheView: View {
                     .overlay {
                         // Draws a red rectangle to emphasize the extent that
                         // will be exported.
+                        let rect = exportExtentRect(in: geometryProxy.size)
                         Rectangle()
                             .stroke(.red, lineWidth: 2)
-                            .padding(extentInsets)
+                            .frame(width: rect.width, height: rect.height)
+                            .position(x: rect.midX, y: rect.midY)
                     }
                     .overlay(alignment: .center) {
                         if let job = model.exportTileCacheJob {
@@ -106,13 +105,8 @@ struct DownloadRasterTilesToLocalCacheView: View {
     ///   - mapViewProxy: The proxy used to convert screen points to locations.
     ///   - size: The size of the map view, used to locate the export extent.
     private func exportTiles(mapViewProxy: MapViewProxy, size: CGSize) async {
-        // Converts the red rectangle's corners to a geographic envelope.
-        let rect = CGRect(
-            x: extentInsets.leading,
-            y: extentInsets.top,
-            width: size.width - extentInsets.leading - extentInsets.trailing,
-            height: size.height - extentInsets.top - extentInsets.bottom
-        )
+        // Converts the centered square's corners to a geographic envelope.
+        let rect = exportExtentRect(in: size)
         guard
             let min = mapViewProxy.location(fromScreenPoint: CGPoint(x: rect.minX, y: rect.maxY)),
             let max = mapViewProxy.location(fromScreenPoint: CGPoint(x: rect.maxX, y: rect.minY))
@@ -127,6 +121,17 @@ struct DownloadRasterTilesToLocalCacheView: View {
         } catch {
             self.error = error
         }
+    }
+
+    /// Returns a square export extent centered in the map view.
+    private func exportExtentRect(in size: CGSize) -> CGRect {
+        let sideLength = min(size.width, size.height)
+        return CGRect(
+            x: (size.width - sideLength) / 2,
+            y: (size.height - sideLength) / 2,
+            width: sideLength,
+            height: sideLength
+        )
     }
 }
 
@@ -159,7 +164,11 @@ extension DownloadRasterTilesToLocalCacheView {
             map = Map(basemap: Basemap(baseLayer: tiledLayer))
             map.minScale = 1e7
             map.initialViewpoint = Viewpoint(
-                center: Point(x: -117, y: 34, spatialReference: .wgs84),
+                center: Point(
+                    x: -117,
+                    y: 34,
+                    spatialReference: .wgs84
+                ),
                 scale: 1e7
             )
         }
@@ -200,8 +209,16 @@ extension DownloadRasterTilesToLocalCacheView {
             // legacy compact format (.tpk).
             let fileExtension = mapServiceInfo.allowsExportTileCacheCompactV2 ? "tpkx" : "tpk"
             let downloadURL = temporaryDirectory
-                .appendingPathComponent("myTileCache", isDirectory: false)
+                .appendingPathComponent(
+                    "myTileCache",
+                    isDirectory: false
+                )
                 .appendingPathExtension(fileExtension)
+            try? FileManager.default.createDirectory(
+                at: temporaryDirectory,
+                withIntermediateDirectories: true
+            )
+            try? FileManager.default.removeItem(at: downloadURL)
 
             // Creates and starts the export job.
             let job = exportTask.makeExportTileCacheJob(
@@ -252,8 +269,13 @@ private extension FileManager {
     /// Creates a uniquely named temporary directory and returns its URL.
     static func createTemporaryDirectory() -> URL {
         let url = FileManager.default.temporaryDirectory
-            .appendingPathComponent(ProcessInfo().globallyUniqueString)
-        try? FileManager.default.createDirectory(at: url, withIntermediateDirectories: true)
+            .appendingPathComponent(
+                ProcessInfo().globallyUniqueString
+            )
+        try? FileManager.default.createDirectory(
+            at: url,
+            withIntermediateDirectories: true
+        )
         return url
     }
 }
