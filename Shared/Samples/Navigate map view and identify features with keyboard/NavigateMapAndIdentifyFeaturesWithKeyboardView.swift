@@ -154,8 +154,8 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
                                     .background(.regularMaterial)
                                     .clipShape(.rect(cornerRadius: 8))
                             }
-                            TipView(KeyboardInputTip())
                             if isKeyboardInputActive {
+                                TipView(KeyboardInputTip())
                                 makeKeyboardInputBar()
                             }
                         }
@@ -321,9 +321,13 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
             }
             .toolbar {
                 ToolbarItemGroup(placement: .keyboard) {
-                    Spacer()
-                    Button("Done") {
-                        hideKeyboard()
+                    VStack {
+                        HStack {
+                            Spacer()
+                            Button("Done") {
+                                hideKeyboard()
+                            }
+                        }
                     }
                 }
             }
