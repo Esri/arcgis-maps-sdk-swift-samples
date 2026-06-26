@@ -44,7 +44,7 @@ This sample uses a [Redlands restaurants](https://www.arcgis.com/home/item.html?
 
 ## Additional information
 
-The map view supports built-in keyboard shortcuts for pan (arrow keys), zoom (+ / -), rotate (Alt + ← / →), and reset to north (Alt + ↑). On macOS, use Option in place of Alt. See [Navigate a map view](https://developers.arcgis.com/net/maps-2d/navigate-a-map-view/) for the complete list of built-in interactions.
+The map view supports built-in keyboard shortcuts for pan (arrow keys), zoom (+ / -), rotate (Alt + ← / →), and reset to north (Alt + ↑). On macOS, use Option in place of Alt. See [Navigate a map view](https://developers.arcgis.com/swift/maps-2d/navigate-a-map-view/) for the complete list of built-in interactions.
 
 ## Tags
 
