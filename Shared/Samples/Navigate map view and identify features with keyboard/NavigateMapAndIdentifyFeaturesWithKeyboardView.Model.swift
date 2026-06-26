@@ -73,22 +73,35 @@ extension NavigateMapAndIdentifyFeaturesWithKeyboardView {
             try await restaurantsTable.load()
         }
         
-        /// Selects, numbers, and labels restaurant features that intersect a given envelope.
-        /// - Parameters:
-        ///   - envelope: The envelope used to query restaurant features.
-        ///   - screenPointFor: A closure that converts a map location to a screen point.
         func selectFeatures(in envelope: Envelope?, screenPointFor: (Point) -> CGPoint?) async throws {
             clearSelection()
             
             guard let envelope else { return }
             
-            let orderedFeatures = try await makeOrderedFeatures(intersecting: envelope)
+            let unorderedFeatures = try await makeOrderedFeatures(intersecting: envelope)
+            let orderedFeatures = unorderedFeatures.sorted { lhs, rhs in
+                let lhsScreenPoint = screenPointFor(lhs.anchor)
+                let rhsScreenPoint = screenPointFor(rhs.anchor)
+                
+                switch (lhsScreenPoint, rhsScreenPoint) {
+                case let (l?, r?):
+                    if l.y != r.y { return l.y < r.y }
+                    return l.x < r.x
+                case (nil, nil):
+                    // Fall back to geographic order when screen points are unavailable.
+                    if lhs.anchor.y != rhs.anchor.y { return lhs.anchor.y > rhs.anchor.y }
+                    return lhs.anchor.x < rhs.anchor.x
+                case (nil, _?):
+                    return false
+                case (_?, nil):
+                    return true
+                }
+            }
             
             hasMoreThanNineSelectedFeatures = orderedFeatures.count > Self.maximumNumberedFeatures
             
-            // Only select the numbered features (first 9)
-            let numberedOrderedFeatures = orderedFeatures.prefix(Self.maximumNumberedFeatures)
-            restaurantsLayer.selectFeatures(numberedOrderedFeatures.map(\.feature))
+            // Select all intersecting features; only the first 9 are numbered/labeled.
+            restaurantsLayer.selectFeatures(orderedFeatures.map(\.feature))
             
             addNumberedLabels(for: orderedFeatures)
         }
