@@ -230,8 +230,8 @@ extension DownloadRasterTilesToLocalCacheView {
             // Uses the current map view scale when available; otherwise falls
             // back to the map's configured minScale.
             let effectiveScale = mapViewScale > 0 ? mapViewScale : map.minScale
-            let maxScale = effectiveScale / 2
-            let minScale = effectiveScale * 2
+            let maxScale = (effectiveScale ?? 0) / 2
+            let minScale = (effectiveScale ?? 0) * 2
 
             // Returns the default parameters for the export tile cache task.
             return try await exportTask.makeDefaultExportTileCacheParameters(
