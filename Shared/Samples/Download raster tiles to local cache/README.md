@@ -2,7 +2,7 @@
 
 Download tiles to a local tile cache file stored on the device.
 
-![Image of download raster tiles to local cache](DownloadRasterTilesToLocalCache.png)
+![Image of download raster tiles to local cache](download-raster-tiles-to-local-cache.png)
 
 ## Use case
 
