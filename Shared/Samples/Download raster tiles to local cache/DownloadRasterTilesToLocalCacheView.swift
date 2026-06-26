@@ -140,8 +140,8 @@ extension DownloadRasterTilesToLocalCacheView {
     @MainActor
     @Observable
     final class Model {
-        /// A map of the world street map tiled layer.
-        let map: Map
+/// A map with the World Ocean Base tiled layer as its basemap.
+let map: Map
 
         /// A map that previews the exported tile cache, if one exists.
         private(set) var previewMap: Map?
@@ -244,10 +244,14 @@ extension DownloadRasterTilesToLocalCacheView {
         }
 
         /// Releases the preview map and removes the exported tile package.
-        func removePreview() {
-            previewMap = nil
-            try? FileManager.default.removeItem(at: temporaryDirectory)
-        }
+func removePreview() {
+    previewMap = nil
+    let contents = (try? FileManager.default.contentsOfDirectory(
+        at: temporaryDirectory,
+        includingPropertiesForKeys: nil
+    )) ?? []
+    for url in contents {
+        try? FileManager.default.removeItem(at: url)
     }
 }
 
