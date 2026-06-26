@@ -227,16 +227,11 @@ extension DownloadRasterTilesToLocalCacheView {
         /// - Parameter areaOfInterest: The area of interest to create the parameters for.
         /// - Returns: An `ExportTileCacheParameters` if there are no errors.
         private func makeExportTileCacheParameters(areaOfInterest: Envelope) async throws -> ExportTileCacheParameters {
-            // Uses the current scale as the min scale and the tiled layer's max
-            // scale as the max scale.
-            var maxScale = tiledLayer.maxScale ?? 0
-            var minScale = Swift.max(mapViewScale, maxScale)
-
-            // Adjusts the scale range based on the current map view scale.
-            if mapViewScale > 0 {
-                maxScale = mapViewScale / 2
-                minScale = mapViewScale * 2
-            }
+            // Uses the current map view scale when available; otherwise falls
+            // back to the map's configured minScale.
+            let effectiveScale = mapViewScale > 0 ? mapViewScale : map.minScale
+            let maxScale = effectiveScale / 2
+            let minScale = effectiveScale * 2
 
             // Returns the default parameters for the export tile cache task.
             return try await exportTask.makeDefaultExportTileCacheParameters(

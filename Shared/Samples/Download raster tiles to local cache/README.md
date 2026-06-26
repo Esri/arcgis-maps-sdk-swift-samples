@@ -2,7 +2,7 @@
 
 Download tiles to a local tile cache file stored on the device.
 
-![Image of download raster tiles to local cache](DownloadRasterTilesToLocalCache.png)
+![Screenshot of download raster tiles to local cache](download-raster-tiles-to-local-cache.png)
 
 ## Use case
 
@@ -10,7 +10,7 @@ Field workers with limited network connectivity can use exported tiles as a base
 
 ## How to use the sample
 
-Pan and zoom into the desired area, making sure the area is within the red boundary. Click the 'Export tiles' button to start the process. On successful completion you will see a preview of the downloaded tile package.
+Pan and zoom into the desired area, making sure the area is within the red boundary. Tap the "Export Tiles" button to start the process. On successful completion you will see a preview of the downloaded tile package.
 
 ## How it works
 
