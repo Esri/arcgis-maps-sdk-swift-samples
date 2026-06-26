@@ -179,7 +179,7 @@ extension DownloadRasterTilesToLocalCacheView {
             try await exportTask.load()
             guard
                 let mapServiceInfo = exportTask.mapServiceInfo,
-                mapServiceInfo.exportTilesAllowed
+                mapServiceInfo.allowsExportTiles
             else {
                 throw ExportError.notSupported
             }
@@ -198,7 +198,7 @@ extension DownloadRasterTilesToLocalCacheView {
 
             // Uses the compact V2 format (.tpkx) when supported, otherwise the
             // legacy compact format (.tpk).
-            let fileExtension = mapServiceInfo.exportTileCacheCompactV2Allowed ? "tpkx" : "tpk"
+            let fileExtension = mapServiceInfo.allowsExportTileCacheCompactV2 ? "tpkx" : "tpk"
             let downloadURL = temporaryDirectory
                 .appendingPathComponent("myTileCache", isDirectory: false)
                 .appendingPathExtension(fileExtension)
