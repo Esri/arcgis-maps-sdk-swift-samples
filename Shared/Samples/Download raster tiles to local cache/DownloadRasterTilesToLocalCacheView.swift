@@ -19,9 +19,7 @@ struct DownloadRasterTilesToLocalCacheView: View {
     /// The view model for the sample.
     @State private var model = Model()
 
-    /// The current scale of the map view, used as the export's minimum scale.
-    @State private var mapViewScale = 0.0
-
+    
     /// A Boolean value indicating whether the exported tiles preview is showing.
     @State private var isShowingPreview = false
 
@@ -32,7 +30,7 @@ struct DownloadRasterTilesToLocalCacheView: View {
         MapViewReader { mapViewProxy in
             GeometryReader { geometryProxy in
                 MapView(map: model.map)
-                    .onScaleChanged { mapViewScale = $0 }
+                    .onScaleChanged { model.mapViewScale = $0 }
                     .overlay {
                         // Draws a red rectangle to emphasize the extent that
                         // will be exported.
@@ -115,7 +113,7 @@ struct DownloadRasterTilesToLocalCacheView: View {
         do {
             try await model.exportTiles(
                 extent: Envelope(min: min, max: max),
-                currentScale: mapViewScale
+                currentScale: model.mapViewScale
             )
             isShowingPreview = true
         } catch {
@@ -140,8 +138,8 @@ extension DownloadRasterTilesToLocalCacheView {
     @MainActor
     @Observable
     final class Model {
-/// A map with the World Ocean Base tiled layer as its basemap.
-let map: Map
+        /// A map with the World Ocean Base tiled layer as its basemap.
+        let map: Map
 
         /// A map that previews the exported tile cache, if one exists.
         private(set) var previewMap: Map?
@@ -158,6 +156,9 @@ let map: Map
         /// A URL to the temporary directory storing the exported tile package.
         private let temporaryDirectory = FileManager.createTemporaryDirectory()
 
+        /// The current scale of the map view, used as the export's minimum scale.
+        var mapViewScale = 0.0
+        
         init() {
             // Creates a map with a basemap made from the tiled layer, and limits
             // its minimum scale to avoid requesting a huge download.
@@ -195,16 +196,22 @@ let map: Map
 
             // Uses the current scale as the min scale and the tiled layer's max
             // scale as the max scale.
-            let maxScale = tiledLayer.maxScale ?? 0
-            let minScale = Swift.max(currentScale, maxScale)
-
+            var maxScale = tiledLayer.maxScale ?? 0
+            var minScale = Swift.max(currentScale, maxScale)
+            
+            // Adjusts the scale range based on the current map view scale.
+            if mapViewScale > 0 {
+                maxScale = mapViewScale / 2
+                minScale = mapViewScale * 2
+            }
+            
             // Builds the default parameters for the extent and scale range.
             let parameters = try await exportTask.makeDefaultExportTileCacheParameters(
                 areaOfInterest: extent,
                 minScale: minScale,
                 maxScale: maxScale
             )
-
+            
             // Uses the compact V2 format (.tpkx) when supported, otherwise the
             // legacy compact format (.tpk).
             let fileExtension = mapServiceInfo.allowsExportTileCacheCompactV2 ? "tpkx" : "tpk"
@@ -244,14 +251,16 @@ let map: Map
         }
 
         /// Releases the preview map and removes the exported tile package.
-func removePreview() {
-    previewMap = nil
-    let contents = (try? FileManager.default.contentsOfDirectory(
-        at: temporaryDirectory,
-        includingPropertiesForKeys: nil
-    )) ?? []
-    for url in contents {
-        try? FileManager.default.removeItem(at: url)
+        func removePreview() {
+            previewMap = nil
+            let contents = (try? FileManager.default.contentsOfDirectory(
+                at: temporaryDirectory,
+                includingPropertiesForKeys: nil
+            )) ?? []
+            for url in contents {
+                try? FileManager.default.removeItem(at: url)
+            }
+        }
     }
 }
 
