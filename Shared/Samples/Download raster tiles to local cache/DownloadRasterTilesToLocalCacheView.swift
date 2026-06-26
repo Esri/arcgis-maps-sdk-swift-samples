@@ -161,11 +161,7 @@ extension DownloadRasterTilesToLocalCacheView {
             map = Map(basemap: Basemap(baseLayer: tiledLayer))
             map.minScale = 1e7
             map.initialViewpoint = Viewpoint(
-                center: Point(
-                    x: -117,
-                    y: 34,
-                    spatialReference: .wgs84
-                ),
+                center: Point(latitude: 34, longitude: -117),
                 scale: 1e7
             )
         }
@@ -181,10 +177,8 @@ extension DownloadRasterTilesToLocalCacheView {
         func exportTiles(extent: Envelope) async throws {
             // Loads the task to access its service metadata.
             try await exportTask.load()
-            guard
-                let mapServiceInfo = exportTask.mapServiceInfo,
-                mapServiceInfo.allowsExportTiles
-            else {
+            guard let mapServiceInfo = exportTask.mapServiceInfo,
+                  mapServiceInfo.allowsExportTiles else {
                 throw ExportError.notSupported
             }
 
@@ -243,8 +237,9 @@ extension DownloadRasterTilesToLocalCacheView {
 
         /// Cancels the running export job, if one exists.
         func cancelExport() async {
-            await exportTileCacheJob?.cancel()
-            exportTileCacheJob = nil
+            if let job = exportTileCacheJob.take() {
+                await job.cancel()
+            }
         }
 
         /// Releases the preview map and removes the exported tile package.
