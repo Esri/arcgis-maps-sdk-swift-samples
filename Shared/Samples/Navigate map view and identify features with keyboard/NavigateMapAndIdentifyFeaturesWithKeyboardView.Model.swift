@@ -25,8 +25,8 @@ extension NavigateMapAndIdentifyFeaturesWithKeyboardView {
         /// The maximum number of features that can be identified with number keys.
         private static let maximumNumberedFeatures = 9
         
-/// Buffer distance (meters) around the selection geometry to account for edge cases.
-private static let selectionBufferDistance: Double = 60
+        /// Buffer distance (meters) around the selection geometry to account for edge cases.
+        private static let selectionBufferDistance: Double = 60
         
         /// Attribute used to title and label each feature.
         private static let nameAttribute = "name"
@@ -67,11 +67,11 @@ private static let selectionBufferDistance: Double = 60
             self.map = map
         }
         
-/// Ensures the feature table is fully loaded before querying.
-func ensureTableLoaded() async throws {
-    // Load the feature table to ensure metadata and features are available.
-    try await restaurantsTable.load()
-}
+        /// Ensures the feature table is fully loaded before querying.
+        func ensureTableLoaded() async throws {
+            // Load the feature table to ensure metadata and features are available.
+            try await restaurantsTable.load()
+        }
         
         func selectFeatures(
             intersecting selectionGeometry: Geometry?,
@@ -82,20 +82,20 @@ func ensureTableLoaded() async throws {
             
             guard let selectionGeometry else { return }
             
-let featuresWithScreenPoints = try await makeFeatures(intersecting: selectionGeometry)
-    .compactMap { orderedFeature -> (orderedFeature: OrderedFeature, screenPoint: CGPoint)? in
-        guard let screenPoint = screenPointFor(orderedFeature.anchor),
-              containsScreenPoint(screenPoint) else { return nil }
-        return (orderedFeature, screenPoint)
-    }
+            let featuresWithScreenPoints = try await makeFeatures(intersecting: selectionGeometry)
+                .compactMap { orderedFeature -> (orderedFeature: OrderedFeature, screenPoint: CGPoint)? in
+                    guard let screenPoint = screenPointFor(orderedFeature.anchor),
+                          containsScreenPoint(screenPoint) else { return nil }
+                    return (orderedFeature, screenPoint)
+                }
 
-let orderedFeatures = featuresWithScreenPoints
-    .sorted { lhs, rhs in
-        if lhs.screenPoint.y != rhs.screenPoint.y { return lhs.screenPoint.y < rhs.screenPoint.y }
-        if lhs.screenPoint.x != rhs.screenPoint.x { return lhs.screenPoint.x < rhs.screenPoint.x }
-        return Self.isEarlierInGeographicReadingOrder(lhs.orderedFeature.anchor, than: rhs.orderedFeature.anchor)
-    }
-    .map(\.orderedFeature)
+            let orderedFeatures = featuresWithScreenPoints
+                .sorted { lhs, rhs in
+                    if lhs.screenPoint.y != rhs.screenPoint.y { return lhs.screenPoint.y < rhs.screenPoint.y }
+                    if lhs.screenPoint.x != rhs.screenPoint.x { return lhs.screenPoint.x < rhs.screenPoint.x }
+                    return Self.isEarlierInGeographicReadingOrder(lhs.orderedFeature.anchor, than: rhs.orderedFeature.anchor)
+                }
+                .map(\.orderedFeature)
             
             hasMoreThanNineSelectedFeatures = orderedFeatures.count > Self.maximumNumberedFeatures
             

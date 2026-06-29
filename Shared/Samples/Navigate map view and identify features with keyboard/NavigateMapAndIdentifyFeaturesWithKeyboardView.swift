@@ -75,8 +75,8 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
                         initialDrawCompleted = true
                         Task {
                             do {
-// Ensure the feature table is fully loaded before querying.
-try await model.ensureTableLoaded()
+                                // Ensure the feature table is fully loaded before querying.
+                                try await model.ensureTableLoaded()
                                 
                                 // Additional delay to ensure map view proxy is fully ready and settled
                                 try? await Task.sleep(for: .milliseconds(500))
@@ -271,17 +271,17 @@ try await model.ensureTableLoaded()
     }
     
     /// Dismisses the details callout and restores the selection rectangle.
-private func dismissCallout() {
-    calloutFeature = nil
-    calloutPlacement = nil
-    statusMessage = ""
+    private func dismissCallout() {
+        calloutFeature = nil
+        calloutPlacement = nil
+        statusMessage = ""
 
-    if isKeyboardInputActive {
-        keyboardInputHasFocus = true
-    } else {
-        Task { await focusMap() }
+        if isKeyboardInputActive {
+            keyboardInputHasFocus = true
+        } else {
+            Task { await focusMap() }
+        }
     }
-}
     
     /// Gives keyboard focus to the map after SwiftUI finishes the current update.
     @MainActor
