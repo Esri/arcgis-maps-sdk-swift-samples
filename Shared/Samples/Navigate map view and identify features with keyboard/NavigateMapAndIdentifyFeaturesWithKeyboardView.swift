@@ -63,6 +63,7 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
                 let rectangleLength = min(selectionRectangleLength, min(mapSize.width, mapSize.height))
                 
                 MapView(map: model.map, graphicsOverlays: [model.labelOverlay])
+                    .interactionModes([.pan, .zoom])
                     .selectionColor(Model.selectionHaloColor)
                     .callout(placement: $calloutPlacement.animation(.default.speed(2))) { _ in
                         if let calloutFeature {
@@ -74,8 +75,8 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
                         initialDrawCompleted = true
                         Task {
                             do {
-                                // Ensure feature layer is fully loaded before querying
-                                try await model.ensureLayerLoaded()
+// Ensure the feature table is fully loaded before querying.
+try await model.ensureTableLoaded()
                                 
                                 // Additional delay to ensure map view proxy is fully ready and settled
                                 try? await Task.sleep(for: .milliseconds(500))
@@ -270,12 +271,17 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
     }
     
     /// Dismisses the details callout and restores the selection rectangle.
-    private func dismissCallout() {
-        calloutFeature = nil
-        calloutPlacement = nil
-        statusMessage = ""
+private func dismissCallout() {
+    calloutFeature = nil
+    calloutPlacement = nil
+    statusMessage = ""
+
+    if isKeyboardInputActive {
+        keyboardInputHasFocus = true
+    } else {
         Task { await focusMap() }
     }
+}
     
     /// Gives keyboard focus to the map after SwiftUI finishes the current update.
     @MainActor

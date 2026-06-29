@@ -25,8 +25,8 @@ extension NavigateMapAndIdentifyFeaturesWithKeyboardView {
         /// The maximum number of features that can be identified with number keys.
         private static let maximumNumberedFeatures = 9
         
-        /// Buffer distance around the selection geometry to account for edge cases.
-        private static let selectionBufferDistance = LinearUnit.meters.convert(to: .meters, value: 60)
+/// Buffer distance (meters) around the selection geometry to account for edge cases.
+private static let selectionBufferDistance: Double = 60
         
         /// Attribute used to title and label each feature.
         private static let nameAttribute = "name"
@@ -67,11 +67,11 @@ extension NavigateMapAndIdentifyFeaturesWithKeyboardView {
             self.map = map
         }
         
-        /// Ensures the feature table is fully loaded before querying.
-        func ensureLayerLoaded() async throws {
-            // Load the feature table to ensure metadata and features are available
-            try await restaurantsTable.load()
-        }
+/// Ensures the feature table is fully loaded before querying.
+func ensureTableLoaded() async throws {
+    // Load the feature table to ensure metadata and features are available.
+    try await restaurantsTable.load()
+}
         
         func selectFeatures(
             intersecting selectionGeometry: Geometry?,
@@ -82,28 +82,20 @@ extension NavigateMapAndIdentifyFeaturesWithKeyboardView {
             
             guard let selectionGeometry else { return }
             
-            let unorderedFeatures = try await makeFeatures(intersecting: selectionGeometry)
-                .filter { orderedFeature in
-                    guard let screenPoint = screenPointFor(orderedFeature.anchor) else { return false }
-                    return containsScreenPoint(screenPoint)
-                }
-            let orderedFeatures = unorderedFeatures.sorted { lhs, rhs in
-                let lhsScreenPoint = screenPointFor(lhs.anchor)
-                let rhsScreenPoint = screenPointFor(rhs.anchor)
-                
-                switch (lhsScreenPoint, rhsScreenPoint) {
-                case let (l?, r?):
-                    if l.y != r.y { return l.y < r.y }
-                    if l.x != r.x { return l.x < r.x }
-                    return Self.isEarlierInGeographicReadingOrder(lhs.anchor, than: rhs.anchor)
-                case (nil, nil):
-                    return Self.isEarlierInGeographicReadingOrder(lhs.anchor, than: rhs.anchor)
-                case (nil, _?):
-                    return false
-                case (_?, nil):
-                    return true
-                }
-            }
+let featuresWithScreenPoints = try await makeFeatures(intersecting: selectionGeometry)
+    .compactMap { orderedFeature -> (orderedFeature: OrderedFeature, screenPoint: CGPoint)? in
+        guard let screenPoint = screenPointFor(orderedFeature.anchor),
+              containsScreenPoint(screenPoint) else { return nil }
+        return (orderedFeature, screenPoint)
+    }
+
+let orderedFeatures = featuresWithScreenPoints
+    .sorted { lhs, rhs in
+        if lhs.screenPoint.y != rhs.screenPoint.y { return lhs.screenPoint.y < rhs.screenPoint.y }
+        if lhs.screenPoint.x != rhs.screenPoint.x { return lhs.screenPoint.x < rhs.screenPoint.x }
+        return Self.isEarlierInGeographicReadingOrder(lhs.orderedFeature.anchor, than: rhs.orderedFeature.anchor)
+    }
+    .map(\.orderedFeature)
             
             hasMoreThanNineSelectedFeatures = orderedFeatures.count > Self.maximumNumberedFeatures
             
