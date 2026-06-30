@@ -193,9 +193,9 @@ private extension UpdateBasemapForContrastAccessibilityView {
         var message: Text? {
             Text(
                 """
-                Change Light/Dark Mode or Increase Contrast in the Settings app
-                to see the basemap update automatically. Increase Contrast is in
-                Accessibility > Display & Text Size.
+                Change Light/Dark Mode or Increase Contrast in the Settings app to see the basemap update automatically.
+                
+                Increase Contrast is in Accessibility > Display & Text Size.
                 """
             )
         }
