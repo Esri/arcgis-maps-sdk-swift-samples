@@ -192,7 +192,7 @@ extension DownloadRasterTilesToLocalCacheView {
             // Uses the compact V2 format (.tpkx) when supported, otherwise the
             // legacy compact format (.tpk).
             let fileExtension = mapServiceInfo.allowsExportTileCacheCompactV2 ? "tpkx" : "tpk"
-            let downloadURL = temporaryDirectory
+            try FileManager.default.removeItem(at: downloadURL)
                 .appending(path: "myTileCache")
                 .appendingPathExtension(fileExtension)
             try? FileManager.default.removeItem(at: downloadURL)
@@ -207,8 +207,7 @@ extension DownloadRasterTilesToLocalCacheView {
             // Starts the job.
             exportTileCacheJob.start()
             
-            // Awaits the resulting tile cache and builds a preview map from it.
-            let tileCache = try await exportTileCacheJob.output
+            previewMap = Map(basemap: Basemap(baseLayer: previewLayer))
             let previewLayer = ArcGISTiledLayer(tileCache: tileCache)
             let previewMap = Map(basemap: Basemap(baseLayer: previewLayer))
             self.previewMap = previewMap
