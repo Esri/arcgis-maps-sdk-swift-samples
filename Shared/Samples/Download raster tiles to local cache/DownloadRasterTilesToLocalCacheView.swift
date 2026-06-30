@@ -25,6 +25,8 @@ struct DownloadRasterTilesToLocalCacheView: View {
     /// The error shown in the error alert.
     @State private var error: (any Error)?
     
+    @State private var extentRect = CGRect.zero
+    
     var body: some View {
         GeometryReader { geometryProxy in
             MapViewReader { mapViewProxy in
@@ -37,10 +39,10 @@ struct DownloadRasterTilesToLocalCacheView: View {
                     .overlay {
                         // Draws a red rectangle to emphasize the extent that
                         // will be exported.
-                        let rect = exportExtentRect(in: geometryProxy.size)
+//                        let rect = exportExtentRect(in: geometryProxy.size)
                         Rectangle()
                             .stroke(.red, lineWidth: 2)
-                            .frame(width: rect.width, height: rect.height)
+                            .frame(width: extentRect.width, height: extentRect.height)
                     }
                     .overlay {
                         if let job = model.exportTileCacheJob {
@@ -61,6 +63,18 @@ struct DownloadRasterTilesToLocalCacheView: View {
                         }
                     }
             }
+        }
+        .onGeometryChange(for: CGRect.self) { geometry in
+            let size = geometry.size
+            let sideLength = min(size.width, size.height)
+            return CGRect(
+                x: (size.width - sideLength) / 2,
+                y: (size.height - sideLength) / 2,
+                width: sideLength,
+                height: sideLength
+            )
+        } action: {
+            extentRect = $0
         }
         .sheet(isPresented: $isShowingPreview, onDismiss: model.removePreview) {
             previewSheet
@@ -108,7 +122,7 @@ struct DownloadRasterTilesToLocalCacheView: View {
     ///   - size: The size of the map view, used to locate the export extent.
     private func exportTiles(mapViewProxy: MapViewProxy, size: CGSize) async {
         // Creates an envelope from the centered square.
-        guard let extent = mapViewProxy.envelope(fromViewRect: exportExtentRect(in: size)) else {
+        guard let extent = mapViewProxy.envelope(fromViewRect: extentRect) else {
             return
         }
         
@@ -118,17 +132,6 @@ struct DownloadRasterTilesToLocalCacheView: View {
         } catch {
             self.error = error
         }
-    }
-    
-    /// Returns a square export extent centered in the map view.
-    private func exportExtentRect(in size: CGSize) -> CGRect {
-        let sideLength = min(size.width, size.height)
-        return CGRect(
-            x: (size.width - sideLength) / 2,
-            y: (size.height - sideLength) / 2,
-            width: sideLength,
-            height: sideLength
-        )
     }
 }
 
@@ -195,7 +198,6 @@ extension DownloadRasterTilesToLocalCacheView {
                 .appending(path: "myTileCache")
                 .appendingPathExtension(fileExtension)
             try? FileManager.default.removeItem(at: downloadURL)
-            
             // Creates the export job based on the parameters and temporary URL.
             let exportTileCacheJob = exportTask.makeExportTileCacheJob(
                 parameters: parameters,
