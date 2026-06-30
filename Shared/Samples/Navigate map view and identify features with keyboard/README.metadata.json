@@ -14,21 +14,21 @@
         "keyboard",
         "navigation",
         "selection",
-        "Envelope",
         "FeatureLayer",
         "Graphic",
         "GraphicsOverlay",
         "Map",
-        "MapView"
+        "MapView",
+        "Polygon"
     ],
     "redirect_from": [],
     "relevant_apis": [
-        "Envelope",
         "FeatureLayer",
         "Graphic",
         "GraphicsOverlay",
         "Map",
-        "MapView"
+        "MapView",
+        "Polygon"
     ],
     "snippets": [
         "NavigateMapAndIdentifyFeaturesWithKeyboardView.swift",
