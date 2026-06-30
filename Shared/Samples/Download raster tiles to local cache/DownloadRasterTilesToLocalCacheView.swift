@@ -52,10 +52,7 @@ struct DownloadRasterTilesToLocalCacheView: View {
                         ToolbarItem(placement: .bottomBar) {
                             Button("Export Tiles") {
                                 Task {
-                                    await exportTiles(
-                                        mapViewProxy: mapViewProxy,
-                                        size: geometryProxy.size
-                                    )
+                                    await exportTiles(mapViewProxy: mapViewProxy)
                                 }
                             }
                             .disabled(model.exportTileCacheJob != nil)
@@ -116,10 +113,8 @@ struct DownloadRasterTilesToLocalCacheView: View {
     }
     
     /// Exports the tiles within the red rectangle and shows the preview sheet.
-    /// - Parameters:
-    ///   - mapViewProxy: The proxy used to convert screen points to locations.
-    ///   - size: The size of the map view, used to locate the export extent.
-    private func exportTiles(mapViewProxy: MapViewProxy, size: CGSize) async {
+    /// - Parameter mapViewProxy: The proxy used to convert screen points to locations.
+    private func exportTiles(mapViewProxy: MapViewProxy) async {
         // Creates an envelope from the centered square.
         guard let extent = mapViewProxy.envelope(fromViewRect: extentRect) else {
             return
