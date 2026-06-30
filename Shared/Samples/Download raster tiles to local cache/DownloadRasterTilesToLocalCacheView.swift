@@ -98,7 +98,7 @@ struct DownloadRasterTilesToLocalCacheView: View {
     }
     
     /// A sheet that previews the exported tile cache in its own map.
-    @ViewBuilder private var previewSheet: some View {
+    private var previewSheet: some View {
         NavigationStack {
             if let previewMap = model.previewMap {
                 MapView(map: previewMap)
