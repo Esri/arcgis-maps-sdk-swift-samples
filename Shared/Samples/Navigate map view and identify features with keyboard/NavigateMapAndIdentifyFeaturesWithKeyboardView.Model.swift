@@ -22,11 +22,11 @@ extension NavigateMapAndIdentifyFeaturesWithKeyboardView {
     @MainActor
     @Observable
     final class Model {
-        /// The number of features that can be identified with number keys at one time.
-        private static let featuresPerGroup = 9
+        /// The maximum number of features that can be identified with number keys.
+        private static let maximumNumberedFeatures = 9
         
-        /// Buffer distance (meters) around the selection geometry to account for edge cases.
-        private static let selectionBufferDistance: Double = 60
+        /// Buffer distance around the selection envelope to account for edge cases.
+        private static let selectionBufferDistance = LinearUnit.meters.convert(to: .meters, value: 60)
         
         /// Attribute used to title and label each feature.
         private static let nameAttribute = "name"
@@ -51,24 +51,8 @@ extension NavigateMapAndIdentifyFeaturesWithKeyboardView {
         /// Features currently in the area of interest, indexed by the matching number key.
         private(set) var numberedFeatures: [Feature] = []
         
-        /// Features currently in the area of interest, sorted in screen reading order.
-        private var queriedFeatures: [OrderedFeature] = []
-        
-        /// The start index of the currently displayed group of numbered features.
-        private var displayedFeaturesIndex = 0
-        
         /// A Boolean value indicating whether more than nine features are selected.
         private(set) var hasMoreThanNineSelectedFeatures = false
-        
-        /// A Boolean value indicating whether there is another group of features to display.
-        var canShowNextFeatureGroup: Bool {
-            displayedFeaturesIndex + Self.featuresPerGroup < queriedFeatures.endIndex
-        }
-        
-        /// A Boolean value indicating whether there is a previous group of features to display.
-        var canShowPreviousFeatureGroup: Bool {
-            displayedFeaturesIndex > 0
-        }
         
         init() {
             restaurantsLayer = FeatureLayer(featureTable: restaurantsTable)
@@ -84,69 +68,36 @@ extension NavigateMapAndIdentifyFeaturesWithKeyboardView {
         }
         
         /// Ensures the feature table is fully loaded before querying.
-        func ensureTableLoaded() async throws {
-            // Load the feature table to ensure metadata and features are available.
+        func ensureLayerLoaded() async throws {
+            // Load the feature table to ensure metadata and features are available
             try await restaurantsTable.load()
         }
         
-        func selectFeatures(
-            intersecting selectionGeometry: Geometry?,
-            containsScreenPoint: (CGPoint) -> Bool,
-            screenPointFor: (Point) -> CGPoint?
-        ) async throws {
+        /// Selects, numbers, and labels restaurant features that intersect a given envelope.
+        /// - Parameters:
+        ///   - envelope: The envelope used to query restaurant features.
+        ///   - screenPointFor: A closure that converts a map location to a screen point.
+        func selectFeatures(in envelope: Envelope?, screenPointFor: (Point) -> CGPoint?) async throws {
             clearSelection()
             
-            guard let selectionGeometry else { return }
+            guard let envelope else { return }
             
-            let featuresWithScreenPoints = try await makeFeatures(intersecting: selectionGeometry)
-                .compactMap { orderedFeature -> (orderedFeature: OrderedFeature, screenPoint: CGPoint)? in
-                    guard let screenPoint = screenPointFor(orderedFeature.anchor),
-                          containsScreenPoint(screenPoint) else { return nil }
-                    return (orderedFeature, screenPoint)
-                }
+            let orderedFeatures = try await makeOrderedFeatures(intersecting: envelope)
             
-            let orderedFeatures = featuresWithScreenPoints
-                .sorted { lhs, rhs in
-                    if lhs.screenPoint.y != rhs.screenPoint.y { return lhs.screenPoint.y < rhs.screenPoint.y }
-                    if lhs.screenPoint.x != rhs.screenPoint.x { return lhs.screenPoint.x < rhs.screenPoint.x }
-                    let lhsName = name(for: lhs.orderedFeature.feature, fallback: "") ?? ""
-                    let rhsName = name(for: rhs.orderedFeature.feature, fallback: "") ?? ""
-                    return lhsName.localizedStandardCompare(rhsName) == .orderedAscending
-                }
-                .map(\.orderedFeature)
+            hasMoreThanNineSelectedFeatures = orderedFeatures.count > Self.maximumNumberedFeatures
             
-            queriedFeatures = orderedFeatures
-            displayedFeaturesIndex = 0
-            hasMoreThanNineSelectedFeatures = orderedFeatures.count > Self.featuresPerGroup
+            // Only select the numbered features (first 9)
+            let numberedOrderedFeatures = orderedFeatures.prefix(Self.maximumNumberedFeatures)
+            restaurantsLayer.selectFeatures(numberedOrderedFeatures.map(\.feature))
             
-            // Select all intersecting features; only the current group is numbered/labeled.
-            restaurantsLayer.selectFeatures(queriedFeatures.map(\.feature))
-            updateDisplayedFeatures(announce: true)
-        }
-        
-        /// Displays the next group of queried features, if one exists.
-        func nextGroupOfFeatures() {
-            guard canShowNextFeatureGroup else { return }
-            
-            displayedFeaturesIndex += Self.featuresPerGroup
-            updateDisplayedFeatures(announce: true)
-        }
-        
-        /// Displays the previous group of queried features, if one exists.
-        func previousGroupOfFeatures() {
-            guard canShowPreviousFeatureGroup else { return }
-            
-            displayedFeaturesIndex = max(displayedFeaturesIndex - Self.featuresPerGroup, 0)
-            updateDisplayedFeatures(announce: true)
+            addNumberedLabels(for: orderedFeatures)
         }
         
         /// Clears selected features, label graphics, and numbered feature state.
         func clearSelection() {
             restaurantsLayer.clearSelection()
             labelOverlay.removeAllGraphics()
-            queriedFeatures.removeAll()
             numberedFeatures.removeAll()
-            displayedFeaturesIndex = 0
             hasMoreThanNineSelectedFeatures = false
         }
         
@@ -163,16 +114,16 @@ extension NavigateMapAndIdentifyFeaturesWithKeyboardView {
             return name
         }
         
-        /// Queries restaurant features intersecting the given geometry.
-        /// - Parameter geometry: The geometry used to query restaurant features.
-        /// - Returns: The restaurant features with their map positions.
-        private func makeFeatures(intersecting geometry: Geometry) async throws -> [OrderedFeature] {
+        /// Queries and sorts restaurant features from top-to-bottom, then left-to-right in geographic space.
+        /// - Parameter envelope: The envelope used to query restaurant features.
+        /// - Returns: The ordered restaurant features with their map positions.
+        private func makeOrderedFeatures(intersecting envelope: Envelope) async throws -> [OrderedFeature] {
             // Add a buffer to catch features near the rectangle edges.
             // This accounts for projection distortions and rendering tolerances.
-            let queryGeometry = GeometryEngine.buffer(around: geometry, distance: Self.selectionBufferDistance) ?? geometry
+            let bufferedEnvelope = GeometryEngine.buffer(around: envelope, distance: Self.selectionBufferDistance)?.extent ?? envelope
             
             let queryParameters = QueryParameters()
-            queryParameters.geometry = queryGeometry
+            queryParameters.geometry = bufferedEnvelope
             queryParameters.spatialRelationship = .intersects
             queryParameters.maxFeatures = 1000
             
@@ -184,50 +135,19 @@ extension NavigateMapAndIdentifyFeaturesWithKeyboardView {
                     guard let anchor = feature.geometry as? Point else { return nil }
                     return OrderedFeature(feature: feature, anchor: anchor)
                 }
-        }
-        
-        /// Updates labels and number-key targets for the current group of queried features.
-        /// - Parameter announce: A Boolean value indicating whether to announce the new group.
-        private func updateDisplayedFeatures(announce: Bool) {
-            labelOverlay.removeAllGraphics()
-            numberedFeatures.removeAll()
-            addNumberedLabels(for: featuresForNextStartIndex(displayedFeaturesIndex))
-            
-            if announce {
-                announceDisplayedFeatures()
-            }
-        }
-        
-        /// Returns a slice of queried features beginning at the given start index.
-        /// - Parameter nextStartIndex: The index of the first feature to display.
-        /// - Returns: The next group of features, or the remaining features if fewer than a full group remain.
-        private func featuresForNextStartIndex(_ nextStartIndex: Int) -> ArraySlice<OrderedFeature> {
-            guard nextStartIndex < queriedFeatures.endIndex else { return [] }
-            
-            let endIndex = min(nextStartIndex + Self.featuresPerGroup, queriedFeatures.endIndex)
-            return queriedFeatures[nextStartIndex..<endIndex]
-        }
-        
-        /// Announces the keyboard commands for the currently displayed features.
-        private func announceDisplayedFeatures() {
-            let poiMessage = numberedFeatures.enumerated()
-                .map { index, feature in
-                    let featureTitle = name(for: feature, fallback: "Point of Interest") ?? "Point of Interest"
-                    return "Press \(index + 1), \(featureTitle)."
+                .sorted { lhs, rhs in
+                    // Sort by geographic coordinates (north to south, then west to east).
+                    if lhs.anchor.y != rhs.anchor.y {
+                        return lhs.anchor.y > rhs.anchor.y
+                    }
+                    return lhs.anchor.x < rhs.anchor.x
                 }
-                .joined(separator: " ")
-            
-            guard !poiMessage.isEmpty else { return }
-            
-            var lowPriority = AttributedString(poiMessage)
-            lowPriority.accessibilitySpeechAnnouncementPriority = .low
-            AccessibilityNotification.Announcement(lowPriority).post()
         }
         
-        /// Adds numbered text labels for the displayed restaurant features.
+        /// Adds numbered text labels for the first restaurant features.
         /// - Parameter orderedFeatures: The ordered restaurant features to label.
-        private func addNumberedLabels(for orderedFeatures: ArraySlice<OrderedFeature>) {
-            let numberedOrderedFeatures = orderedFeatures.prefix(Self.featuresPerGroup)
+        private func addNumberedLabels(for orderedFeatures: [OrderedFeature]) {
+            let numberedOrderedFeatures = orderedFeatures.prefix(Self.maximumNumberedFeatures)
             
             for (offset, orderedFeature) in numberedOrderedFeatures.enumerated() {
                 let number = offset + 1
@@ -245,18 +165,6 @@ extension NavigateMapAndIdentifyFeaturesWithKeyboardView {
                 labelOverlay.addGraphic(Graphic(geometry: orderedFeature.anchor, symbol: labelSymbol))
                 numberedFeatures.append(orderedFeature.feature)
             }
-        }
-        
-        /// Returns the keyboard equivalent for a displayed feature index.
-        /// - Parameter index: The displayed feature's zero-based index in the current group.
-        /// - Returns: The key equivalent used to identify the feature.
-        func key(forDisplayedFeatureAtIndex index: Int) -> KeyEquivalent {
-            let character: Character = if index < Self.featuresPerGroup {
-                Character("\(index + 1)")
-            } else {
-                "0"
-            }
-            return KeyEquivalent(character)
         }
         
         /// The restaurant marker symbol.
