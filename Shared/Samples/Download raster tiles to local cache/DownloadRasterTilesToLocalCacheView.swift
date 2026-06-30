@@ -67,7 +67,7 @@ struct DownloadRasterTilesToLocalCacheView: View {
         }
         .errorAlert(presentingError: $error)
     }
-    
+
     /// A progress indicator and cancel button shown while tiles are exporting.
     private func exportProgressView(job: ExportTileCacheJob) -> some View {
         VStack(spacing: 16) {
