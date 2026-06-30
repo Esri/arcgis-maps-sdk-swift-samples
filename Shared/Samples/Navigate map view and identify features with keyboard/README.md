@@ -12,9 +12,9 @@ Keyboard access is an important part of building inclusive GIS applications. Use
 
 Use keyboard navigation to pan, zoom, rotate, and reset north until restaurants appear inside the rectangle. Restaurants inside the rectangle are selected and labeled in reading order, from top-to-bottom and left-to-right.
 
-Press number keys `1` through `9` to show details for the matching restaurant in the current numbered group. Press `Esc` to dismiss the callout and show the selection rectangle again.
+Press number keys `1` through `9` to show details for the matching restaurant. Press `Esc` to dismiss the callout and show the selection rectangle again.
 
-If more than nine restaurants are inside the rectangle, use Previous and Next to move between numbered groups.
+If more than nine restaurants are inside the rectangle, zoom in or pan to narrow the results.
 
 ## How it works
 
