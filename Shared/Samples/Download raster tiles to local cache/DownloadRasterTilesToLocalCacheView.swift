@@ -25,6 +25,7 @@ struct DownloadRasterTilesToLocalCacheView: View {
     /// The error shown in the error alert.
     @State private var error: (any Error)?
     
+    /// The rectangle that defines the extent of the export area.
     @State private var extentRect = CGRect.zero
     
     var body: some View {
@@ -52,7 +53,8 @@ struct DownloadRasterTilesToLocalCacheView: View {
                         ToolbarItem(placement: .bottomBar) {
                             Button("Export Tiles") {
                                 Task {
-                                    await exportTiles(mapViewProxy: mapViewProxy)
+                                    await exportTiles(mapViewProxy: mapViewProxy)
+
                                 }
                             }
                             .disabled(model.exportTileCacheJob != nil)
@@ -113,8 +115,10 @@ struct DownloadRasterTilesToLocalCacheView: View {
     }
     
     /// Exports the tiles within the red rectangle and shows the preview sheet.
-    /// - Parameter mapViewProxy: The proxy used to convert screen points to locations.
-    private func exportTiles(mapViewProxy: MapViewProxy) async {
+    /// - Parameter mapViewProxy: The proxy used to convert screen points to locations.
+
+    private func exportTiles(mapViewProxy: MapViewProxy) async {
+
         // Creates an envelope from the centered square.
         guard let extent = mapViewProxy.envelope(fromViewRect: extentRect) else {
             return
