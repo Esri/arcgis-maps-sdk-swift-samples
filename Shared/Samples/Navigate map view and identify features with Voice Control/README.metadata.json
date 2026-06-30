@@ -1,0 +1,37 @@
+{
+    "category": "Accessibility",
+    "description": "Perform map navigation and identify nearby features using only the Voice Control.",
+    "ignore": false,
+    "images": [
+        "navigate-map-view-and-identify-features-with-voice-control.png"
+    ],
+    "keywords": [
+        "WCAG",
+        "accessibility",
+        "accessible",
+        "identify",
+        "inclusive",
+        "keyboard",
+        "navigation",
+        "selection",
+        "FeatureLayer",
+        "Graphic",
+        "GraphicsOverlay",
+        "Map",
+        "MapView",
+        "Polygon"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "FeatureLayer",
+        "Graphic",
+        "GraphicsOverlay",
+        "Map",
+        "MapView",
+        "Polygon"
+    ],
+    "snippets": [
+        "NavigateMapAndIdentifyFeaturesWithVoiceControlView.swift"
+    ],
+    "title": "Navigate map view and identify features with Voice Control"
+}

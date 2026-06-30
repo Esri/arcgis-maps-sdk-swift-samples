@@ -373,6 +373,10 @@
 		95E980742C26189E00CB8912 /* BrowseOGCAPIFeatureServiceView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 95E980702C26183000CB8912 /* BrowseOGCAPIFeatureServiceView.swift */; };
 		95F3A52B2C07F09C00885DED /* SetSurfaceNavigationConstraintView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95F3A52A2C07F09C00885DED /* SetSurfaceNavigationConstraintView.swift */; };
 		95F3A52D2C07F28700885DED /* SetSurfaceNavigationConstraintView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 95F3A52A2C07F09C00885DED /* SetSurfaceNavigationConstraintView.swift */; };
+		95F742A82FF4874E00571FE8 /* NavigateMapAndIdentifyFeaturesWithVoiceControlView.swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95F742A72FF4874400571FE8 /* NavigateMapAndIdentifyFeaturesWithVoiceControlView.swift.swift */; };
+		95F742AC2FF4889D00571FE8 /* ArcGIS in Frameworks */ = {isa = PBXBuildFile; productRef = 95F742AB2FF4889D00571FE8 /* ArcGIS */; };
+		95F742AF2FF488BD00571FE8 /* ArcGISToolkit in Frameworks */ = {isa = PBXBuildFile; productRef = 95F742AE2FF488BD00571FE8 /* ArcGISToolkit */; };
+		95F742B02FF48BBA00571FE8 /* NavigateMapAndIdentifyFeaturesWithVoiceControlView.swift.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 95F742A72FF4874400571FE8 /* NavigateMapAndIdentifyFeaturesWithVoiceControlView.swift.swift */; };
 		95F891292C46E9D60010EBED /* ShowDeviceLocationUsingIndoorPositioningView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95F891282C46E9D60010EBED /* ShowDeviceLocationUsingIndoorPositioningView.swift */; };
 		95FEAE552E3BF42A00727ABA /* ShowWFSLayerWithXMLQueryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 957B25D32E31BE23007E88F9 /* ShowWFSLayerWithXMLQueryView.swift */; };
 		95FEAE562E3BF43200727ABA /* ShowWFSLayerWithXMLQueryView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 957B25D32E31BE23007E88F9 /* ShowWFSLayerWithXMLQueryView.swift */; };
@@ -777,6 +781,7 @@
 			dstPath = "";
 			dstSubfolder = Resources;
 			files = (
+				95F742B02FF48BBA00571FE8 /* NavigateMapAndIdentifyFeaturesWithVoiceControlView.swift.swift in Copy Source Code Files */,
 				95DF31822FD37D99005D06E7 /* UpdateBasemapForContrastAccessibilityView.swift in Copy Source Code Files */,
 				D7CDCBAC2F86C3CE00B6C6AE /* ShowLineOfSightAnalysisInMapView.swift in Copy Source Code Files */,
 				D73169B42F7D990600AB132D /* ShowInteractiveViewshedWithAnalysisOverlayView.swift in Copy Source Code Files */,
@@ -1296,6 +1301,7 @@
 		95DF317F2FD37D33005D06E7 /* UpdateBasemapForContrastAccessibilityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateBasemapForContrastAccessibilityView.swift; sourceTree = "<group>"; };
 		95E980702C26183000CB8912 /* BrowseOGCAPIFeatureServiceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowseOGCAPIFeatureServiceView.swift; sourceTree = "<group>"; };
 		95F3A52A2C07F09C00885DED /* SetSurfaceNavigationConstraintView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetSurfaceNavigationConstraintView.swift; sourceTree = "<group>"; };
+		95F742A72FF4874400571FE8 /* NavigateMapAndIdentifyFeaturesWithVoiceControlView.swift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigateMapAndIdentifyFeaturesWithVoiceControlView.swift.swift; sourceTree = "<group>"; };
 		95F891282C46E9D60010EBED /* ShowDeviceLocationUsingIndoorPositioningView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowDeviceLocationUsingIndoorPositioningView.swift; sourceTree = "<group>"; };
 		D70082EA2ACF900100E0C3C2 /* IdentifyKMLFeaturesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IdentifyKMLFeaturesView.swift; sourceTree = "<group>"; };
 		D7010EBC2B05616900D43F55 /* DisplaySceneFromMobileScenePackageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DisplaySceneFromMobileScenePackageView.swift; sourceTree = "<group>"; };
@@ -1841,6 +1847,7 @@
 				D7352F8D2BD992C40013FFEF /* Monitor changes to draw status */,
 				D71371782BD88ECC00EB2F86 /* Monitor changes to layer view state */,
 				D752D9422A3A6EB8003EB25E /* Monitor changes to map load status */,
+				95F742A92FF4875400571FE8 /* Navigate map view and identify features with Voice Control */,
 				75DD739029D38B1B0010229D /* Navigate route */,
 				D7588F5B2B7D8DAA008B75E2 /* Navigate route with rerouting */,
 				D76929F32B4F78340047205E /* Orbit camera around object */,
@@ -3066,6 +3073,14 @@
 				95F3A52A2C07F09C00885DED /* SetSurfaceNavigationConstraintView.swift */,
 			);
 			path = "Set surface navigation constraint";
+			sourceTree = "<group>";
+		};
+		95F742A92FF4875400571FE8 /* Navigate map view and identify features with Voice Control */ = {
+			isa = PBXGroup;
+			children = (
+				95F742A72FF4874400571FE8 /* NavigateMapAndIdentifyFeaturesWithVoiceControlView.swift.swift */,
+			);
+			path = "Navigate map view and identify features with Voice Control";
 			sourceTree = "<group>";
 		};
 		95F8912A2C46E9F00010EBED /* Show device location using indoor positioning */ = {
@@ -4834,6 +4849,7 @@
 				00FA4E662DCA738A008A34CF /* ApplyRGBRendererView.SettingsView.swift in Sources */,
 				D7A670D72DADBC770060E327 /* EnvironmentValues+RequestReviewModel.swift in Sources */,
 				D7058FB12ACB423C00A40F14 /* Animate3DGraphicView.Model.swift in Sources */,
+				95F742A82FF4874E00571FE8 /* NavigateMapAndIdentifyFeaturesWithVoiceControlView.swift.swift in Sources */,
 				D7BEBAC52CBDC0F800F882E7 /* AddElevationSourceFromTilePackageView.swift in Sources */,
 				4C81276B2DCED03D006EF7D2 /* BrowseWFSLayersView.swift in Sources */,
 				D77D9C002BB2438200B38A6C /* AugmentRealityToShowHiddenInfrastructureView.ARSceneView.swift in Sources */,
