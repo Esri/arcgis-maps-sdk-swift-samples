@@ -192,22 +192,17 @@ extension DownloadRasterTilesToLocalCacheView {
             // legacy compact format (.tpk).
             let fileExtension = mapServiceInfo.allowsExportTileCacheCompactV2 ? "tpkx" : "tpk"
             let downloadURL = temporaryDirectory
-                .appendingPathComponent(
-                    "myTileCache",
-                    isDirectory: false
-                )
+                .appending(path: "myTileCache")
                 .appendingPathExtension(fileExtension)
             try? FileManager.default.removeItem(at: downloadURL)
             
             // Creates the export job based on the parameters and temporary URL.
-            exportTileCacheJob = exportTask.makeExportTileCacheJob(
+            let exportTileCacheJob = exportTask.makeExportTileCacheJob(
                 parameters: parameters,
                 downloadFileURL: downloadURL
             )
-            defer {
-                exportTileCacheJob = nil
-            }
-            guard let exportTileCacheJob else { return }
+            self.exportTileCacheJob = exportTileCacheJob
+            defer { self.exportTileCacheJob = nil }
             
             // Starts the job.
             exportTileCacheJob.start()
@@ -216,7 +211,6 @@ extension DownloadRasterTilesToLocalCacheView {
             let tileCache = try await exportTileCacheJob.output
             let previewLayer = ArcGISTiledLayer(tileCache: tileCache)
             let previewMap = Map(basemap: Basemap(baseLayer: previewLayer))
-            previewMap.initialViewpoint = Viewpoint(boundingGeometry: extent)
             self.previewMap = previewMap
         }
         
@@ -226,9 +220,9 @@ extension DownloadRasterTilesToLocalCacheView {
         private func makeExportTileCacheParameters(areaOfInterest: Envelope) async throws -> ExportTileCacheParameters {
             // Uses the current map view scale when available; otherwise falls
             // back to the map's configured minScale.
-            let effectiveScale = mapViewScale > 0 ? mapViewScale : map.minScale
-            let maxScale = (effectiveScale ?? 0) / 2
-            let minScale = (effectiveScale ?? 0) * 2
+            let effectiveScale = mapViewScale > 0 ? mapViewScale : (map.minScale ?? 0)
+            let maxScale = effectiveScale / 2
+            let minScale = effectiveScale * 2
             
             // Returns the default parameters for the export tile cache task.
             return try await exportTask.makeDefaultExportTileCacheParameters(
@@ -248,10 +242,12 @@ extension DownloadRasterTilesToLocalCacheView {
         /// Releases the preview map and removes the exported tile package.
         func removePreview() {
             previewMap = nil
-            let contents = (try? FileManager.default.contentsOfDirectory(
+            guard let contents = try? FileManager.default.contentsOfDirectory(
                 at: temporaryDirectory,
                 includingPropertiesForKeys: nil
-            )) ?? []
+            ) else {
+                return
+            }
             for url in contents {
                 try? FileManager.default.removeItem(at: url)
             }
