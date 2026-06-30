@@ -54,7 +54,6 @@ struct DownloadRasterTilesToLocalCacheView: View {
                             Button("Export Tiles") {
                                 Task {
                                     await exportTiles(mapViewProxy: mapViewProxy)
-                                    
                                 }
                             }
                             .disabled(model.exportTileCacheJob != nil)
