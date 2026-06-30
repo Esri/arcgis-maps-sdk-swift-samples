@@ -55,10 +55,10 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
     
     /// The number keys that can identify features.
     private let featureNumberKeys = CharacterSet(charactersIn: "123456789")
-    
+
     /// The fraction of the map width used for each horizontal keyboard pan.
     private let horizontalPanStepRatio: CGFloat = 0.2
-    
+
     /// The fraction of the map height used for each vertical keyboard pan.
     private let verticalPanStepRatio: CGFloat = 0.2
     
@@ -82,6 +82,7 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
                             do {
                                 // Ensure feature layer is fully loaded before querying
                                 try await model.ensureLayerLoaded()
+                                
                                 // Additional delay to ensure map view proxy is fully ready and settled
                                 try? await Task.sleep(for: .milliseconds(500))
                                 await refreshSelection(mapSize: mapSize, mapViewProxy: mapViewProxy)
@@ -118,27 +119,19 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
                         return .handled
                     }
                     .onKeyPress(.leftArrow) {
-                        Task {
-                            await panHorizontally(direction: -1, mapSize: mapSize, mapViewProxy: mapViewProxy)
-                        }
+                        Task { await panHorizontally(direction: -1, mapSize: mapSize, mapViewProxy: mapViewProxy) }
                         return .handled
                     }
                     .onKeyPress(.rightArrow) {
-                        Task {
-                            await panHorizontally(direction: 1, mapSize: mapSize, mapViewProxy: mapViewProxy)
-                        }
+                        Task { await panHorizontally(direction: 1, mapSize: mapSize, mapViewProxy: mapViewProxy) }
                         return .handled
                     }
                     .onKeyPress(.upArrow) {
-                        Task {
-                            await panVertically(direction: -1, mapSize: mapSize, mapViewProxy: mapViewProxy)
-                        }
+                        Task { await panVertically(direction: -1, mapSize: mapSize, mapViewProxy: mapViewProxy) }
                         return .handled
                     }
                     .onKeyPress(.downArrow) {
-                        Task {
-                            await panVertically(direction: 1, mapSize: mapSize, mapViewProxy: mapViewProxy)
-                        }
+                        Task { await panVertically(direction: 1, mapSize: mapSize, mapViewProxy: mapViewProxy) }
                         return .handled
                     }
                     .onKeyPress(characters: featureNumberKeys) { keyPress in
@@ -186,7 +179,7 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
                                     .clipShape(.rect(cornerRadius: 8))
                             }
                             if isKeyboardInputActive {
-                                TipView(KeyboardInputTip())
+//                                TipView(KeyboardInputTip())
                                 makeKeyboardInputBar()
                             }
                         }
@@ -274,31 +267,31 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
     @MainActor
     private func panHorizontally(direction: CGFloat, mapSize: CGSize, mapViewProxy: MapViewProxy) async {
         dismissCallout()
-        
+
         let centerScreenPoint = CGPoint(x: mapSize.width / 2, y: mapSize.height / 2)
         let horizontalOffset = mapSize.width * horizontalPanStepRatio * direction
         let targetScreenPoint = CGPoint(x: centerScreenPoint.x + horizontalOffset, y: centerScreenPoint.y)
-        
+
         guard let targetCenterPoint = mapViewProxy.location(fromScreenPoint: targetScreenPoint) else {
             return
         }
-        
+
         await mapViewProxy.setViewpointCenter(targetCenterPoint)
     }
-    
+
     /// Pans the map up or down by shifting the center point by a screen-space offset.
     @MainActor
     private func panVertically(direction: CGFloat, mapSize: CGSize, mapViewProxy: MapViewProxy) async {
         dismissCallout()
-        
+
         let centerScreenPoint = CGPoint(x: mapSize.width / 2, y: mapSize.height / 2)
         let verticalOffset = mapSize.height * verticalPanStepRatio * direction
         let targetScreenPoint = CGPoint(x: centerScreenPoint.x, y: centerScreenPoint.y + verticalOffset)
-        
+
         guard let targetCenterPoint = mapViewProxy.location(fromScreenPoint: targetScreenPoint) else {
             return
         }
-        
+
         await mapViewProxy.setViewpointCenter(targetCenterPoint)
     }
     
@@ -356,7 +349,8 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
         mapHasFocus = false
         keyboardInputHasFocus = false
         await Task.yield()
-        try? await Task.sleep(for: .milliseconds(100))
+        // Give SwiftUI time to add the TextField to the view hierarchy
+        try? await Task.sleep(for: .milliseconds(200))
         keyboardInputHasFocus = true
     }
     
@@ -375,8 +369,8 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
             .textInputAutocapitalization(.never)
             .autocorrectionDisabled()
             .focused($keyboardInputHasFocus)
-            .frame(width: 1, height: 1)
-            .opacity(0.01)
+            .frame(height: 0)
+            .opacity(0)
             .accessibilityLabel("Restaurant number")
             .onChange(of: keyboardInput) { _, newValue in
                 guard let featureIndex = featureIndex(for: newValue) else {
@@ -418,6 +412,88 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
     }
 }
 
+private struct KeyboardShortcutsOverlay: View {
+    //    var show3DScene: Bool
+    var onClose: () -> Void
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            HStack {
+                Spacer()
+                Button {
+                    onClose()
+                } label: {
+                    Image(systemName: "xmark.circle.fill")
+                        .font(.title2)
+                        .accessibilityLabel("Close Shortcuts")
+                }
+                .buttonStyle(.plain)
+            }
+            GroupBox(label: Text("Navigation").font(.headline)) {
+                VStack(alignment: .leading, spacing: 8) {
+                    ShortcutRow(icon: "arrow.up", description: "Pan Up")
+                    ShortcutRow(icon: "arrow.down", description: "Pan Down")
+                    ShortcutRow(icon: "arrow.left", description: "Pan Left")
+                    ShortcutRow(icon: "arrow.right", description: "Pan Right")
+                    //                    ShortcutRow(modifierIcon: show3DScene ? "command" : "option", icon: "arrow.up", description: "Zoom In")
+                    //                    ShortcutRow(modifierIcon: show3DScene ? "command" : "option", icon: "arrow.down", description: "Zoom Out")
+                    ShortcutRow(modifierIcon: "option", icon: "arrow.left", description: "Rotate Left")
+                    ShortcutRow(modifierIcon: "option", icon: "arrow.right", description: "Rotate Right")
+                }
+            }
+            GroupBox(label: Text("Identify Mode").font(.headline)) {
+                VStack(alignment: .leading, spacing: 8) {
+                    ShortcutRow(modifierIcon: "command", key: "I", description: "Identify Mode")
+                    ShortcutRow(modifierIcon: "command", key: "1 - 7", description: "Select Feature (1 - 7)")
+                    ShortcutRow(modifierIcon: "command", key: "8", description: "Previous Features")
+                    ShortcutRow(modifierIcon: "command", key: "9", description: "Next Features")
+                }
+            }
+            GroupBox(label: Text("Actions").font(.headline)) {
+                ShortcutRow(modifierIcon: "command", key: "C", description: "Close Popup")
+            }
+        }
+        .padding(16)
+        .background(.ultraThinMaterial)
+        .clipShape(.rect(cornerRadius: 16, style: .continuous))
+        .shadow(radius: 8)
+        .frame(maxWidth: 380)
+    }
+}
+
+private struct ShortcutRow: View {
+    var modifierIcon: String? // e.g. "command", "option"
+    var icon: String? // e.g. "arrow.up", "arrow.right"
+    var key: String? // e.g. "I", "1", "2"
+    var description: String
+    
+    var body: some View {
+        HStack {
+            HStack(spacing: 2) {
+                if let modifierIcon {
+                    Image(systemName: modifierIcon)
+                        .font(.title3)
+                }
+                if let icon {
+                    Image(systemName: icon)
+                        .font(.title3)
+                }
+                if let key {
+                    Text(key)
+                        .font(.system(size: 17, design: .monospaced))
+                        .fontWeight(.medium)
+                        .lineLimit(1)
+                }
+            }
+            .accessibilityElement(children: .combine)
+            Spacer()
+            Text(description)
+                .font(.body)
+                .lineLimit(1)
+        }
+    }
+}
+
 private extension NavigateMapAndIdentifyFeaturesWithKeyboardView {
     /// A TipKit tip that explains the centered rectangle.
     struct AreaOfInterestTip: Tip {
@@ -427,9 +503,8 @@ private extension NavigateMapAndIdentifyFeaturesWithKeyboardView {
         
         var message: Text? {
             Text(
-                 """
-                 Pan and zoom the map until the restaurants you want to inspect are inside the rectangle.
-                 The first nine are numbered from top-to-bottom and left-to-right.
+                """
+                 Use the arrow keys ← → ↑ ↓ on the keyboard to pan map. Pan until the restaurants you want to inspect are inside the rectangle. Press 1–9 on the keyboard to select a highlighted restaurant in the rectangle and view its details.
                  """
             )
         }
@@ -444,13 +519,16 @@ private extension NavigateMapAndIdentifyFeaturesWithKeyboardView {
         static let openSettingsActionID = "openSettings"
         
         var title: Text {
-            Text("Enable full keyboard access")
+            Text("Enable Full Keyboard Access")
         }
         
         var message: Text? {
             Text(
                 """
-                To enable full keyboard access, open the Settings app and navigate to Accessibility > Keyboards & Typing.
+                To use a hardware keyboard with your mobile device you need to enable Full Keyboard Access.
+                You can do this by opening the Settings app and navigating to:
+                
+                Accessibility > Keyboards & Typing.
                 """
             )
         }
@@ -464,26 +542,6 @@ private extension NavigateMapAndIdentifyFeaturesWithKeyboardView {
                 id: Self.openSettingsActionID,
                 title: "Open Accessibility Settings"
             )
-        }
-    }
-    
-    /// A TipKit tip that explains keyboard input.
-    struct KeyboardInputTip: Tip {
-        var title: Text {
-            Text("Use number keys for details")
-        }
-        
-        var message: Text? {
-            Text(
-                 """
-                 Press 1–9 on a hardware keyboard, or use Show Keyboard to open the software keyboard.
-                 Use Done to dismiss it.
-                 """
-            )
-        }
-        
-        var image: Image? {
-            Image(systemName: "keyboard")
         }
     }
 }
