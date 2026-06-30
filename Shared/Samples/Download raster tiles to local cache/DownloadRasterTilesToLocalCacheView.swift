@@ -41,9 +41,8 @@ struct DownloadRasterTilesToLocalCacheView: View {
                         Rectangle()
                             .stroke(.red, lineWidth: 2)
                             .frame(width: rect.width, height: rect.height)
-                            .position(x: rect.midX, y: rect.midY)
                     }
-                    .overlay(alignment: .center) {
+                    .overlay {
                         if let job = model.exportTileCacheJob {
                             exportProgressView(job: job)
                         }
@@ -72,17 +71,17 @@ struct DownloadRasterTilesToLocalCacheView: View {
     /// A progress indicator and cancel button shown while tiles are exporting.
     private func exportProgressView(job: ExportTileCacheJob) -> some View {
         VStack(spacing: 16) {
-            Text("Exporting tiles…")
+            Text("Exporting tiles")
             // Observes the job's progress to update the bar automatically.
             ProgressView(job.progress)
                 .progressViewStyle(.linear)
-            Button("Cancel", role: .destructive) {
+            Button("Cancel", role: .cancel) {
                 Task { await model.cancelExport() }
             }
         }
         .padding()
         .frame(maxWidth: 220)
-        .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 12))
+        .background(.regularMaterial, in: .rect(cornerRadius: 12))
     }
     
     /// A sheet that previews the exported tile cache in its own map.
@@ -100,6 +99,7 @@ struct DownloadRasterTilesToLocalCacheView: View {
             }
         }
         .highPriorityGesture(DragGesture())
+        .presentationSizing(.page)
     }
     
     /// Exports the tiles within the red rectangle and shows the preview sheet.
@@ -108,7 +108,9 @@ struct DownloadRasterTilesToLocalCacheView: View {
     ///   - size: The size of the map view, used to locate the export extent.
     private func exportTiles(mapViewProxy: MapViewProxy, size: CGSize) async {
         // Creates an envelope from the centered square.
-        guard let extent = mapViewProxy.envelope(fromViewRect: exportExtentRect(in: size)) else { return }
+        guard let extent = mapViewProxy.envelope(fromViewRect: exportExtentRect(in: size)) else {
+            return
+        }
         
         do {
             try await model.exportTiles(extent: extent)
