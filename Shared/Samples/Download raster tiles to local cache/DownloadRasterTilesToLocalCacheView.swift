@@ -39,7 +39,6 @@ struct DownloadRasterTilesToLocalCacheView: View {
                     .overlay {
                         // Draws a red rectangle to emphasize the extent that
                         // will be exported.
-//                        let rect = exportExtentRect(in: geometryProxy.size)
                         Rectangle()
                             .stroke(.red, lineWidth: 2)
                             .frame(width: extentRect.width, height: extentRect.height)
@@ -81,7 +80,7 @@ struct DownloadRasterTilesToLocalCacheView: View {
         }
         .errorAlert(presentingError: $error)
     }
-
+    
     /// A progress indicator and cancel button shown while tiles are exporting.
     private func exportProgressView(job: ExportTileCacheJob) -> some View {
         VStack(spacing: 16) {
@@ -185,7 +184,7 @@ extension DownloadRasterTilesToLocalCacheView {
             try await exportTask.load()
             guard let mapServiceInfo = exportTask.mapServiceInfo,
                   mapServiceInfo.allowsExportTiles else {
-                throw ExportError.notSupported
+                throw ExportNotSupportedError()
             }
             
             // Creates the parameters for the export tile cache job.
@@ -258,16 +257,8 @@ extension DownloadRasterTilesToLocalCacheView {
 }
 
 private extension DownloadRasterTilesToLocalCacheView.Model {
-    /// An error indicating the service does not support exporting tiles.
-    enum ExportError: LocalizedError {
-        case notSupported
-        
-        var errorDescription: String? {
-            switch self {
-            case .notSupported:
-                return "Exporting tiles is not supported for the service."
-            }
-        }
+    struct ExportNotSupportedError: LocalizedError {
+        let errorDescription: String? = "Exporting tiles is not supported for the service."
     }
 }
 
