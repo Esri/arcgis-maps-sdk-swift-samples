@@ -50,6 +50,15 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
     /// A task for delayed selection refresh after navigation ends.
     @State private var refreshTask: Task<Void, Never>?
     
+    /// The visible area of the map view.
+    @State private var visibleArea: ArcGIS.Polygon?
+    
+    /// The current map scale.
+    @State private var mapScale: Double = 0
+    
+    /// The current map rotation, in degrees.
+    @State private var mapRotation = 0.0
+    
     /// The side length of the centered area-of-interest rectangle, in screen points.
     private let selectionRectangleLength: CGFloat = 420
     
@@ -57,116 +66,66 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
     private let featureNumberKeys = CharacterSet(charactersIn: "123456789")
     
     var body: some View {
+        mapView
+    }
+    
+    /// The main map view with all modifiers.
+    @ViewBuilder private var mapView: some View {
         MapViewReader { mapViewProxy in
             GeometryReader { geometryProxy in
                 let mapSize = geometryProxy.size
                 let rectangleLength = min(selectionRectangleLength, min(mapSize.width, mapSize.height))
                 
                 MapView(map: model.map, graphicsOverlays: [model.labelOverlay])
-                    .interactionModes([.pan, .zoom])
+                // Enable built-in keyboard navigation for pan, zoom, rotate, and reset north.
+                    .interactionModes(.all)
                     .selectionColor(Model.selectionHaloColor)
                     .callout(placement: $calloutPlacement.animation(.default.speed(2))) { _ in
-                        if let calloutFeature {
-                            makeCalloutContent(feature: calloutFeature)
-                        }
+                        makeCalloutContent()
                     }
                     .onDrawStatusChanged { drawStatus in
-                        guard drawStatus == .completed, !initialDrawCompleted else { return }
-                        initialDrawCompleted = true
-                        Task {
-                            do {
-                                // Ensure the feature table is fully loaded before querying.
-                                try await model.ensureTableLoaded()
-                                
-                                // Additional delay to ensure map view proxy is fully ready and settled
-                                try? await Task.sleep(for: .milliseconds(500))
-                                await refreshSelection(mapSize: mapSize, mapViewProxy: mapViewProxy)
-                                await focusMap()
-                            } catch {
-                                self.error = error
-                            }
-                        }
+                        handleDrawStatusChanged(drawStatus, mapSize: mapSize, mapViewProxy: mapViewProxy)
                     }
                     .onNavigatingChanged { navigating in
-                        if navigating {
-                            dismissCallout()
-                            // Cancel any pending refresh when navigation starts
-                            refreshTask?.cancel()
-                        } else if initialDrawCompleted {
-                            // Cancel any previous pending refresh
-                            refreshTask?.cancel()
-                            
-                            // Debounce: wait for map to fully settle after navigation
-                            refreshTask = Task {
-                                // Wait for coordinate transforms to stabilize
-                                try? await Task.sleep(for: .milliseconds(200))
-                                
-                                guard !Task.isCancelled else { return }
-                                
-                                await refreshSelection(mapSize: mapSize, mapViewProxy: mapViewProxy)
-                            }
-                        }
+                        handleNavigatingChanged(navigating, mapSize: mapSize, mapViewProxy: mapViewProxy)
                     }
+                    .onScaleChanged { mapScale = $0 }
+                    .onVisibleAreaChanged { visibleArea = $0 }
+                    .onRotationChanged { mapRotation = $0 }
+                    .accessibilityLabel("Restaurant map")
+                    .accessibilityHint("Use arrow keys to pan, plus and minus to zoom, Alt or Option with arrow keys to rotate or reset north, and number keys 1 through 9 to show restaurant details.")
                     .focusable()
                     .focused($mapHasFocus)
-                    .onKeyPress(.escape) {
+                    .onKeyPress(.escape) { () -> KeyPress.Result in
                         dismissCallout()
                         return .handled
                     }
-                    .onKeyPress(characters: featureNumberKeys) { keyPress in
+                    .onKeyPress(characters: featureNumberKeys) { keyPress -> KeyPress.Result in
                         guard let featureIndex = featureIndex(for: keyPress.characters) else {
                             return .ignored
                         }
                         showCalloutForFeature(at: featureIndex)
                         return .handled
                     }
-                    .ignoresSafeArea(.keyboard, edges: .bottom)
+                    .ignoresSafeArea(SafeAreaRegions.keyboard, edges: Edge.Set.bottom)
                     .overlay(alignment: .center) {
-                        if calloutPlacement == nil {
-                            RoundedRectangle(cornerRadius: 4)
-                                .fill(.pink.opacity(0.08))
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 4)
-                                        .stroke(.pink, lineWidth: 2)
-                                )
-                                .frame(width: rectangleLength, height: rectangleLength)
-                                .allowsHitTesting(false)
-                                .accessibilityHidden(true)
-                        }
+                        makeSelectionRectangleOverlay(rectangleLength: rectangleLength)
                     }
                     .overlay(alignment: .top) {
                         TipView(AreaOfInterestTip())
                     }
                     .overlay(alignment: .bottom) {
-                        VStack(spacing: 8) {
-                            if model.hasMoreThanNineSelectedFeatures {
-                                Text("More than 9 restaurants are in the search area. Zoom in or pan to narrow the results.")
-                                    .font(.footnote)
-                                    .multilineTextAlignment(.center)
-                                    .padding(8)
-                                    .background(.regularMaterial)
-                                    .clipShape(.rect(cornerRadius: 8))
-                            }
-                            if !statusMessage.isEmpty {
-                                Text(statusMessage)
-                                    .font(.footnote)
-                                    .multilineTextAlignment(.center)
-                                    .padding(8)
-                                    .background(.regularMaterial)
-                                    .clipShape(.rect(cornerRadius: 8))
-                            }
-                            if isKeyboardInputActive {
-                                TipView(KeyboardInputTip())
-                                makeKeyboardInputBar()
-                            }
-                        }
-                        .padding(.bottom)
+                        makeBottomOverlayContent()
+                    }
+                    .overlay {
+                        makeCatalystKeyboardShortcutBridge(mapSize: mapSize, mapViewProxy: mapViewProxy)
                     }
                     .toolbar {
                         ToolbarItem(placement: .bottomBar) {
                             Button("Show Keyboard") {
                                 Task { await showKeyboard() }
                             }
+                            .accessibilityLabel("Show restaurant number keyboard")
                         }
                     }
                     .onAppear {
@@ -174,11 +133,179 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
                         // Avoid showing an alert if this view appears multiple times.
                         try? Tips.configure([.displayFrequency(.immediate)])
                     }
+                    .onDisappear {
+                        refreshTask?.cancel()
+                    }
                     .task {
                         await focusMap()
                     }
                     .errorAlert(presentingError: $error)
             }
+        }
+    }
+    
+    /// Creates the callout content.
+    @ViewBuilder
+    private func makeCalloutContent() -> some View {
+        if let calloutFeature {
+            let point = calloutFeature.geometry as? Point ?? Point(latitude: 0.0, longitude: 0.0)
+            let featureTitle = model.name(for: calloutFeature, fallback: "Restaurant") ?? "Restaurant"
+            calloutView(featureTitle: featureTitle, point: point)
+        }
+    }
+    
+    /// Creates the selection rectangle overlay.
+    @ViewBuilder
+    private func makeSelectionRectangleOverlay(rectangleLength: CGFloat) -> some View {
+        if calloutPlacement == nil {
+            RoundedRectangle(cornerRadius: 4)
+                .fill(.pink.opacity(0.08))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 4)
+                        .stroke(.pink, lineWidth: 2)
+                )
+                .frame(width: rectangleLength, height: rectangleLength)
+                .allowsHitTesting(false)
+                .accessibilityHidden(true)
+        }
+    }
+    
+    /// Creates the bottom overlay content with tips and controls.
+    @ViewBuilder
+    private func makeBottomOverlayContent() -> some View {
+        VStack(spacing: 8) {
+            if model.hasMoreThanNineSelectedFeatures {
+                Text("More than 9 restaurants are in the search area. Use Previous and Next to move between numbered groups, or zoom in or pan to narrow the results.")
+                    .font(.footnote)
+                    .multilineTextAlignment(.center)
+                    .padding(8)
+                    .background(.regularMaterial)
+                    .clipShape(.rect(cornerRadius: 8))
+                makeFeatureGroupControls()
+            }
+            if !statusMessage.isEmpty {
+                Text(statusMessage)
+                    .font(.footnote)
+                    .multilineTextAlignment(.center)
+                    .padding(8)
+                    .background(.regularMaterial)
+                    .clipShape(.rect(cornerRadius: 8))
+            }
+            if isKeyboardInputActive {
+                TipView(KeyboardInputTip())
+                makeKeyboardInputBar()
+            }
+        }
+        .padding(.bottom)
+    }
+    
+    /// Creates a Catalyst-specific keyboard shortcut bridge.
+    @ViewBuilder
+    private func makeCatalystKeyboardShortcutBridge(mapSize: CGSize, mapViewProxy: MapViewProxy) -> some View {
+#if targetEnvironment(macCatalyst)
+        CatalystKeyboardShortcutBridge { command in
+            handleCatalystKeyboardShortcut(command, mapSize: mapSize, mapViewProxy: mapViewProxy)
+        }
+        .frame(width: 0, height: 0)
+        .accessibilityHidden(true)
+#endif
+    }
+    
+    /// Handles draw status changes.
+    private func handleDrawStatusChanged(_ drawStatus: DrawStatus, mapSize: CGSize, mapViewProxy: MapViewProxy) {
+        guard drawStatus == .completed, !initialDrawCompleted else { return }
+        initialDrawCompleted = true
+        Task {
+            do {
+                // Ensure the feature table is fully loaded before querying.
+                try await model.ensureTableLoaded()
+                
+                // Additional delay to ensure map view proxy is fully ready and settled
+                try? await Task.sleep(for: .milliseconds(500))
+                await refreshSelection(mapSize: mapSize, mapViewProxy: mapViewProxy)
+                await focusMap()
+            } catch {
+                self.error = error
+            }
+        }
+    }
+    
+    /// Handles navigating state changes.
+    private func handleNavigatingChanged(_ navigating: Bool, mapSize: CGSize, mapViewProxy: MapViewProxy) {
+        if navigating {
+            dismissCallout()
+            // Cancel any pending refresh when navigation starts
+            refreshTask?.cancel()
+        } else if initialDrawCompleted {
+            // Cancel any previous pending refresh
+            refreshTask?.cancel()
+            
+            // Debounce: wait for map to fully settle after navigation
+            refreshTask = Task {
+                // Wait for coordinate transforms to stabilize
+                try? await Task.sleep(for: .milliseconds(200))
+                
+                guard !Task.isCancelled else { return }
+                
+                await refreshSelection(mapSize: mapSize, mapViewProxy: mapViewProxy)
+            }
+        }
+    }
+    
+    /// Handles keyboard shortcuts delivered by the Catalyst keyboard bridge.
+    private func handleCatalystKeyboardShortcut(_ command: CatalystKeyboardShortcutCommand, mapSize: CGSize, mapViewProxy: MapViewProxy) {
+        switch command {
+        case .dismissCallout:
+            dismissCallout()
+        case .showFeature(let index):
+            showCalloutForFeature(at: index)
+        case .pan(let xOffset, let yOffset):
+            panMap(xOffset: xOffset, yOffset: yOffset, mapSize: mapSize, mapViewProxy: mapViewProxy)
+        case .zoom(let factor):
+            zoomMap(by: factor, mapViewProxy: mapViewProxy)
+        case .rotate(let degrees):
+            rotateMap(by: degrees, mapViewProxy: mapViewProxy)
+        case .resetNorth:
+            resetMapRotation(mapViewProxy: mapViewProxy)
+        }
+    }
+    
+    /// Pans the map by the given screen-point offsets.
+    private func panMap(xOffset: CGFloat, yOffset: CGFloat, mapSize: CGSize, mapViewProxy: MapViewProxy) {
+        let screenCenter = CGPoint(x: mapSize.width / 2, y: mapSize.height / 2)
+        let targetScreenPoint = CGPoint(x: screenCenter.x + xOffset, y: screenCenter.y + yOffset)
+        guard let targetCenter = mapViewProxy.location(fromScreenPoint: targetScreenPoint) else { return }
+        
+        Task {
+            await mapViewProxy.setViewpointCenter(targetCenter, scale: mapScale)
+        }
+    }
+    
+    /// Zooms the map by multiplying the current scale by the given factor.
+    private func zoomMap(by factor: Double, mapViewProxy: MapViewProxy) {
+        guard let center = visibleArea?.extent.center, mapScale > 0 else { return }
+        
+        Task {
+            await mapViewProxy.setViewpoint(Viewpoint(center: center, scale: mapScale * factor, rotation: mapRotation))
+        }
+    }
+    
+    /// Rotates the map by the given number of degrees.
+    private func rotateMap(by degrees: Double, mapViewProxy: MapViewProxy) {
+        setMapRotation(mapRotation + degrees, mapViewProxy: mapViewProxy)
+    }
+    
+    /// Resets the map rotation to north.
+    private func resetMapRotation(mapViewProxy: MapViewProxy) {
+        setMapRotation(0, mapViewProxy: mapViewProxy)
+    }
+    
+    /// Sets the map rotation to the given number of degrees.
+    private func setMapRotation(_ rotation: Double, mapViewProxy: MapViewProxy) {
+        guard let center = visibleArea?.extent.center, mapScale > 0 else { return }
+        
+        Task {
+            await mapViewProxy.setViewpoint(Viewpoint(center: center, scale: mapScale, rotation: rotation))
         }
     }
     
@@ -212,7 +339,7 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
     }
     
     /// Makes a polygon matching the centered selection rectangle's map footprint.
-    private func makeSelectionPolygon(mapSize: CGSize, mapViewProxy: MapViewProxy) -> Polygon? {
+    private func makeSelectionPolygon(mapSize: CGSize, mapViewProxy: MapViewProxy) -> ArcGIS.Polygon? {
         let selectionRectangle = makeSelectionRectangle(mapSize: mapSize)
         let screenCenter = CGPoint(x: selectionRectangle.midX, y: selectionRectangle.midY)
         let halfLength = selectionRectangle.width / 2
@@ -226,7 +353,7 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
         // Convert all corners to map coordinates.
         let corners = [topLeft, topRight, bottomRight, bottomLeft]
         let mapPoints = corners.compactMap { mapViewProxy.location(fromScreenPoint: $0) }
-
+        
         // Ensure we got all 4 corners converted
         guard mapPoints.count == 4,
               let spatialReference = mapPoints.first?.spatialReference else {
@@ -270,12 +397,28 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
         }
     }
     
+    /// Shows the next group of numbered features.
+    private func showNextFeatureGroup() {
+        guard model.canShowNextFeatureGroup else { return }
+        
+        dismissCallout()
+        model.nextGroupOfFeatures()
+    }
+    
+    /// Shows the previous group of numbered features.
+    private func showPreviousFeatureGroup() {
+        guard model.canShowPreviousFeatureGroup else { return }
+        
+        dismissCallout()
+        model.previousGroupOfFeatures()
+    }
+    
     /// Dismisses the details callout and restores the selection rectangle.
     private func dismissCallout() {
         calloutFeature = nil
         calloutPlacement = nil
         statusMessage = ""
-
+        
         if isKeyboardInputActive {
             keyboardInputHasFocus = true
         } else {
@@ -320,7 +463,8 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
             .focused($keyboardInputHasFocus)
             .frame(width: 1, height: 1)
             .opacity(0.01)
-            .accessibilityLabel("Restaurant number")
+            .accessibilityLabel("Restaurant number, 1 through 9")
+            .accessibilityHint("Enter the number shown next to a restaurant to open its details.")
             .onChange(of: keyboardInput) { _, newValue in
                 guard let featureIndex = featureIndex(for: newValue) else {
                     keyboardInput = ""
@@ -338,26 +482,62 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
                             Button("Done") {
                                 hideKeyboard()
                             }
+                            .accessibilityLabel("Done entering restaurant number")
                         }
                     }
                 }
             }
     }
     
-    /// The callout content for a restaurant feature.
-    private func makeCalloutContent(feature: Feature) -> some View {
-        let anchor = feature.geometry as? Point
-        let wgs84Point = anchor.flatMap { GeometryEngine.project($0, into: .wgs84) }
-        
-        return VStack(alignment: .leading) {
-            Text(model.name(for: feature, fallback: "Restaurant") ?? "Restaurant")
-                .font(.headline)
-            if let wgs84Point {
-                Text("Lat: \(wgs84Point.y, format: .number.precision(.fractionLength(6)))")
-                Text("Lon: \(wgs84Point.x, format: .number.precision(.fractionLength(6)))")
+    /// Controls for navigating through groups of numbered features.
+    private func makeFeatureGroupControls() -> some View {
+        HStack(spacing: 12) {
+            Button("Previous") {
+                showPreviousFeatureGroup()
             }
+            .disabled(!model.canShowPreviousFeatureGroup)
+            .accessibilityLabel("Previous group of restaurants")
+            .keyboardShortcut("[", modifiers: .command)
+            
+            Button("Next") {
+                showNextFeatureGroup()
+            }
+            .disabled(!model.canShowNextFeatureGroup)
+            .accessibilityLabel("Next group of restaurants")
+            .keyboardShortcut("]", modifiers: .command)
+        }
+        .buttonStyle(.bordered)
+        .font(.footnote)
+    }
+    
+    private func calloutView(featureTitle: String, point: Point) -> some View {
+        let latLong = point
+            .formatted(.latitudeLongitude(style: .decimalDegrees, decimalPlaces: 2))
+            .replacingOccurrences(of: " ", with: ", ")
+        return VStack(alignment: .leading) {
+            HStack {
+                Text(featureTitle)
+                    .font(.headline)
+                    .accessibilityLabel("Restaurant, \(featureTitle)")
+                Button("", systemImage: "xmark.circle.fill") {
+                    dismissCallout()
+                }
+                .font(.title2)
+                .accessibilityLabel("Close restaurant details")
+                .keyboardShortcut("c")
+            }
+            Text("Location")
+                .font(.headline)
+            Text(latLong)
+                .font(.callout)
+                .accessibilityLabel("Location, \(latLong)")
         }
         .padding(5)
+        .task {
+            var highPriority = AttributedString("\(featureTitle), Location, \(latLong)")
+            highPriority.accessibilitySpeechAnnouncementPriority = .high
+            AccessibilityNotification.Announcement(highPriority).post()
+        }
     }
 }
 
@@ -366,32 +546,151 @@ private extension NavigateMapAndIdentifyFeaturesWithKeyboardView {
     struct AreaOfInterestTip: Tip {
         var title: Text {
             Text("Use the rectangle as the search area")
+                .accessibilityLabel("Use the rectangle as the search area")
         }
-
+        
         var message: Text? {
-            Text("Pan and zoom the map until the restaurants you want to inspect are inside the rectangle. The first nine are numbered from top-to-bottom and left-to-right.")
+            Text("Pan and zoom the map until the restaurants you want to inspect are inside the rectangle. The current group is numbered from top-to-bottom and left-to-right.")
+                .accessibilityLabel("Pan and zoom the map until the restaurants you want to inspect are inside the rectangle. The current group is numbered from top-to-bottom and left-to-right.")
         }
-
+        
         var image: Image? {
             Image(systemName: "rectangle.dashed")
         }
     }
-
+    
     /// A TipKit tip that explains keyboard input.
     struct KeyboardInputTip: Tip {
         var title: Text {
             Text("Use number keys for details")
+                .accessibilityLabel("Use number keys for details")
         }
-
+        
         var message: Text? {
             Text("Press 1–9 on a hardware keyboard, or use Show Keyboard to open the software keyboard. Use Done to dismiss it.")
-        }
-
-        var image: Image? {
-            Image(systemName: "keyboard")
+                .accessibilityLabel("Press 1–9 on a hardware keyboard, or use Show Keyboard to open the software keyboard. Use Done to dismiss it.")
         }
     }
 }
+
+/// A keyboard shortcut command handled by the Catalyst keyboard bridge.
+private enum CatalystKeyboardShortcutCommand {
+    case dismissCallout
+    case showFeature(Int)
+    case pan(xOffset: CGFloat, yOffset: CGFloat)
+    case zoom(factor: Double)
+    case rotate(degrees: Double)
+    case resetNorth
+}
+
+#if targetEnvironment(macCatalyst)
+/// An invisible view that receives hardware keyboard commands in Mac Catalyst.
+private struct CatalystKeyboardShortcutBridge: UIViewRepresentable {
+    /// The action to perform when a keyboard shortcut is pressed.
+    let action: (CatalystKeyboardShortcutCommand) -> Void
+    
+    func makeUIView(context: Context) -> KeyboardShortcutView {
+        let view = KeyboardShortcutView()
+        view.action = action
+        DispatchQueue.main.async {
+            view.becomeFirstResponder()
+        }
+        return view
+    }
+    
+    func updateUIView(_ uiView: KeyboardShortcutView, context: Context) {
+        uiView.action = action
+        DispatchQueue.main.async {
+            uiView.becomeFirstResponder()
+        }
+    }
+    
+    /// A view that can become first responder and vend `UIKeyCommand`s.
+    final class KeyboardShortcutView: UIView {
+        /// The distance to pan the map per arrow-key press, in screen points.
+        private static let panOffset: CGFloat = 80
+        
+        /// The action to perform when a keyboard shortcut is pressed.
+        var action: ((CatalystKeyboardShortcutCommand) -> Void)?
+        
+        override var canBecomeFirstResponder: Bool { true }
+        
+        override var keyCommands: [UIKeyCommand]? {
+            let numberCommands = (1...9).map { number in
+                UIKeyCommand(
+                    input: "\(number)",
+                    modifierFlags: [],
+                    action: #selector(handleNumberKey(_:))
+                )
+            }
+            
+            return numberCommands + [
+                UIKeyCommand(input: UIKeyCommand.inputEscape, modifierFlags: [], action: #selector(handleEscapeKey)),
+                UIKeyCommand(input: UIKeyCommand.inputUpArrow, modifierFlags: [], action: #selector(handlePanUp)),
+                UIKeyCommand(input: UIKeyCommand.inputDownArrow, modifierFlags: [], action: #selector(handlePanDown)),
+                UIKeyCommand(input: UIKeyCommand.inputLeftArrow, modifierFlags: [], action: #selector(handlePanLeft)),
+                UIKeyCommand(input: UIKeyCommand.inputRightArrow, modifierFlags: [], action: #selector(handlePanRight)),
+                UIKeyCommand(input: "+", modifierFlags: [], action: #selector(handleZoomIn)),
+                UIKeyCommand(input: "=", modifierFlags: [], action: #selector(handleZoomIn)),
+                UIKeyCommand(input: "-", modifierFlags: [], action: #selector(handleZoomOut)),
+                UIKeyCommand(input: UIKeyCommand.inputLeftArrow, modifierFlags: .alternate, action: #selector(handleRotateLeft)),
+                UIKeyCommand(input: UIKeyCommand.inputRightArrow, modifierFlags: .alternate, action: #selector(handleRotateRight)),
+                UIKeyCommand(input: UIKeyCommand.inputUpArrow, modifierFlags: .alternate, action: #selector(handleResetNorth))
+            ]
+        }
+        
+        @objc
+        private func handleNumberKey(_ keyCommand: UIKeyCommand) {
+            guard let input = keyCommand.input,
+                  let number = Int(input),
+                  (1...9).contains(number) else { return }
+            action?(.showFeature(number - 1))
+        }
+        
+        @objc
+        private func handleEscapeKey() {
+            action?(.dismissCallout)
+        }
+        
+        @objc
+        private func handlePanUp() {
+            action?(.pan(xOffset: 0, yOffset: -Self.panOffset))
+        }
+        
+        @objc private func handlePanDown() {
+            action?(.pan(xOffset: 0, yOffset: Self.panOffset))
+        }
+        
+        @objc private func handlePanLeft() {
+            action?(.pan(xOffset: -Self.panOffset, yOffset: 0))
+        }
+        
+        @objc private func handlePanRight() {
+            action?(.pan(xOffset: Self.panOffset, yOffset: 0))
+        }
+        
+        @objc private func handleZoomIn() {
+            action?(.zoom(factor: 0.5))
+        }
+        
+        @objc private func handleZoomOut() {
+            action?(.zoom(factor: 2))
+        }
+        
+        @objc private func handleRotateLeft() {
+            action?(.rotate(degrees: -15))
+        }
+        
+        @objc private func handleRotateRight() {
+            action?(.rotate(degrees: 15))
+        }
+        
+        @objc private func handleResetNorth() {
+            action?(.resetNorth)
+        }
+    }
+}
+#endif
 
 private extension Collection {
     /// Returns the element at the index if it exists.
