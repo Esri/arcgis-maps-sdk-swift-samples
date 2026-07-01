@@ -55,12 +55,15 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
     
     /// The number keys that can identify features.
     private let featureNumberKeys = CharacterSet(charactersIn: "123456789")
-
+    
     /// The fraction of the map width used for each horizontal keyboard pan.
     private let horizontalPanStepRatio: CGFloat = 0.2
-
+    
     /// The fraction of the map height used for each vertical keyboard pan.
     private let verticalPanStepRatio: CGFloat = 0.2
+    
+    /// A tip explaining how the automatic contrast mode responds to OS settings.
+    private let enableKeyboardAccessTip = EnableKeyboardAccessTip()
     
     var body: some View {
         MapViewReader { mapViewProxy in
@@ -178,9 +181,9 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
                                     .background(.regularMaterial)
                                     .clipShape(.rect(cornerRadius: 8))
                             }
-if isKeyboardInputActive {
-    makeKeyboardInputBar()
-}
+                            if isKeyboardInputActive {
+                                makeKeyboardInputBar()
+                            }
                         }
                         .padding(.bottom)
                     }
@@ -201,7 +204,9 @@ if isKeyboardInputActive {
                     }
                     .overlay(alignment: .bottomTrailing) {
                         if !isKeyboardInputActive {
-                            TipView(EnableKeyboardAccessTip())
+                            TipView(enableKeyboardAccessTip) { _ in
+                                openAccessibilitySettings()
+                            }
                         }
                     }
                     .errorAlert(presentingError: $error)
@@ -266,31 +271,31 @@ if isKeyboardInputActive {
     @MainActor
     private func panHorizontally(direction: CGFloat, mapSize: CGSize, mapViewProxy: MapViewProxy) async {
         dismissCallout()
-
+        
         let centerScreenPoint = CGPoint(x: mapSize.width / 2, y: mapSize.height / 2)
         let horizontalOffset = mapSize.width * horizontalPanStepRatio * direction
         let targetScreenPoint = CGPoint(x: centerScreenPoint.x + horizontalOffset, y: centerScreenPoint.y)
-
+        
         guard let targetCenterPoint = mapViewProxy.location(fromScreenPoint: targetScreenPoint) else {
             return
         }
-
+        
         await mapViewProxy.setViewpointCenter(targetCenterPoint)
     }
-
+    
     /// Pans the map up or down by shifting the center point by a screen-space offset.
     @MainActor
     private func panVertically(direction: CGFloat, mapSize: CGSize, mapViewProxy: MapViewProxy) async {
         dismissCallout()
-
+        
         let centerScreenPoint = CGPoint(x: mapSize.width / 2, y: mapSize.height / 2)
         let verticalOffset = mapSize.height * verticalPanStepRatio * direction
         let targetScreenPoint = CGPoint(x: centerScreenPoint.x, y: centerScreenPoint.y + verticalOffset)
-
+        
         guard let targetCenterPoint = mapViewProxy.location(fromScreenPoint: targetScreenPoint) else {
             return
         }
-
+        
         await mapViewProxy.setViewpointCenter(targetCenterPoint)
     }
     
@@ -409,6 +414,27 @@ if isKeyboardInputActive {
         }
         .padding(5)
     }
+    
+    /// Opens the Settings app to an Accessibility feature when supported.
+    private func openAccessibilitySettings() {
+        Task {
+            do {
+                let feature: AccessibilitySettings.Feature = .personalVoiceAllowAppsToRequestToUse
+                try await AccessibilitySettings.openSettings(for: feature)
+            } catch {
+                openAppSettings()
+            }
+        }
+    }
+    
+    /// Opens this app's page in the Settings app.
+    private func openAppSettings() {
+#if targetEnvironment(macCatalyst)
+        UIApplication.shared.open(.macOSAccessibilitySettings)
+#else
+        UIApplication.shared.open(.appSettings)
+#endif
+    }
 }
 
 private extension NavigateMapAndIdentifyFeaturesWithKeyboardView {
@@ -420,7 +446,7 @@ private extension NavigateMapAndIdentifyFeaturesWithKeyboardView {
         
         var message: Text? {
             Text(
-                """
+                 """
                  Use the arrow keys ← → ↑ ↓ on the keyboard to pan map. Pan until the restaurants you want to inspect are inside the rectangle. Press 1–9 on the keyboard to select a highlighted restaurant in the rectangle and view its details.
                  """
             )
@@ -473,5 +499,12 @@ private extension Collection {
 #Preview {
     NavigationStack {
         NavigateMapAndIdentifyFeaturesWithKeyboardView()
+    }
+}
+
+private extension URL {
+    /// The URL of this app's page in the Settings app.
+    static var appSettings: URL {
+        URL(string: UIApplication.openSettingsURLString)!
     }
 }
