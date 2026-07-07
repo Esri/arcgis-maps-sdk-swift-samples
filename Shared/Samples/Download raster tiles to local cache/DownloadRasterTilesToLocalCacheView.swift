@@ -29,38 +29,37 @@ struct DownloadRasterTilesToLocalCacheView: View {
     @State private var extentRect = CGRect.zero
     
     var body: some View {
-        GeometryReader { _ in
-            MapViewReader { mapViewProxy in
-                MapView(map: model.map)
-                    .interactionModes(model.exportTileCacheJob == nil ? [.pan, .zoom] : [])
-                    .onScaleChanged { model.mapViewScale = $0 }
-                    .onDisappear {
-                        Task { await model.cancelExport() }
+        MapViewReader { mapViewProxy in
+            MapView(map: model.map)
+                .interactionModes(model.exportTileCacheJob == nil ? [.pan, .zoom] : [])
+                .onScaleChanged { model.mapViewScale = $0 }
+                .onDisappear {
+                    Task { await model.cancelExport() }
+                }
+                .overlay {
+                    // Draws a red rectangle to emphasize the extent that
+                    // will be exported.
+                    Rectangle()
+                        .stroke(.red, lineWidth: 2)
+                        .frame(width: extentRect.width, height: extentRect.height)
+                }
+                .overlay {
+                    if let job = model.exportTileCacheJob {
+                        exportProgressView(job: job)
                     }
-                    .overlay {
-                        // Draws a red rectangle to emphasize the extent that
-                        // will be exported.
-                        Rectangle()
-                            .stroke(.red, lineWidth: 2)
-                            .frame(width: extentRect.width, height: extentRect.height)
-                    }
-                    .overlay {
-                        if let job = model.exportTileCacheJob {
-                            exportProgressView(job: job)
-                        }
-                    }
-                    .toolbar {
-                        ToolbarItem(placement: .bottomBar) {
-                            Button("Export Tiles") {
-                                Task {
-                                    await exportTiles(mapViewProxy: mapViewProxy)
-                                }
+                }
+                .toolbar {
+                    ToolbarItem(placement: .bottomBar) {
+                        Button("Export Tiles") {
+                            Task {
+                                await exportTiles(mapViewProxy: mapViewProxy)
                             }
-                            .disabled(model.exportTileCacheJob != nil)
                         }
+                        .disabled(model.exportTileCacheJob != nil)
                     }
-            }
+                }
         }
+        
         .onGeometryChange(for: CGRect.self) { geometry in
             let size = geometry.size
             let sideLength = min(size.width, size.height)
