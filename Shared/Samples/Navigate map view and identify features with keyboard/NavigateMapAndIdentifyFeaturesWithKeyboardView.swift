@@ -122,19 +122,43 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
                         return .handled
                     }
                     .onKeyPress(.leftArrow) {
-                        Task { await panHorizontally(direction: -1, mapSize: mapSize, mapViewProxy: mapViewProxy) }
+                        Task {
+                            await panHorizontally(
+                                direction: -1,
+                                mapSize: mapSize,
+                                mapViewProxy: mapViewProxy
+                            )
+                        }
                         return .handled
                     }
                     .onKeyPress(.rightArrow) {
-                        Task { await panHorizontally(direction: 1, mapSize: mapSize, mapViewProxy: mapViewProxy) }
+                        Task {
+                            await panHorizontally(
+                                direction: 1,
+                                mapSize: mapSize,
+                                mapViewProxy: mapViewProxy
+                            )
+                        }
                         return .handled
                     }
                     .onKeyPress(.upArrow) {
-                        Task { await panVertically(direction: -1, mapSize: mapSize, mapViewProxy: mapViewProxy) }
+                        Task {
+                            await panVertically(
+                                direction: -1,
+                                mapSize: mapSize,
+                                mapViewProxy: mapViewProxy
+                            )
+                        }
                         return .handled
                     }
                     .onKeyPress(.downArrow) {
-                        Task { await panVertically(direction: 1, mapSize: mapSize, mapViewProxy: mapViewProxy) }
+                        Task {
+                            await panVertically(
+                                direction: 1,
+                                mapSize: mapSize,
+                                mapViewProxy: mapViewProxy
+                            )
+                        }
                         return .handled
                     }
                     .onKeyPress(characters: featureNumberKeys) { keyPress in
@@ -288,7 +312,11 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
     private func panVertically(direction: CGFloat, mapSize: CGSize, mapViewProxy: MapViewProxy) async {
         dismissCallout()
         
-        let centerScreenPoint = CGPoint(x: mapSize.width / 2, y: mapSize.height / 2)
+        let centerScreenPoint = CGPoint(
+            x: mapSize.width / 2,
+            y: mapSize.height / 2
+        )
+        
         let verticalOffset = mapSize.height * verticalPanStepRatio * direction
         let targetScreenPoint = CGPoint(x: centerScreenPoint.x, y: centerScreenPoint.y + verticalOffset)
         

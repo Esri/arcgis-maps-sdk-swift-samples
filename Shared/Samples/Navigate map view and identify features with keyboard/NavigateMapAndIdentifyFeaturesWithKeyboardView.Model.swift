@@ -32,9 +32,25 @@ extension NavigateMapAndIdentifyFeaturesWithKeyboardView {
         private static let nameAttribute = "name"
         
         /// Colors used for the marker, selection halo, and label.
-        private static let markerFillColor = UIColor(red: 11 / 255, green: 79 / 255, blue: 138 / 255, alpha: 1)
-        static let selectionHaloColor = Color(red: 190 / 255, green: 24 / 255, blue: 93 / 255)
-        private static let labelTextColor = UIColor(red: 31 / 255, green: 35 / 255, blue: 40 / 255, alpha: 1)
+        private static let markerFillColor = UIColor(
+            red: 11 / 255,
+            green: 79 / 255,
+            blue: 138 / 255,
+            alpha: 1
+        )
+        
+        static let selectionHaloColor = Color(
+            red: 190 / 255,
+            green: 24 / 255,
+            blue: 93 / 255
+        )
+        
+        private static let labelTextColor = UIColor(
+            red: 31 / 255,
+            green: 35 / 255,
+            blue: 40 / 255,
+            alpha: 1
+        )
         
         /// The map displayed in the map view.
         let map: Map
@@ -60,7 +76,11 @@ extension NavigateMapAndIdentifyFeaturesWithKeyboardView {
             
             let map = Map(basemapStyle: .arcGISLightGray)
             map.initialViewpoint = Viewpoint(
-                center: Point(x: -117.1825, y: 34.0556, spatialReference: .wgs84),
+                center: Point(
+                    x: -117.1825,
+                    y: 34.0556,
+                    spatialReference: .wgs84
+                ),
                 scale: 4_000
             )
             map.addOperationalLayer(restaurantsLayer)
@@ -120,7 +140,10 @@ extension NavigateMapAndIdentifyFeaturesWithKeyboardView {
         private func makeOrderedFeatures(intersecting envelope: Envelope) async throws -> [OrderedFeature] {
             // Add a buffer to catch features near the rectangle edges.
             // This accounts for projection distortions and rendering tolerances.
-            let bufferedEnvelope = GeometryEngine.buffer(around: envelope, distance: Self.selectionBufferDistance)?.extent ?? envelope
+            let bufferedEnvelope = GeometryEngine.buffer(
+                around: envelope,
+                distance: Self.selectionBufferDistance
+            )?.extent ?? envelope
             
             let queryParameters = QueryParameters()
             queryParameters.geometry = bufferedEnvelope
@@ -162,15 +185,25 @@ extension NavigateMapAndIdentifyFeaturesWithKeyboardView {
                 labelSymbol.haloColor = .white
                 labelSymbol.haloWidth = 2
                 labelSymbol.offsetY = -14
-                labelOverlay.addGraphic(Graphic(geometry: orderedFeature.anchor, symbol: labelSymbol))
+                labelOverlay.addGraphic(
+                    Graphic(geometry: orderedFeature.anchor, symbol: labelSymbol)
+                )
                 numberedFeatures.append(orderedFeature.feature)
             }
         }
         
         /// The restaurant marker symbol.
         private static var restaurantSymbol: SimpleMarkerSymbol {
-            let symbol = SimpleMarkerSymbol(style: .circle, color: markerFillColor, size: 12)
-            symbol.outline = SimpleLineSymbol(style: .solid, color: .white, width: 1.5)
+            let symbol = SimpleMarkerSymbol(
+                style: .circle,
+                color: markerFillColor,
+                size: 12
+            )
+            symbol.outline = SimpleLineSymbol(
+                style: .solid,
+                color: .white,
+                width: 1.5
+            )
             return symbol
         }
         
