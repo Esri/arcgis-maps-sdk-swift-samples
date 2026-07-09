@@ -145,9 +145,6 @@ extension DownloadRasterTilesToLocalCacheView {
         /// The export job currently downloading the tile package, if any.
         private(set) var exportTileCacheJob: ExportTileCacheJob?
 
-        /// The tiled layer that provides both the basemap and the export source.
-        private let tiledLayer = ArcGISTiledLayer(url: .worldOceanBase)
-
         /// The task that exports tiles from the tiled layer's service.
         private let exportTask = ExportTileCacheTask(url: .worldOceanBase)
 
@@ -158,6 +155,9 @@ extension DownloadRasterTilesToLocalCacheView {
         @ObservationIgnored var mapViewScale = 0.0
 
         init() {
+             /// The tiled layer that provides both the basemap and the export source.
+            private let tiledLayer = ArcGISTiledLayer(url: .worldOceanBase)
+            
             // Creates a map with a basemap made from the tiled layer, and limits
             // its minimum scale to avoid requesting a huge download.
             map = Map(basemap: Basemap(baseLayer: tiledLayer))
