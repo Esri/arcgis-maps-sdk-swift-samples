@@ -47,7 +47,7 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
     /// The status message shown when a number key has no matching restaurant.
     @State private var statusMessage = ""
     
-    /// A task for delayed selection refresh after navigation ends.
+    /// A task for the delayed selection refresh after navigation ends.
     @State private var refreshTask: Task<Void, Never>?
     
     /// The side length of the centered area-of-interest rectangle, in screen points.
@@ -56,20 +56,16 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
     /// The number keys that can identify features.
     private let featureNumberKeys = CharacterSet(charactersIn: "123456789")
     
-    /// The fraction of the map width used for each horizontal keyboard pan.
-    private let horizontalPanStepRatio: CGFloat = 0.2
+    /// The fraction of the map size used for each keyboard pan step.
+    private let panStepRatio: CGFloat = 0.2
     
-    /// The fraction of the map height used for each vertical keyboard pan.
-    private let verticalPanStepRatio: CGFloat = 0.2
-    
-    /// A tip explaining how the automatic contrast mode responds to OS settings.
+    /// A tip explaining how to enable Full Keyboard Access.
     private let enableKeyboardAccessTip = EnableKeyboardAccessTip()
     
     var body: some View {
         MapViewReader { mapViewProxy in
             GeometryReader { geometryProxy in
                 let mapSize = geometryProxy.size
-                let rectangleLength = min(selectionRectangleLength, min(mapSize.width, mapSize.height))
                 
                 MapView(map: model.map, graphicsOverlays: [model.labelOverlay])
                     .selectionColor(Model.selectionHaloColor)
@@ -83,10 +79,8 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
                         initialDrawCompleted = true
                         Task {
                             do {
-                                // Ensure feature layer is fully loaded before querying
                                 try await model.ensureLayerLoaded()
-                                
-                                // Additional delay to ensure map view proxy is fully ready and settled
+                                // Give the map view proxy time to settle before the first query.
                                 try? await Task.sleep(for: .milliseconds(500))
                                 await refreshSelection(mapSize: mapSize, mapViewProxy: mapViewProxy)
                                 await focusMap()
@@ -96,21 +90,14 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
                         }
                     }
                     .onNavigatingChanged { navigating in
+                        refreshTask?.cancel()
                         if navigating {
                             dismissCallout()
-                            // Cancel any pending refresh when navigation starts
-                            refreshTask?.cancel()
                         } else if initialDrawCompleted {
-                            // Cancel any previous pending refresh
-                            refreshTask?.cancel()
-                            
-                            // Debounce: wait for map to fully settle after navigation
+                            // Debounce: wait for the map to fully settle after navigation.
                             refreshTask = Task {
-                                // Wait for coordinate transforms to stabilize
                                 try? await Task.sleep(for: .milliseconds(200))
-                                
                                 guard !Task.isCancelled else { return }
-                                
                                 await refreshSelection(mapSize: mapSize, mapViewProxy: mapViewProxy)
                             }
                         }
@@ -121,43 +108,15 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
                         dismissCallout()
                         return .handled
                     }
-                    .onKeyPress(.leftArrow) {
-                        Task {
-                            await panHorizontally(
-                                direction: -1,
-                                mapSize: mapSize,
-                                mapViewProxy: mapViewProxy
-                            )
+                    .onKeyPress(keys: [.leftArrow, .rightArrow, .upArrow, .downArrow]) { keyPress in
+                        let direction: CGVector = switch keyPress.key {
+                        case .leftArrow: CGVector(dx: -1, dy: 0)
+                        case .rightArrow: CGVector(dx: 1, dy: 0)
+                        case .upArrow: CGVector(dx: 0, dy: -1)
+                        default: CGVector(dx: 0, dy: 1)
                         }
-                        return .handled
-                    }
-                    .onKeyPress(.rightArrow) {
                         Task {
-                            await panHorizontally(
-                                direction: 1,
-                                mapSize: mapSize,
-                                mapViewProxy: mapViewProxy
-                            )
-                        }
-                        return .handled
-                    }
-                    .onKeyPress(.upArrow) {
-                        Task {
-                            await panVertically(
-                                direction: -1,
-                                mapSize: mapSize,
-                                mapViewProxy: mapViewProxy
-                            )
-                        }
-                        return .handled
-                    }
-                    .onKeyPress(.downArrow) {
-                        Task {
-                            await panVertically(
-                                direction: 1,
-                                mapSize: mapSize,
-                                mapViewProxy: mapViewProxy
-                            )
+                            await pan(toward: direction, mapSize: mapSize, mapViewProxy: mapViewProxy)
                         }
                         return .handled
                     }
@@ -177,7 +136,10 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
                                     RoundedRectangle(cornerRadius: 4)
                                         .stroke(.pink, lineWidth: 2)
                                 )
-                                .frame(width: rectangleLength, height: rectangleLength)
+                                .frame(
+                                    width: rectangleLength(for: mapSize),
+                                    height: rectangleLength(for: mapSize)
+                                )
                                 .allowsHitTesting(false)
                                 .accessibilityHidden(true)
                         }
@@ -187,23 +149,20 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
                             TipView(AreaOfInterestTip())
                         }
                     }
+                    .overlay(alignment: .bottomTrailing) {
+                        if !isKeyboardInputActive {
+                            TipView(enableKeyboardAccessTip) { _ in
+                                openAccessibilitySettings()
+                            }
+                        }
+                    }
                     .overlay(alignment: .bottom) {
                         VStack(spacing: 8) {
                             if model.hasMoreThanNineSelectedFeatures {
-                                Text("More than 9 restaurants are in the search area. Zoom in or pan to narrow the results.")
-                                    .font(.footnote)
-                                    .multilineTextAlignment(.center)
-                                    .padding(8)
-                                    .background(.regularMaterial)
-                                    .clipShape(.rect(cornerRadius: 8))
+                                makeStatusText("More than 9 restaurants are in the search area. Zoom in or pan to narrow the results.")
                             }
                             if !statusMessage.isEmpty {
-                                Text(statusMessage)
-                                    .font(.footnote)
-                                    .multilineTextAlignment(.center)
-                                    .padding(8)
-                                    .background(.regularMaterial)
-                                    .clipShape(.rect(cornerRadius: 8))
+                                makeStatusText(statusMessage)
                             }
                             if isKeyboardInputActive {
                                 makeKeyboardInputBar()
@@ -220,22 +179,19 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
                     }
                     .onAppear {
                         // TipKit configuration is intended to happen once per process.
-                        // Avoid showing an alert if this view appears multiple times.
                         try? Tips.configure([.displayFrequency(.immediate)])
                     }
                     .task {
                         await focusMap()
                     }
-                    .overlay(alignment: .bottomTrailing) {
-                        if !isKeyboardInputActive {
-                            TipView(enableKeyboardAccessTip) { _ in
-                                openAccessibilitySettings()
-                            }
-                        }
-                    }
                     .errorAlert(presentingError: $error)
             }
         }
+    }
+    
+    /// The selection rectangle's side length, clamped to fit within the map.
+    private func rectangleLength(for mapSize: CGSize) -> CGFloat {
+        min(selectionRectangleLength, mapSize.width, mapSize.height)
     }
     
     /// Refreshes the selected and numbered restaurant features for the current rectangle.
@@ -243,8 +199,7 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
     private func refreshSelection(mapSize: CGSize, mapViewProxy: MapViewProxy) async {
         do {
             try await model.selectFeatures(
-                in: makeSelectionEnvelope(mapSize: mapSize, mapViewProxy: mapViewProxy),
-                screenPointFor: { mapViewProxy.screenPoint(fromLocation: $0) }
+                in: makeSelectionEnvelope(mapSize: mapSize, mapViewProxy: mapViewProxy)
             )
         } catch {
             self.error = error
@@ -253,78 +208,40 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
     
     /// Makes an envelope matching the centered selection rectangle's map footprint.
     private func makeSelectionEnvelope(mapSize: CGSize, mapViewProxy: MapViewProxy) -> Envelope? {
-        let clampedRectangleLength = min(selectionRectangleLength, min(mapSize.width, mapSize.height))
-        let screenCenter = CGPoint(x: mapSize.width / 2, y: mapSize.height / 2)
-        let halfLength = clampedRectangleLength / 2
+        let halfLength = rectangleLength(for: mapSize) / 2
+        let center = CGPoint(x: mapSize.width / 2, y: mapSize.height / 2)
         
-        // Sample all four corners of the rectangle to ensure complete coverage
-        let topLeft = CGPoint(x: screenCenter.x - halfLength, y: screenCenter.y - halfLength)
-        let topRight = CGPoint(x: screenCenter.x + halfLength, y: screenCenter.y - halfLength)
-        let bottomRight = CGPoint(x: screenCenter.x + halfLength, y: screenCenter.y + halfLength)
-        let bottomLeft = CGPoint(x: screenCenter.x - halfLength, y: screenCenter.y + halfLength)
-        
-        // Convert all corners to map coordinates
-        let corners = [topLeft, topRight, bottomRight, bottomLeft]
-        let mapPoints = corners.compactMap { mapViewProxy.location(fromScreenPoint: $0) }
-        
-        // Ensure we got all 4 corners converted
-        guard mapPoints.count == 4,
-              let spatialReference = mapPoints.first?.spatialReference else {
+        // The map cannot rotate in this sample, so two opposite corners define the footprint.
+        guard let minCorner = mapViewProxy.location(
+            fromScreenPoint: CGPoint(x: center.x - halfLength, y: center.y + halfLength)
+        ),
+              let maxCorner = mapViewProxy.location(
+                fromScreenPoint: CGPoint(x: center.x + halfLength, y: center.y - halfLength)
+              ) else {
             return nil
         }
         
-        // Find the bounding envelope that encompasses all corners
-        let xValues = mapPoints.map(\.x)
-        let yValues = mapPoints.map(\.y)
-        
-        guard let minX = xValues.min(),
-              let maxX = xValues.max(),
-              let minY = yValues.min(),
-              let maxY = yValues.max() else {
-            return nil
-        }
-        
-        return Envelope(
-            xRange: minX...maxX,
-            yRange: minY...maxY,
-            spatialReference: spatialReference
-        )
+        return Envelope(min: minCorner, max: maxCorner)
     }
     
-    /// Pans the map left or right by shifting the center point by a screen-space offset.
+    /// Pans the map by shifting the center a fraction of the map size in a screen-space direction.
+    /// - Parameters:
+    ///   - direction: The unit direction to pan toward, in screen space.
+    ///   - mapSize: The size of the map view.
+    ///   - mapViewProxy: The proxy used to update the viewpoint.
     @MainActor
-    private func panHorizontally(direction: CGFloat, mapSize: CGSize, mapViewProxy: MapViewProxy) async {
+    private func pan(toward direction: CGVector, mapSize: CGSize, mapViewProxy: MapViewProxy) async {
         dismissCallout()
         
-        let centerScreenPoint = CGPoint(x: mapSize.width / 2, y: mapSize.height / 2)
-        let horizontalOffset = mapSize.width * horizontalPanStepRatio * direction
-        let targetScreenPoint = CGPoint(x: centerScreenPoint.x + horizontalOffset, y: centerScreenPoint.y)
-        
-        guard let targetCenterPoint = mapViewProxy.location(fromScreenPoint: targetScreenPoint) else {
-            return
-        }
-        
-        await mapViewProxy.setViewpointCenter(targetCenterPoint)
-    }
-    
-    /// Pans the map up or down by shifting the center point by a screen-space offset.
-    @MainActor
-    private func panVertically(direction: CGFloat, mapSize: CGSize, mapViewProxy: MapViewProxy) async {
-        dismissCallout()
-        
-        let centerScreenPoint = CGPoint(
-            x: mapSize.width / 2,
-            y: mapSize.height / 2
+        let targetScreenPoint = CGPoint(
+            x: mapSize.width / 2 + mapSize.width * panStepRatio * direction.dx,
+            y: mapSize.height / 2 + mapSize.height * panStepRatio * direction.dy
         )
         
-        let verticalOffset = mapSize.height * verticalPanStepRatio * direction
-        let targetScreenPoint = CGPoint(x: centerScreenPoint.x, y: centerScreenPoint.y + verticalOffset)
-        
-        guard let targetCenterPoint = mapViewProxy.location(fromScreenPoint: targetScreenPoint) else {
+        guard let targetCenter = mapViewProxy.location(fromScreenPoint: targetScreenPoint) else {
             return
         }
-        
-        await mapViewProxy.setViewpointCenter(targetCenterPoint)
+        await mapViewProxy.setViewpointCenter(targetCenter)
     }
     
     /// Maps a pressed number key to a zero-based feature index.
@@ -339,14 +256,15 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
     
     /// Shows the details callout for the selected numbered feature.
     private func showCalloutForFeature(at index: Int) {
-        guard let feature = model.numberedFeatures[safe: index],
-              let anchor = feature.geometry as? Point else {
+        guard model.numberedFeatures.indices.contains(index),
+              let anchor = model.numberedFeatures[index].geometry as? Point else {
             statusMessage = "No restaurant is assigned to \(index + 1)."
             calloutFeature = nil
             calloutPlacement = nil
             return
         }
         
+        let feature = model.numberedFeatures[index]
         statusMessage = ""
         calloutFeature = feature
         calloutPlacement = .geoElement(feature, tapLocation: anchor)
@@ -380,8 +298,7 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
         isKeyboardInputActive = true
         mapHasFocus = false
         keyboardInputHasFocus = false
-        await Task.yield()
-        // Give SwiftUI time to add the TextField to the view hierarchy
+        // Give SwiftUI time to add the text field to the view hierarchy.
         try? await Task.sleep(for: .milliseconds(200))
         keyboardInputHasFocus = true
     }
@@ -392,6 +309,16 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
         keyboardInputHasFocus = false
         isKeyboardInputActive = false
         dismissCallout()
+    }
+    
+    /// A status message styled to float above the map.
+    private func makeStatusText(_ text: String) -> some View {
+        Text(text)
+            .font(.footnote)
+            .multilineTextAlignment(.center)
+            .padding(8)
+            .background(.regularMaterial)
+            .clipShape(.rect(cornerRadius: 8))
     }
     
     /// A hidden text field used to receive software keyboard input.
@@ -405,23 +332,16 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
             .opacity(0)
             .accessibilityLabel("Restaurant number")
             .onChange(of: keyboardInput) { _, newValue in
-                guard let featureIndex = featureIndex(for: newValue) else {
-                    keyboardInput = ""
-                    return
-                }
                 keyboardInput = ""
+                guard let featureIndex = featureIndex(for: newValue) else { return }
                 showCalloutForFeature(at: featureIndex)
                 keyboardInputHasFocus = true
             }
             .toolbar {
                 ToolbarItemGroup(placement: .keyboard) {
-                    VStack {
-                        HStack {
-                            Spacer()
-                            Button("Done") {
-                                hideKeyboard()
-                            }
-                        }
+                    Spacer()
+                    Button("Done") {
+                        hideKeyboard()
                     }
                 }
             }
@@ -433,7 +353,7 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
         let wgs84Point = anchor.flatMap { GeometryEngine.project($0, into: .wgs84) }
         
         return VStack(alignment: .leading) {
-            Text(model.name(for: feature, fallback: "Restaurant") ?? "Restaurant")
+            Text(model.name(for: feature) ?? "Restaurant")
                 .font(.headline)
             if let wgs84Point {
                 Text("Lat: \(wgs84Point.y, format: .number.precision(.fractionLength(6)))")
@@ -450,17 +370,17 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
                 do {
                     try await AccessibilitySettings.openSettings(for: .assistiveTouchDevices)
                 } catch {
-                    openAppSettings()
+                    openLegacyAccessibilitySettings()
                 }
             } else {
-                openBaseAccessibilitySettings()
+                openLegacyAccessibilitySettings()
             }
         }
     }
     
-    /// Attempts to open the base Accessibility menu on older iOS versions.
+    /// Attempts to open the Accessibility menu on older iOS versions.
     /// Falls back to this app's settings page when direct links are unavailable.
-    private func openBaseAccessibilitySettings() {
+    private func openLegacyAccessibilitySettings() {
 #if targetEnvironment(macCatalyst)
         UIApplication.shared.open(.macOSAccessibilitySettings)
 #else
@@ -470,32 +390,12 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
             "prefs:root=ACCESSIBILITY"
         ]
         
-        for candidate in candidates {
-            guard let url = URL(string: candidate) else { continue }
-            if UIApplication.shared.canOpenURL(url) {
-                UIApplication.shared.open(url)
-                return
-            }
+        if let url = candidates.compactMap(URL.init).first(where: UIApplication.shared.canOpenURL) {
+            UIApplication.shared.open(url)
+        } else {
+            UIApplication.shared.open(.appSettings)
         }
-        
-        openAppSettings()
 #endif
-    }
-    
-    /// Opens this app's page in the Settings app.
-    private func openAppSettings() {
-#if targetEnvironment(macCatalyst)
-        UIApplication.shared.open(.macOSAccessibilitySettings)
-#else
-        UIApplication.shared.open(.appSettings)
-#endif
-    }
-}
-
-private extension Collection {
-    /// Returns the element at the index if it exists.
-    subscript(safe index: Index) -> Element? {
-        indices.contains(index) ? self[index] : nil
     }
 }
 
