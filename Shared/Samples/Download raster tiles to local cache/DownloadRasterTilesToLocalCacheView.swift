@@ -156,7 +156,7 @@ extension DownloadRasterTilesToLocalCacheView {
 
         init() {
              /// The tiled layer that provides both the basemap and the export source.
-            private let tiledLayer = ArcGISTiledLayer(url: .worldOceanBase)
+            let tiledLayer = ArcGISTiledLayer(url: .worldOceanBase)
             
             // Creates a map with a basemap made from the tiled layer, and limits
             // its minimum scale to avoid requesting a huge download.
