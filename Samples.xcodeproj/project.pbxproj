@@ -367,6 +367,8 @@
 		95ADF34F2C3CBAE800566FF6 /* EditFeatureAttachmentsView.Model.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 9547085B2C3C719800CA8579 /* EditFeatureAttachmentsView.Model.swift */; };
 		95B096A02E136365006AFA8F /* Dolmus3ds in Resources */ = {isa = PBXBuildFile; fileRef = 95B0969F2E136365006AFA8F /* Dolmus3ds */; settings = {ASSET_TAGS = (ShowExploratoryLineOfSightBetweenGeoelements, ); }; };
 		95D2EE0F2C334D1600683D53 /* ShowServiceAreaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95D2EE0E2C334D1600683D53 /* ShowServiceAreaView.swift */; };
+		95D2F9252FFF40A60011D3B9 /* NavigateMapAndIdentifyFeaturesWithKeyboardView.Tips.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95D2F9242FFF40A30011D3B9 /* NavigateMapAndIdentifyFeaturesWithKeyboardView.Tips.swift */; };
+		95D2F9262FFF430A0011D3B9 /* NavigateMapAndIdentifyFeaturesWithKeyboardView.Tips.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 95D2F9242FFF40A30011D3B9 /* NavigateMapAndIdentifyFeaturesWithKeyboardView.Tips.swift */; };
 		95DEB9B62C127A92009BEC35 /* ShowViewshedCalculatedFromGeoprocessingTaskView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95DEB9B52C127A92009BEC35 /* ShowViewshedCalculatedFromGeoprocessingTaskView.swift */; };
 		95DEB9B82C127B5E009BEC35 /* ShowViewshedCalculatedFromGeoprocessingTaskView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 95DEB9B52C127A92009BEC35 /* ShowViewshedCalculatedFromGeoprocessingTaskView.swift */; };
 		95DF31802FD37D33005D06E7 /* UpdateBasemapForContrastAccessibilityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95DF317F2FD37D33005D06E7 /* UpdateBasemapForContrastAccessibilityView.swift */; };
@@ -781,6 +783,7 @@
 			dstPath = "";
 			dstSubfolder = Resources;
 			files = (
+				95D2F9262FFF430A0011D3B9 /* NavigateMapAndIdentifyFeaturesWithKeyboardView.Tips.swift in Copy Source Code Files */,
 				95565A4D2FE0C82D00DAEEBF /* NavigateMapAndIdentifyFeaturesWithKeyboardView.Model.swift in Copy Source Code Files */,
 				95398E712FDFAF6300E30CE8 /* NavigateMapAndIdentifyFeaturesWithKeyboardView.swift in Copy Source Code Files */,
 				95DF31822FD37D99005D06E7 /* UpdateBasemapForContrastAccessibilityView.swift in Copy Source Code Files */,
@@ -2960,6 +2963,7 @@
 			isa = PBXGroup;
 			children = (
 				95398E6E2FDFAF1400E30CE8 /* NavigateMapAndIdentifyFeaturesWithKeyboardView.swift */,
+				95D2F9242FFF40A30011D3B9 /* NavigateMapAndIdentifyFeaturesWithKeyboardView.Tips.swift */,
 				95398E722FE0C78800E30CE8 /* NavigateMapAndIdentifyFeaturesWithKeyboardView.Model.swift */,
 			);
 			path = "Navigate map view and identify features with keyboard";
@@ -4769,6 +4773,7 @@
 				D7ABA2FF2A32881C0021822B /* ShowExploratoryViewshedFromGeoelementInSceneView.swift in Sources */,
 				E0FE32E728747778002C6ACA /* BrowseBuildingFloorsView.swift in Sources */,
 				954AEDEE2C01332600265114 /* SelectFeaturesInSceneLayerView.swift in Sources */,
+				95D2F9252FFF40A60011D3B9 /* NavigateMapAndIdentifyFeaturesWithKeyboardView.Tips.swift in Sources */,
 				002056E82DDD404C0016B8A9 /* DisplayOGCAPICollectionView.swift in Sources */,
 				1CC755E42DC95625004B346F /* ApplyFunctionToRasterFromFileView.swift in Sources */,
 				D7F8C0432B608F120072BFA7 /* AddFeaturesWithContingentValuesView.AddFeatureView.swift in Sources */,
