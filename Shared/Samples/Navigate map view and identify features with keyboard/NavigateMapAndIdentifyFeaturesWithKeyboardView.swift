@@ -418,13 +418,40 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
     /// Opens the Settings app to an Accessibility feature when supported.
     private func openAccessibilitySettings() {
         Task {
-            do {
-                let feature: AccessibilitySettings.Feature = .personalVoiceAllowAppsToRequestToUse
-                try await AccessibilitySettings.openSettings(for: feature)
-            } catch {
-                openAppSettings()
+            if #available(iOS 26.0, *) {
+                do {
+                    try await AccessibilitySettings.openSettings(for: .assistiveTouchDevices)
+                } catch {
+                    openAppSettings()
+                }
+            } else {
+                openBaseAccessibilitySettings()
             }
         }
+    }
+    
+    /// Attempts to open the base Accessibility menu on older iOS versions.
+    /// Falls back to this app's settings page when direct links are unavailable.
+    private func openBaseAccessibilitySettings() {
+#if targetEnvironment(macCatalyst)
+        UIApplication.shared.open(.macOSAccessibilitySettings)
+#else
+        let candidates = [
+            "App-prefs:ACCESSIBILITY",
+            "App-prefs:root=ACCESSIBILITY",
+            "prefs:root=ACCESSIBILITY"
+        ]
+        
+        for candidate in candidates {
+            guard let url = URL(string: candidate) else { continue }
+            if UIApplication.shared.canOpenURL(url) {
+                UIApplication.shared.open(url)
+                return
+            }
+        }
+        
+        openAppSettings()
+#endif
     }
     
     /// Opens this app's page in the Settings app.
@@ -437,58 +464,6 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
     }
 }
 
-private extension NavigateMapAndIdentifyFeaturesWithKeyboardView {
-    /// A TipKit tip that explains the centered rectangle.
-    struct AreaOfInterestTip: Tip {
-        var title: Text {
-            Text("Use the rectangle as the search area")
-        }
-        
-        var message: Text? {
-            Text(
-                 """
-                 Use the arrow keys ← → ↑ ↓ on the keyboard to pan map. Pan until the restaurants you want to inspect are inside the rectangle. Press 1–9 on the keyboard to select a highlighted restaurant in the rectangle and view its details.
-                 """
-            )
-        }
-        
-        var image: Image? {
-            Image(systemName: "rectangle.dashed")
-        }
-    }
-    
-    struct EnableKeyboardAccessTip: Tip {
-        /// The ID of the action that opens the Settings app.
-        static let openSettingsActionID = "openSettings"
-        
-        var title: Text {
-            Text("Enable Full Keyboard Access")
-        }
-        
-        var message: Text? {
-            Text(
-                """
-                To use a hardware keyboard with your mobile device you need to enable Full Keyboard Access.
-                You can do this by opening the Settings app and navigating to:
-                
-                Accessibility > Keyboards & Typing.
-                """
-            )
-        }
-        
-        var image: Image? {
-            Image(systemName: "keyboard")
-        }
-        
-        var actions: [Action] {
-            Action(
-                id: Self.openSettingsActionID,
-                title: "Open Accessibility Settings"
-            )
-        }
-    }
-}
-
 private extension Collection {
     /// Returns the element at the index if it exists.
     subscript(safe index: Index) -> Element? {
@@ -496,15 +471,15 @@ private extension Collection {
     }
 }
 
-#Preview {
-    NavigationStack {
-        NavigateMapAndIdentifyFeaturesWithKeyboardView()
-    }
-}
-
 private extension URL {
     /// The URL of this app's page in the Settings app.
     static var appSettings: URL {
         URL(string: UIApplication.openSettingsURLString)!
+    }
+}
+
+#Preview {
+    NavigationStack {
+        NavigateMapAndIdentifyFeaturesWithKeyboardView()
     }
 }
