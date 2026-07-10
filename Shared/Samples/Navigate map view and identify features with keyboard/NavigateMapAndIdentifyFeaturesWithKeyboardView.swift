@@ -15,8 +15,12 @@
 import ArcGIS
 import SwiftUI
 import TipKit
+import UIKit
 
 struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
+    /// The current scene phase of the sample.
+    @Environment(\.scenePhase) private var scenePhase
+    
     /// The view model for the sample.
     @State private var model = Model()
     
@@ -50,8 +54,11 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
     /// A task for the delayed selection refresh after navigation ends.
     @State private var refreshTask: Task<Void, Never>?
     
+    /// A token used to reactivate the UIKit key-command responder.
+    @State private var keyboardCommandCaptureActivation = 0
+    
     /// The side length of the centered area-of-interest rectangle, in screen points.
-    private let selectionRectangleLength: CGFloat = 420
+    private let selectionRectangleLength: CGFloat = 360
     
     /// The number keys that can identify features.
     private let featureNumberKeys = CharacterSet(charactersIn: "123456789")
@@ -110,7 +117,10 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
                             refreshTask = Task {
                                 try? await Task.sleep(for: .milliseconds(200))
                                 guard !Task.isCancelled else { return }
-                                await refreshSelection(mapSize: mapSize, mapViewProxy: mapViewProxy)
+                                await refreshSelection(
+                                    mapSize: mapSize,
+                                    mapViewProxy: mapViewProxy
+                                )
                             }
                         }
                     }
@@ -139,6 +149,28 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
                         showCalloutForFeature(at: featureIndex)
                         return .handled
                     }
+                    .overlay {
+                        if isFullKeyboardAccessEnabled && !isKeyboardInputActive {
+                            // Capture key commands through UIKit first responder when FKA reroutes SwiftUI focus.
+                            KeyboardCommandCaptureView(
+                                activationToken: keyboardCommandCaptureActivation,
+                                onPan: { direction in
+                                    Task {
+                                        await pan(toward: direction, mapSize: mapSize, mapViewProxy: mapViewProxy)
+                                    }
+                                },
+                                onEscape: {
+                                    dismissCallout()
+                                },
+                                onNumber: { featureIndex in
+                                    showCalloutForFeature(at: featureIndex)
+                                }
+                            )
+                            .frame(width: 1, height: 1)
+                            .allowsHitTesting(false)
+                            .accessibilityHidden(true)
+                        }
+                    }
                     .ignoresSafeArea(.keyboard, edges: .bottom)
                     .overlay(alignment: .center) {
                         if calloutPlacement == nil {
@@ -162,11 +194,9 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
                         }
                     }
                     .overlay(alignment: .bottomTrailing) {
-                        if !isFullKeyboardAccessEnabled {
-                            if !isKeyboardInputActive {
-                                TipView(enableKeyboardAccessTip) { _ in
-                                    openAccessibilitySettings()
-                                }
+                        if !isFullKeyboardAccessEnabled && !isKeyboardInputActive {
+                            TipView(enableKeyboardAccessTip) { _ in
+                                openAccessibilitySettings()
                             }
                         }
                     }
@@ -182,7 +212,7 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
                                 makeKeyboardInputBar()
                             }
                         }
-                        .padding(.bottom)
+                        .padding(.bottom, 10)
                     }
                     .toolbar {
                         if !isFullKeyboardAccessEnabled {
@@ -199,6 +229,10 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
                     }
                     .task {
                         await focusMap()
+                    }
+                    .onChange(of: scenePhase) { _, newPhase in
+                        guard newPhase == .active else { return }
+                        Task { await focusMap() }
                     }
                     .errorAlert(presentingError: $error)
             }
@@ -258,6 +292,7 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
             return
         }
         await mapViewProxy.setViewpointCenter(targetCenter)
+        await focusMap()
     }
     
     /// Maps a pressed number key to a zero-based feature index.
@@ -302,6 +337,10 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
     /// Gives keyboard focus to the map after SwiftUI finishes the current update.
     @MainActor
     private func focusMap() async {
+        guard !isFullKeyboardAccessEnabled else {
+            keyboardCommandCaptureActivation += 1
+            return
+        }
         mapHasFocus = false
         await Task.yield()
         try? await Task.sleep(for: .milliseconds(100))
@@ -425,5 +464,92 @@ private extension URL {
 #Preview {
     NavigationStack {
         NavigateMapAndIdentifyFeaturesWithKeyboardView()
+    }
+}
+
+private struct KeyboardCommandCaptureView: UIViewRepresentable {
+    let activationToken: Int
+    let onPan: (CGVector) -> Void
+    let onEscape: () -> Void
+    let onNumber: (Int) -> Void
+    
+    func makeUIView(context: Context) -> ResponderView {
+        let view = ResponderView()
+        view.backgroundColor = .clear
+        view.onPan = onPan
+        view.onEscape = onEscape
+        view.onNumber = onNumber
+        return view
+    }
+    
+    func updateUIView(_ uiView: ResponderView, context: Context) {
+        uiView.onPan = onPan
+        uiView.onEscape = onEscape
+        uiView.onNumber = onNumber
+        uiView.activateIfNeeded()
+    }
+}
+
+private extension KeyboardCommandCaptureView {
+    final class ResponderView: UIView {
+        var onPan: ((CGVector) -> Void)?
+        var onEscape: (() -> Void)?
+        var onNumber: ((Int) -> Void)?
+        
+        override var canBecomeFirstResponder: Bool { true }
+        
+        override var keyCommands: [UIKeyCommand]? {
+            let arrowInputs = [
+                UIKeyCommand.inputLeftArrow,
+                UIKeyCommand.inputRightArrow,
+                UIKeyCommand.inputUpArrow,
+                UIKeyCommand.inputDownArrow
+            ]
+            let arrowCommands = arrowInputs.flatMap { input in
+                [
+                    UIKeyCommand(input: input, modifierFlags: [], action: #selector(handleKeyCommand(_:))),
+                    UIKeyCommand(input: input, modifierFlags: .alternate, action: #selector(handleKeyCommand(_:)))
+                ]
+            }
+            var commands = arrowCommands + [
+                UIKeyCommand(input: UIKeyCommand.inputEscape, modifierFlags: [], action: #selector(handleKeyCommand(_:)))
+            ]
+            commands.append(contentsOf: (1...9).map {
+                UIKeyCommand(input: "\($0)", modifierFlags: [], action: #selector(handleKeyCommand(_:)))
+            })
+            return commands
+        }
+        
+        override func didMoveToWindow() {
+            super.didMoveToWindow()
+            activateIfNeeded()
+        }
+        
+        func activateIfNeeded() {
+            guard window != nil else { return }
+            DispatchQueue.main.async { [weak self] in
+                _ = self?.becomeFirstResponder()
+            }
+        }
+        
+        @objc
+        private func handleKeyCommand(_ command: UIKeyCommand) {
+            guard let input = command.input else { return }
+            switch input {
+            case UIKeyCommand.inputLeftArrow:
+                onPan?(CGVector(dx: -1, dy: 0))
+            case UIKeyCommand.inputRightArrow:
+                onPan?(CGVector(dx: 1, dy: 0))
+            case UIKeyCommand.inputUpArrow:
+                onPan?(CGVector(dx: 0, dy: -1))
+            case UIKeyCommand.inputDownArrow:
+                onPan?(CGVector(dx: 0, dy: 1))
+            case UIKeyCommand.inputEscape:
+                onEscape?()
+            default:
+                guard let number = Int(input), (1...9).contains(number) else { return }
+                onNumber?(number - 1)
+            }
+        }
     }
 }
