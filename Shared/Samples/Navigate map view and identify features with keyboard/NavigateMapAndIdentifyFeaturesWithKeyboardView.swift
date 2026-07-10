@@ -62,6 +62,18 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
     /// A tip explaining how to enable Full Keyboard Access.
     private let enableKeyboardAccessTip = EnableKeyboardAccessTip()
     
+    private var isFullKeyboardAccessEnabled: Bool {
+        guard let window = UIApplication.shared.connectedScenes
+            .compactMap({ ($0 as? UIWindowScene)?.keyWindow })
+            .first else {
+            return false
+        }
+        // On iPhone, a focus system exists only when Full Keyboard Access is on.
+        // Caveat: on iPad, a connected hardware keyboard alone creates a focus
+        // system, so this reads as a false positive there.
+        return UIFocusSystem.focusSystem(for: window) != nil
+    }
+    
     var body: some View {
         MapViewReader { mapViewProxy in
             GeometryReader { geometryProxy in
@@ -150,9 +162,11 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
                         }
                     }
                     .overlay(alignment: .bottomTrailing) {
-                        if !isKeyboardInputActive {
-                            TipView(enableKeyboardAccessTip) { _ in
-                                openAccessibilitySettings()
+                        if !isFullKeyboardAccessEnabled {
+                            if !isKeyboardInputActive {
+                                TipView(enableKeyboardAccessTip) { _ in
+                                    openAccessibilitySettings()
+                                }
                             }
                         }
                     }
@@ -171,9 +185,11 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
                         .padding(.bottom)
                     }
                     .toolbar {
-                        ToolbarItem(placement: .bottomBar) {
-                            Button("Show Keyboard") {
-                                Task { await showKeyboard() }
+                        if !isFullKeyboardAccessEnabled {
+                            ToolbarItem(placement: .bottomBar) {
+                                Button("Show Keyboard") {
+                                    Task { await showKeyboard() }
+                                }
                             }
                         }
                     }
