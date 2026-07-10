@@ -27,7 +27,7 @@ If more than nine restaurants are inside the rectangle, zoom in or pan to narrow
 7. Sort queried point features by their screen position so labels match reading order.
 8. Select the queried features on the `FeatureLayer`.
 9. Add numbered `TextSymbol` graphics for the current group of features to the graphics overlay.
-10. Handle keyboard input with SwiftUI key press modifiers. Number keys show a `Callout` for the matching feature, Previous and Next move between groups, and `Esc` dismisses the callout.
+10. Handle keyboard input with SwiftUI key press modifiers. Number keys show a `Callout` for the matching feature, and `Esc` dismisses the callout.
 
 ## Relevant API
 
