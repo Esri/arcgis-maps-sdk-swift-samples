@@ -46,6 +46,8 @@ This sample uses a [Redlands restaurants](https://www.arcgis.com/home/item.html?
 
 The map view supports built-in keyboard shortcuts: arrow keys to pan, `+` and `-` to zoom, `Alt` + `Left Arrow` and `Alt` + `Right Arrow` to rotate, and `Alt` + `Up Arrow` to reset north. On macOS, use `Option` instead of `Alt`. See [Navigate a map view](https://developers.arcgis.com/swift/maps-2d/navigate-a-map-view/) for the complete list of built-in interactions.
 
+When Full Keyboard Access is enabled, the system may reserve the plain arrow keys for moving focus. In that mode, use `Shift` + arrow keys to pan the map while keeping the built-in `Alt`/`Option` + arrow shortcuts available for rotation and reset north.
+
 ## Tags
 
 accessibility, accessible, identify, inclusive, keyboard, navigation, selection, WCAG

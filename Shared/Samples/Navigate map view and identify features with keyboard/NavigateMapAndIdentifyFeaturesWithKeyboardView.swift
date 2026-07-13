@@ -249,29 +249,30 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
     private func refreshSelection(mapSize: CGSize, mapViewProxy: MapViewProxy) async {
         do {
             try await model.selectFeatures(
-                in: makeSelectionEnvelope(mapSize: mapSize, mapViewProxy: mapViewProxy)
+                in: makeSelectionPolygon(mapSize: mapSize, mapViewProxy: mapViewProxy),
+                screenPointFor: { mapViewProxy.screenPoint(fromLocation: $0) }
             )
         } catch {
             self.error = error
         }
     }
     
-    /// Makes an envelope matching the centered selection rectangle's map footprint.
-    private func makeSelectionEnvelope(mapSize: CGSize, mapViewProxy: MapViewProxy) -> Envelope? {
+    /// Makes a polygon matching the centered selection rectangle's map footprint.
+    private func makeSelectionPolygon(mapSize: CGSize, mapViewProxy: MapViewProxy) -> ArcGIS.Polygon? {
         let halfLength = rectangleLength(for: mapSize) / 2
         let center = CGPoint(x: mapSize.width / 2, y: mapSize.height / 2)
-        
-        // The map cannot rotate in this sample, so two opposite corners define the footprint.
-        guard let minCorner = mapViewProxy.location(
-            fromScreenPoint: CGPoint(x: center.x - halfLength, y: center.y + halfLength)
-        ),
-              let maxCorner = mapViewProxy.location(
-                fromScreenPoint: CGPoint(x: center.x + halfLength, y: center.y - halfLength)
-              ) else {
+        let screenCorners = [
+            CGPoint(x: center.x - halfLength, y: center.y - halfLength),
+            CGPoint(x: center.x + halfLength, y: center.y - halfLength),
+            CGPoint(x: center.x + halfLength, y: center.y + halfLength),
+            CGPoint(x: center.x - halfLength, y: center.y + halfLength)
+        ]
+        let mapCorners = screenCorners.compactMap(mapViewProxy.location(fromScreenPoint:))
+        guard mapCorners.count == screenCorners.count else {
             return nil
         }
         
-        return Envelope(min: minCorner, max: maxCorner)
+        return ArcGIS.Polygon(points: mapCorners)
     }
     
     /// Pans the map by shifting the center a fraction of the map size in a screen-space direction.
@@ -408,7 +409,7 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
         let wgs84Point = anchor.flatMap { GeometryEngine.project($0, into: .wgs84) }
         
         return VStack(alignment: .leading) {
-            Text(model.name(for: feature) ?? "Restaurant")
+            Text(model.name(for: feature, fallback: "Restaurant")!)
                 .font(.headline)
             if let wgs84Point {
                 Text("Lat: \(wgs84Point.y, format: .number.precision(.fractionLength(6)))")
@@ -508,7 +509,7 @@ private extension KeyboardCommandCaptureView {
             let arrowCommands = arrowInputs.flatMap { input in
                 [
                     UIKeyCommand(input: input, modifierFlags: [], action: #selector(handleKeyCommand(_:))),
-                    UIKeyCommand(input: input, modifierFlags: .alternate, action: #selector(handleKeyCommand(_:)))
+                    UIKeyCommand(input: input, modifierFlags: .shift, action: #selector(handleKeyCommand(_:)))
                 ]
             }
             var commands = arrowCommands + [
