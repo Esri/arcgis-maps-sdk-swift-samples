@@ -25,9 +25,9 @@ extension NavigateMapAndIdentifyFeaturesWithKeyboardView {
         var message: Text? {
             Text(
                  """
-                 To select the map with keboard, tap any arrow key and then While holding ⌥ key, use the arrow keys ← → ↑ ↓ on the keyboard to pan map.
+                 To focus the map, press any arrow key. Then use the arrow keys ← → ↑ ↓ to pan the map until the restaurants you want to inspect are inside the rectangle.
                  
-                 Pan until the restaurants you want to inspect are inside the rectangle. Press 1–9 on the keyboard to select a highlighted restaurant in the rectangle and view its details.
+                 Press 1–9 to select a highlighted restaurant and view its details.
                  """
             )
         }
