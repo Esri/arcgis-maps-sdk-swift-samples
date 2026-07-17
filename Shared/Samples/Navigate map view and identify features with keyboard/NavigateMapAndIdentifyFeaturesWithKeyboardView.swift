@@ -421,13 +421,9 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
     /// Opens the Settings app to an Accessibility feature when supported.
     private func openAccessibilitySettings() {
         Task {
-            if #available(iOS 26.0, *) {
-                do {
-                    try await AccessibilitySettings.openSettings(for: .assistiveTouchDevices)
-                } catch {
-                    openLegacyAccessibilitySettings()
-                }
-            } else {
+            do {
+                try await AccessibilitySettings.openSettings(for: .assistiveTouchDevices)
+            } catch {
                 openLegacyAccessibilitySettings()
             }
         }
