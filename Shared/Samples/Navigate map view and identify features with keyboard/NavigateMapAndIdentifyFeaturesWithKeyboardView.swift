@@ -423,7 +423,11 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
     private func openAccessibilitySettings() {
         Task {
             do {
-                try await AccessibilitySettings.openSettings(for: .assistiveTouchDevices)
+                if #available(iOS 26.0, *) {
+                    try await AccessibilitySettings.openSettings(for: .assistiveTouchDevices)
+                } else {
+                    openLegacyAccessibilitySettings()
+                }
             } catch {
                 openLegacyAccessibilitySettings()
             }
