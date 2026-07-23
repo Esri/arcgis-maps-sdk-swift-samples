@@ -135,7 +135,7 @@ extension NavigateMapAndIdentifyFeaturesWithKeyboardView {
             
             let trimmedName = name.trimmingCharacters(in: .whitespacesAndNewlines)
             
-            guard trimmedName != "" else {
+            guard !trimmedName.isEmpty else {
                 return fallback
             }
             
@@ -178,6 +178,7 @@ extension NavigateMapAndIdentifyFeaturesWithKeyboardView {
                             lhs.screenPoint.x < rhs.screenPoint.x
                         }
                     }
+            }
         }
         
         /// Adds numbered text labels for the first restaurant features.
