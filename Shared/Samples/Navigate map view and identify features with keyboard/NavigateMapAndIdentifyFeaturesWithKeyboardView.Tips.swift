@@ -25,7 +25,9 @@ extension NavigateMapAndIdentifyFeaturesWithKeyboardView {
         var message: Text? {
             Text(
                  """
-                 To focus the map, press any arrow key. Then use the arrow keys ← → ↑ ↓ to pan the map until the restaurants you want to inspect are inside the rectangle.
+                 To focus the map, press any arrow key. Then use the arrow keys \
+                 ← → ↑ ↓ to pan the map until the restaurants you want to inspect \
+                 are inside the rectangle.
                  
                  Press 1–9 to select a highlighted restaurant and view its details.
                  """
@@ -48,8 +50,9 @@ extension NavigateMapAndIdentifyFeaturesWithKeyboardView {
         var message: Text? {
             Text(
                 """
-                To use a hardware keyboard with your mobile device you need to enable Full Keyboard Access.
-                You can do this by opening the Settings app and navigating to:
+                To use a hardware keyboard with your mobile device you need to \
+                enable Full Keyboard Access. You can do this by opening the \
+                Settings app and navigating to:
                 
                 Accessibility > Keyboards & Typing.
                 """

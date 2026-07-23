@@ -15,7 +15,7 @@
 import ArcGIS
 import Foundation
 import SwiftUI
-import UIKit.UIColor
+import UIKit
 
 extension NavigateMapAndIdentifyFeaturesWithKeyboardView {
     /// The model for the sample.
@@ -86,7 +86,7 @@ extension NavigateMapAndIdentifyFeaturesWithKeyboardView {
         
         /// Ensures the feature table is fully loaded before querying.
         func ensureLayerLoaded() async throws {
-            // Load the feature table to ensure metadata and features are available
+            // Load the feature table to ensure metadata and features are available.
             try await restaurantsTable.load()
         }
         
@@ -106,9 +106,11 @@ extension NavigateMapAndIdentifyFeaturesWithKeyboardView {
             
             hasMoreThanNineSelectedFeatures = orderedFeatures.count > Self.maximumNumberedFeatures
             
-            // Only select the numbered features (first 9)
-            let numberedOrderedFeatures = orderedFeatures.prefix(Self.maximumNumberedFeatures)
-            restaurantsLayer.selectFeatures(numberedOrderedFeatures.map(\.feature))
+            // Only select the numbered features (first 9).
+            let numberedOrderedFeatures = orderedFeatures.lazy
+                .map(\.feature)
+                .prefix(Self.maximumNumberedFeatures)
+            restaurantsLayer.selectFeatures(numberedOrderedFeatures)
             
             addNumberedLabels(for: orderedFeatures)
         }
@@ -127,11 +129,17 @@ extension NavigateMapAndIdentifyFeaturesWithKeyboardView {
         ///   - fallback: The value to return when the feature has no name.
         /// - Returns: The feature's name, or the fallback if no name exists.
         func name(for feature: Feature, fallback: String?) -> String? {
-            guard let name = feature.attributes[Self.nameAttribute] as? String,
-                  !name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
+            guard let name = feature.attributes[Self.nameAttribute] as? String else {
                 return fallback
             }
-            return name
+            
+            let trimmedName = name.trimmingCharacters(in: .whitespacesAndNewlines)
+            
+            guard trimmedName != "" else {
+                return fallback
+            }
+            
+            return trimmedName
         }
         
         /// Queries and sorts restaurant features from top-to-bottom, then left-to-right in screen space.
@@ -149,23 +157,27 @@ extension NavigateMapAndIdentifyFeaturesWithKeyboardView {
             queryParameters.maxFeatures = 1000
             
             let queryResult = try await restaurantsTable.queryFeatures(using: queryParameters)
-            let allFeatures = Array(queryResult.features())
             
-            return allFeatures
-                .compactMap { feature -> OrderedFeature? in
-                    guard let anchor = feature.geometry as? Point,
-                          let screenPoint = screenPointFor(anchor) else {
-                        return nil
+            return withoutActuallyEscaping(screenPointFor) { escapableScreenPointFor in
+                queryResult
+                    .features()
+                    .lazy
+                    .compactMap { feature in
+                        guard let anchor = feature.geometry as? Point,
+                              let screenPoint = escapableScreenPointFor(anchor) else {
+                            return nil
+                        }
+                        return OrderedFeature(feature: feature, anchor: anchor, screenPoint: screenPoint)
                     }
-                    return OrderedFeature(feature: feature, anchor: anchor, screenPoint: screenPoint)
-                }
-                .sorted { lhs, rhs in
-                    // Sort by visual reading order: top-to-bottom, then left-to-right.
-                    if lhs.screenPoint.y != rhs.screenPoint.y {
-                        return lhs.screenPoint.y < rhs.screenPoint.y
+                    .sorted { lhs, rhs in
+                        // Sort by visual reading order: top-to-bottom, then
+                        // left-to-right.
+                        return if lhs.screenPoint.y != rhs.screenPoint.y {
+                            lhs.screenPoint.y < rhs.screenPoint.y
+                        } else {
+                            lhs.screenPoint.x < rhs.screenPoint.x
+                        }
                     }
-                    return lhs.screenPoint.x < rhs.screenPoint.x
-                }
         }
         
         /// Adds numbered text labels for the first restaurant features.

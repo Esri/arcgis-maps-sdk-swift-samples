@@ -58,13 +58,13 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
     @State private var keyboardCommandCaptureActivation = 0
     
     /// The side length of the centered area-of-interest rectangle, in screen points.
-    private let selectionRectangleLength: CGFloat = 360
+    private var selectionRectangleLength: CGFloat { 360 }
     
     /// The number keys that can identify features.
     private let featureNumberKeys = CharacterSet(charactersIn: "123456789")
     
     /// The fraction of the map size used for each keyboard pan step.
-    private let panStepRatio: CGFloat = 0.2
+    private var panStepRatio: CGFloat { 0.2 }
     
     /// A tip explaining how to enable Full Keyboard Access.
     private let enableKeyboardAccessTip = EnableKeyboardAccessTip()
@@ -174,16 +174,14 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
                     .ignoresSafeArea(.keyboard, edges: .bottom)
                     .overlay(alignment: .center) {
                         if calloutPlacement == nil {
+                            let rectangleLength = self.rectangleLength(for: mapSize)
                             RoundedRectangle(cornerRadius: 4)
                                 .fill(.pink.opacity(0.08))
                                 .overlay(
                                     RoundedRectangle(cornerRadius: 4)
                                         .stroke(.pink, lineWidth: 2)
                                 )
-                                .frame(
-                                    width: rectangleLength(for: mapSize),
-                                    height: rectangleLength(for: mapSize)
-                                )
+                                .frame(width: rectangleLength, height: rectangleLength)
                                 .allowsHitTesting(false)
                                 .accessibilityHidden(true)
                         }
@@ -230,9 +228,9 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
                     .task {
                         await focusMap()
                     }
-                    .onChange(of: scenePhase) { _, newPhase in
-                        guard newPhase == .active else { return }
-                        Task { await focusMap() }
+                    .task(id: scenePhase) {
+                        guard scenePhase == .active else { return }
+                        await focusMap()
                     }
                     .errorAlert(presentingError: $error)
             }
@@ -308,23 +306,22 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
     
     /// Shows the details callout for the selected numbered feature.
     private func showCalloutForFeature(at index: Int) {
-        guard model.numberedFeatures.indices.contains(index),
-              let anchor = model.numberedFeatures[index].geometry as? Point else {
-            statusMessage = "No restaurant is assigned to \(index + 1)."
-            calloutFeature = nil
-            calloutPlacement = nil
-            return
-        }
-        
-        let feature = model.numberedFeatures[index]
-        statusMessage = ""
-        calloutFeature = feature
-        calloutPlacement = .geoElement(feature, tapLocation: anchor)
-        if isKeyboardInputActive {
-            keyboardInputHasFocus = true
-        } else {
-            Task { await focusMap() }
-        }
+if model.numberedFeatures.indices.contains(index),
+   let anchor = model.numberedFeatures[index].geometry as? Point {
+    let feature = model.numberedFeatures[index]
+    statusMessage = ""
+    calloutFeature = feature
+    calloutPlacement = .geoElement(feature, tapLocation: anchor)
+    if isKeyboardInputActive {
+        keyboardInputHasFocus = true
+    } else {
+        Task { await focusMap() }
+    }
+} else {
+    statusMessage = "No restaurant is assigned to \(index + 1)."
+    calloutFeature = nil
+    calloutPlacement = nil
+}
     }
     
     /// Dismisses the details callout and restores the selection rectangle.
@@ -477,9 +474,6 @@ private struct KeyboardCommandCaptureView: UIViewRepresentable {
     func makeUIView(context: Context) -> ResponderView {
         let view = ResponderView()
         view.backgroundColor = .clear
-        view.onPan = onPan
-        view.onEscape = onEscape
-        view.onNumber = onNumber
         return view
     }
     
