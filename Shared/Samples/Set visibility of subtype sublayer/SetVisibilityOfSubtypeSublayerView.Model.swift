@@ -59,6 +59,16 @@ extension SetVisibilityOfSubtypeSublayerView {
         /// The subtype sublayer's minimum scale value in text.
         @Published private(set) var minimumScaleText: String = "Not Set"
         
+        /// A Boolean value indicating whether to show the subtype sublayer.
+        @Published var showsSublayer = true {
+            didSet { subtypeSublayer?.isVisible = showsSublayer }
+        }
+        
+        /// A Boolean value indicating whether to show the subtype sublayer's renderer.
+        @Published var showsOriginalRenderer = true {
+            didSet { toggleRenderer(showsOriginalRenderer: showsOriginalRenderer) }
+        }
+        
         init() {
             map.initialViewpoint = .initialViewpoint
             subtypeFeatureLayer = SubtypeFeatureLayer(featureTable: featureTable)
@@ -84,11 +94,7 @@ extension SetVisibilityOfSubtypeSublayerView {
             ArcGISEnvironment.authenticationManager.arcGISCredentialStore.removeAll()
         }
         
-        func toggleSublayer(isVisible: Bool) {
-            subtypeSublayer?.isVisible = isVisible
-        }
-        
-        func toggleRenderer(showsOriginalRenderer: Bool) {
+        private func toggleRenderer(showsOriginalRenderer: Bool) {
             if showsOriginalRenderer {
                 subtypeSublayer?.renderer = originalRenderer
             } else {
