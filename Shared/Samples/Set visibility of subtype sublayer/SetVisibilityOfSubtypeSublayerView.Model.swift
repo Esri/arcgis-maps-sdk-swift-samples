@@ -60,12 +60,12 @@ extension SetVisibilityOfSubtypeSublayerView {
         @Published private(set) var minimumScaleText: String = "Not Set"
         
         /// A Boolean value indicating whether to show the subtype sublayer.
-        @Published var showsSublayer = true {
+        @Published var showsSublayer = false {
             didSet { subtypeSublayer?.isVisible = showsSublayer }
         }
         
         /// A Boolean value indicating whether to show the subtype sublayer's renderer.
-        @Published var showsOriginalRenderer = true {
+        @Published var showsOriginalRenderer = false {
             didSet { toggleRenderer(showsOriginalRenderer: showsOriginalRenderer) }
         }
         
@@ -87,6 +87,8 @@ extension SetVisibilityOfSubtypeSublayerView {
             originalRenderer = subtypeSublayer.renderer
             subtypeSublayer.addLabelDefinition(labelDefinition)
             self.subtypeSublayer = subtypeSublayer
+            showsSublayer = subtypeSublayer.isVisible
+            showsOriginalRenderer = subtypeSublayer.renderer == originalRenderer
         }
         
         /// Cleans up the model's setup.
