@@ -22,23 +22,11 @@ extension SetVisibilityOfSubtypeSublayerView {
         /// The action to dismiss the view.
         @Environment(\.dismiss) private var dismiss
         
-        /// A Boolean value indicating whether to show the subtype sublayer.
-        @State private var showsSublayer = true
-        
-        /// A Boolean value indicating whether to show the subtype sublayer's renderer.
-        @State private var showsOriginalRenderer = true
-        
         var body: some View {
             Form {
                 Section("Layers") {
-                    Toggle("Show Sublayer", isOn: $showsSublayer)
-                        .onChange(of: showsSublayer) {
-                            model.toggleSublayer(isVisible: showsSublayer)
-                        }
-                    Toggle("Show Original Renderer", isOn: $showsOriginalRenderer)
-                        .onChange(of: showsOriginalRenderer) {
-                            model.toggleRenderer(showsOriginalRenderer: showsOriginalRenderer)
-                        }
+                    Toggle("Show Sublayer", isOn: $model.showsSublayer)
+                    Toggle("Show Original Renderer", isOn: $model.showsOriginalRenderer)
                 }
                 Section("Sublayer Minimum Scale") {
                     LabeledContent("Minimum Scale", value: model.minimumScaleText)
