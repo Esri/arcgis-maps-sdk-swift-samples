@@ -86,7 +86,7 @@ struct ListGeodatabaseVersionsView: View {
     /// Converts the features to an array of `GeodatabaseVersionInfo`.
     /// - Parameter featureSet: The features with version info from the job.
     /// - Returns: An array of `GeodatabaseVersionInfo`.
-    private func makeGeodatabaseVersionInfos(from featureSet: any FeatureSet) -> [GeodatabaseVersionInfo] {
+    private func makeGeodatabaseVersionInfos(from featureSet: some FeatureSet) -> [GeodatabaseVersionInfo] {
         featureSet
             .features()
             .compactMap { version in

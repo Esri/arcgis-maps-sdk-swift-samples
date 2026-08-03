@@ -25,7 +25,7 @@ struct SampleLink: View {
     /// - Parameters:
     ///   - sample: The sample to present.
     ///   - textToBold: The text to bold in the sample's name and description.
-    init(_ sample: any Sample, textToBold: String = "") {
+    init(_ sample: some Sample, textToBold: String = "") {
         self.sample = sample
         self.textToBold = textToBold
     }
@@ -54,7 +54,7 @@ private extension SampleLink {
         /// The names of the favorite samples loaded from user defaults.
         @AppFavorites private var favoriteNames
         
-        init(_ sample: any Sample, textToBold: String) {
+        init(_ sample: some Sample, textToBold: String) {
             self.sample = sample
             self.attributedName = sample.name.boldingFirstOccurrence(of: textToBold)
             self.attributedDescription = sample.description.boldingFirstOccurrence(of: textToBold)
