@@ -76,7 +76,7 @@ extension SnapGeometryEditsWithUtilityNetworkRulesView {
         private var selectedFeature: ArcGISFeature?
         
         /// The snap sources and their renderers for resetting the sample.
-        private var snapSourceRenderers: [(Renderable, Renderer?)] = []
+        private var snapSourceRenderers: [(any Renderable, Renderer?)] = []
         
         /// The geodatabase containing data for the Naperville gas utility network.
         private let geodatabase: Geodatabase = .napervilleGasUtilities()
@@ -216,7 +216,7 @@ extension SnapGeometryEditsWithUtilityNetworkRulesView {
             
             // Sets the snap source renderers to use their rule behavior symbol.
             snapSourceRenderers = snapSourceSettings.compactMap { settings in
-                guard let renderedSource = settings.source as? Renderable else {
+                guard let renderedSource = settings.source as? (any Renderable) else {
                     return nil
                 }
                 
