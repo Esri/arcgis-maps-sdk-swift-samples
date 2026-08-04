@@ -14,7 +14,6 @@
 
 import ArcGIS
 import Foundation
-import SwiftUI
 import UIKit
 
 extension NavigateMapAndIdentifyFeaturesWithKeyboardView {
@@ -22,13 +21,10 @@ extension NavigateMapAndIdentifyFeaturesWithKeyboardView {
     @MainActor
     @Observable
     final class Model {
-        /// The maximum number of features that can be identified with number keys.
-        private static let maximumNumberedFeatures = 9
-        
         /// Attribute used to title and label each feature.
         private static let nameAttribute = "name"
         
-        /// Colors used for the marker, selection halo, and label.
+        /// The fill color used for restaurant marker symbols.
         private static let markerFillColor = UIColor(
             red: 11 / 255,
             green: 79 / 255,
@@ -36,12 +32,7 @@ extension NavigateMapAndIdentifyFeaturesWithKeyboardView {
             alpha: 1
         )
         
-        static let selectionHaloColor = Color(
-            red: 190 / 255,
-            green: 24 / 255,
-            blue: 93 / 255
-        )
-        
+        /// The text color used for numbered restaurant labels.
         private static let labelTextColor = UIColor(
             red: 31 / 255,
             green: 35 / 255,
@@ -96,12 +87,12 @@ extension NavigateMapAndIdentifyFeaturesWithKeyboardView {
                 pointConverter: pointConverter
             )
             
-            hasMoreThanNineSelectedFeatures = orderedFeatures.count > Self.maximumNumberedFeatures
+            hasMoreThanNineSelectedFeatures = orderedFeatures.count > .maximumNumberedFeatures
             
             // Only select the numbered features (first 9).
             let numberedOrderedFeatures = orderedFeatures.lazy
                 .map(\.feature)
-                .prefix(Self.maximumNumberedFeatures)
+                .prefix(.maximumNumberedFeatures)
             restaurantsLayer.selectFeatures(numberedOrderedFeatures)
             
             addNumberedLabels(for: orderedFeatures)
@@ -174,7 +165,7 @@ extension NavigateMapAndIdentifyFeaturesWithKeyboardView {
         /// Adds numbered text labels for the first restaurant features.
         /// - Parameter orderedFeatures: The ordered restaurant features to label.
         private func addNumberedLabels(for orderedFeatures: [OrderedFeature]) {
-            let numberedOrderedFeatures = orderedFeatures.prefix(Self.maximumNumberedFeatures)
+            let numberedOrderedFeatures = orderedFeatures.prefix(.maximumNumberedFeatures)
             
             for (offset, orderedFeature) in numberedOrderedFeatures.enumerated() {
                 let number = offset + 1
@@ -203,6 +194,11 @@ extension NavigateMapAndIdentifyFeaturesWithKeyboardView {
             let screenPoint: CGPoint
         }
     }
+}
+
+private extension Int {
+    /// The maximum number of features that can be identified with number keys.
+    static let maximumNumberedFeatures = 9
 }
 
 private extension URL {

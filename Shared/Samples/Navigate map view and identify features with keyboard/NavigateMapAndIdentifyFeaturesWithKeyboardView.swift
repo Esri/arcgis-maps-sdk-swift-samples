@@ -20,6 +20,8 @@ import UIKit
 struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
     /// The current scene phase of the sample.
     @Environment(\.scenePhase) private var scenePhase
+    /// Opens URLs using SwiftUI's environment-provided action.
+    @Environment(\.openURL) private var openURL
     
     /// The view model for the sample.
     @State private var model = Model()
@@ -80,6 +82,13 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
     /// The fraction of the map size used for each keyboard pan step.
     private var panStepRatio: CGFloat { 0.2 }
     
+    /// The selection halo color for selected restaurant features.
+    private static let selectionHaloColor = Color(
+        red: 190 / 255,
+        green: 24 / 255,
+        blue: 93 / 255
+    )
+    
     @State private var isNavigating: Bool = false
     
     private var isFullKeyboardAccessEnabled: Bool {
@@ -100,7 +109,7 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
                 let mapSize = geometryProxy.size
                 
                 MapView(map: map, graphicsOverlays: [model.labelOverlay])
-                    .selectionColor(Model.selectionHaloColor)
+                    .selectionColor(Self.selectionHaloColor)
                     .callout(placement: $calloutPlacement.animation(.default.speed(2))) { _ in
                         if let calloutFeature {
                             calloutContent(for: calloutFeature)
@@ -434,7 +443,7 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
     /// Falls back to this app's settings page when direct links are unavailable.
     private func openLegacyAccessibilitySettings() {
 #if targetEnvironment(macCatalyst)
-        UIApplication.shared.open(.macOSAccessibilitySettings)
+        openURL(.macOSAccessibilitySettings)
 #else
         let candidates = [
             "App-prefs:ACCESSIBILITY",
@@ -443,9 +452,9 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
         ]
         
         if let url = candidates.compactMap(URL.init).first(where: UIApplication.shared.canOpenURL) {
-            UIApplication.shared.open(url)
+            openURL(url)
         } else {
-            UIApplication.shared.open(.appSettings)
+            openURL(.appSettings)
         }
 #endif
     }
