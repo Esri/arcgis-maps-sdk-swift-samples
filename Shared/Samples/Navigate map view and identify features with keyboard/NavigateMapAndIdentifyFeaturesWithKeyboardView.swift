@@ -245,13 +245,17 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
     /// Refreshes the selected and numbered restaurant features for the current rectangle.
     @MainActor
     private func refreshSelection(mapSize: CGSize, mapViewProxy: MapViewProxy) async {
-        do {
-            try await model.selectFeatures(
-                in: makeSelectionPolygon(mapSize: mapSize, mapViewProxy: mapViewProxy),
-                screenPointFor: { mapViewProxy.screenPoint(fromLocation: $0) }
-            )
-        } catch {
-            self.error = error
+        if let polygon = makeSelectionPolygon(mapSize: mapSize, mapViewProxy: mapViewProxy) {
+            do {
+                try await model.selectFeatures(
+                    in: polygon,
+                    pointConverter: { mapViewProxy.screenPoint(fromLocation: $0) }
+                )
+            } catch {
+                self.error = error
+            }
+        } else {
+            model.clearSelection()
         }
     }
     
@@ -406,7 +410,7 @@ if model.numberedFeatures.indices.contains(index),
         let wgs84Point = anchor.flatMap { GeometryEngine.project($0, into: .wgs84) }
         
         return VStack(alignment: .leading) {
-            Text(model.name(for: feature, fallback: "Restaurant")!)
+            Text(model.name(for: feature) ?? "Restaurant")
                 .font(.headline)
             if let wgs84Point {
                 Text("Lat: \(wgs84Point.y, format: .number.precision(.fractionLength(6)))")

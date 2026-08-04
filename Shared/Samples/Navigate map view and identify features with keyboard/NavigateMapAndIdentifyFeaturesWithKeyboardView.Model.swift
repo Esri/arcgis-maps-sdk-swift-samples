@@ -93,15 +93,13 @@ extension NavigateMapAndIdentifyFeaturesWithKeyboardView {
         /// Selects, numbers, and labels restaurant features that intersect a given polygon.
         /// - Parameters:
         ///   - polygon: The polygon used to query restaurant features.
-        ///   - screenPointFor: A closure that converts a map location to a screen point.
-        func selectFeatures(in polygon: Polygon?, screenPointFor: (Point) -> CGPoint?) async throws {
+        ///   - pointConverter: A closure that converts a map location to a screen point.
+        func selectFeatures(in polygon: Polygon, pointConverter: (Point) -> CGPoint?) async throws {
             clearSelection()
             
-            guard let polygon else { return }
-            
             let orderedFeatures = try await makeOrderedFeatures(
-                intersecting: polygon,
-                screenPointFor: screenPointFor
+                polygon,
+                pointConverter: pointConverter
             )
             
             hasMoreThanNineSelectedFeatures = orderedFeatures.count > Self.maximumNumberedFeatures
@@ -123,20 +121,18 @@ extension NavigateMapAndIdentifyFeaturesWithKeyboardView {
             hasMoreThanNineSelectedFeatures = false
         }
         
-        /// Reads the feature's name attribute, returning the fallback when it is missing or blank.
-        /// - Parameters:
-        ///   - feature: The feature whose name is read.
-        ///   - fallback: The value to return when the feature has no name.
-        /// - Returns: The feature's name, or the fallback if no name exists.
-        func name(for feature: Feature, fallback: String?) -> String? {
+        /// Reads the feature's name attribute.
+        /// - Parameter feature: The feature whose name is read.
+        /// - Returns: The feature's name, or `nil` if no name exists.
+        func name(for feature: Feature) -> String? {
             guard let name = feature.attributes[Self.nameAttribute] as? String else {
-                return fallback
+                return nil
             }
             
             let trimmedName = name.trimmingCharacters(in: .whitespacesAndNewlines)
             
             guard !trimmedName.isEmpty else {
-                return fallback
+                return nil
             }
             
             return trimmedName
@@ -144,27 +140,27 @@ extension NavigateMapAndIdentifyFeaturesWithKeyboardView {
         
         /// Queries and sorts restaurant features from top-to-bottom, then left-to-right in screen space.
         /// - Parameters:
-        ///   - polygon: The polygon used to query restaurant features.
-        ///   - screenPointFor: A closure that converts a map location to a screen point.
+        ///   - selection: The polygon used to query restaurant features.
+        ///   - pointConverter: A closure that converts a map location to a screen point.
         /// - Returns: The ordered restaurant features with their map and screen positions.
         private func makeOrderedFeatures(
-            intersecting polygon: Polygon,
-            screenPointFor: (Point) -> CGPoint?
+            _ selection: Polygon,
+            pointConverter: (Point) -> CGPoint?
         ) async throws -> [OrderedFeature] {
             let queryParameters = QueryParameters()
-            queryParameters.geometry = polygon
+            queryParameters.geometry = selection
             queryParameters.spatialRelationship = .intersects
             queryParameters.maxFeatures = 1000
             
             let queryResult = try await restaurantsTable.queryFeatures(using: queryParameters)
             
-            return withoutActuallyEscaping(screenPointFor) { escapableScreenPointFor in
+            return withoutActuallyEscaping(pointConverter) { escapablePointConverter in
                 queryResult
                     .features()
                     .lazy
                     .compactMap { feature in
                         guard let anchor = feature.geometry as? Point,
-                              let screenPoint = escapableScreenPointFor(anchor) else {
+                              let screenPoint = escapablePointConverter(anchor) else {
                             return nil
                         }
                         return OrderedFeature(feature: feature, anchor: anchor, screenPoint: screenPoint)
@@ -188,7 +184,7 @@ extension NavigateMapAndIdentifyFeaturesWithKeyboardView {
             
             for (offset, orderedFeature) in numberedOrderedFeatures.enumerated() {
                 let number = offset + 1
-                let text = name(for: orderedFeature.feature, fallback: nil).map { "\(number): \($0)" } ?? "\(number)"
+                    let text = name(for: orderedFeature.feature).map { "\(number): \($0)" } ?? "\(number)"
                 let labelSymbol = TextSymbol(
                     text: text,
                     color: Self.labelTextColor,
