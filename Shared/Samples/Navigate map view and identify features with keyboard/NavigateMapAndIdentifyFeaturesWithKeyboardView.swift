@@ -80,9 +80,6 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
     /// The fraction of the map size used for each keyboard pan step.
     private var panStepRatio: CGFloat { 0.2 }
     
-    /// A tip explaining how to enable Full Keyboard Access.
-    private let enableKeyboardAccessTip = EnableKeyboardAccessTip()
-    
     @State private var isNavigating: Bool = false
     
     private var isFullKeyboardAccessEnabled: Bool {
@@ -118,16 +115,10 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
                     }
                     .task(id: initialDrawCompleted) {
                         guard initialDrawCompleted else { return }
-                        do {
-                            // Give the map view proxy time to settle before the first query.
-                            try? await Task.sleep(for: .milliseconds(500))
-                            await refreshSelection(mapSize: mapSize, mapViewProxy: mapViewProxy)
-                            await focusMap()
-                        } catch is CancellationError {
-                            // Do nothing.
-                        } catch {
-                            self.error = error
-                        }
+                        // Give the map view proxy time to settle before the first query.
+                        try? await Task.sleep(for: .milliseconds(500))
+                        await refreshSelection(mapSize: mapSize, mapViewProxy: mapViewProxy)
+                        await focusMap()
                     }
                     .task(id: isNavigating) {
                         if isNavigating {
@@ -208,7 +199,7 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
                     }
                     .overlay(alignment: .bottomTrailing) {
                         if !isFullKeyboardAccessEnabled && !isKeyboardInputActive {
-                            TipView(enableKeyboardAccessTip) { _ in
+                            TipView(EnableKeyboardAccessTip()) { _ in
                                 Task { await openAccessibilitySettings() }
                             }
                         }
