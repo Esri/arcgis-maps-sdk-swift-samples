@@ -49,14 +49,11 @@ extension NavigateMapAndIdentifyFeaturesWithKeyboardView {
             alpha: 1
         )
         
-        /// The map displayed in the map view.
-        let map: Map
-        
         /// The feature table of restaurants in Redlands.
         private let restaurantsTable = ServiceFeatureTable(url: .redlandsRestaurants)
         
         /// The feature layer holding the restaurants displayed and identified by the sample.
-        private let restaurantsLayer: FeatureLayer
+        let restaurantsLayer: FeatureLayer
         
         /// The overlay for the numbered 1-9 labels.
         let labelOverlay = GraphicsOverlay()
@@ -68,27 +65,26 @@ extension NavigateMapAndIdentifyFeaturesWithKeyboardView {
         private(set) var hasMoreThanNineSelectedFeatures = false
         
         init() {
-            restaurantsLayer = FeatureLayer(featureTable: restaurantsTable)
-            restaurantsLayer.renderer = SimpleRenderer(symbol: Self.restaurantSymbol)
-            
-            let map = Map(basemapStyle: .arcGISLightGray)
-            map.initialViewpoint = Viewpoint(
-                center: Point(
-                    x: -117.1825,
-                    y: 34.0556,
-                    spatialReference: .wgs84
-                ),
-                scale: 4_000
+            let restaurantSymbol = SimpleMarkerSymbol(
+                style: .circle,
+                color: Self.markerFillColor,
+                size: 12
             )
-            map.addOperationalLayer(restaurantsLayer)
-            self.map = map
+            restaurantSymbol.outline = SimpleLineSymbol(
+                style: .solid,
+                color: .white,
+                width: 1.5
+            )
+            
+            restaurantsLayer = FeatureLayer(featureTable: restaurantsTable)
+            restaurantsLayer.renderer = SimpleRenderer(symbol: restaurantSymbol)
         }
         
         /// Selects, numbers, and labels restaurant features that intersect a given polygon.
         /// - Parameters:
         ///   - polygon: The polygon used to query restaurant features.
         ///   - pointConverter: A closure that converts a map location to a screen point.
-        func selectFeatures(in polygon: ArcGIS.Polygon, pointConverter: (Point) -> CGPoint?) async throws {
+        func selectFeatures(in polygon: Polygon, pointConverter: (Point) -> CGPoint?) async throws {
             if restaurantsTable.loadStatus != .loaded {
                 try await restaurantsTable.load()
             }
@@ -182,7 +178,7 @@ extension NavigateMapAndIdentifyFeaturesWithKeyboardView {
             
             for (offset, orderedFeature) in numberedOrderedFeatures.enumerated() {
                 let number = offset + 1
-                    let text = name(for: orderedFeature.feature).map { "\(number): \($0)" } ?? "\(number)"
+                let text = name(for: orderedFeature.feature).map { "\(number): \($0)" } ?? "\(number)"
                 let labelSymbol = TextSymbol(
                     text: text,
                     color: Self.labelTextColor,
@@ -198,21 +194,6 @@ extension NavigateMapAndIdentifyFeaturesWithKeyboardView {
                 )
                 numberedFeatures.append(orderedFeature.feature)
             }
-        }
-        
-        /// The restaurant marker symbol.
-        private static var restaurantSymbol: SimpleMarkerSymbol {
-            let symbol = SimpleMarkerSymbol(
-                style: .circle,
-                color: markerFillColor,
-                size: 12
-            )
-            symbol.outline = SimpleLineSymbol(
-                style: .solid,
-                color: .white,
-                width: 1.5
-            )
-            return symbol
         }
         
         /// A feature and its map and screen locations.

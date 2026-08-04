@@ -24,6 +24,20 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
     /// The view model for the sample.
     @State private var model = Model()
     
+    /// The map displayed in the map view.
+    @State private var map: Map = {
+        let map = Map(basemapStyle: .arcGISLightGray)
+        map.initialViewpoint = Viewpoint(
+            center: Point(
+                x: -117.1825,
+                y: 34.0556,
+                spatialReference: .wgs84
+            ),
+            scale: 4_000
+        )
+        return map
+    }()
+    
     /// The error shown in the error alert.
     @State private var error: (any Error)?
     
@@ -88,7 +102,7 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
             GeometryReader { geometryProxy in
                 let mapSize = geometryProxy.size
                 
-                MapView(map: model.map, graphicsOverlays: [model.labelOverlay])
+                MapView(map: map, graphicsOverlays: [model.labelOverlay])
                     .selectionColor(Model.selectionHaloColor)
                     .callout(placement: $calloutPlacement.animation(.default.speed(2))) { _ in
                         if let calloutFeature {
@@ -225,6 +239,9 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
                     .onAppear {
                         // TipKit configuration is intended to happen once per process.
                         try? Tips.configure([.displayFrequency(.immediate)])
+
+                        guard map.operationalLayers.isEmpty else { return }
+                        map.addOperationalLayer(model.restaurantsLayer)
                     }
                     .task {
                         await focusMap()
