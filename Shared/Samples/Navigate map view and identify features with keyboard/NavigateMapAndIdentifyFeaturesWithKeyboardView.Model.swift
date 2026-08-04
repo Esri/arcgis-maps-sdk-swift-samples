@@ -84,17 +84,15 @@ extension NavigateMapAndIdentifyFeaturesWithKeyboardView {
             self.map = map
         }
         
-        /// Ensures the feature table is fully loaded before querying.
-        func ensureLayerLoaded() async throws {
-            // Load the feature table to ensure metadata and features are available.
-            try await restaurantsTable.load()
-        }
-        
         /// Selects, numbers, and labels restaurant features that intersect a given polygon.
         /// - Parameters:
         ///   - polygon: The polygon used to query restaurant features.
         ///   - pointConverter: A closure that converts a map location to a screen point.
         func selectFeatures(in polygon: Polygon, pointConverter: (Point) -> CGPoint?) async throws {
+            if restaurantsTable.loadStatus != .loaded {
+                try await restaurantsTable.load()
+            }
+            
             clearSelection()
             
             let orderedFeatures = try await makeOrderedFeatures(

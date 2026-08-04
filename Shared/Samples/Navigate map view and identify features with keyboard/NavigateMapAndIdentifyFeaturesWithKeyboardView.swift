@@ -97,15 +97,10 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
                         guard drawStatus == .completed, !initialDrawCompleted else { return }
                         initialDrawCompleted = true
                         Task {
-                            do {
-                                try await model.ensureLayerLoaded()
-                                // Give the map view proxy time to settle before the first query.
-                                try? await Task.sleep(for: .milliseconds(500))
-                                await refreshSelection(mapSize: mapSize, mapViewProxy: mapViewProxy)
-                                await focusMap()
-                            } catch {
-                                self.error = error
-                            }
+                            // Give the map view proxy time to settle before the first query.
+                            try? await Task.sleep(for: .milliseconds(500))
+                            await refreshSelection(mapSize: mapSize, mapViewProxy: mapViewProxy)
+                            await focusMap()
                         }
                     }
                     .onNavigatingChanged { navigating in
