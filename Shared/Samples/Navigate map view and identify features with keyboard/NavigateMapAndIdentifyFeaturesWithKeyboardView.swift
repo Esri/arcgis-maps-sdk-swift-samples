@@ -263,7 +263,6 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
     }
     
     /// Refreshes the selected and numbered restaurant features for the current rectangle.
-    @MainActor
     private func refreshSelection(mapSize: CGSize, mapViewProxy: MapViewProxy) async {
         if let polygon = makeSelectionPolygon(mapSize: mapSize, mapViewProxy: mapViewProxy) {
             do {
@@ -302,7 +301,6 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
     ///   - direction: The unit direction to pan toward, in screen space.
     ///   - mapSize: The size of the map view.
     ///   - mapViewProxy: The proxy used to update the viewpoint.
-    @MainActor
     private func pan(toward direction: CGVector, mapSize: CGSize, mapViewProxy: MapViewProxy) async {
         await dismissCallout()
         
@@ -349,7 +347,6 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
     }
     
     /// Dismisses the details callout and restores the selection rectangle.
-    @MainActor
     private func dismissCallout() async {
         calloutFeature = nil
         calloutPlacement = nil
@@ -358,20 +355,18 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
     }
     
     /// Gives keyboard focus to the map after SwiftUI finishes the current update.
-    @MainActor
     private func focusMap() async {
-        guard !isFullKeyboardAccessEnabled else {
+        if isFullKeyboardAccessEnabled {
             keyboardCommandCaptureActivation += 1
-            return
+        } else {
+            mapHasFocus = false
+            await Task.yield()
+            try? await Task.sleep(for: .milliseconds(100))
+            mapHasFocus = true
         }
-        mapHasFocus = false
-        await Task.yield()
-        try? await Task.sleep(for: .milliseconds(100))
-        mapHasFocus = true
     }
     
     /// Shows the software keyboard by focusing the hidden number input field.
-    @MainActor
     private func showKeyboard() async {
         isKeyboardInputActive = true
         mapHasFocus = false
@@ -382,7 +377,6 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
     }
     
     /// Hides the software keyboard input bar and returns focus to the map.
-    @MainActor
     private func hideKeyboard() async {
         keyboardInput = ""
         keyboardInputHasFocus = false
