@@ -216,10 +216,12 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
                     .overlay(alignment: .bottom) {
                         VStack(spacing: 8) {
                             if model.hasMoreThanNineSelectedFeatures {
-                                statusText("More than 9 restaurants are in the search area. Zoom in or pan to narrow the results.")
+                                Text("More than 9 restaurants are in the search area. Zoom in or pan to narrow the results.")
+                                    .statusText()
                             }
                             if !statusMessage.isEmpty {
-                                statusText(statusMessage)
+                                Text(statusMessage)
+                                    .statusText()
                             }
                             if isKeyboardInputActive {
                                 keyboardInputBar
@@ -388,16 +390,6 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
         await dismissCallout()
     }
     
-    /// A status message styled to float above the map.
-    private func statusText(_ text: String) -> some View {
-        Text(text)
-            .font(.footnote)
-            .multilineTextAlignment(.center)
-            .padding(8)
-            .background(.regularMaterial)
-            .clipShape(.rect(cornerRadius: 8))
-    }
-    
     /// A hidden text field used to receive software keyboard input.
     private var keyboardInputBar: some View {
         TextField("1–9", text: $keyboardInput)
@@ -471,6 +463,18 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
             UIApplication.shared.open(.appSettings)
         }
 #endif
+    }
+}
+
+private extension View {
+    /// Styles a status message to float above the map.
+    func statusText() -> some View {
+        self
+            .font(.footnote)
+            .multilineTextAlignment(.center)
+            .padding(8)
+            .background(.regularMaterial)
+            .clipShape(.rect(cornerRadius: 8))
     }
 }
 
