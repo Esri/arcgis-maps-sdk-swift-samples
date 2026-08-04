@@ -158,7 +158,7 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
                         return .handled
                     }
                     .onKeyPress(characters: featureNumberKeys) { keyPress in
-                        guard let featureIndex = featureIndex(for: keyPress.characters) else {
+                        guard let featureIndex = index(ofFeatureForCharacters: keyPress.characters) else {
                             return .ignored
                         }
                         showCallout(forFeatureAtIndex: featureIndex)
@@ -317,7 +317,7 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
     }
     
     /// Maps a pressed number key to a zero-based feature index.
-    private func featureIndex(for characters: String) -> Int? {
+    private func index(ofFeatureForCharacters characters: String) -> Int? {
         guard let lastCharacter = characters.last,
               let number = lastCharacter.wholeNumberValue,
               (1...9).contains(number) else {
@@ -410,7 +410,7 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
             .accessibilityLabel("Restaurant number")
             .onChange(of: keyboardInput) { _, newValue in
                 keyboardInput = ""
-                guard let featureIndex = featureIndex(for: newValue) else { return }
+                guard let featureIndex = index(ofFeatureForCharacters: newValue) else { return }
                 showCallout(forFeatureAtIndex: featureIndex)
                 keyboardInputHasFocus = true
             }
