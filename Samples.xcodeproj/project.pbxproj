@@ -3755,7 +3755,7 @@
 				00144B5E280634840090DD5D /* Embed Frameworks */,
 				00E5401027F3CCA200CF66D5 /* Frameworks */,
 				00E5401127F3CCA200CF66D5 /* Resources */,
-				0039A4E72885C45200592C86 /* Copy README.md Files For Source Code View */,
+				0039A4E72885C45200592C86 /* Copy Sample Files For Source Code View */,
 			);
 			buildRules = (
 				0083586F27FE3BCF00192A15 /* PBXBuildRule */,
@@ -3947,37 +3947,23 @@
 				"",
 			);
 		};
-		0039A4E72885C45200592C86 /* Copy README.md Files For Source Code View */ = {
+		0039A4E72885C45200592C86 /* Copy Sample Files For Source Code View */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
-			name = "Copy README.md Files For Source Code View";
+			name = "Copy Sample Files For Source Code View";
 			shellPath = /bin/sh;
 			shellScript = (
-				"echo $BUILT_PRODUCTS_DIR",
+				"RESOURCES_SAMPLES_DIR=\"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Samples\"",
+				"SOURCE_SAMPLES_DIR=\"${SRCROOT}/Shared/Samples\"",
+				"echo \"Syncing $RESOURCES_SAMPLES_DIR\"",
 				"",
-				"# Directory to which the readmes will be copied.",
-				"READMES_DIR=${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/READMEs",
-				"mkdir -p \"${READMES_DIR}\"",
-				"",
-				"# Root readme for the project to skip.",
-				"DEFAULT_README=$SRCROOT/README.md",
-				"",
-				"# Find all README.md files in the project.",
-				"find ${SRCROOT} -name \"README.md\" | while read file",
-				"do",
-				"    # Skip the root readme for project.",
-				"    if [ \"$file\" = \"$DEFAULT_README\" ]",
-				"    then",
-				"        echo $BUILT_PRODUCTS_DIR",
-				"        continue",
-				"    fi",
-				"    ",
-				"    # Extract the folder name from the path.",
-				"    FILE_PATH=$(dirname \"$file\")",
-				"    FOLDER_NAME=$(basename \"$FILE_PATH\")",
-				"    ",
-				"    cp \"${file}\" \"${READMES_DIR}/${FOLDER_NAME}.md\"",
-				"done",
+				"# Syncs the README and Swift files in /Shared/Samples with Resources/Samples.",
+				"rsync --archive --delete --prune-empty-dirs \\",
+				"  --include \"*/\" \\",
+				"  --include \"README.md\" \\",
+				"  --include \"*.swift\" \\",
+				"  --exclude \"*\" \\",
+				"  \"${SOURCE_SAMPLES_DIR}/\" \"${RESOURCES_SAMPLES_DIR}/\"",
 				"",
 			);
 		};
