@@ -69,6 +69,8 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
     /// A tip explaining how to enable Full Keyboard Access.
     private let enableKeyboardAccessTip = EnableKeyboardAccessTip()
     
+    @State private var isNavigating: Bool = false
+    
     private var isFullKeyboardAccessEnabled: Bool {
         guard let window = UIApplication.shared.connectedScenes
             .compactMap({ ($0 as? UIWindowScene)?.keyWindow })
@@ -93,30 +95,34 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
                             calloutContent(for: calloutFeature)
                         }
                     }
-                    .onDrawStatusChanged { drawStatus in
-                        guard drawStatus == .completed, !initialDrawCompleted else { return }
+                    .onNavigatingChanged { newIsNavigating in
+                        isNavigating = newIsNavigating
+                    }
+                    .onDrawStatusChanged { newDrawStatus in
+                        guard newDrawStatus == .completed, !initialDrawCompleted else { return }
                         initialDrawCompleted = true
-                        Task {
+                    }
+                    .task(id: initialDrawCompleted) {
+                        guard initialDrawCompleted else { return }
+                        do {
                             // Give the map view proxy time to settle before the first query.
                             try? await Task.sleep(for: .milliseconds(500))
                             await refreshSelection(mapSize: mapSize, mapViewProxy: mapViewProxy)
                             await focusMap()
+                        } catch is CancellationError {
+                            // Do nothing.
+                        } catch {
+                            self.error = error
                         }
                     }
-                    .onNavigatingChanged { navigating in
-                        refreshTask?.cancel()
-                        if navigating {
+                    .task(id: isNavigating) {
+                        if isNavigating {
                             dismissCallout()
                         } else if initialDrawCompleted {
-                            // Debounce: wait for the map to fully settle after navigation.
-                            refreshTask = Task {
-                                try? await Task.sleep(for: .milliseconds(200))
-                                guard !Task.isCancelled else { return }
-                                await refreshSelection(
-                                    mapSize: mapSize,
-                                    mapViewProxy: mapViewProxy
-                                )
-                            }
+                            await refreshSelection(
+                                mapSize: mapSize,
+                                mapViewProxy: mapViewProxy
+                            )
                         }
                     }
                     .focusable()
@@ -305,22 +311,22 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
     
     /// Shows the details callout for the selected numbered feature.
     private func showCalloutForFeature(at index: Int) {
-if model.numberedFeatures.indices.contains(index),
-   let anchor = model.numberedFeatures[index].geometry as? Point {
-    let feature = model.numberedFeatures[index]
-    statusMessage = ""
-    calloutFeature = feature
-    calloutPlacement = .geoElement(feature, tapLocation: anchor)
-    if isKeyboardInputActive {
-        keyboardInputHasFocus = true
-    } else {
-        Task { await focusMap() }
-    }
-} else {
-    statusMessage = "No restaurant is assigned to \(index + 1)."
-    calloutFeature = nil
-    calloutPlacement = nil
-}
+        if model.numberedFeatures.indices.contains(index),
+           let anchor = model.numberedFeatures[index].geometry as? Point {
+            let feature = model.numberedFeatures[index]
+            statusMessage = ""
+            calloutFeature = feature
+            calloutPlacement = .geoElement(feature, tapLocation: anchor)
+            if isKeyboardInputActive {
+                keyboardInputHasFocus = true
+            } else {
+                Task { await focusMap() }
+            }
+        } else {
+            statusMessage = "No restaurant is assigned to \(index + 1)."
+            calloutFeature = nil
+            calloutPlacement = nil
+        }
     }
     
     /// Dismisses the details callout and restores the selection rectangle.
