@@ -90,7 +90,7 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
                     .selectionColor(Model.selectionHaloColor)
                     .callout(placement: $calloutPlacement.animation(.default.speed(2))) { _ in
                         if let calloutFeature {
-                            makeCalloutContent(feature: calloutFeature)
+                            calloutContent(for: calloutFeature)
                         }
                     }
                     .onDrawStatusChanged { drawStatus in
@@ -194,20 +194,20 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
                     .overlay(alignment: .bottomTrailing) {
                         if !isFullKeyboardAccessEnabled && !isKeyboardInputActive {
                             TipView(enableKeyboardAccessTip) { _ in
-                                openAccessibilitySettings()
+                                Task { await openAccessibilitySettings() }
                             }
                         }
                     }
                     .overlay(alignment: .bottom) {
                         VStack(spacing: 8) {
                             if model.hasMoreThanNineSelectedFeatures {
-                                makeStatusText("More than 9 restaurants are in the search area. Zoom in or pan to narrow the results.")
+                                statusText("More than 9 restaurants are in the search area. Zoom in or pan to narrow the results.")
                             }
                             if !statusMessage.isEmpty {
-                                makeStatusText(statusMessage)
+                                statusText(statusMessage)
                             }
                             if isKeyboardInputActive {
-                                makeKeyboardInputBar()
+                                keyboardInputBar
                             }
                         }
                         .padding(.bottom, 10)
@@ -369,7 +369,7 @@ if model.numberedFeatures.indices.contains(index),
     }
     
     /// A status message styled to float above the map.
-    private func makeStatusText(_ text: String) -> some View {
+    private func statusText(_ text: String) -> some View {
         Text(text)
             .font(.footnote)
             .multilineTextAlignment(.center)
@@ -379,7 +379,7 @@ if model.numberedFeatures.indices.contains(index),
     }
     
     /// A hidden text field used to receive software keyboard input.
-    private func makeKeyboardInputBar() -> some View {
+    private var keyboardInputBar: some View {
         TextField("1–9", text: $keyboardInput)
             .keyboardType(.numberPad)
             .textInputAutocapitalization(.never)
@@ -405,7 +405,7 @@ if model.numberedFeatures.indices.contains(index),
     }
     
     /// The callout content for a restaurant feature.
-    private func makeCalloutContent(feature: Feature) -> some View {
+    private func calloutContent(for feature: Feature) -> some View {
         let anchor = feature.geometry as? Point
         let wgs84Point = anchor.flatMap { GeometryEngine.project($0, into: .wgs84) }
         
@@ -421,17 +421,15 @@ if model.numberedFeatures.indices.contains(index),
     }
     
     /// Opens the Settings app to an Accessibility feature when supported.
-    private func openAccessibilitySettings() {
-        Task {
-            do {
-                if #available(iOS 26.0, *) {
-                    try await AccessibilitySettings.openSettings(for: .assistiveTouchDevices)
-                } else {
-                    openLegacyAccessibilitySettings()
-                }
-            } catch {
+    private func openAccessibilitySettings() async {
+        do {
+            if #available(iOS 26.0, *) {
+                try await AccessibilitySettings.openSettings(for: .assistiveTouchDevices)
+            } else {
                 openLegacyAccessibilitySettings()
             }
+        } catch {
+            openLegacyAccessibilitySettings()
         }
     }
     
