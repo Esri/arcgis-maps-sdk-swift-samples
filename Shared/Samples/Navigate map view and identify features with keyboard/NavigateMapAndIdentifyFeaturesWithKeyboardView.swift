@@ -224,7 +224,7 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
                         if !isFullKeyboardAccessEnabled {
                             ToolbarItem(placement: .bottomBar) {
                                 Button("Show Keyboard") {
-                                    Task { await showKeyboard() }
+                                    showKeyboard()
                                 }
                             }
                         }
@@ -358,13 +358,10 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
     }
     
     /// Shows the software keyboard by focusing the hidden number input field.
-    private func showKeyboard() async {
+    private func showKeyboard() {
         isKeyboardInputActive = true
         mapHasFocus = false
         keyboardInputHasFocus = false
-        // Give SwiftUI time to add the text field to the view hierarchy.
-        try? await Task.sleep(for: .milliseconds(200))
-        keyboardInputHasFocus = true
     }
     
     /// Hides the software keyboard input bar and returns focus to the map.
@@ -385,6 +382,9 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
             .frame(height: 0)
             .opacity(0)
             .accessibilityLabel("Restaurant number")
+            .onAppear {
+                keyboardInputHasFocus = true
+            }
             .onChange(of: keyboardInput) { _, newValue in
                 keyboardInput = ""
                 guard let featureIndex = index(ofFeatureForCharacters: newValue) else { return }
