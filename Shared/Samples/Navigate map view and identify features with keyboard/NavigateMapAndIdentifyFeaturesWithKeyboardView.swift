@@ -131,7 +131,7 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
                     }
                     .task(id: isNavigating) {
                         if isNavigating {
-                            dismissCallout()
+                            await dismissCallout()
                         } else if initialDrawCompleted {
                             await refreshSelection(
                                 mapSize: mapSize,
@@ -142,7 +142,7 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
                     .focusable()
                     .focused($mapHasFocus)
                     .onKeyPress(.escape) {
-                        dismissCallout()
+                        Task { await dismissCallout() }
                         return .handled
                     }
                     .onKeyPress(keys: [.leftArrow, .rightArrow, .upArrow, .downArrow]) { keyPress in
@@ -161,7 +161,7 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
                         guard let featureIndex = featureIndex(for: keyPress.characters) else {
                             return .ignored
                         }
-                        showCalloutForFeature(at: featureIndex)
+                        showCallout(forFeatureAtIndex: featureIndex)
                         return .handled
                     }
                     .overlay {
@@ -175,10 +175,10 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
                                     }
                                 },
                                 onEscape: {
-                                    dismissCallout()
+                                    Task { await dismissCallout() }
                                 },
                                 onNumber: { featureIndex in
-                                    showCalloutForFeature(at: featureIndex)
+                                    showCallout(forFeatureAtIndex: featureIndex)
                                 }
                             )
                             .frame(width: 1, height: 1)
@@ -302,7 +302,7 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
     ///   - mapViewProxy: The proxy used to update the viewpoint.
     @MainActor
     private func pan(toward direction: CGVector, mapSize: CGSize, mapViewProxy: MapViewProxy) async {
-        dismissCallout()
+        await dismissCallout()
         
         let targetScreenPoint = CGPoint(
             x: mapSize.width / 2 + mapSize.width * panStepRatio * direction.dx,
@@ -327,7 +327,7 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
     }
     
     /// Shows the details callout for the selected numbered feature.
-    private func showCalloutForFeature(at index: Int) {
+    private func showCallout(forFeatureAtIndex index: Int) {
         if model.numberedFeatures.indices.contains(index),
            let anchor = model.numberedFeatures[index].geometry as? Point {
             let feature = model.numberedFeatures[index]
@@ -347,11 +347,12 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
     }
     
     /// Dismisses the details callout and restores the selection rectangle.
-    private func dismissCallout() {
+    @MainActor
+    private func dismissCallout() async {
         calloutFeature = nil
         calloutPlacement = nil
         statusMessage = ""
-        Task { await focusMap() }
+        await focusMap()
     }
     
     /// Gives keyboard focus to the map after SwiftUI finishes the current update.
@@ -379,11 +380,12 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
     }
     
     /// Hides the software keyboard input bar and returns focus to the map.
-    private func hideKeyboard() {
+    @MainActor
+    private func hideKeyboard() async {
         keyboardInput = ""
         keyboardInputHasFocus = false
         isKeyboardInputActive = false
-        dismissCallout()
+        await dismissCallout()
     }
     
     /// A status message styled to float above the map.
@@ -409,14 +411,14 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
             .onChange(of: keyboardInput) { _, newValue in
                 keyboardInput = ""
                 guard let featureIndex = featureIndex(for: newValue) else { return }
-                showCalloutForFeature(at: featureIndex)
+                showCallout(forFeatureAtIndex: featureIndex)
                 keyboardInputHasFocus = true
             }
             .toolbar {
                 ToolbarItemGroup(placement: .keyboard) {
                     Spacer()
                     Button("Done") {
-                        hideKeyboard()
+                        Task { await hideKeyboard() }
                     }
                 }
             }
