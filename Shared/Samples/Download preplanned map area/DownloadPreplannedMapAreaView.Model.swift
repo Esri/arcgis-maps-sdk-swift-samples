@@ -17,6 +17,11 @@ import Combine
 import Foundation
 
 extension DownloadPreplannedMapAreaView {
+    /// Coordinates browsing, downloading, and removing preplanned map areas.
+    ///
+    /// The model keeps track of the currently displayed map, builds the list of
+    /// downloadable preplanned areas, and swaps between the online map and any
+    /// successfully downloaded mobile map package.
     @MainActor
     class Model: ObservableObject {
         /// The currently selected map.
@@ -91,9 +96,12 @@ extension DownloadPreplannedMapAreaView {
             try? FileManager.default.removeItem(at: temporaryDirectory)
         }
         
-        /// Handles a selection of a map.
-        /// If the selected map is an offline map and it has not yet been taken offline, then
-        /// it will start downloading. Otherwise the selected map will be used as the displayed map.
+        /// Reacts to map selection changes by either opening local content or starting a download.
+        ///
+        /// Selecting a preplanned area does not immediately switch the map view if
+        /// the content is not yet on disk. Instead, the model kicks off the
+        /// download, restores the previous selection, and only switches once a
+        /// mobile map package is available.
         private func selectedMapDidChange(from oldValue: SelectedMap) {
             switch selectedMap {
             case .onlineWebMap:
@@ -166,7 +174,10 @@ extension DownloadPreplannedMapAreaView {
 }
 
 extension DownloadPreplannedMapAreaView {
-    /// An object that encapsulates state about an offline map.
+    /// Encapsulates the download state and local package location for one preplanned map area.
+    ///
+    /// Each model owns the job and result for a single portal-defined area so the
+    /// list UI can independently track progress, success, failure, and cleanup.
     class OfflineMapModel: ObservableObject, Identifiable {
         /// The preplanned map area.
         let preplannedMapArea: PreplannedMapArea
@@ -229,8 +240,11 @@ extension DownloadPreplannedMapAreaView.OfflineMapModel {
 
 @MainActor
 private extension DownloadPreplannedMapAreaView.OfflineMapModel {
-    /// Downloads the given preplanned map area.
-    /// - Parameter preplannedMapArea: The preplanned map area to be downloaded.
+    /// Downloads the preplanned map area into the model's mobile map package directory.
+    ///
+    /// The method first requests default download parameters, then runs the job
+    /// and stores either the resulting `MobileMapPackage` or the encountered
+    /// error so the UI can reflect the finished state.
     /// - Precondition: `canDownload`
     func download() async {
         precondition(canDownload)

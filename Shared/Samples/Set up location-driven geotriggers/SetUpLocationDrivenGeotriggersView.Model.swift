@@ -17,7 +17,12 @@ import Combine
 import Foundation
 
 extension SetUpLocationDrivenGeotriggersView {
-    /// The view model for the sample.
+    /// Coordinates the geotrigger workflow for the simulated Santa Barbara garden walk.
+    ///
+    /// The model builds one fence monitor for garden sections and another for
+    /// points of interest, then translates fence enter and exit notifications
+    /// into view-friendly state such as the current section, nearby features,
+    /// and popups for the most relevant feature.
     @MainActor
     class Model: ObservableObject {
         // MARK: Properties
@@ -77,7 +82,11 @@ extension SetUpLocationDrivenGeotriggersView {
             locationDisplay = Self.makeLocationDisplay(dataSource: locationDataSource)
         }
         
-        /// Creates fence geotrigger monitors from the map's operational layers.
+        /// Creates the section and point-of-interest fence monitors used by the sample.
+        ///
+        /// The monitors share one simulated location feed but use different fence
+        /// tables and buffer distances so the sample can model both exact section
+        /// membership and looser nearby point-of-interest detection.
         func makeGeotriggerMonitors() -> [GeotriggerMonitor] {
             // Get the service feature tables from the map's operational layers.
             guard let operationalLayers = map.operationalLayers as? [FeatureLayer],
@@ -141,8 +150,11 @@ extension SetUpLocationDrivenGeotriggersView {
             return GeotriggerMonitor(geotrigger: fenceGeotrigger)
         }
         
-        /// Handles a notification posted by a geotrigger monitor when a fence geotrigger
-        /// condition has been met.
+        /// Handles a fence notification and updates the derived section and POI state.
+        ///
+        /// Enter and exit events are stored as stack-like name lists per monitor so
+        /// the sample can infer the current section and nearby points of interest
+        /// from the most recent active fences.
         /// - Parameter fenceNotificationInfo: The information about the geotrigger monitor
         /// and the geofence that was triggered.
         func handleGeotriggerNotification(_ fenceNotificationInfo: FenceGeotriggerNotificationInfo) {

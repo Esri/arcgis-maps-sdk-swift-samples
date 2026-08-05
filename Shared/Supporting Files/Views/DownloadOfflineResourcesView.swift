@@ -14,7 +14,12 @@
 
 import SwiftUI
 
-/// A view with controls for downloading the app's on-demand resources.
+/// Displays and coordinates bulk download state for every sample that has on-demand resources.
+///
+/// The view discovers all downloadable sample resource groups, exposes both
+/// per-sample and download-all actions, aggregates child progress objects for a
+/// shared progress indicator, and adjusts its dismissal behavior while
+/// downloads are still active.
 struct DownloadOfflineResourcesView: View {
     /// The action to dismiss the view.
     @Environment(\.dismiss) private var dismiss
@@ -118,7 +123,11 @@ struct DownloadOfflineResourcesView: View {
         }
     }
     
-    /// Downloads all of the on-demand resources that haven't started a request yet.
+    /// Starts downloads for every resource that is still eligible to be requested.
+    ///
+    /// The root `Progress` object is built by attaching each child request's
+    /// progress so the Download All row can reflect a combined operation rather
+    /// than independent per-sample requests.
     /// - Note: The system may purge the resources at any time after the request object is deallocated.
     private func downloadAll() async {
         await withTaskGroup { group in

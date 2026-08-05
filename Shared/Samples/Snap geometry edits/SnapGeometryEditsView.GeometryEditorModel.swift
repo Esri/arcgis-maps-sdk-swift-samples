@@ -16,7 +16,12 @@ import ArcGIS
 import Combine
 
 extension SnapGeometryEditsView {
-    /// An object that acts as a view model for the geometry editor menu.
+    /// Wraps the geometry editor state used by the sample's snapping workflow.
+    ///
+    /// The model chooses the editing tool best suited to the current platform,
+    /// exposes save and reset actions for completed sketches, and stores saved
+    /// geometries in a separate graphics overlay so they remain visible after the
+    /// active editor session stops.
     @MainActor
     class GeometryEditorModel: ObservableObject {
         /// The geometry editor.
@@ -68,7 +73,11 @@ extension SnapGeometryEditsView {
             geometryEditor.tool = adaptiveVertexTool
         }
         
-        /// Saves the current geometry to the graphics overlay and stops editing.
+        /// Saves the current sketch into the overlay that represents completed edits.
+        ///
+        /// The editor itself only manages the in-progress sketch, so saving turns
+        /// the current geometry into a standalone graphic with symbolization based
+        /// on the geometry type.
         /// - Precondition: Geometry's sketch must be valid.
         func save() {
             precondition(geometryEditor.geometry?.sketchIsValid ?? false)
@@ -91,7 +100,11 @@ extension SnapGeometryEditsView {
             isStarted = false
         }
         
-        /// Returns the symbology for graphics saved to the graphics overlay.
+        /// Returns a symbol that matches the geometry family of a completed sketch.
+        ///
+        /// Saved graphics are symbolized independently from the editor so the
+        /// overlay can present points, lines, and polygons consistently after the
+        /// active sketch session has ended.
         /// - Parameter geometry: The geometry of the graphic to be saved.
         /// - Returns: Either a marker or fill symbol depending on the type of provided geometry.
         private func symbol(for geometry: Geometry) -> Symbol {
