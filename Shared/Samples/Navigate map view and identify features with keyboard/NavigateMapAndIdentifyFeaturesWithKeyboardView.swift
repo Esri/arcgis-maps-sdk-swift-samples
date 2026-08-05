@@ -16,7 +16,6 @@ import ArcGIS
 import SwiftUI
 import TipKit
 
-
 struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
     /// The current scene phase of the sample.
     @Environment(\.scenePhase) private var scenePhase
