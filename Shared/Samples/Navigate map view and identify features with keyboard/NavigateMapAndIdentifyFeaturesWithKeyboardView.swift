@@ -15,7 +15,6 @@
 import ArcGIS
 import SwiftUI
 import TipKit
-import UIKit
 
 struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
     /// The current scene phase of the sample.
@@ -270,7 +269,7 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
             do {
                 try await model.selectFeatures(
                     in: polygon,
-                    pointConverter: { mapViewProxy.screenPoint(fromLocation: $0) }
+                    pointConverter: mapViewProxy.screenPoint(fromLocation:)
                 )
             } catch {
                 self.error = error
@@ -331,8 +330,8 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
     /// Shows the details callout for the selected numbered feature.
     private func showCallout(forFeatureAtIndex index: Int) {
         if model.numberedFeatures.indices.contains(index),
-           let anchor = model.numberedFeatures[index].geometry as? Point {
-            let feature = model.numberedFeatures[index]
+           case let feature = model.numberedFeatures[index],
+           let anchor = feature.geometry as? Point {
             statusMessage = ""
             calloutFeature = feature
             calloutPlacement = .geoElement(feature, tapLocation: anchor)
