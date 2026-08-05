@@ -36,6 +36,7 @@ exception_proper_nouns = {
 
 # A set of category folder names.
 categories = {
+    'Accessibility',
     'Analysis',
     'Augmented Reality',
     'Cloud and Portal',

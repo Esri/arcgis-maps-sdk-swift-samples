@@ -34,6 +34,9 @@ struct GeocodeOfflineView: View {
     /// A Boolean value indicating whether the "No results found." alert is showing.
     @State private var resultAlertIsShowing = false
     
+    /// The error that occurred during geocoding.
+    @State private var error: (any Error)?
+    
     /// A pre-populated list of example addresses.
     private let exampleAddresses = [
         "910 N Harbor Dr, San Diego, CA 92101",
@@ -71,18 +74,23 @@ struct GeocodeOfflineView: View {
             .task(id: submittedSearchText) {
                 // Geocode the text when a search is submitted.
                 if let submittedSearchText {
-                    if let resultExtent = await model.geocodeSearch(address: submittedSearchText) {
-                        // If found, zoom to the extent of the result's location.
-                        viewpoint = Viewpoint(boundingGeometry: resultExtent)
-                    } else {
-                        // If no result was found, inform the user with an alert.
-                        resultAlertIsShowing = true
+                    do {
+                        let resultExtent = try await model.geocodeSearch(address: submittedSearchText)
+                        if let resultExtent {
+                            // If found, zoom to the extent of the result's location.
+                            viewpoint = Viewpoint(boundingGeometry: resultExtent)
+                        } else {
+                            // If no result was found, inform the user with an alert.
+                            resultAlertIsShowing = true
+                        }
+                    } catch {
+                        self.error = error
                     }
                 }
-                
                 submittedSearchText = nil
             }
             .alert("No results found.", isPresented: $resultAlertIsShowing, actions: {})
+            .errorAlert(presentingError: $error)
     }
 }
 
@@ -97,6 +105,9 @@ private extension GeocodeOfflineView {
         
         /// The current viewpoint of the map view.
         @Binding var viewpoint: Viewpoint
+        
+        /// The error that occurred during reverse geocoding.
+        @State private var error: (any Error)?
         
         /// The point on the map where the user tapped.
         @State private var tapLocation: Point?
@@ -127,9 +138,14 @@ private extension GeocodeOfflineView {
                     // Reverse geocode the tap location when it changes.
                     if let tapLocation {
                         dismissSearch()
-                        await model.reverseGeocode(mapPoint: tapLocation)
+                        do {
+                            try await model.reverseGeocode(mapPoint: tapLocation)
+                        } catch {
+                            self.error = error
+                        }
                     }
                 }
+                .errorAlert(presentingError: $error)
         }
     }
 }

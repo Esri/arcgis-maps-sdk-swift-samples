@@ -23,20 +23,26 @@ extension AugmentRealityToShowHiddenInfrastructureView {
         /// The view model for scene view in the sample.
         @ObservedObject var model: SceneModel
         
+        /// The world-tracking provider used by this view.
+        @State private var provider = AppleWorldTracking(mode: .worldTracking)
         /// A Boolean value indicating whether the shadow graphics are visible.
         @State private var shadowsAreVisible = true
-        
         /// A Boolean value indicating whether the leader line graphics are visible.
         @State private var leadersAreVisible = true
         
         var body: some View {
             VStack(spacing: 0) {
-                WorldScaleSceneView { _ in
-                    SceneView(scene: model.scene, graphicsOverlays: [
-                        model.pipeGraphicsOverlay,
-                        model.shadowGraphicsOverlay,
-                        model.leaderGraphicsOverlay
-                    ])
+                WorldScaleSceneView(provider: provider) { context in
+                    AppleWorldTrackingCameraFeedView(context: context)
+                } sceneView: { _ in
+                    SceneView(
+                        scene: model.scene,
+                        graphicsOverlays: [
+                            model.pipeGraphicsOverlay,
+                            model.shadowGraphicsOverlay,
+                            model.leaderGraphicsOverlay
+                        ]
+                    )
                 }
                 .calibrationButtonAlignment(.bottomLeading)
                 .onCalibratingChanged { newCalibrating in

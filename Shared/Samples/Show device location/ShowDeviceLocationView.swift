@@ -110,7 +110,16 @@ private extension ShowDeviceLocationView {
                 locationManager.requestWhenInUseAuthorization()
             }
             // Starts the location display data source.
-            try await locationDisplay.dataSource.start()
+            do {
+                try await locationDisplay.dataSource.start()
+            } catch {
+                // Provides a more helpful error message when location permissions are denied.
+                if let clError = error as? CLError, clError.code == .denied {
+                    throw LocationPermissionDeniedError()
+                } else {
+                    throw error
+                }
+            }
         }
         
         /// Stops the location data source.
@@ -118,6 +127,13 @@ private extension ShowDeviceLocationView {
             Task {
                 await locationDisplay.dataSource.stop()
             }
+        }
+    }
+    
+    /// An error that occurs when location display fails due to a permission denied error.
+    struct LocationPermissionDeniedError: LocalizedError {
+        var errorDescription: String? {
+            "Location permission denied. Please authorize location access for this application in Settings."
         }
     }
 }
