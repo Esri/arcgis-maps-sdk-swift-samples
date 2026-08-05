@@ -16,6 +16,7 @@ import ArcGIS
 import SwiftUI
 import TipKit
 
+
 struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
     /// The current scene phase of the sample.
     @Environment(\.scenePhase) private var scenePhase
@@ -106,7 +107,7 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
     }
     
     var body: some View {
-        MapViewReader { mapViewProxy in
+        MapViewReader { mapView in
             MapView(map: map, graphicsOverlays: [model.labelOverlay])
                 .selectionColor(Self.selectionHaloColor)
                 .callout(placement: $calloutPlacement.animation(.default.speed(2))) { _ in
@@ -125,7 +126,7 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
                     guard initialDrawCompleted else { return }
                     // Give the map view proxy time to settle before the first query.
                     try? await Task.sleep(for: .milliseconds(500))
-                    await refreshSelection(mapSize: mapSize, mapViewProxy: mapViewProxy)
+                    await refreshSelection(mapSize: mapSize, mapView: mapView)
                     await focusMap()
                 }
                 .task(id: isNavigating) {
@@ -134,7 +135,7 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
                     } else if initialDrawCompleted {
                         await refreshSelection(
                             mapSize: mapSize,
-                            mapViewProxy: mapViewProxy
+                            mapView: mapView
                         )
                     }
                 }
@@ -152,7 +153,7 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
                     default: CGVector(dx: 0, dy: 1)
                     }
                     Task {
-                        await pan(toward: direction, mapSize: mapSize, mapViewProxy: mapViewProxy)
+                        await pan(toward: direction, mapSize: mapSize, mapView: mapView)
                     }
                     return .handled
                 }
@@ -170,7 +171,7 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
                             activationToken: keyboardCommandCaptureActivation,
                             onPan: { direction in
                                 Task {
-                                    await pan(toward: direction, mapSize: mapSize, mapViewProxy: mapViewProxy)
+                                    await pan(toward: direction, mapSize: mapSize, mapView: mapView)
                                 }
                             },
                             onEscape: {
@@ -264,12 +265,12 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
     }
     
     /// Refreshes the selected and numbered restaurant features for the current rectangle.
-    private func refreshSelection(mapSize: CGSize, mapViewProxy: MapViewProxy) async {
-        if let polygon = makeSelectionPolygon(mapSize: mapSize, mapViewProxy: mapViewProxy) {
+    private func refreshSelection(mapSize: CGSize, mapView: MapViewProxy) async {
+        if let polygon = makeSelectionPolygon(mapSize: mapSize, mapView: mapView) {
             do {
                 try await model.selectFeatures(
                     in: polygon,
-                    pointConverter: mapViewProxy.screenPoint(fromLocation:)
+                    pointConverter: { mapView.screenPoint(fromLocation: $0) }
                 )
             } catch {
                 self.error = error
@@ -280,7 +281,7 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
     }
     
     /// Makes a polygon matching the centered selection rectangle's map footprint.
-    private func makeSelectionPolygon(mapSize: CGSize, mapViewProxy: MapViewProxy) -> ArcGIS.Polygon? {
+    private func makeSelectionPolygon(mapSize: CGSize, mapView: MapViewProxy) -> ArcGIS.Polygon? {
         let halfLength = rectangleLength(for: mapSize) / 2
         let center = CGPoint(x: mapSize.width / 2, y: mapSize.height / 2)
         let screenCorners = [
@@ -289,7 +290,7 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
             CGPoint(x: center.x + halfLength, y: center.y + halfLength),
             CGPoint(x: center.x - halfLength, y: center.y + halfLength)
         ]
-        let mapCorners = screenCorners.compactMap(mapViewProxy.location(fromScreenPoint:))
+        let mapCorners = screenCorners.compactMap(mapView.location(fromScreenPoint:))
         guard mapCorners.count == screenCorners.count else {
             return nil
         }
@@ -301,8 +302,8 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
     /// - Parameters:
     ///   - direction: The unit direction to pan toward, in screen space.
     ///   - mapSize: The size of the map view.
-    ///   - mapViewProxy: The proxy used to update the viewpoint.
-    private func pan(toward direction: CGVector, mapSize: CGSize, mapViewProxy: MapViewProxy) async {
+    ///   - mapView: The map view proxy used to update the viewpoint.
+    private func pan(toward direction: CGVector, mapSize: CGSize, mapView: MapViewProxy) async {
         await dismissCallout()
         
         let targetScreenPoint = CGPoint(
@@ -310,10 +311,10 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
             y: mapSize.height / 2 + mapSize.height * panStepRatio * direction.dy
         )
         
-        guard let targetCenter = mapViewProxy.location(fromScreenPoint: targetScreenPoint) else {
+        guard let targetCenter = mapView.location(fromScreenPoint: targetScreenPoint) else {
             return
         }
-        await mapViewProxy.setViewpointCenter(targetCenter)
+        await mapView.setViewpointCenter(targetCenter)
         await focusMap()
     }
     
@@ -330,8 +331,8 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
     /// Shows the details callout for the selected numbered feature.
     private func showCallout(forFeatureAtIndex index: Int) {
         if model.numberedFeatures.indices.contains(index),
-           case let feature = model.numberedFeatures[index],
-           let anchor = feature.geometry as? Point {
+           let anchor = model.numberedFeatures[index].geometry as? Point {
+            let feature = model.numberedFeatures[index]
             statusMessage = ""
             calloutFeature = feature
             calloutPlacement = .geoElement(feature, tapLocation: anchor)
