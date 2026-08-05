@@ -28,7 +28,7 @@ struct FavoritesView: View {
     ///
     /// This may contain less elements than `favoriteNames` if the user defaults has invalid values,
     /// such as the name of a sample that was added in another branch.
-    private var favoriteSamples: [Sample] {
+    private var favoriteSamples: [any Sample] {
         favoriteNames.compactMap { name in
             SamplesApp.samples.first(where: { $0.name == name })
         }
@@ -105,7 +105,7 @@ private extension FavoritesView {
         @State private var query = ""
         
         /// The list of samples filtered by the search query.
-        private var filteredSamples: [Sample] {
+        private var filteredSamples: [any Sample] {
             query.isEmpty
             ? SamplesApp.samples
             : SamplesApp.samples.filter {

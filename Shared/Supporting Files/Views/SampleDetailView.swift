@@ -16,7 +16,7 @@ import SwiftUI
 
 struct SampleDetailView: View {
     /// The sample to display in the view.
-    let sample: Sample
+    let sample: any Sample
     
     /// An environmental value we use to determine whether this device displays the UI in columns.
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
