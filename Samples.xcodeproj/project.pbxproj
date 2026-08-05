@@ -184,12 +184,10 @@
 		95321B302E554B31002E9DE2 /* ApplyRenderersToSceneLayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95321B2F2E554B20002E9DE2 /* ApplyRenderersToSceneLayerView.swift */; };
 		9537AFD72C220EF0000923C5 /* ExchangeSetwithoutUpdates in Resources */ = {isa = PBXBuildFile; fileRef = 9537AFD62C220EF0000923C5 /* ExchangeSetwithoutUpdates */; settings = {ASSET_TAGS = (ConfigureElectronicNavigationalCharts, ); }; };
 		95398E6F2FDFAF1600E30CE8 /* NavigateMapAndIdentifyFeaturesWithKeyboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95398E6E2FDFAF1400E30CE8 /* NavigateMapAndIdentifyFeaturesWithKeyboardView.swift */; };
-		95398E712FDFAF6300E30CE8 /* NavigateMapAndIdentifyFeaturesWithKeyboardView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 95398E6E2FDFAF1400E30CE8 /* NavigateMapAndIdentifyFeaturesWithKeyboardView.swift */; };
 		95398E732FE0C78B00E30CE8 /* NavigateMapAndIdentifyFeaturesWithKeyboardView.Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95398E722FE0C78800E30CE8 /* NavigateMapAndIdentifyFeaturesWithKeyboardView.Model.swift */; };
 		9547085C2C3C719800CA8579 /* EditFeatureAttachmentsView.Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9547085B2C3C719800CA8579 /* EditFeatureAttachmentsView.Model.swift */; };
 		954AEDEE2C01332600265114 /* SelectFeaturesInSceneLayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 954AEDED2C01332600265114 /* SelectFeaturesInSceneLayerView.swift */; };
 		955271612C0E6749009B1ED4 /* AddRasterFromServiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 955271602C0E6749009B1ED4 /* AddRasterFromServiceView.swift */; };
-		95565A4D2FE0C82D00DAEEBF /* NavigateMapAndIdentifyFeaturesWithKeyboardView.Model.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 95398E722FE0C78800E30CE8 /* NavigateMapAndIdentifyFeaturesWithKeyboardView.Model.swift */; };
 		955AFAC42C10FD6F009C8FE5 /* ApplyMosaicRuleToRastersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 955AFAC32C10FD6F009C8FE5 /* ApplyMosaicRuleToRastersView.swift */; };
 		956332482E3455DB0091C877 /* SimplifyGeometryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 956332472E3455D70091C877 /* SimplifyGeometryView.swift */; };
 		9563324C2E3950880091C877 /* UpdateRelatedFeaturesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9563324B2E39507E0091C877 /* UpdateRelatedFeaturesView.swift */; };
@@ -200,7 +198,6 @@
 		95B096A02E136365006AFA8F /* Dolmus3ds in Resources */ = {isa = PBXBuildFile; fileRef = 95B0969F2E136365006AFA8F /* Dolmus3ds */; settings = {ASSET_TAGS = (ShowExploratoryLineOfSightBetweenGeoelements, ); }; };
 		95D2EE0F2C334D1600683D53 /* ShowServiceAreaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95D2EE0E2C334D1600683D53 /* ShowServiceAreaView.swift */; };
 		95D2F9252FFF40A60011D3B9 /* NavigateMapAndIdentifyFeaturesWithKeyboardView.Tips.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95D2F9242FFF40A30011D3B9 /* NavigateMapAndIdentifyFeaturesWithKeyboardView.Tips.swift */; };
-		95D2F9262FFF430A0011D3B9 /* NavigateMapAndIdentifyFeaturesWithKeyboardView.Tips.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 95D2F9242FFF40A30011D3B9 /* NavigateMapAndIdentifyFeaturesWithKeyboardView.Tips.swift */; };
 		95DEB9B62C127A92009BEC35 /* ShowViewshedCalculatedFromGeoprocessingTaskView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95DEB9B52C127A92009BEC35 /* ShowViewshedCalculatedFromGeoprocessingTaskView.swift */; };
 		95DF31802FD37D33005D06E7 /* UpdateBasemapForContrastAccessibilityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95DF317F2FD37D33005D06E7 /* UpdateBasemapForContrastAccessibilityView.swift */; };
 		95E980712C26183000CB8912 /* BrowseOGCAPIFeatureServiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95E980702C26183000CB8912 /* BrowseOGCAPIFeatureServiceView.swift */; };
