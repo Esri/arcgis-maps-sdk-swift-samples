@@ -40,6 +40,9 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
         return map
     }()
     
+    /// The size of the map view.
+    @State private var mapSize: CGSize = .zero
+    
     /// The error shown in the error alert.
     @State private var error: (any Error)?
     
@@ -105,155 +108,154 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
     
     var body: some View {
         MapViewReader { mapViewProxy in
-            GeometryReader { geometryProxy in
-                let mapSize = geometryProxy.size
-                
-                MapView(map: map, graphicsOverlays: [model.labelOverlay])
-                    .selectionColor(Self.selectionHaloColor)
-                    .callout(placement: $calloutPlacement.animation(.default.speed(2))) { _ in
-                        if let calloutFeature {
-                            calloutContent(for: calloutFeature)
-                        }
+            MapView(map: map, graphicsOverlays: [model.labelOverlay])
+                .selectionColor(Self.selectionHaloColor)
+                .callout(placement: $calloutPlacement.animation(.default.speed(2))) { _ in
+                    if let calloutFeature {
+                        calloutContent(for: calloutFeature)
                     }
-                    .onNavigatingChanged { newIsNavigating in
-                        isNavigating = newIsNavigating
+                }
+                .onNavigatingChanged { newIsNavigating in
+                    isNavigating = newIsNavigating
+                }
+                .onDrawStatusChanged { newDrawStatus in
+                    guard newDrawStatus == .completed, !initialDrawCompleted else { return }
+                    initialDrawCompleted = true
+                }
+                .task(id: initialDrawCompleted) {
+                    guard initialDrawCompleted else { return }
+                    // Give the map view proxy time to settle before the first query.
+                    try? await Task.sleep(for: .milliseconds(500))
+                    await refreshSelection(mapSize: mapSize, mapViewProxy: mapViewProxy)
+                    await focusMap()
+                }
+                .task(id: isNavigating) {
+                    if isNavigating {
+                        await dismissCallout()
+                    } else if initialDrawCompleted {
+                        await refreshSelection(
+                            mapSize: mapSize,
+                            mapViewProxy: mapViewProxy
+                        )
                     }
-                    .onDrawStatusChanged { newDrawStatus in
-                        guard newDrawStatus == .completed, !initialDrawCompleted else { return }
-                        initialDrawCompleted = true
+                }
+                .focusable()
+                .focused($mapHasFocus)
+                .onKeyPress(.escape) {
+                    Task { await dismissCallout() }
+                    return .handled
+                }
+                .onKeyPress(keys: [.leftArrow, .rightArrow, .upArrow, .downArrow]) { keyPress in
+                    let direction: CGVector = switch keyPress.key {
+                    case .leftArrow: CGVector(dx: -1, dy: 0)
+                    case .rightArrow: CGVector(dx: 1, dy: 0)
+                    case .upArrow: CGVector(dx: 0, dy: -1)
+                    default: CGVector(dx: 0, dy: 1)
                     }
-                    .task(id: initialDrawCompleted) {
-                        guard initialDrawCompleted else { return }
-                        // Give the map view proxy time to settle before the first query.
-                        try? await Task.sleep(for: .milliseconds(500))
-                        await refreshSelection(mapSize: mapSize, mapViewProxy: mapViewProxy)
-                        await focusMap()
+                    Task {
+                        await pan(toward: direction, mapSize: mapSize, mapViewProxy: mapViewProxy)
                     }
-                    .task(id: isNavigating) {
-                        if isNavigating {
-                            await dismissCallout()
-                        } else if initialDrawCompleted {
-                            await refreshSelection(
-                                mapSize: mapSize,
-                                mapViewProxy: mapViewProxy
-                            )
-                        }
+                    return .handled
+                }
+                .onKeyPress(characters: featureNumberKeys) { keyPress in
+                    guard let featureIndex = index(ofFeatureForCharacters: keyPress.characters) else {
+                        return .ignored
                     }
-                    .focusable()
-                    .focused($mapHasFocus)
-                    .onKeyPress(.escape) {
-                        Task { await dismissCallout() }
-                        return .handled
-                    }
-                    .onKeyPress(keys: [.leftArrow, .rightArrow, .upArrow, .downArrow]) { keyPress in
-                        let direction: CGVector = switch keyPress.key {
-                        case .leftArrow: CGVector(dx: -1, dy: 0)
-                        case .rightArrow: CGVector(dx: 1, dy: 0)
-                        case .upArrow: CGVector(dx: 0, dy: -1)
-                        default: CGVector(dx: 0, dy: 1)
-                        }
-                        Task {
-                            await pan(toward: direction, mapSize: mapSize, mapViewProxy: mapViewProxy)
-                        }
-                        return .handled
-                    }
-                    .onKeyPress(characters: featureNumberKeys) { keyPress in
-                        guard let featureIndex = index(ofFeatureForCharacters: keyPress.characters) else {
-                            return .ignored
-                        }
-                        showCallout(forFeatureAtIndex: featureIndex)
-                        return .handled
-                    }
-                    .overlay {
-                        if isFullKeyboardAccessEnabled && !isKeyboardInputActive {
-                            // Capture key commands through UIKit first responder when FKA reroutes SwiftUI focus.
-                            KeyboardCommandCaptureView(
-                                activationToken: keyboardCommandCaptureActivation,
-                                onPan: { direction in
-                                    Task {
-                                        await pan(toward: direction, mapSize: mapSize, mapViewProxy: mapViewProxy)
-                                    }
-                                },
-                                onEscape: {
-                                    Task { await dismissCallout() }
-                                },
-                                onNumber: { featureIndex in
-                                    showCallout(forFeatureAtIndex: featureIndex)
+                    showCallout(forFeatureAtIndex: featureIndex)
+                    return .handled
+                }
+                .overlay {
+                    if isFullKeyboardAccessEnabled && !isKeyboardInputActive {
+                        // Capture key commands through UIKit first responder when FKA reroutes SwiftUI focus.
+                        KeyboardCommandCaptureView(
+                            activationToken: keyboardCommandCaptureActivation,
+                            onPan: { direction in
+                                Task {
+                                    await pan(toward: direction, mapSize: mapSize, mapViewProxy: mapViewProxy)
                                 }
+                            },
+                            onEscape: {
+                                Task { await dismissCallout() }
+                            },
+                            onNumber: { featureIndex in
+                                showCallout(forFeatureAtIndex: featureIndex)
+                            }
+                        )
+                        .frame(width: 1, height: 1)
+                        .allowsHitTesting(false)
+                        .accessibilityHidden(true)
+                    }
+                }
+                .ignoresSafeArea(.keyboard, edges: .bottom)
+                .overlay(alignment: .center) {
+                    if calloutPlacement == nil {
+                        let rectangleLength = self.rectangleLength(for: mapSize)
+                        RoundedRectangle(cornerRadius: 4)
+                            .fill(.pink.opacity(0.08))
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 4)
+                                    .stroke(.pink, lineWidth: 2)
                             )
-                            .frame(width: 1, height: 1)
+                            .frame(width: rectangleLength, height: rectangleLength)
                             .allowsHitTesting(false)
                             .accessibilityHidden(true)
+                    }
+                }
+                .overlay(alignment: .top) {
+                    if !isKeyboardInputActive {
+                        TipView(AreaOfInterestTip())
+                    }
+                }
+                .overlay(alignment: .bottomTrailing) {
+                    if !isFullKeyboardAccessEnabled && !isKeyboardInputActive {
+                        TipView(EnableKeyboardAccessTip()) { _ in
+                            Task { await openAccessibilitySettings() }
                         }
                     }
-                    .ignoresSafeArea(.keyboard, edges: .bottom)
-                    .overlay(alignment: .center) {
-                        if calloutPlacement == nil {
-                            let rectangleLength = self.rectangleLength(for: mapSize)
-                            RoundedRectangle(cornerRadius: 4)
-                                .fill(.pink.opacity(0.08))
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 4)
-                                        .stroke(.pink, lineWidth: 2)
-                                )
-                                .frame(width: rectangleLength, height: rectangleLength)
-                                .allowsHitTesting(false)
-                                .accessibilityHidden(true)
+                }
+                .overlay(alignment: .bottom) {
+                    VStack(spacing: 8) {
+                        if model.hasMoreThanNineSelectedFeatures {
+                            Text("More than 9 restaurants are in the search area. Zoom in or pan to narrow the results.")
+                                .statusText()
+                        }
+                        if !statusMessage.isEmpty {
+                            Text(statusMessage)
+                                .statusText()
+                        }
+                        if isKeyboardInputActive {
+                            keyboardInputBar
                         }
                     }
-                    .overlay(alignment: .top) {
-                        if !isKeyboardInputActive {
-                            TipView(AreaOfInterestTip())
-                        }
-                    }
-                    .overlay(alignment: .bottomTrailing) {
-                        if !isFullKeyboardAccessEnabled && !isKeyboardInputActive {
-                            TipView(EnableKeyboardAccessTip()) { _ in
-                                Task { await openAccessibilitySettings() }
+                    .padding(.bottom, 10)
+                }
+                .toolbar {
+                    if !isFullKeyboardAccessEnabled {
+                        ToolbarItem(placement: .bottomBar) {
+                            Button("Show Keyboard") {
+                                showKeyboard()
                             }
                         }
                     }
-                    .overlay(alignment: .bottom) {
-                        VStack(spacing: 8) {
-                            if model.hasMoreThanNineSelectedFeatures {
-                                Text("More than 9 restaurants are in the search area. Zoom in or pan to narrow the results.")
-                                    .statusText()
-                            }
-                            if !statusMessage.isEmpty {
-                                Text(statusMessage)
-                                    .statusText()
-                            }
-                            if isKeyboardInputActive {
-                                keyboardInputBar
-                            }
-                        }
-                        .padding(.bottom, 10)
-                    }
-                    .toolbar {
-                        if !isFullKeyboardAccessEnabled {
-                            ToolbarItem(placement: .bottomBar) {
-                                Button("Show Keyboard") {
-                                    showKeyboard()
-                                }
-                            }
-                        }
-                    }
-                    .onAppear {
-                        // TipKit configuration is intended to happen once per process.
-                        try? Tips.configure([.displayFrequency(.immediate)])
+                }
+                .onAppear {
+                    // TipKit configuration is intended to happen once per process.
+                    try? Tips.configure([.displayFrequency(.immediate)])
 
-                        guard map.operationalLayers.isEmpty else { return }
-                        map.addOperationalLayer(model.restaurantsLayer)
-                    }
-                    .task {
-                        await focusMap()
-                    }
-                    .task(id: scenePhase) {
-                        guard scenePhase == .active else { return }
-                        await focusMap()
-                    }
-                    .errorAlert(presentingError: $error)
-            }
+                    guard map.operationalLayers.isEmpty else { return }
+                    map.addOperationalLayer(model.restaurantsLayer)
+                }
+                .task {
+                    await focusMap()
+                }
+                .task(id: scenePhase) {
+                    guard scenePhase == .active else { return }
+                    await focusMap()
+                }
+                .errorAlert(presentingError: $error)
+        }
+        .onGeometryChange(for: CGSize.self, of: \.size) { newMapSize in
+            mapSize = newMapSize
         }
     }
     

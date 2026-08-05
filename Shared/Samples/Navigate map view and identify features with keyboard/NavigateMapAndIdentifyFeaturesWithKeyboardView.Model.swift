@@ -83,7 +83,7 @@ extension NavigateMapAndIdentifyFeaturesWithKeyboardView {
             clearSelection()
             
             let orderedFeatures = try await makeOrderedFeatures(
-                polygon,
+                selection: polygon,
                 pointConverter: pointConverter
             )
             
@@ -128,10 +128,7 @@ extension NavigateMapAndIdentifyFeaturesWithKeyboardView {
         ///   - selection: The polygon used to query restaurant features.
         ///   - pointConverter: A closure that converts a map location to a screen point.
         /// - Returns: The ordered restaurant features with their map and screen positions.
-        private func makeOrderedFeatures(
-            _ selection: Polygon,
-            pointConverter: (Point) -> CGPoint?
-        ) async throws -> [OrderedFeature] {
+        private func makeOrderedFeatures(selection: Polygon, pointConverter: (Point) -> CGPoint?) async throws -> [OrderedFeature] {
             let queryParameters = QueryParameters()
             queryParameters.geometry = selection
             queryParameters.spatialRelationship = .intersects
