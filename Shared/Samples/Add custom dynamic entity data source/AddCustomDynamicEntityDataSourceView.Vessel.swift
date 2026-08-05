@@ -30,7 +30,7 @@ extension AddCustomDynamicEntityDataSourceView.Vessel: Decodable {
         case attributes
     }
     
-    init(from decoder: Decoder) throws {
+    init(from decoder: any Decoder) throws {
         /// The attributes that define meta data for the vessel.
         struct Attributes: Decodable {
             enum CodingKeys: String, CodingKey {

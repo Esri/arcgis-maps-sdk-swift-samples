@@ -218,7 +218,7 @@ extension QueryDynamicEntitiesView {
         case status
         
         /// The type used to decode the attribute.
-        fileprivate var decodeType: (Decodable & Sendable).Type {
+        fileprivate var decodeType: any (Decodable & Sendable).Type {
             isNumeric ? Double.self : String.self
         }
         
@@ -246,7 +246,7 @@ extension QueryDynamicEntitiesView.Plane: Decodable {
     
     private typealias AttributeKeys = QueryDynamicEntitiesView.PlaneAttributeKey
     
-    init(from decoder: Decoder) throws {
+    init(from decoder: any Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         point = try container.decode(Point.self, forKey: .geometry)
         
