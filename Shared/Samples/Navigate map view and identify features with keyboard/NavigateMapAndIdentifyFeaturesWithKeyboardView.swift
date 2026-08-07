@@ -54,9 +54,6 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
     /// The feature shown in the callout.
     @State private var calloutFeature: Feature?
     
-    /// A Boolean value indicating whether the map has keyboard focus.
-    @FocusState private var mapHasFocus: Bool
-    
     /// A Boolean value indicating whether the software keyboard input is active.
     @State private var isKeyboardInputActive = false
     
@@ -72,17 +69,8 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
     /// A task for the delayed selection refresh after navigation ends.
     @State private var refreshTask: Task<Void, Never>?
     
-    /// A token used to reactivate the UIKit key-command responder.
-    @State private var keyboardCommandCaptureActivation = 0
-    
     /// The side length of the centered area-of-interest rectangle, in screen points.
     private var selectionRectangleLength: CGFloat { 360 }
-    
-    /// The number keys that can identify features.
-    private let featureNumberKeys = CharacterSet(charactersIn: "123456789")
-    
-    /// The fraction of the map size used for each keyboard pan step.
-    private var panStepRatio: CGFloat { 0.2 }
     
     /// The selection halo color for selected restaurant features.
     private static let selectionHaloColor = Color(
@@ -138,53 +126,9 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
                         )
                     }
                 }
-                .focusable()
-                .focused($mapHasFocus)
-                .onKeyPress(.escape) {
-                    Task { await dismissCallout() }
-                    return .handled
-                }
-                .onKeyPress(keys: [.leftArrow, .rightArrow, .upArrow, .downArrow]) { keyPress in
-                    let direction: CGVector = switch keyPress.key {
-                    case .leftArrow: CGVector(dx: -1, dy: 0)
-                    case .rightArrow: CGVector(dx: 1, dy: 0)
-                    case .upArrow: CGVector(dx: 0, dy: -1)
-                    default: CGVector(dx: 0, dy: 1)
-                    }
-                    Task {
-                        await pan(toward: direction, mapSize: mapSize, mapView: mapView)
-                    }
-                    return .handled
-                }
-                .onKeyPress(characters: featureNumberKeys) { keyPress in
-                    guard let featureIndex = index(ofFeatureForCharacters: keyPress.characters) else {
-                        return .ignored
-                    }
-                    showCallout(forFeatureAtIndex: featureIndex)
-                    return .handled
-                }
-                .overlay {
-                    if isFullKeyboardAccessEnabled && !isKeyboardInputActive {
-                        // Capture key commands through UIKit first responder when FKA reroutes SwiftUI focus.
-                        KeyboardCommandCaptureView(
-                            activationToken: keyboardCommandCaptureActivation,
-                            onPan: { direction in
-                                Task {
-                                    await pan(toward: direction, mapSize: mapSize, mapView: mapView)
-                                }
-                            },
-                            onEscape: {
-                                Task { await dismissCallout() }
-                            },
-                            onNumber: { featureIndex in
-                                showCallout(forFeatureAtIndex: featureIndex)
-                            }
-                        )
-                        .frame(width: 1, height: 1)
-                        .allowsHitTesting(false)
-                        .accessibilityHidden(true)
-                    }
-                }
+            // Custom hardware-key interception is intentionally disabled. The map view
+            // must remain the responder so its built-in accessibility keyboard controls,
+            // including arrow-key navigation, continue to work.
                 .ignoresSafeArea(.keyboard, edges: .bottom)
                 .overlay(alignment: .center) {
                     if calloutPlacement == nil {
@@ -214,16 +158,77 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
                 }
                 .overlay(alignment: .bottom) {
                     VStack(spacing: 8) {
+                        Button("1") {
+                            print("here")
+                            // Feature indexes are zero-based, so the 1 key selects restaurant 1.
+                            showCallout(forFeatureAtIndex: 0)
+                        }
+                        .keyboardShortcut(KeyEquivalent("1"), modifiers: [])
+                        
+                        Button("2") {
+                            print("here")
+                            // Feature indexes are zero-based, so the 1 key selects restaurant 1.
+                            showCallout(forFeatureAtIndex: 1)
+                        }
+                        .keyboardShortcut(KeyEquivalent("2"), modifiers: [])
+                        
+                        Button("3") {
+                            print("here")
+                            // Feature indexes are zero-based, so the 1 key selects restaurant 1.
+                            showCallout(forFeatureAtIndex: 2)
+                        }
+                        .keyboardShortcut(KeyEquivalent("3"), modifiers: [])
+                        
+                        Button("4") {
+                            print("here")
+                            // Feature indexes are zero-based, so the 1 key selects restaurant 1.
+                            showCallout(forFeatureAtIndex: 3)
+                        }
+                        .keyboardShortcut(KeyEquivalent("4"), modifiers: [])
+
+                        Button("5") {
+                            print("here")
+                            // Feature indexes are zero-based, so the 1 key selects restaurant 1.
+                            showCallout(forFeatureAtIndex: 4)
+                        }
+                        .keyboardShortcut(KeyEquivalent("5"), modifiers: [])
+                        
+                        Button("6") {
+                            print("here")
+                            // Feature indexes are zero-based, so the 1 key selects restaurant 1.
+                            showCallout(forFeatureAtIndex: 5)
+                        }
+                        .keyboardShortcut(KeyEquivalent("6"), modifiers: [])
+                        
+                        Button("7") {
+                            print("here")
+                            // Feature indexes are zero-based, so the 1 key selects restaurant 1.
+                            showCallout(forFeatureAtIndex: 6)
+                        }
+                        .keyboardShortcut(KeyEquivalent("7"), modifiers: [])
+                        
+                        Button("8") {
+                            print("here")
+                            // Feature indexes are zero-based, so the 1 key selects restaurant 1.
+                            showCallout(forFeatureAtIndex: 7)
+                        }
+                        .keyboardShortcut(KeyEquivalent("8"), modifiers: [])
+                        
+                        Button("9") {
+                            print("here")
+                            // Feature indexes are zero-based, so the 1 key selects restaurant 1.
+                            showCallout(forFeatureAtIndex: 8)
+                        }
+                        .keyboardShortcut(KeyEquivalent("9"), modifiers: [])
+
                         if model.hasMoreThanNineSelectedFeatures {
                             Text("More than 9 restaurants are in the search area. Zoom in or pan to narrow the results.")
                                 .statusText()
                         }
+                        
                         if !statusMessage.isEmpty {
                             Text(statusMessage)
                                 .statusText()
-                        }
-                        if isKeyboardInputActive {
-                            keyboardInputBar
                         }
                     }
                     .padding(.bottom, 10)
@@ -240,7 +245,7 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
                 .onAppear {
                     // TipKit configuration is intended to happen once per process.
                     try? Tips.configure([.displayFrequency(.immediate)])
-
+                    
                     guard map.operationalLayers.isEmpty else { return }
                     map.addOperationalLayer(model.restaurantsLayer)
                 }
@@ -297,34 +302,14 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
         return ArcGIS.Polygon(points: mapCorners)
     }
     
-    /// Pans the map by shifting the center a fraction of the map size in a screen-space direction.
-    /// - Parameters:
-    ///   - direction: The unit direction to pan toward, in screen space.
-    ///   - mapSize: The size of the map view.
-    ///   - mapView: The map view proxy used to update the viewpoint.
-    private func pan(toward direction: CGVector, mapSize: CGSize, mapView: MapViewProxy) async {
-        await dismissCallout()
-        
-        let targetScreenPoint = CGPoint(
-            x: mapSize.width / 2 + mapSize.width * panStepRatio * direction.dx,
-            y: mapSize.height / 2 + mapSize.height * panStepRatio * direction.dy
-        )
-        
-        guard let targetCenter = mapView.location(fromScreenPoint: targetScreenPoint) else {
-            return
-        }
-        await mapView.setViewpointCenter(targetCenter)
-        await focusMap()
-    }
-    
     /// Maps a pressed number key to a zero-based feature index.
     private func index(ofFeatureForCharacters characters: String) -> Int? {
-        guard let lastCharacter = characters.last,
-              let number = lastCharacter.wholeNumberValue,
-              (1...9).contains(number) else {
+        guard characters.utf8.count == 1,
+              let asciiValue = characters.utf8.first,
+              (Character("1").asciiValue!...Character("9").asciiValue!).contains(asciiValue) else {
             return nil
         }
-        return number - 1
+        return Int(asciiValue - Character("1").asciiValue!)
     }
     
     /// Shows the details callout for the selected numbered feature.
@@ -357,20 +342,14 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
     
     /// Gives keyboard focus to the map after SwiftUI finishes the current update.
     private func focusMap() async {
-        if isFullKeyboardAccessEnabled {
-            keyboardCommandCaptureActivation += 1
-        } else {
-            mapHasFocus = false
-            await Task.yield()
-            try? await Task.sleep(for: .milliseconds(100))
-            mapHasFocus = true
-        }
+        // Do not assign a custom SwiftUI or UIKit first responder here. Custom focus
+        // capture prevents the map's built-in accessibility key commands from receiving
+        // arrow presses and other supported navigation keys.
     }
     
     /// Shows the software keyboard by focusing the hidden number input field.
     private func showKeyboard() {
         isKeyboardInputActive = true
-        mapHasFocus = false
         keyboardInputHasFocus = false
     }
     
@@ -380,35 +359,6 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
         keyboardInputHasFocus = false
         isKeyboardInputActive = false
         await dismissCallout()
-    }
-    
-    /// A hidden text field used to receive software keyboard input.
-    private var keyboardInputBar: some View {
-        TextField("1–9", text: $keyboardInput)
-            .keyboardType(.numberPad)
-            .textInputAutocapitalization(.never)
-            .autocorrectionDisabled()
-            .focused($keyboardInputHasFocus)
-            .frame(height: 0)
-            .opacity(0)
-            .accessibilityLabel("Restaurant number")
-            .onAppear {
-                keyboardInputHasFocus = true
-            }
-            .onChange(of: keyboardInput) { _, newValue in
-                keyboardInput = ""
-                guard let featureIndex = index(ofFeatureForCharacters: newValue) else { return }
-                showCallout(forFeatureAtIndex: featureIndex)
-                keyboardInputHasFocus = true
-            }
-            .toolbar {
-                ToolbarItemGroup(placement: .keyboard) {
-                    Spacer()
-                    Button("Done") {
-                        Task { await hideKeyboard() }
-                    }
-                }
-            }
     }
     
     /// The callout content for a restaurant feature.
@@ -483,89 +433,5 @@ private extension URL {
 #Preview {
     NavigationStack {
         NavigateMapAndIdentifyFeaturesWithKeyboardView()
-    }
-}
-
-private struct KeyboardCommandCaptureView: UIViewRepresentable {
-    let activationToken: Int
-    let onPan: (CGVector) -> Void
-    let onEscape: () -> Void
-    let onNumber: (Int) -> Void
-    
-    func makeUIView(context: Context) -> ResponderView {
-        let view = ResponderView()
-        view.backgroundColor = .clear
-        return view
-    }
-    
-    func updateUIView(_ uiView: ResponderView, context: Context) {
-        uiView.onPan = onPan
-        uiView.onEscape = onEscape
-        uiView.onNumber = onNumber
-        uiView.activateIfNeeded()
-    }
-}
-
-private extension KeyboardCommandCaptureView {
-    final class ResponderView: UIView {
-        var onPan: ((CGVector) -> Void)?
-        var onEscape: (() -> Void)?
-        var onNumber: ((Int) -> Void)?
-        
-        override var canBecomeFirstResponder: Bool { true }
-        
-        override var keyCommands: [UIKeyCommand]? {
-            let arrowInputs = [
-                UIKeyCommand.inputLeftArrow,
-                UIKeyCommand.inputRightArrow,
-                UIKeyCommand.inputUpArrow,
-                UIKeyCommand.inputDownArrow
-            ]
-            let arrowCommands = arrowInputs.flatMap { input in
-                [
-                    UIKeyCommand(input: input, modifierFlags: [], action: #selector(handleKeyCommand(_:))),
-                    UIKeyCommand(input: input, modifierFlags: .shift, action: #selector(handleKeyCommand(_:)))
-                ]
-            }
-            var commands = arrowCommands + [
-                UIKeyCommand(input: UIKeyCommand.inputEscape, modifierFlags: [], action: #selector(handleKeyCommand(_:)))
-            ]
-            commands.append(contentsOf: (1...9).map {
-                UIKeyCommand(input: "\($0)", modifierFlags: [], action: #selector(handleKeyCommand(_:)))
-            })
-            return commands
-        }
-        
-        override func didMoveToWindow() {
-            super.didMoveToWindow()
-            activateIfNeeded()
-        }
-        
-        func activateIfNeeded() {
-            guard window != nil else { return }
-            DispatchQueue.main.async { [weak self] in
-                _ = self?.becomeFirstResponder()
-            }
-        }
-        
-        @objc
-        private func handleKeyCommand(_ command: UIKeyCommand) {
-            guard let input = command.input else { return }
-            switch input {
-            case UIKeyCommand.inputLeftArrow:
-                onPan?(CGVector(dx: -1, dy: 0))
-            case UIKeyCommand.inputRightArrow:
-                onPan?(CGVector(dx: 1, dy: 0))
-            case UIKeyCommand.inputUpArrow:
-                onPan?(CGVector(dx: 0, dy: -1))
-            case UIKeyCommand.inputDownArrow:
-                onPan?(CGVector(dx: 0, dy: 1))
-            case UIKeyCommand.inputEscape:
-                onEscape?()
-            default:
-                guard let number = Int(input), (1...9).contains(number) else { return }
-                onNumber?(number - 1)
-            }
-        }
     }
 }
