@@ -17,8 +17,6 @@ import SwiftUI
 import TipKit
 
 struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
-    /// The current scene phase of the sample.
-    @Environment(\.scenePhase) private var scenePhase
     /// Opens URLs using SwiftUI's environment-provided action.
     @Environment(\.openURL) private var openURL
     
@@ -57,17 +55,8 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
     /// A Boolean value indicating whether the software keyboard input is active.
     @State private var isKeyboardInputActive = false
     
-    /// The text used to receive software keyboard input.
-    @State private var keyboardInput = ""
-    
-    /// A Boolean value indicating whether the keyboard input field has focus.
-    @FocusState private var keyboardInputHasFocus: Bool
-    
     /// The status message shown when a number key has no matching restaurant.
     @State private var statusMessage = ""
-    
-    /// A task for the delayed selection refresh after navigation ends.
-    @State private var refreshTask: Task<Void, Never>?
     
     /// The side length of the centered area-of-interest rectangle, in screen points.
     private var selectionRectangleLength: CGFloat { 360 }
@@ -244,16 +233,6 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
         return ArcGIS.Polygon(points: mapCorners)
     }
     
-    /// Maps a pressed number key to a zero-based feature index.
-    private func index(ofFeatureForCharacters characters: String) -> Int? {
-        guard characters.utf8.count == 1,
-              let asciiValue = characters.utf8.first,
-              (Character("1").asciiValue!...Character("9").asciiValue!).contains(asciiValue) else {
-            return nil
-        }
-        return Int(asciiValue - Character("1").asciiValue!)
-    }
-    
     /// Shows the details callout for the selected numbered feature.
     private func showCallout(forFeatureAtIndex index: Int) {
         if model.numberedFeatures.indices.contains(index),
@@ -262,9 +241,6 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
             statusMessage = ""
             calloutFeature = feature
             calloutPlacement = .geoElement(feature, tapLocation: anchor)
-            if isKeyboardInputActive {
-                keyboardInputHasFocus = true
-            }
         } else {
             statusMessage = "No restaurant is assigned to \(index + 1)."
             calloutFeature = nil
@@ -279,18 +255,9 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
         statusMessage = ""
     }
 
-    /// Shows the software keyboard by focusing the hidden number input field.
+    /// Activates software keyboard input mode.
     private func showKeyboard() {
         isKeyboardInputActive = true
-        keyboardInputHasFocus = false
-    }
-    
-    /// Hides the software keyboard input bar and returns focus to the map.
-    private func hideKeyboard() async {
-        keyboardInput = ""
-        keyboardInputHasFocus = false
-        isKeyboardInputActive = false
-        await dismissCallout()
     }
     
     /// The callout content for a restaurant feature.
