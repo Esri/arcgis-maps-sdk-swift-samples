@@ -114,7 +114,6 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
                     // Give the map view proxy time to settle before the first query.
                     try? await Task.sleep(for: .milliseconds(500))
                     await refreshSelection(mapSize: mapSize, mapView: mapView)
-                    await focusMap()
                 }
                 .task(id: isNavigating) {
                     if isNavigating {
@@ -126,9 +125,6 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
                         )
                     }
                 }
-            // Custom hardware-key interception is intentionally disabled. The map view
-            // must remain the responder so its built-in accessibility keyboard controls,
-            // including arrow-key navigation, continue to work.
                 .ignoresSafeArea(.keyboard, edges: .bottom)
                 .overlay(alignment: .center) {
                     if calloutPlacement == nil {
@@ -158,68 +154,21 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
                 }
                 .overlay(alignment: .bottom) {
                     VStack(spacing: 8) {
-                        Button("1") {
-                            print("here")
-                            // Feature indexes are zero-based, so the 1 key selects restaurant 1.
-                            showCallout(forFeatureAtIndex: 0)
+                        ZStack {
+                            ForEach(1...9, id: \.self) { number in
+                                Button("Select restaurant \(number)") {
+                                    showCallout(forFeatureAtIndex: number - 1)
+                                }
+                                .keyboardShortcut(
+                                    KeyEquivalent(Character(String(number))),
+                                    modifiers: []
+                                )
+                            }
                         }
-                        .keyboardShortcut(KeyEquivalent("1"), modifiers: [])
-                        
-                        Button("2") {
-                            print("here")
-                            // Feature indexes are zero-based, so the 1 key selects restaurant 1.
-                            showCallout(forFeatureAtIndex: 1)
-                        }
-                        .keyboardShortcut(KeyEquivalent("2"), modifiers: [])
-                        
-                        Button("3") {
-                            print("here")
-                            // Feature indexes are zero-based, so the 1 key selects restaurant 1.
-                            showCallout(forFeatureAtIndex: 2)
-                        }
-                        .keyboardShortcut(KeyEquivalent("3"), modifiers: [])
-                        
-                        Button("4") {
-                            print("here")
-                            // Feature indexes are zero-based, so the 1 key selects restaurant 1.
-                            showCallout(forFeatureAtIndex: 3)
-                        }
-                        .keyboardShortcut(KeyEquivalent("4"), modifiers: [])
-
-                        Button("5") {
-                            print("here")
-                            // Feature indexes are zero-based, so the 1 key selects restaurant 1.
-                            showCallout(forFeatureAtIndex: 4)
-                        }
-                        .keyboardShortcut(KeyEquivalent("5"), modifiers: [])
-                        
-                        Button("6") {
-                            print("here")
-                            // Feature indexes are zero-based, so the 1 key selects restaurant 1.
-                            showCallout(forFeatureAtIndex: 5)
-                        }
-                        .keyboardShortcut(KeyEquivalent("6"), modifiers: [])
-                        
-                        Button("7") {
-                            print("here")
-                            // Feature indexes are zero-based, so the 1 key selects restaurant 1.
-                            showCallout(forFeatureAtIndex: 6)
-                        }
-                        .keyboardShortcut(KeyEquivalent("7"), modifiers: [])
-                        
-                        Button("8") {
-                            print("here")
-                            // Feature indexes are zero-based, so the 1 key selects restaurant 1.
-                            showCallout(forFeatureAtIndex: 7)
-                        }
-                        .keyboardShortcut(KeyEquivalent("8"), modifiers: [])
-                        
-                        Button("9") {
-                            print("here")
-                            // Feature indexes are zero-based, so the 1 key selects restaurant 1.
-                            showCallout(forFeatureAtIndex: 8)
-                        }
-                        .keyboardShortcut(KeyEquivalent("9"), modifiers: [])
+                        .frame(width: 0, height: 0)
+                        .opacity(0)
+                        .allowsHitTesting(false)
+                        .accessibilityHidden(true)
 
                         if model.hasMoreThanNineSelectedFeatures {
                             Text("More than 9 restaurants are in the search area. Zoom in or pan to narrow the results.")
@@ -248,13 +197,6 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
                     
                     guard map.operationalLayers.isEmpty else { return }
                     map.addOperationalLayer(model.restaurantsLayer)
-                }
-                .task {
-                    await focusMap()
-                }
-                .task(id: scenePhase) {
-                    guard scenePhase == .active else { return }
-                    await focusMap()
                 }
                 .errorAlert(presentingError: $error)
         }
@@ -322,8 +264,6 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
             calloutPlacement = .geoElement(feature, tapLocation: anchor)
             if isKeyboardInputActive {
                 keyboardInputHasFocus = true
-            } else {
-                Task { await focusMap() }
             }
         } else {
             statusMessage = "No restaurant is assigned to \(index + 1)."
@@ -337,16 +277,8 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
         calloutFeature = nil
         calloutPlacement = nil
         statusMessage = ""
-        await focusMap()
     }
-    
-    /// Gives keyboard focus to the map after SwiftUI finishes the current update.
-    private func focusMap() async {
-        // Do not assign a custom SwiftUI or UIKit first responder here. Custom focus
-        // capture prevents the map's built-in accessibility key commands from receiving
-        // arrow presses and other supported navigation keys.
-    }
-    
+
     /// Shows the software keyboard by focusing the hidden number input field.
     private func showKeyboard() {
         isKeyboardInputActive = true
