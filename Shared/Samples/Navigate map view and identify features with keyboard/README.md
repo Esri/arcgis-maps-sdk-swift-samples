@@ -22,8 +22,8 @@ If more than nine restaurants are inside the rectangle, zoom in or pan to narrow
 2. Create a `ServiceFeatureTable` from the Redlands restaurants feature service.
 3. Create a `FeatureLayer` from the service feature table and apply a `SimpleRenderer` with a circular marker symbol.
 4. Display the map and a `GraphicsOverlay` in a `MapView`.
-5. Use `MapViewReader` to convert the centered rectangle from screen coordinates to a map-space `Envelope`.
-6. Query the restaurant feature table with `QueryParameters` using the rectangle envelope and an intersects spatial relationship.
+5. Use `MapViewReader` to convert the four corners of the centered screen-space rectangle to map locations and create a map-space `Polygon`.
+6. Query the restaurant feature table with `QueryParameters` using the polygon and an intersects spatial relationship.
 7. Sort queried point features north-to-south, then west-to-east, so labels match reading order when the map is north-up.
 8. Select the queried features on the `FeatureLayer`.
 9. Add numbered `TextSymbol` graphics for the current group of features to the graphics overlay.
