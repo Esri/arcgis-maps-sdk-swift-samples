@@ -52,9 +52,6 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
     /// The feature shown in the callout.
     @State private var calloutFeature: Feature?
     
-    /// A Boolean value indicating whether the software keyboard input is active.
-    @State private var isKeyboardInputActive = false
-    
     /// The status message shown when a number key has no matching restaurant.
     @State private var statusMessage = ""
     
@@ -114,7 +111,6 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
                         )
                     }
                 }
-                .ignoresSafeArea(.keyboard, edges: .bottom)
                 .overlay(alignment: .center) {
                     if calloutPlacement == nil {
                         let rectangleLength = self.rectangleLength(for: mapSize)
@@ -130,14 +126,12 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
                     }
                 }
                 .overlay(alignment: .top) {
-                    if !isKeyboardInputActive {
-                        TipView(AreaOfInterestTip())
-                    }
+                    TipView(AreaOfInterestTip())
                 }
                 .overlay(alignment: .bottomTrailing) {
-                    if !isFullKeyboardAccessEnabled && !isKeyboardInputActive {
+                    if !isFullKeyboardAccessEnabled {
                         TipView(EnableKeyboardAccessTip()) { _ in
-                            Task { await openAccessibilitySettings() }
+                            openAccessibilitySettings()
                         }
                     }
                 }
@@ -170,15 +164,6 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
                         }
                     }
                     .padding(.bottom, 10)
-                }
-                .toolbar {
-                    if !isFullKeyboardAccessEnabled {
-                        ToolbarItem(placement: .bottomBar) {
-                            Button("Show Keyboard") {
-                                showKeyboard()
-                            }
-                        }
-                    }
                 }
                 .onAppear {
                     // TipKit configuration is intended to happen once per process.
@@ -255,11 +240,6 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
         statusMessage = ""
     }
 
-    /// Activates software keyboard input mode.
-    private func showKeyboard() {
-        isKeyboardInputActive = true
-    }
-    
     /// The callout content for a restaurant feature.
     private func calloutContent(for feature: Feature) -> some View {
         let anchor = feature.geometry as? Point
@@ -276,36 +256,12 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
         .padding(5)
     }
     
-    /// Opens the Settings app to an Accessibility feature when supported.
-    private func openAccessibilitySettings() async {
-        do {
-            if #available(iOS 26.0, *) {
-                try await AccessibilitySettings.openSettings(for: .assistiveTouchDevices)
-            } else {
-                openLegacyAccessibilitySettings()
-            }
-        } catch {
-            openLegacyAccessibilitySettings()
-        }
-    }
-    
-    /// Attempts to open the Accessibility menu on older iOS versions.
-    /// Falls back to this app's settings page when direct links are unavailable.
-    private func openLegacyAccessibilitySettings() {
+    /// Opens the main Accessibility menu in Settings.
+    private func openAccessibilitySettings() {
 #if targetEnvironment(macCatalyst)
         openURL(.macOSAccessibilitySettings)
 #else
-        let candidates = [
-            "App-prefs:ACCESSIBILITY",
-            "App-prefs:root=ACCESSIBILITY",
-            "prefs:root=ACCESSIBILITY"
-        ]
-        
-        if let url = candidates.compactMap(URL.init).first(where: UIApplication.shared.canOpenURL) {
-            openURL(url)
-        } else {
-            openURL(.appSettings)
-        }
+        openURL(.accessibilitySettings)
 #endif
     }
 }
@@ -323,9 +279,14 @@ private extension View {
 }
 
 private extension URL {
-    /// The URL of this app's page in the Settings app.
-    static var appSettings: URL {
-        URL(string: UIApplication.openSettingsURLString)!
+    /// The URL of the Accessibility menu in the Settings app.
+    static var accessibilitySettings: URL {
+        URL(string: "App-prefs:ACCESSIBILITY")!
+    }
+
+    /// The URL of the Accessibility pane in the macOS System Settings app.
+    static var macOSAccessibilitySettings: URL {
+        URL(string: "x-apple.systempreferences:com.apple.Accessibility-Settings.extension")!
     }
 }
 

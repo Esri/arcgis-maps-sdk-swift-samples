@@ -25,9 +25,9 @@ extension NavigateMapAndIdentifyFeaturesWithKeyboardView {
         var message: Text? {
             Text(
                  """
-                 To focus the map, press any arrow key. Then use the arrow keys \
-                 ← → ↑ ↓ to pan the map until the restaurants you want to inspect \
-                 are inside the rectangle.
+                 Use the arrow keys ← → ↑ ↓ to focus the map. When Full \
+                 Keyboard Access is enabled, use Shift + arrow keys instead. Pan \
+                 until the restaurants you want to inspect are inside the rectangle.
                  
                  Press 1–9 to select a highlighted restaurant and view its details.
                  """
