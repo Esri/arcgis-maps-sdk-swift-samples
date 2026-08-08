@@ -27,7 +27,7 @@ If more than nine restaurants are inside the rectangle, zoom in or pan to narrow
 7. Sort queried point features north-to-south, then west-to-east, so labels match reading order when the map is north-up.
 8. Select the queried features on the `FeatureLayer`.
 9. Add numbered `TextSymbol` graphics for the current group of features to the graphics overlay.
-10. Handle keyboard input with SwiftUI key press modifiers. Number keys show a `Callout` for the matching feature, and `Esc` dismisses the callout.
+10. Add hidden SwiftUI `Button`s with `.keyboardShortcut` modifiers for number keys `1` through `9`. Each shortcut shows a `Callout` for the corresponding numbered feature, while the map view provides built-in `Esc` handling to dismiss the callout.
 
 ## Relevant API
 
