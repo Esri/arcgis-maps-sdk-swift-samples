@@ -147,6 +147,11 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
                                     modifiers: []
                                 )
                             }
+
+                            Button("Dismiss callout") {
+                                Task { await dismissCallout() }
+                            }
+                            .keyboardShortcut(.escape, modifiers: [])
                         }
                         .frame(width: 0, height: 0)
                         .opacity(0)
