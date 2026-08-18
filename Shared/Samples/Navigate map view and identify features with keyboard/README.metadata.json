@@ -1,0 +1,39 @@
+{
+    "category": "Accessibility",
+    "description": "Perform map navigation and identify nearby features using only the keyboard.",
+    "ignore": false,
+    "images": [
+        "navigate-map-view-and-identify-features-with-keyboard.png"
+    ],
+    "keywords": [
+        "WCAG",
+        "accessibility",
+        "accessible",
+        "identify",
+        "inclusive",
+        "keyboard",
+        "navigation",
+        "selection",
+        "FeatureLayer",
+        "Graphic",
+        "GraphicsOverlay",
+        "Map",
+        "MapView",
+        "Polygon"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "FeatureLayer",
+        "Graphic",
+        "GraphicsOverlay",
+        "Map",
+        "MapView",
+        "Polygon"
+    ],
+    "snippets": [
+        "NavigateMapAndIdentifyFeaturesWithKeyboardView.swift",
+        "NavigateMapAndIdentifyFeaturesWithKeyboardView.Model.swift",
+        "NavigateMapAndIdentifyFeaturesWithKeyboardView.Tips.swift"
+    ],
+    "title": "Navigate map view and identify features with keyboard"
+}
