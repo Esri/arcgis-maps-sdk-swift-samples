@@ -634,6 +634,7 @@
 		88FB70D32DCD10B600EB76E3 /* AuthenticateWithIntegratedWindowsAuthenticationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticateWithIntegratedWindowsAuthenticationView.swift; sourceTree = "<group>"; };
 		88FB70D72DD3DF3700EB76E3 /* AddOpenStreetMapLayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddOpenStreetMapLayerView.swift; sourceTree = "<group>"; };
 		9501B049303902C900520B53 /* AnalyzeTerrainSuitabilityWithSlopeAndAspectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyzeTerrainSuitabilityWithSlopeAndAspectView.swift; sourceTree = "<group>"; };
+		9501B04C30390B9A00520B53 /* AnalyzeTerrainSuitabilityWithSlopeAndAspectView.Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyzeTerrainSuitabilityWithSlopeAndAspectView.Model.swift; sourceTree = "<group>"; };
 		9501BBEE2DF39DA50054F4BD /* SetFeatureLayerRenderingModeOnSceneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetFeatureLayerRenderingModeOnSceneView.swift; sourceTree = "<group>"; };
 		9503056D2C46ECB70091B32D /* ShowDeviceLocationUsingIndoorPositioningView.Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowDeviceLocationUsingIndoorPositioningView.Model.swift; sourceTree = "<group>"; };
 		951896BA2E29B15600144F9B /* ShowShapefileMetadataView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowShapefileMetadataView.swift; sourceTree = "<group>"; };
@@ -2257,6 +2258,7 @@
 			isa = PBXGroup;
 			children = (
 				9501B049303902C900520B53 /* AnalyzeTerrainSuitabilityWithSlopeAndAspectView.swift */,
+				9501B04C30390B9A00520B53 /* AnalyzeTerrainSuitabilityWithSlopeAndAspectView.Model.swift */,
 			);
 			path = "Analyze terrain suitability from slope and aspect";
 			sourceTree = "<group>";
