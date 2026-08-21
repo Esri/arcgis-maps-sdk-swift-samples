@@ -633,6 +633,7 @@
 		88FB70D02DCC247B00EB76E3 /* Aurora_CO_shp */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Aurora_CO_shp; sourceTree = "<group>"; };
 		88FB70D32DCD10B600EB76E3 /* AuthenticateWithIntegratedWindowsAuthenticationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticateWithIntegratedWindowsAuthenticationView.swift; sourceTree = "<group>"; };
 		88FB70D72DD3DF3700EB76E3 /* AddOpenStreetMapLayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddOpenStreetMapLayerView.swift; sourceTree = "<group>"; };
+		9501B049303902C900520B53 /* AnalyzeTerrainSuitabilityWithSlopeAndAspectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyzeTerrainSuitabilityWithSlopeAndAspectView.swift; sourceTree = "<group>"; };
 		9501BBEE2DF39DA50054F4BD /* SetFeatureLayerRenderingModeOnSceneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetFeatureLayerRenderingModeOnSceneView.swift; sourceTree = "<group>"; };
 		9503056D2C46ECB70091B32D /* ShowDeviceLocationUsingIndoorPositioningView.Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowDeviceLocationUsingIndoorPositioningView.Model.swift; sourceTree = "<group>"; };
 		951896BA2E29B15600144F9B /* ShowShapefileMetadataView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowShapefileMetadataView.swift; sourceTree = "<group>"; };
@@ -1055,6 +1056,7 @@
 		0074ABB228174B830037244A /* Samples */ = {
 			isa = PBXGroup;
 			children = (
+				9501B04A3039033B00520B53 /* Analyze terrain suitability from slope and aspect */,
 				0000FB6D2BBDB17600845921 /* Add 3D tiles layer */,
 				79FB577E2EA8394E009BF9AC /* Add building scene layer */,
 				79D84D0C2A815BED00F45262 /* Add custom dynamic entity data source */,
@@ -2249,6 +2251,14 @@
 				88FB70D72DD3DF3700EB76E3 /* AddOpenStreetMapLayerView.swift */,
 			);
 			path = "Add OpenStreetMap layer";
+			sourceTree = "<group>";
+		};
+		9501B04A3039033B00520B53 /* Analyze terrain suitability from slope and aspect */ = {
+			isa = PBXGroup;
+			children = (
+				9501B049303902C900520B53 /* AnalyzeTerrainSuitabilityWithSlopeAndAspectView.swift */,
+			);
+			path = "Analyze terrain suitability from slope and aspect";
 			sourceTree = "<group>";
 		};
 		9501BBF02DF39DBE0054F4BD /* Set feature layer rendering mode on scene */ = {
