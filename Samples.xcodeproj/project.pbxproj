@@ -1056,7 +1056,6 @@
 		0074ABB228174B830037244A /* Samples */ = {
 			isa = PBXGroup;
 			children = (
-				9501B04A3039033B00520B53 /* Analyze terrain suitability from slope and aspect */,
 				0000FB6D2BBDB17600845921 /* Add 3D tiles layer */,
 				79FB577E2EA8394E009BF9AC /* Add building scene layer */,
 				79D84D0C2A815BED00F45262 /* Add custom dynamic entity data source */,
@@ -1090,6 +1089,7 @@
 				1C29C9622DBAE5D10074028F /* Add WMTS layer */,
 				4C8126E32DC0249D006EF7D2 /* Analyze hotspots */,
 				1C3B7DC22A5F64FC00907443 /* Analyze network with subnetwork trace */,
+				9501B04A3039033B00520B53 /* Analyze terrain suitability from slope and aspect */,
 				D7C16D172AC5F6C100689E89 /* Animate 3D graphic */,
 				D77570BC2A29427200F490CD /* Animate images with image overlay */,
 				1C38915F2DC02F0800ADFDDC /* Apply blend renderer to hillshade */,
