@@ -65,7 +65,8 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
         blue: 93 / 255
     )
     
-    @State private var isNavigating: Bool = false
+    /// A Boolean value indicating whether the map view is currently navigating.
+    @State private var isNavigating = false
     
     private var isFullKeyboardAccessEnabled: Bool {
         guard let window = UIApplication.shared.connectedScenes
@@ -195,7 +196,7 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
             do {
                 try await model.selectFeatures(
                     in: polygon,
-                    pointConverter: { mapView.screenPoint(fromLocation: $0) }
+                    pointConverter: mapView.screenPoint(fromLocation:)
                 )
             } catch {
                 self.error = error
