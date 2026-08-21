@@ -80,9 +80,9 @@ struct AnalyzeTerrainSuitabilityWithSlopeAndAspectView: View {
 
 // MARK: Extensions
 
-private extension URL {
+extension URL {
     /// A URL to the local GeoTIFF elevation raster of the Isle of Arran, Scotland.
-    static var arranElevation: URL {
+    static var terrainSuitabilityArranElevation: URL {
         Bundle.main.url(forResource: "arran", withExtension: "tif", subdirectory: "arran")!
     }
 }
