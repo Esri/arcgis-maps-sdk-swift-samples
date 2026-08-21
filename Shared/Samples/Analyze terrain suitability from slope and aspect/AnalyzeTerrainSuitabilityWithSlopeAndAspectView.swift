@@ -13,6 +13,7 @@
 // limitations under the License
 
 import ArcGIS
+import Foundation
 import SwiftUI
 
 struct AnalyzeTerrainSuitabilityWithSlopeAndAspectView: View {
@@ -82,8 +83,15 @@ struct AnalyzeTerrainSuitabilityWithSlopeAndAspectView: View {
 
 extension URL {
     /// A URL to the local GeoTIFF elevation raster of the Isle of Arran, Scotland.
-    static var terrainSuitabilityArranElevation: URL {
-        Bundle.main.url(forResource: "arran", withExtension: "tif", subdirectory: "arran")!
+    static func terrainSuitabilityArranElevation() throws -> URL {
+        guard let url = Bundle.main.url(
+            forResource: "arran",
+            withExtension: "tif",
+            subdirectory: "arran"
+        ) else {
+            throw URLError(.fileDoesNotExist)
+        }
+        return url
     }
 }
 

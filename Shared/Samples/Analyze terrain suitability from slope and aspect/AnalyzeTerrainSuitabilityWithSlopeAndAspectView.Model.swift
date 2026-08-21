@@ -41,7 +41,7 @@ extension AnalyzeTerrainSuitabilityWithSlopeAndAspectView {
 
             // Project the Web Mercator raster into UTM30N because slope and aspect require a conformal projection.
             let elevationField = try await ContinuousField.field(
-                fromFilesAt: [.terrainSuitabilityArranElevation],
+                fromFilesAt: [try .terrainSuitabilityArranElevation()],
                 bandIndex: 0,
                 spatialReference: Self.utm30N
             )
