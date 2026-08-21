@@ -38,8 +38,8 @@
         "FieldAnalysis"
     ],
     "snippets": [
-        "AnalyzeTerrainSuitabilityWithSlopeAndAspectView.Model.swift",
-        "AnalyzeTerrainSuitabilityWithSlopeAndAspectView.swift"
+        "AnalyzeTerrainSuitabilityWithSlopeAndAspectView.swift",
+        "AnalyzeTerrainSuitabilityWithSlopeAndAspectView.Model.swift"
     ],
     "title": "Analyze terrain suitability from slope and aspect"
 }
