@@ -26,14 +26,14 @@ When the sample opens, the map shows the results of a preconfigured terrain suit
 
 ## Relevant API
 
-- AnalysisOverlay
-- BooleanFieldFunction
-- Colormap
-- ColormapRenderer
-- ContinuousField
-- ContinuousFieldFunction
-- DiscreteFieldFunction
-- FieldAnalysis
+* AnalysisOverlay
+* BooleanFieldFunction
+* Colormap
+* ColormapRenderer
+* ContinuousField
+* ContinuousFieldFunction
+* DiscreteFieldFunction
+* FieldAnalysis
 
 ## About the data
 
