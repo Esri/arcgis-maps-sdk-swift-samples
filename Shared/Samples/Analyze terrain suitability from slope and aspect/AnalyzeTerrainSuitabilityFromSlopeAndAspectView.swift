@@ -63,7 +63,7 @@ struct AnalyzeTerrainSuitabilityFromSlopeAndAspectView: View {
                     }
                 }
                 .overlay(alignment: .bottom) {
-                    Text("Raster data Copyright Scottish Government and SEPA (2014)")
+                    Text("Raster data copyright Scottish Government and SEPA (2014)")
                         .font(.caption)
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 6)

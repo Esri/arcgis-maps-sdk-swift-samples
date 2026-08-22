@@ -115,14 +115,14 @@ extension AnalyzeTerrainSuitabilityFromSlopeAndAspectView {
         var body: some View {
             NavigationStack {
                 Form {
-                    Picker("Terrain Suitability", selection: $selectedScenario) {
+                    Picker("", selection: $selectedScenario) {
                         ForEach(SiteScenario.allCases) { scenario in
                             Text(scenario.title).tag(scenario)
                         }
                     }
                     .pickerStyle(.inline)
                 }
-                .navigationTitle("Settings")
+                .navigationTitle("Terrain Suitability")
             }
         }
     }
