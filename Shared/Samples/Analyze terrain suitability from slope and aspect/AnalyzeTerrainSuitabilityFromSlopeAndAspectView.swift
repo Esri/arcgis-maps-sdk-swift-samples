@@ -16,7 +16,7 @@ import ArcGIS
 import Foundation
 import SwiftUI
 
-struct AnalyzeTerrainSuitabilityWithSlopeAndAspectView: View {
+struct AnalyzeTerrainSuitabilityFromSlopeAndAspectView: View {
     /// The view model for the sample.
     @State private var model = Model()
     /// The selected terrain suitability scenario.
@@ -97,6 +97,6 @@ extension URL {
 
 #Preview {
     NavigationStack {
-        AnalyzeTerrainSuitabilityWithSlopeAndAspectView()
+        AnalyzeTerrainSuitabilityFromSlopeAndAspectView()
     }
 }

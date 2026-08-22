@@ -16,7 +16,7 @@ import ArcGIS
 import SwiftUI
 import UIKit
 
-extension AnalyzeTerrainSuitabilityWithSlopeAndAspectView {
+extension AnalyzeTerrainSuitabilityFromSlopeAndAspectView {
     @MainActor
     @Observable
     final class Model {
