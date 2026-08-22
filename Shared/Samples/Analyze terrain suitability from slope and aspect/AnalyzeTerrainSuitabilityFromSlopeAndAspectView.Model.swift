@@ -78,7 +78,8 @@ extension AnalyzeTerrainSuitabilityFromSlopeAndAspectView {
 
         func showAnalysis(for scenario: SiteScenario) {
             selectedScenario = scenario
-            isUpdatingAnalysis = true
+            // Reset; MapView's analysis view state callback will set this to true while the active analysis is updating.
+            isUpdatingAnalysis = false
             gentleSouthFacingSlopesAnalysis?.isVisible = scenario == .gentleSouthFacingSlopes
             steepWestAndNorthFacingSlopesAnalysis?.isVisible = scenario == .steepWestAndNorthFacingSlopes
         }

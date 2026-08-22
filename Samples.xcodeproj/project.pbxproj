@@ -430,7 +430,6 @@
 			script = (
 				"xcrun --sdk macosx swift \"${SRCROOT}/Scripts/GenerateSampleViewSourceCode.swift\" \"${SCRIPT_INPUT_FILE_0}\" \"${INPUT_FILE_PATH}\" \"${SCRIPT_OUTPUT_FILE_0}\" ",
 				"",
-				"",
 			);
 		};
 		0083586F27FE3BCF00192A15 /* PBXBuildRule */ = {
