@@ -36,17 +36,8 @@ struct AnalyzeTerrainSuitabilityFromSlopeAndAspectView: View {
                           analysis === activeAnalysis else {
                         return
                     }
-                    model.isUpdatingAnalysis = viewState.status == .updating
                     if let analysisError = viewState.error {
                         error = analysisError
-                    }
-                }
-                .overlay {
-                    if model.isUpdatingAnalysis {
-                        ProgressView("Updating analysis")
-                            .padding()
-                            .background(.regularMaterial)
-                            .clipShape(.rect(cornerRadius: 8))
                     }
                 }
                 .overlay(alignment: .top) {
@@ -77,7 +68,7 @@ struct AnalyzeTerrainSuitabilityFromSlopeAndAspectView: View {
                         .popover(isPresented: $isShowingSettings) {
                             TerrainSuitabilitySettings(selectedScenario: $selectedScenario)
                                 .presentationCompactAdaptation(.popover)
-                                .frame(idealWidth: 360, idealHeight: 220)
+                                .frame(idealWidth: 320, idealHeight: 380)
                         }
                     }
                 }
