@@ -23,6 +23,8 @@ struct AnalyzeTerrainSuitabilityFromSlopeAndAspectView: View {
     @State private var selectedScenario = SiteScenario.gentleSouthFacingSlopes
     /// A Boolean value indicating whether the settings are showing.
     @State private var isShowingSettings = false
+    /// The identifier for the currently displayed scenario toast.
+    @State private var scenarioToastID: UUID?
     /// The error shown in the error alert.
     @State private var error: (any Error)?
     
@@ -45,6 +47,19 @@ struct AnalyzeTerrainSuitabilityFromSlopeAndAspectView: View {
                             .padding()
                             .background(.regularMaterial)
                             .clipShape(.rect(cornerRadius: 8))
+                    }
+                }
+                .overlay(alignment: .top) {
+                    if scenarioToastID != nil {
+                        Text(selectedScenario.description)
+                            .font(.footnote)
+                            .foregroundStyle(.secondary)
+                            .multilineTextAlignment(.center)
+                            .padding()
+                            .background(.regularMaterial)
+                            .clipShape(.rect(cornerRadius: 8))
+                            .padding()
+                            .transition(.move(edge: .top).combined(with: .opacity))
                     }
                 }
                 .overlay(alignment: .bottom) {
@@ -70,14 +85,31 @@ struct AnalyzeTerrainSuitabilityFromSlopeAndAspectView: View {
                     do {
                         let viewpoint = try await model.setUp()
                         await mapView.setViewpoint(viewpoint)
+                        showScenarioToast()
                     } catch {
                         self.error = error
                     }
                 }
                 .onChange(of: selectedScenario) {
                     model.showAnalysis(for: selectedScenario)
+                    isShowingSettings = false
+                    showScenarioToast()
                 }
                 .errorAlert(presentingError: $error)
+        }
+    }
+
+    private func showScenarioToast() {
+        let toastID = UUID()
+        withAnimation {
+            scenarioToastID = toastID
+        }
+        Task {
+            try? await Task.sleep(for: .seconds(3))
+            guard scenarioToastID == toastID else { return }
+            withAnimation {
+                scenarioToastID = nil
+            }
         }
     }
 }

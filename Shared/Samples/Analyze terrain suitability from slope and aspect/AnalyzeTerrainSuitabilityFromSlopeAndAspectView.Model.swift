@@ -21,26 +21,26 @@ extension AnalyzeTerrainSuitabilityFromSlopeAndAspectView {
     @Observable
     final class Model {
         private static let utm30N = SpatialReference(wkid: WKID(32630)!)!
-
+        
         let map = Map(spatialReference: Model.utm30N)
         let analysisOverlay = AnalysisOverlay()
         var isUpdatingAnalysis = false
-
+        
         private var gentleSouthFacingSlopesAnalysis: FieldAnalysis?
         private var steepWestAndNorthFacingSlopesAnalysis: FieldAnalysis?
         private var selectedScenario = SiteScenario.gentleSouthFacingSlopes
-
+        
         var activeAnalysis: FieldAnalysis? {
             switch selectedScenario {
             case .gentleSouthFacingSlopes: gentleSouthFacingSlopesAnalysis
             case .steepWestAndNorthFacingSlopes: steepWestAndNorthFacingSlopesAnalysis
             }
         }
-
+        
         func setUp() async throws -> Viewpoint {
             isUpdatingAnalysis = true
             defer { isUpdatingAnalysis = false }
-
+            
             // Project the Web Mercator raster into UTM30N because slope and aspect require a conformal projection.
             let elevationField = try await ContinuousField.field(
                 fromFilesAt: [try .terrainSuitabilityArranElevation()],
@@ -54,7 +54,7 @@ extension AnalyzeTerrainSuitabilityFromSlopeAndAspectView {
                 elevationFunction: elevationFunction,
                 aboveSeaLevelSelection: elevationFunction.isGreaterThanOrEqualTo(0)
             )
-
+            
             let gentleAnalysis = makeAnalysis(
                 inputs: inputs,
                 criteria: .gentleSouthFacingSlopes,
@@ -74,7 +74,7 @@ extension AnalyzeTerrainSuitabilityFromSlopeAndAspectView {
             showAnalysis(for: selectedScenario)
             return Viewpoint(center: elevationField.extent.center, scale: 200_000)
         }
-
+        
         func showAnalysis(for scenario: SiteScenario) {
             selectedScenario = scenario
             // Reset; MapView's analysis view state callback will set this to true while the active analysis is updating.
@@ -82,18 +82,18 @@ extension AnalyzeTerrainSuitabilityFromSlopeAndAspectView {
             gentleSouthFacingSlopesAnalysis?.isVisible = scenario == .gentleSouthFacingSlopes
             steepWestAndNorthFacingSlopesAnalysis?.isVisible = scenario == .steepWestAndNorthFacingSlopes
         }
-
+        
         private func makeAnalysis(inputs: TerrainAnalysisInputs, criteria: TerrainCriteria, color: UIColor) -> FieldAnalysis {
             // The long-form range methods and logicalAnd can be used instead of these operator overloads.
             let slopeRangeMask = (inputs.slopeFunction .>= criteria.slopeRange.lowerBound) .&
-                (inputs.slopeFunction .<= criteria.slopeRange.upperBound)
+            (inputs.slopeFunction .<= criteria.slopeRange.upperBound)
             let elevationRangeMask = (inputs.elevationFunction .>= criteria.elevationRange.lowerBound) .&
-                (inputs.elevationFunction .<= criteria.elevationRange.upperBound)
+            (inputs.elevationFunction .<= criteria.elevationRange.upperBound)
             let aspectRangeMask: BooleanFieldFunction = if criteria.aspectStart <= criteria.aspectEnd {
                 (inputs.aspectFunction .>= criteria.aspectStart) .& (inputs.aspectFunction .<= criteria.aspectEnd)
             } else {
                 ((inputs.aspectFunction .>= criteria.aspectStart) .& (inputs.aspectFunction .< 360)) .|
-                    ((inputs.aspectFunction .>= 0) .& (inputs.aspectFunction .<= criteria.aspectEnd))
+                ((inputs.aspectFunction .>= 0) .& (inputs.aspectFunction .<= criteria.aspectEnd))
             }
             let scenarioFunction = slopeRangeMask
                 .logicalAnd(with: aspectRangeMask)
@@ -108,34 +108,29 @@ extension AnalyzeTerrainSuitabilityFromSlopeAndAspectView {
             return analysis
         }
     }
-
+    
     struct TerrainSuitabilitySettings: View {
         @Binding var selectedScenario: SiteScenario
-
+        
         var body: some View {
             NavigationStack {
                 Form {
-                    Section("Sheltered vs Exposed Terrain Suitability") {
-                        Picker("Scenario", selection: $selectedScenario) {
-                            ForEach(SiteScenario.allCases) { scenario in
-                                Text(scenario.title).tag(scenario)
-                            }
+                    Picker("Terrain Suitability", selection: $selectedScenario) {
+                        ForEach(SiteScenario.allCases) { scenario in
+                            Text(scenario.title).tag(scenario)
                         }
-                        .pickerStyle(.inline)
-                        Text(selectedScenario.description)
-                            .font(.footnote)
-                            .foregroundStyle(.secondary)
                     }
+                    .pickerStyle(.inline)
                 }
                 .navigationTitle("Settings")
             }
         }
     }
-
+    
     enum SiteScenario: CaseIterable, Identifiable {
         case gentleSouthFacingSlopes
         case steepWestAndNorthFacingSlopes
-
+        
         var id: Self { self }
         var title: String {
             switch self {
