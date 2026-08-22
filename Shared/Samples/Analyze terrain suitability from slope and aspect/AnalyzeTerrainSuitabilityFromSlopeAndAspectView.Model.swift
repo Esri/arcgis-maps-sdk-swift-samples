@@ -37,7 +37,7 @@ extension AnalyzeTerrainSuitabilityFromSlopeAndAspectView {
             }
         }
 
-        func setUp() async throws {
+        func setUp() async throws -> Viewpoint {
             isUpdatingAnalysis = true
             defer { isUpdatingAnalysis = false }
 
@@ -73,7 +73,7 @@ extension AnalyzeTerrainSuitabilityFromSlopeAndAspectView {
                 ])
             }
             showAnalysis(for: selectedScenario)
-            map.initialViewpoint = Viewpoint(center: elevationField.extent.center, scale: 200_000)
+            return Viewpoint(center: elevationField.extent.center, scale: 200_000)
         }
 
         func showAnalysis(for scenario: SiteScenario) {

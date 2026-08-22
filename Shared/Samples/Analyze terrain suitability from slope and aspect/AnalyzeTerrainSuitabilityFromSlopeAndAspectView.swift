@@ -27,55 +27,58 @@ struct AnalyzeTerrainSuitabilityFromSlopeAndAspectView: View {
     @State private var error: (any Error)?
     
     var body: some View {
-        MapView(map: model.map, analysisOverlays: [model.analysisOverlay])
-            .onAnalysisViewStateChanged { analysis, viewState in
-                guard let activeAnalysis = model.activeAnalysis,
-                      analysis === activeAnalysis else {
-                    return
-                }
-                model.isUpdatingAnalysis = viewState.status == .updating
-                if let analysisError = viewState.error {
-                    error = analysisError
-                }
-            }
-            .overlay {
-                if model.isUpdatingAnalysis {
-                    ProgressView("Updating analysis")
-                        .padding()
-                        .background(.regularMaterial)
-                        .clipShape(.rect(cornerRadius: 8))
-                }
-            }
-            .overlay(alignment: .bottom) {
-                Text("Raster data Copyright Scottish Government and SEPA (2014)")
-                    .font(.caption)
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical, 6)
-                    .background(.thinMaterial, ignoresSafeAreaEdges: .horizontal)
-            }
-            .toolbar {
-                ToolbarItem(placement: .bottomBar) {
-                    Button("Settings", systemImage: "gear") {
-                        isShowingSettings.toggle()
+        MapViewReader { mapView in
+            MapView(map: model.map, analysisOverlays: [model.analysisOverlay])
+                .onAnalysisViewStateChanged { analysis, viewState in
+                    guard let activeAnalysis = model.activeAnalysis,
+                          analysis === activeAnalysis else {
+                        return
                     }
-                    .popover(isPresented: $isShowingSettings) {
-                        TerrainSuitabilitySettings(selectedScenario: $selectedScenario)
-                            .presentationCompactAdaptation(.popover)
-                            .frame(idealWidth: 360, idealHeight: 220)
+                    model.isUpdatingAnalysis = viewState.status == .updating
+                    if let analysisError = viewState.error {
+                        error = analysisError
                     }
                 }
-            }
-            .task {
-                do {
-                    try await model.setUp()
-                } catch {
-                    self.error = error
+                .overlay {
+                    if model.isUpdatingAnalysis {
+                        ProgressView("Updating analysis")
+                            .padding()
+                            .background(.regularMaterial)
+                            .clipShape(.rect(cornerRadius: 8))
+                    }
                 }
-            }
-            .onChange(of: selectedScenario) {
-                model.showAnalysis(for: selectedScenario)
-            }
-            .errorAlert(presentingError: $error)
+                .overlay(alignment: .bottom) {
+                    Text("Raster data Copyright Scottish Government and SEPA (2014)")
+                        .font(.caption)
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 6)
+                        .background(.thinMaterial, ignoresSafeAreaEdges: .horizontal)
+                }
+                .toolbar {
+                    ToolbarItem(placement: .bottomBar) {
+                        Button("Settings", systemImage: "gear") {
+                            isShowingSettings.toggle()
+                        }
+                        .popover(isPresented: $isShowingSettings) {
+                            TerrainSuitabilitySettings(selectedScenario: $selectedScenario)
+                                .presentationCompactAdaptation(.popover)
+                                .frame(idealWidth: 360, idealHeight: 220)
+                        }
+                    }
+                }
+                .task {
+                    do {
+                        let viewpoint = try await model.setUp()
+                        await mapView.setViewpoint(viewpoint)
+                    } catch {
+                        self.error = error
+                    }
+                }
+                .onChange(of: selectedScenario) {
+                    model.showAnalysis(for: selectedScenario)
+                }
+                .errorAlert(presentingError: $error)
+        }
     }
 }
 
