@@ -55,23 +55,22 @@ extension AnalyzeTerrainSuitabilityFromSlopeAndAspectView {
                 aboveSeaLevelSelection: elevationFunction.isGreaterThanOrEqualTo(0)
             )
 
-            gentleSouthFacingSlopesAnalysis = makeAnalysis(
+            let gentleAnalysis = makeAnalysis(
                 inputs: inputs,
                 criteria: .gentleSouthFacingSlopes,
                 color: .systemGreen
             )
-            steepWestAndNorthFacingSlopesAnalysis = makeAnalysis(
+            let steepAnalysis = makeAnalysis(
                 inputs: inputs,
                 criteria: .steepWestAndNorthFacingSlopes,
                 color: .systemPurple
             )
-            if let gentleSouthFacingSlopesAnalysis,
-               let steepWestAndNorthFacingSlopesAnalysis {
-                analysisOverlay.addAnalyses([
-                    gentleSouthFacingSlopesAnalysis,
-                    steepWestAndNorthFacingSlopesAnalysis
-                ])
-            }
+            gentleSouthFacingSlopesAnalysis = gentleAnalysis
+            steepWestAndNorthFacingSlopesAnalysis = steepAnalysis
+            analysisOverlay.addAnalyses([
+                gentleAnalysis,
+                steepAnalysis
+            ])
             showAnalysis(for: selectedScenario)
             return Viewpoint(center: elevationField.extent.center, scale: 200_000)
         }
