@@ -2,7 +2,7 @@
 
 Analyze terrain suitability from an elevation raster by deriving slope and aspect.
 
-![Analyze terrain suitability from slope and aspect sample](analyze-terrain-suitability-with-slope-and-aspect.png)
+![Analyze terrain suitability from slope and aspect sample](analyze-terrain-suitability-from-slope-and-aspect.png)
 
 ## Use case
 
