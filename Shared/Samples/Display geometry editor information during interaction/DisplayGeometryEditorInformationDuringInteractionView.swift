@@ -35,9 +35,9 @@ struct DisplayGeometryEditorInformationDuringInteractionView: View {
                         screenPoint: identifyRequest.screenPoint,
                         tolerance: 10
                     )
-                    if let graphic = result?.graphics.first {
-                        model.startEditing(graphic)
-                    }
+                    guard let graphic = result?.graphics.first,
+                          !model.isEditing else { return }
+                    model.startEditing(graphic)
                 }
                 .overlay(alignment: .top) {
                     Text(model.informationText)
