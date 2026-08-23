@@ -23,11 +23,11 @@ Use the Discard, Undo, Redo, and Save buttons in the toolbar to discard, undo, r
         * The `InteractionType` can be used to determine the type of interaction that is occurring (`Create`, `Move`, `Rotate`, `Scale`).
         * The `InteractionElement` can be used to determine the element being interacted with (`GeometryEditorVertex`, `GeometryEditorPart`, `GeometryEditorGeometry`).
 3. Start the `GeometryEditor` using `geometryEditor.start(withInitial:)` to edit the geometry of an identified `Graphic`.
-    * To identify the `Graphic` use `MapView.IdentifyGraphicsOverlayAsync(...)` and get the first result.
-4. Check to see if undo and redo are possible during an editing session using `GeometryEditor.CanUndo` and `GeometryEditor.CanRedo`. If it's possible, use `GeometryEditor.Undo()` and `GeometryEditor.Redo()`.
-5. Call `GeometryEditor.Stop()` to finish the editing session and store the `Graphic`. The `GeometryEditor` does not automatically handle the visualization of a geometry output from an editing session. This must be done manually by propagating the geometry returned into a `Graphic` added to a `GraphicsOverlay`.
+    * To identify the `Graphic`, use `MapViewProxy.identify(on:screenPoint:tolerance:)` and get the first result.
+4. Check to see if undo and redo are possible during an editing session using `geometryEditor.canUndo` and `geometryEditor.canRedo`. If it's possible, use `geometryEditor.undo()` and `geometryEditor.redo()`.
+5. Call `geometryEditor.stop()` to finish the editing session and store the `Graphic`. The `GeometryEditor` does not automatically handle the visualization of a geometry output from an editing session. This must be done manually by propagating the geometry returned into a `Graphic` added to a `GraphicsOverlay`.
     * To update the geometry underlying an existing `Graphic` in the `GraphicsOverlay`:
-        * Replace the existing `Graphic`'s `Geometry` property with the geometry returned by the `GeometryEditor.Stop()` method.
+        * Replace the existing `Graphic`'s `geometry` property with the geometry returned by the `geometryEditor.stop()` method.
 
 ## Relevant API
 
