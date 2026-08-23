@@ -88,11 +88,10 @@ extension DisplayGeometryEditorInformationDuringInteractionView {
             ])
         }
 
-        /// Starts editing the given graphic and hides its original geometry.
+        /// Starts editing the given graphic while keeping its original geometry visible.
         func startEditing(_ graphic: Graphic) {
             guard let geometry = graphic.geometry else { return }
             editingGraphic = graphic
-            graphic.isVisible = false
             geometryEditor.start(withInitial: geometry)
             geometryEditor.selectGeometry()
             isEditing = true
@@ -183,9 +182,8 @@ extension DisplayGeometryEditorInformationDuringInteractionView {
             }
         }
 
-        /// Restores the edited graphic and clears the editing state.
+        /// Clears the editing state.
         private func finishEditing() {
-            editingGraphic?.isVisible = true
             editingGraphic = nil
             interactionInformation = nil
             isEditing = false
