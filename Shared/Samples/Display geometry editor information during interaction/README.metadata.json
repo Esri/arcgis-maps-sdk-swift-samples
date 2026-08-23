@@ -12,7 +12,7 @@
         "interaction preview",
         "Geometry",
         "GeometryEditor",
-        "GeometryEditor.InteractionPreviewChanged",
+        "GeometryEditor.interactionPreviews",
         "GeometryEditorInteractionPreview",
         "GeometryEditorInteractionType",
         "Graphic",
@@ -22,7 +22,7 @@
     "relevant_apis": [
         "Geometry",
         "GeometryEditor",
-        "GeometryEditor.InteractionPreviewChanged",
+        "GeometryEditor.interactionPreviews",
         "GeometryEditorInteractionPreview",
         "GeometryEditorInteractionType",
         "Graphic",
