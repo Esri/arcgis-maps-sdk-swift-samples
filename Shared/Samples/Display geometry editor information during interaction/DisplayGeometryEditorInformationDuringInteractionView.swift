@@ -19,20 +19,20 @@ struct DisplayGeometryEditorInformationDuringInteractionView: View {
     /// The view model for the sample.
     @State private var model = Model()
     /// The screen point used to identify a graphic.
-    @State private var identifyScreenPoint: CGPoint?
+    @State private var identifyRequest: (id: UUID, screenPoint: CGPoint)?
 
     var body: some View {
         MapViewReader { mapView in
             MapView(map: model.map, graphicsOverlays: [model.graphicsOverlay])
                 .geometryEditor(model.geometryEditor)
                 .onSingleTapGesture { screenPoint, _ in
-                    identifyScreenPoint = screenPoint
+                    identifyRequest = (UUID(), screenPoint)
                 }
-                .task(id: identifyScreenPoint) {
-                    guard let identifyScreenPoint, !model.isEditing else { return }
+                .task(id: identifyRequest?.id) {
+                    guard let identifyRequest, !model.isEditing else { return }
                     let result = try? await mapView.identify(
                         on: model.graphicsOverlay,
-                        screenPoint: identifyScreenPoint,
+                        screenPoint: identifyRequest.screenPoint,
                         tolerance: 10
                     )
                     if let graphic = result?.graphics.first {

@@ -12,7 +12,7 @@ The geometry editor can provide information about the geometry being created or 
 
 Tap a graphic to edit its geometry by moving, rotating, or scaling the geometry. During the interaction, information about the geometry will be displayed to provide feedback to the user.
 
-Use the buttons in the settings view to undo or redo changes made to the geometry and the cancel and done buttons to discard and save changes, respectively.
+Use the Discard, Undo, Redo, and Save buttons in the toolbar to discard, undo, redo, and save changes, respectively.
 
 ## How it works
 
@@ -22,7 +22,7 @@ Use the buttons in the settings view to undo or redo changes made to the geometr
         * The `PreviewGeometry` represents the geometry's state at that moment.
         * The `InteractionType` can be used to determine the type of interaction that is occurring (`Create`, `Move`, `Rotate`, `Scale`).
         * The `InteractionElement` can be used to determine the element being interacted with (`GeometryEditorVertex`, `GeometryEditorPart`, `GeometryEditorGeometry`).
-3. Start the `GeometryEditor` using `GeometryEditor.Start(Geometry)` to edit the geometry of an identified `Graphic`.
+3. Start the `GeometryEditor` using `geometryEditor.start(withInitial:)` to edit the geometry of an identified `Graphic`.
     * To identify the `Graphic` use `MapView.IdentifyGraphicsOverlayAsync(...)` and get the first result.
 4. Check to see if undo and redo are possible during an editing session using `GeometryEditor.CanUndo` and `GeometryEditor.CanRedo`. If it's possible, use `GeometryEditor.Undo()` and `GeometryEditor.Redo()`.
 5. Call `GeometryEditor.Stop()` to finish the editing session and store the `Graphic`. The `GeometryEditor` does not automatically handle the visualization of a geometry output from an editing session. This must be done manually by propagating the geometry returned into a `Graphic` added to a `GraphicsOverlay`.
