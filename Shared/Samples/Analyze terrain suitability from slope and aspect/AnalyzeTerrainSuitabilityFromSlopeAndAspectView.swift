@@ -68,7 +68,7 @@ struct AnalyzeTerrainSuitabilityFromSlopeAndAspectView: View {
                         .popover(isPresented: $isShowingSettings) {
                             TerrainSuitabilitySettings(selectedScenario: $selectedScenario)
                                 .presentationCompactAdaptation(.popover)
-                                .frame(idealWidth: 320, idealHeight: 380)
+                                .frame(idealWidth: 320, idealHeight: 340)
                         }
                     }
                 }
