@@ -12,22 +12,21 @@ The geometry editor can provide information about the geometry being created or 
 
 Tap a graphic to edit its geometry by moving, rotating, or scaling the geometry. During the interaction, information about the geometry will be displayed to provide feedback to the user.
 
-Use the Discard, Undo, Redo, and Save buttons in the toolbar to discard, undo, redo, and save changes, respectively.
+Use the buttons in the settings view to undo or redo changes made to the geometry and the cancel and done buttons to discard and save changes, respectively.
 
 ## How it works
 
-1. Create a `GeometryEditor` and set it to the `MapView.GeometryEditor`.
-2. Add an event handler to listen to `GeometryEditor.InteractionPreviewChanged`.
-    * This event can be used to get information on the state of the geometry during an interaction with the `GeometryEditorInteractionPreview` parameter.
-        * The `PreviewGeometry` represents the geometry's state at that moment.
-        * The `InteractionType` can be used to determine the type of interaction that is occurring (`Create`, `Move`, `Rotate`, `Scale`).
-        * The `InteractionElement` can be used to determine the element being interacted with (`GeometryEditorVertex`, `GeometryEditorPart`, `GeometryEditorGeometry`).
-3. Start the `GeometryEditor` using `geometryEditor.start(withInitial:)` to edit the geometry of an identified `Graphic`.
-    * To identify the `Graphic`, use `MapViewProxy.identify(on:screenPoint:tolerance:)` and get the first result.
-4. Check to see if undo and redo are possible during an editing session using `geometryEditor.canUndo` and `geometryEditor.canRedo`. If it's possible, use `geometryEditor.undo()` and `geometryEditor.redo()`.
+1. Create a `GeometryEditor` and pass it to the map view's `geometryEditor(_:)` modifier.
+2. Iterate over the `geometryEditor.interactionPreviews` asynchronous stream to receive a `GeometryEditorInteractionPreview` during an interaction.
+    * The preview's `geometry` property represents the geometry's state at that moment.
+    * The `interactionType` property identifies the type of interaction that is occurring (`create`, `move`, `rotate`, or `scale`).
+    * The `interactionElement` property identifies the element being interacted with, such as a `GeometryEditorVertex`, `GeometryEditorPart`, or `GeometryEditorGeometry`.
+3. Start the `GeometryEditor` using `geometryEditor.start(withInitial: geometry)` to edit the geometry of an identified `Graphic`.
+    * To identify the `Graphic` use `MapView.IdentifyGraphicsOverlayAsync(...)` and get the first result.
+4. Check whether undo and redo are possible during an editing session using `geometryEditor.canUndo` and `geometryEditor.canRedo`. Use `geometryEditor.undo()` and `geometryEditor.redo()` to undo and redo edits.
 5. Call `geometryEditor.stop()` to finish the editing session and store the `Graphic`. The `GeometryEditor` does not automatically handle the visualization of a geometry output from an editing session. This must be done manually by propagating the geometry returned into a `Graphic` added to a `GraphicsOverlay`.
     * To update the geometry underlying an existing `Graphic` in the `GraphicsOverlay`:
-        * Replace the existing `Graphic`'s `geometry` property with the geometry returned by the `geometryEditor.stop()` method.
+        * Replace the existing `Graphic`'s `geometry` property with the geometry returned by `geometryEditor.stop()`.
 
 ## Relevant API
 
