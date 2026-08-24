@@ -19,7 +19,6 @@
         "terrain",
         "AnalysisOverlay",
         "BooleanFieldFunction",
-        "Colormap",
         "ColormapRenderer",
         "ContinuousField",
         "ContinuousFieldFunction",
@@ -30,7 +29,6 @@
     "relevant_apis": [
         "AnalysisOverlay",
         "BooleanFieldFunction",
-        "Colormap",
         "ColormapRenderer",
         "ContinuousField",
         "ContinuousFieldFunction",

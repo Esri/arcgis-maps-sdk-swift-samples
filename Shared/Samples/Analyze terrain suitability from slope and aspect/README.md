@@ -28,7 +28,6 @@ When the sample opens, the map shows the results of a preconfigured terrain suit
 
 * AnalysisOverlay
 * BooleanFieldFunction
-* Colormap
 * ColormapRenderer
 * ContinuousField
 * ContinuousFieldFunction
