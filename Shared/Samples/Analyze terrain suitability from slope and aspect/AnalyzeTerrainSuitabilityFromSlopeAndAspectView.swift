@@ -89,7 +89,7 @@ struct AnalyzeTerrainSuitabilityFromSlopeAndAspectView: View {
                 .errorAlert(presentingError: $error)
         }
     }
-
+    
     private func showScenarioToast() {
         let toastID = UUID()
         withAnimation {

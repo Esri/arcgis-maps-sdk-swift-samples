@@ -159,7 +159,7 @@ private struct TerrainCriteria {
     let aspectStart: Float
     let aspectEnd: Float
     let elevationRange: ClosedRange<Float>
-
+    
     static let gentleSouthFacingSlopes = TerrainCriteria(slopeRange: 0...20, aspectStart: 112.5, aspectEnd: 247.5, elevationRange: 0...300)
-    static let steepWestAndNorthFacingSlopes = TerrainCriteria(slopeRange: 20...80, aspectStart: 202.5, aspectEnd: 67.5, elevationRange: 300...850)
+    static let steepWestAndNorthFacingSlopes = TerrainCriteria(slopeRange: 20...80, aspectStart: 247.5, aspectEnd: 67.5, elevationRange: 300...850)
 }
