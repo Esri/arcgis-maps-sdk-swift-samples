@@ -15,21 +15,21 @@
         "template",
         "GeometryConstructionTool",
         "GeometryEditor",
-        "ISharedTemplateSource",
         "ServiceGeodatabase",
         "SharedTemplate",
         "SharedTemplateFeatureCreationSet",
-        "SharedTemplateQueryParameters"
+        "SharedTemplateQueryParameters",
+        "SharedTemplateSource"
     ],
     "redirect_from": [],
     "relevant_apis": [
         "GeometryConstructionTool",
         "GeometryEditor",
-        "ISharedTemplateSource",
         "ServiceGeodatabase",
         "SharedTemplate",
         "SharedTemplateFeatureCreationSet",
-        "SharedTemplateQueryParameters"
+        "SharedTemplateQueryParameters",
+        "SharedTemplateSource"
     ],
     "snippets": [
         "AddFeaturesWithSharedTemplateView.swift",

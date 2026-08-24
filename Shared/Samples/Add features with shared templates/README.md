@@ -2,39 +2,40 @@
 
 Create features from preset and group shared templates.
 
-![Add features with shared templates](AddFeaturesWithSharedTemplate.jpg)
+![Image of add features with shared templates](add-features-with-shared-templates.png)
 
 ## Use case
 
-Preset and group shared templates support guided, repeatable, high-quality editing. Preset templates place predefined feature arrangements, while group templates create feature sets relative to a user-defined base geometry. By automatically applying attributes, symbology, geometry settings, and feature relationships/associations, they help field staff create consistent, fully configured assets with only a few choices.
+Preset and group shared templates support guided, repeatable, high-quality editing. Preset templates place predefined feature arrangements, while group templates create feature sets relative to a user-defined base geometry. By automatically applying attributes, symbology, geometry settings, and feature relationships or associations, they help field staff create consistent, fully configured assets with only a few choices.
 
 ## How to use the sample
 
-Hover over a shared template to view its description. Select a template and click on the map to place the geometry. Choose "Complete" to create the feature, "Save" to apply local edits, or "Undo" to discard them.
+Hover over a shared template to view its description. Select a template and tap on the map to place the geometry. Choose "Complete" to create the features, "Save" to apply local edits, or "Undo" to discard them.
 
 ## How it works
 
-1. Create a map using the URL to a web map. 
-2. Determine the `ISharedTemplateSource` by inspecting map layers, identifying `FeatureLayer` instances backed by a `ServiceFeatureTable`, and retrieving their `ServiceGeodatabase`.
-3. Call `ISharedTemplateSource.QuerySharedTemplatesAsync()` to populate a template picker. Store each template's `layerId`, display its name and type, and use native contextual help to show its description.
-4. Call `SharedTemplate.CreateSwatchAsync(layerId)` to generate a swatch image for each template, falling back to a default image when a swatch is unavailable.
-5. Call `SharedTemplate.GetDefaultConstructionTool(layerId)` to get the template’s default construction method. Use its `GeometryConstructionTool.ToolType` to choose whether the `GeometryEditor` draws a point or polyline.
-6. After the user selects "Complete", call `GeometryEditor.Stop()` and use the returned geometry to create features with `ISharedTemplateSource.CreateFeaturesAsync(sharedTemplate, geometry)`. Then call `ISharedTemplateSource.AddFeaturesAsync()` to add the resulting feature set to the geodatabase.
-7. Select "Save" to apply local edits with `ServiceGeodatabase.ApplyEditsAsync()`, or select "Undo" to discard them with `ServiceGeodatabase.UndoLocalEditsAsync()`.
+1. Create a `Map` from a web map portal item and load it.
+2. Inspect the map's operational layers for a `FeatureLayer` backed by a `ServiceFeatureTable`, then get its `ServiceGeodatabase`, which conforms to `SharedTemplateSource`.
+3. Call `querySharedTemplates(using:)` without parameters to return all shared templates for all layers. Store each template's layer ID and display its name, kind, description, and swatch.
+4. Call `makeSwatch(layerID:)` to generate each template's swatch image, falling back to a default image when a swatch is unavailable.
+5. Call `defaultConstructionTool(forLayerWithID:)` and use the `GeometryConstructionTool.Kind` to start a `GeometryEditor` with either a point or polyline geometry type.
+6. After the user selects "Complete", call `stop()` on the geometry editor. Pass the returned geometry to `makeFeatures(sharedTemplate:geometry:)` to create an in-memory `SharedTemplateFeatureCreationSet` with default geometries and attributes.
+7. Call `addFeatures(using:)` to add the feature creation set to the geodatabase locally.
+8. Select "Save" to apply local edits using `applyEdits()`, or select "Undo" to discard them using `undoLocalEdits()`.
 
 ## Relevant API
 
 * GeometryConstructionTool
 * GeometryEditor
-* ISharedTemplateSource
 * ServiceGeodatabase
 * SharedTemplate
 * SharedTemplateFeatureCreationSet
 * SharedTemplateQueryParameters
+* SharedTemplateSource
 
 ## About the data
 
-* The sample uses the [Parks and Grounds Assets](https://www.maps.arcgis.com/home/item.html?id=b635be46dfb545b888077389ac7f0962) web map.
+The sample uses the [Parks and Grounds Assets](https://www.maps.arcgis.com/home/item.html?id=b635be46dfb545b888077389ac7f0962) web map.
 
 ## Tags
 
