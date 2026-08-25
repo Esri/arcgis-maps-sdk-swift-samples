@@ -15,6 +15,7 @@
 import ArcGIS
 import SwiftUI
 
+/// A view that analyzes elevation data to find terrain matching a selected slope and aspect scenario.
 struct AnalyzeTerrainSuitabilityFromSlopeAndAspectView: View {
     /// The view model for the sample.
     @State private var model = Model()
@@ -27,20 +28,24 @@ struct AnalyzeTerrainSuitabilityFromSlopeAndAspectView: View {
     /// The error shown in the error alert.
     @State private var error: (any Error)?
     
+    /// The map and controls used to display and configure the terrain suitability analysis.
     var body: some View {
         MapViewReader { mapView in
             MapView(map: model.map, analysisOverlays: [model.analysisOverlay])
                 .onAnalysisViewStateChanged { analysis, viewState in
                     guard let activeAnalysis = model.activeAnalysis,
-                          analysis === activeAnalysis,
-                          let analysisError = viewState.error else {
+                          analysis === activeAnalysis else {
                         return
                     }
-                    error = analysisError
+                    if let analysisError = viewState.error {
+                        error = analysisError
+                    }
                 }
                 .overlay(alignment: .top) {
                     if scenarioToastID != nil {
                         Text(selectedScenario.description)
+                            .font(.footnote)
+                            .foregroundStyle(.secondary)
                             .multilineTextAlignment(.center)
                             .padding()
                             .background(.regularMaterial)
@@ -86,6 +91,7 @@ struct AnalyzeTerrainSuitabilityFromSlopeAndAspectView: View {
         }
     }
     
+    /// Shows a temporary message describing the selected terrain suitability scenario.
     private func showScenarioToast() {
         let toastID = UUID()
         withAnimation {
@@ -103,6 +109,7 @@ struct AnalyzeTerrainSuitabilityFromSlopeAndAspectView: View {
 
 // MARK: Extensions
 
+/// Provides access to the local raster data used by the terrain suitability analysis.
 extension URL {
     /// A URL to the local GeoTIFF elevation raster of the Isle of Arran, Scotland.
     static func terrainSuitabilityArranElevation() throws -> URL {

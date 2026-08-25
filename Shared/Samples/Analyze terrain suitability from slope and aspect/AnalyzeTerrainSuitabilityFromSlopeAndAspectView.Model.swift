@@ -21,7 +21,7 @@ extension AnalyzeTerrainSuitabilityFromSlopeAndAspectView {
     final class Model {
         private static let utm30N = SpatialReference(wkid: WKID(32630)!)!
         
-        let map = Map(spatialReference: .utm30N)
+        let map = Map(spatialReference: Model.utm30N)
         let analysisOverlay = AnalysisOverlay()
         var isUpdatingAnalysis = false
         
@@ -116,7 +116,7 @@ extension AnalyzeTerrainSuitabilityFromSlopeAndAspectView {
                 Form {
                     Picker("Scenario", selection: $selectedScenario) {
                         ForEach(SiteScenario.allCases) { scenario in
-                            Text(scenario.title)
+                            Text(scenario.label)
                         }
                     }
                     .pickerStyle(.inline)
