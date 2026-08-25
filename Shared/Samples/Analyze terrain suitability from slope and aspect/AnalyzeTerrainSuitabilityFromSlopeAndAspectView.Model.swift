@@ -14,7 +14,6 @@
 
 import ArcGIS
 import SwiftUI
-import UIKit
 
 extension AnalyzeTerrainSuitabilityFromSlopeAndAspectView {
     @MainActor
@@ -22,7 +21,7 @@ extension AnalyzeTerrainSuitabilityFromSlopeAndAspectView {
     final class Model {
         private static let utm30N = SpatialReference(wkid: WKID(32630)!)!
         
-        let map = Map(spatialReference: Model.utm30N)
+        let map = Map(spatialReference: .utm30N)
         let analysisOverlay = AnalysisOverlay()
         var isUpdatingAnalysis = false
         
@@ -117,7 +116,7 @@ extension AnalyzeTerrainSuitabilityFromSlopeAndAspectView {
                 Form {
                     Picker("Scenario", selection: $selectedScenario) {
                         ForEach(SiteScenario.allCases) { scenario in
-                            Text(scenario.title).tag(scenario)
+                            Text(scenario.title)
                         }
                     }
                     .pickerStyle(.inline)
@@ -132,7 +131,7 @@ extension AnalyzeTerrainSuitabilityFromSlopeAndAspectView {
         case steepWestAndNorthFacingSlopes
         
         var id: Self { self }
-        var title: String {
+        var label: String {
             switch self {
             case .gentleSouthFacingSlopes: "Gentle, lowland south-facing slopes"
             case .steepWestAndNorthFacingSlopes: "Steep, upland west- through north-facing slopes"

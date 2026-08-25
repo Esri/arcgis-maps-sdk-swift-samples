@@ -13,7 +13,6 @@
 // limitations under the License.
 
 import ArcGIS
-import Foundation
 import SwiftUI
 
 struct AnalyzeTerrainSuitabilityFromSlopeAndAspectView: View {
@@ -33,18 +32,15 @@ struct AnalyzeTerrainSuitabilityFromSlopeAndAspectView: View {
             MapView(map: model.map, analysisOverlays: [model.analysisOverlay])
                 .onAnalysisViewStateChanged { analysis, viewState in
                     guard let activeAnalysis = model.activeAnalysis,
-                          analysis === activeAnalysis else {
+                          analysis === activeAnalysis,
+                          let analysisError = viewState.error else {
                         return
                     }
-                    if let analysisError = viewState.error {
-                        error = analysisError
-                    }
+                    error = analysisError
                 }
                 .overlay(alignment: .top) {
                     if scenarioToastID != nil {
                         Text(selectedScenario.description)
-                            .font(.footnote)
-                            .foregroundStyle(.secondary)
                             .multilineTextAlignment(.center)
                             .padding()
                             .background(.regularMaterial)
