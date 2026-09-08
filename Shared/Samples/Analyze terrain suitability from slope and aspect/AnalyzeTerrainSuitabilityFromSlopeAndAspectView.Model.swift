@@ -113,14 +113,11 @@ extension AnalyzeTerrainSuitabilityFromSlopeAndAspectView {
             let elevationRangeMask = (inputs.elevationFunction .>= criteria.elevationRange.lowerBound) .&
             (inputs.elevationFunction .<= criteria.elevationRange.upperBound)
             
-            // Aspect is measured clockwise from north, from 0 through 360 degrees. A range whose
-            // start is greater than its end crosses north, so join the selections on either side of 0.
-            let aspectRangeMask: BooleanFieldFunction = if criteria.aspectStart <= criteria.aspectEnd {
-                (inputs.aspectFunction .>= criteria.aspectStart) .& (inputs.aspectFunction .<= criteria.aspectEnd)
-            } else {
-                ((inputs.aspectFunction .>= criteria.aspectStart) .& (inputs.aspectFunction .< 360)) .|
-                ((inputs.aspectFunction .>= 0) .& (inputs.aspectFunction .<= criteria.aspectEnd))
-            }
+            let aspectRangeMask = makeAspectRangeMask(
+                aspectFunction: inputs.aspectFunction,
+                start: criteria.aspectStart,
+                end: criteria.aspectEnd
+            )
             
             // Intersect the masks so a cell is suitable only when it meets every criterion. Remove
             // cells below sea level, then convert the Boolean result to discrete values for rendering.
@@ -138,6 +135,27 @@ extension AnalyzeTerrainSuitabilityFromSlopeAndAspectView {
             )
             analysis.isVisible = false
             return analysis
+        }
+        
+        /// Creates a Boolean mask that selects cells within an aspect range.
+        /// - Parameters:
+        ///   - aspectFunction: A function that calculates aspect values in degrees clockwise from north.
+        ///   - start: The clockwise starting angle of the aspect range.
+        ///   - end: The clockwise ending angle of the aspect range.
+        /// - Returns: A Boolean function that selects cells within the aspect range.
+        private func makeAspectRangeMask(
+            aspectFunction: ContinuousFieldFunction,
+            start: Float,
+            end: Float
+        ) -> BooleanFieldFunction {
+            if start <= end {
+                (aspectFunction .>= start) .& (aspectFunction .<= end)
+            } else {
+                // A range whose start is greater than its end crosses north, so join the
+                // selections on either side of 0 degrees.
+                ((aspectFunction .>= start) .& (aspectFunction .< 360)) .|
+                ((aspectFunction .>= 0) .& (aspectFunction .<= end))
+            }
         }
     }
     
