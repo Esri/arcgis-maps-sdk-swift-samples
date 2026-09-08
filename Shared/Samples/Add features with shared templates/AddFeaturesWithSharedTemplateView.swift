@@ -22,6 +22,9 @@ struct AddFeaturesWithSharedTemplateView: View {
     /// The geometry currently drawn in the geometry editor.
     @State private var editorGeometry: Geometry?
     
+    /// A Boolean value indicating whether the shared templates popover is showing.
+    @State private var isShowingTemplates = false
+    
     /// The error shown in the error alert.
     @State private var error: (any Error)?
     
@@ -42,40 +45,6 @@ struct AddFeaturesWithSharedTemplateView: View {
                             ProgressView()
                         }
                     }
-                    
-                    if model.activeTemplateItem == nil,
-                       !model.hasPendingEdits,
-                       !model.templateItems.isEmpty {
-                        ForEach(model.templateItems) { item in
-                            Button {
-                                do {
-                                    try model.startDrawing(with: item)
-                                } catch {
-                                    self.error = error
-                                }
-                            } label: {
-                                HStack(spacing: 8) {
-                                    Image(uiImage: item.swatch)
-                                        .resizable()
-                                        .scaledToFit()
-                                        .frame(width: 36, height: 36)
-                                    
-                                    VStack(alignment: .leading) {
-                                        Text(item.template.name)
-                                            .fontWeight(.semibold)
-                                        Text(item.kindName)
-                                            .font(.caption)
-                                    }
-                                    
-                                    Spacer()
-                                }
-                                .contentShape(Rectangle())
-                            }
-                            .buttonStyle(.plain)
-                            .help(item.template.description)
-                            .disabled(model.isBusy)
-                        }
-                    }
                 }
                 .padding()
                 .frame(maxWidth: 300)
@@ -86,7 +55,51 @@ struct AddFeaturesWithSharedTemplateView: View {
                 ToolbarItemGroup(placement: .bottomBar) {
                     Spacer()
                     
-                    if model.hasPendingEdits {
+                    if model.activeTemplateItem == nil,
+                       !model.hasPendingEdits,
+                       !model.templateItems.isEmpty {
+                        Button("Shared Templates", systemImage: "square.grid.2x2") {
+                            isShowingTemplates.toggle()
+                        }
+                        .popover(isPresented: $isShowingTemplates) {
+                            VStack(alignment: .leading, spacing: 8) {
+                                ForEach(model.templateItems) { item in
+                                    Button {
+                                        do {
+                                            try model.startDrawing(with: item)
+                                            isShowingTemplates = false
+                                        } catch {
+                                            self.error = error
+                                        }
+                                    } label: {
+                                        HStack(spacing: 8) {
+                                            Image(uiImage: item.swatch)
+                                                .resizable()
+                                                .scaledToFit()
+                                                .frame(width: 36, height: 36)
+                                            
+                                            VStack(alignment: .leading) {
+                                                Text(item.template.name)
+                                                    .fontWeight(.semibold)
+                                                Text(item.kindName)
+                                                    .font(.caption)
+                                            }
+                                            
+                                            Spacer()
+                                        }
+                                        .contentShape(Rectangle())
+                                    }
+                                    .buttonStyle(.plain)
+                                    .help(item.template.description)
+                                    .disabled(model.isBusy)
+                                }
+                            }
+                            .padding()
+                            .presentationCompactAdaptation(.popover)
+                            .frame(idealWidth: 320)
+                        }
+                        .disabled(model.isBusy)
+                    } else if model.hasPendingEdits {
                         Button("Save") {
                             Task {
                                 do {
