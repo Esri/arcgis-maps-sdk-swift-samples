@@ -23,7 +23,7 @@ struct AnalyzeTerrainSuitabilityFromSlopeAndAspectView: View {
     @State private var selectedScenario = SiteScenario.gentleSouthFacingSlopes
     /// A Boolean value indicating whether the settings are showing.
     @State private var isShowingSettings = false
-    /// The identifier for the currently displayed scenario toast.
+    /// The identifier for the currently displayed scenario toast. This is needed to trigger the toast dismissal task when the scenario changes.
     @State private var scenarioToastID: UUID?
     /// The error shown in the error alert.
     @State private var error: (any Error)?
@@ -77,32 +77,31 @@ struct AnalyzeTerrainSuitabilityFromSlopeAndAspectView: View {
                     do {
                         let viewpoint = try await model.setUp()
                         await mapView.setViewpoint(viewpoint)
-                        showScenarioToast()
+                        withAnimation {
+                            scenarioToastID = UUID()
+                        }
                     } catch {
                         self.error = error
+                    }
+                }
+                .task(id: scenarioToastID) {
+                    guard scenarioToastID != nil else { return }
+                    
+                    try? await Task.sleep(for: .seconds(3))
+                    guard !Task.isCancelled else { return }
+                    
+                    withAnimation {
+                        scenarioToastID = nil
                     }
                 }
                 .onChange(of: selectedScenario) {
                     model.showAnalysis(for: selectedScenario)
                     isShowingSettings = false
-                    showScenarioToast()
+                    withAnimation {
+                        scenarioToastID = UUID()
+                    }
                 }
                 .errorAlert(presentingError: $error)
-        }
-    }
-    
-    /// Shows a temporary message describing the selected terrain suitability scenario.
-    private func showScenarioToast() {
-        let toastID = UUID()
-        withAnimation {
-            scenarioToastID = toastID
-        }
-        Task {
-            try? await Task.sleep(for: .seconds(3))
-            guard scenarioToastID == toastID else { return }
-            withAnimation {
-                scenarioToastID = nil
-            }
         }
     }
 }
