@@ -15,20 +15,34 @@
 import ArcGIS
 import SwiftUI
 
+/// Provides the types that support the terrain suitability sample.
 extension AnalyzeTerrainSuitabilityFromSlopeAndAspectView {
+    /// The model that creates and manages the terrain suitability analyses.
     @MainActor
     @Observable
     final class Model {
+        /// The WGS 84 UTM zone 30N spatial reference used by the elevation data and map.
         private static let utm30N = SpatialReference(wkid: WKID(32630)!)!
-        
+       
+        /// The map that displays the terrain suitability analyses.
         let map = Map(spatialReference: Model.utm30N)
+        /// The overlay containing the terrain suitability analyses.
         let analysisOverlay = AnalysisOverlay()
+        /// A Boolean value indicating whether an analysis is being updated.
         var isUpdatingAnalysis = false
         
+        /// The analysis for gentle, lowland south-facing slopes.
         private var gentleSouthFacingSlopesAnalysis: FieldAnalysis?
+        /// The analysis for steep, upland west- through north-facing slopes.
         private var steepWestAndNorthFacingSlopesAnalysis: FieldAnalysis?
-        private var selectedScenario = SiteScenario.gentleSouthFacingSlopes
+        /// The scenario whose analysis is currently visible.
+        var selectedScenario = SiteScenario.gentleSouthFacingSlopes {
+            didSet {
+                updateAnalysisVisibility()
+            }
+        }
         
+        /// The analysis associated with the selected scenario, if it has been created.
         var activeAnalysis: FieldAnalysis? {
             switch selectedScenario {
             case .gentleSouthFacingSlopes: gentleSouthFacingSlopesAnalysis
@@ -36,6 +50,9 @@ extension AnalyzeTerrainSuitabilityFromSlopeAndAspectView {
             }
         }
         
+        /// Creates the elevation field and terrain suitability analyses used by the sample.
+        /// - Returns: A viewpoint centered on the extent of the elevation data.
+        /// - Throws: An error if the elevation data cannot be accessed or used to create a field.
         func setUp() async throws -> Viewpoint {
             isUpdatingAnalysis = true
             defer { isUpdatingAnalysis = false }
@@ -70,35 +87,51 @@ extension AnalyzeTerrainSuitabilityFromSlopeAndAspectView {
                 gentleAnalysis,
                 steepAnalysis
             ])
-            showAnalysis(for: selectedScenario)
+            updateAnalysisVisibility()
             return Viewpoint(center: elevationField.extent.center, scale: 200_000)
         }
         
-        func showAnalysis(for scenario: SiteScenario) {
-            selectedScenario = scenario
+        /// Updates the analyses so only the selected scenario is visible.
+        private func updateAnalysisVisibility() {
             // Reset; MapView's analysis view state callback will set this to true while the active analysis is updating.
             isUpdatingAnalysis = false
-            gentleSouthFacingSlopesAnalysis?.isVisible = scenario == .gentleSouthFacingSlopes
-            steepWestAndNorthFacingSlopesAnalysis?.isVisible = scenario == .steepWestAndNorthFacingSlopes
+            gentleSouthFacingSlopesAnalysis?.isVisible = selectedScenario == .gentleSouthFacingSlopes
+            steepWestAndNorthFacingSlopesAnalysis?.isVisible = selectedScenario == .steepWestAndNorthFacingSlopes
         }
         
+        /// Creates a field analysis that identifies cells matching a set of terrain criteria.
+        /// - Parameters:
+        ///   - inputs: The elevation-derived field functions used to evaluate each cell.
+        ///   - criteria: The slope, aspect, and elevation ranges that define suitable terrain.
+        ///   - color: The color used to render cells that satisfy all criteria.
+        /// - Returns: A hidden field analysis configured with the suitability function and renderer.
         private func makeAnalysis(inputs: TerrainAnalysisInputs, criteria: TerrainCriteria, color: UIColor) -> FieldAnalysis {
-            // The long-form range methods and logicalAnd can be used instead of these operator overloads.
+            // Create Boolean masks that select cells within the inclusive slope and elevation ranges.
+            // The long-form comparison methods can be used instead of these operator overloads.
             let slopeRangeMask = (inputs.slopeFunction .>= criteria.slopeRange.lowerBound) .&
             (inputs.slopeFunction .<= criteria.slopeRange.upperBound)
             let elevationRangeMask = (inputs.elevationFunction .>= criteria.elevationRange.lowerBound) .&
             (inputs.elevationFunction .<= criteria.elevationRange.upperBound)
+            
+            // Aspect is measured clockwise from north, from 0 through 360 degrees. A range whose
+            // start is greater than its end crosses north, so join the selections on either side of 0.
             let aspectRangeMask: BooleanFieldFunction = if criteria.aspectStart <= criteria.aspectEnd {
                 (inputs.aspectFunction .>= criteria.aspectStart) .& (inputs.aspectFunction .<= criteria.aspectEnd)
             } else {
                 ((inputs.aspectFunction .>= criteria.aspectStart) .& (inputs.aspectFunction .< 360)) .|
                 ((inputs.aspectFunction .>= 0) .& (inputs.aspectFunction .<= criteria.aspectEnd))
             }
+            
+            // Intersect the masks so a cell is suitable only when it meets every criterion. Remove
+            // cells below sea level, then convert the Boolean result to discrete values for rendering.
             let scenarioFunction = slopeRangeMask
                 .logicalAnd(with: aspectRangeMask)
                 .logicalAnd(with: elevationRangeMask)
                 .mask(selection: inputs.aboveSeaLevelSelection)
                 .toDiscreteFieldFunction()
+            
+            // Render false cells in white and suitable cells in the scenario's color. The analysis
+            // starts hidden because updateAnalysisVisibility() controls which scenario is displayed.
             let analysis = FieldAnalysis(
                 function: scenarioFunction,
                 renderer: ColormapRenderer(colors: [.white, color])
@@ -108,35 +141,23 @@ extension AnalyzeTerrainSuitabilityFromSlopeAndAspectView {
         }
     }
     
-    struct TerrainSuitabilitySettings: View {
-        @Binding var selectedScenario: SiteScenario
-        
-        var body: some View {
-            NavigationStack {
-                Form {
-                    Picker("Scenario", selection: $selectedScenario) {
-                        ForEach(SiteScenario.allCases) { scenario in
-                            Text(scenario.label)
-                        }
-                    }
-                    .pickerStyle(.inline)
-                }
-                .navigationTitle("Terrain Suitability")
-            }
-        }
-    }
-    
+    /// A predefined combination of slope, aspect, and elevation criteria.
     enum SiteScenario: CaseIterable, Identifiable {
+        /// Gentle south-facing slopes at low elevations.
         case gentleSouthFacingSlopes
+        /// Steep west- through north-facing slopes at high elevations.
         case steepWestAndNorthFacingSlopes
         
+        /// The scenario's stable identity.
         var id: Self { self }
+        /// A concise label describing the scenario.
         var label: String {
             switch self {
             case .gentleSouthFacingSlopes: "Gentle, lowland south-facing slopes"
             case .steepWestAndNorthFacingSlopes: "Steep, upland west- through north-facing slopes"
             }
         }
+        /// A description of the terrain found by the scenario.
         var description: String {
             switch self {
             case .gentleSouthFacingSlopes: "Finds sheltered, lowland terrain with gentle south-facing slopes."
@@ -146,19 +167,46 @@ extension AnalyzeTerrainSuitabilityFromSlopeAndAspectView {
     }
 }
 
+/// The field functions used to evaluate terrain suitability.
 private struct TerrainAnalysisInputs {
+    /// A function that calculates slope from the elevation field.
     let slopeFunction: ContinuousFieldFunction
+    /// A function that calculates aspect from the elevation field.
     let aspectFunction: ContinuousFieldFunction
+    /// A function that supplies elevation values.
     let elevationFunction: ContinuousFieldFunction
+    /// A Boolean function that selects cells at or above sea level.
     let aboveSeaLevelSelection: BooleanFieldFunction
 }
 
+/// The value ranges that define suitable terrain for a scenario.
 private struct TerrainCriteria {
+    /// The inclusive range of suitable slope angles, in degrees.
     let slopeRange: ClosedRange<Float>
+    /// The clockwise starting angle of the suitable aspect range, in degrees from north.
     let aspectStart: Float
+    /// The clockwise ending angle of the suitable aspect range, in degrees from north.
     let aspectEnd: Float
+    /// The inclusive range of suitable elevations, in meters.
     let elevationRange: ClosedRange<Float>
     
+    /// The criteria for gentle, lowland south-facing slopes.
     static let gentleSouthFacingSlopes = TerrainCriteria(slopeRange: 0...20, aspectStart: 112.5, aspectEnd: 247.5, elevationRange: 0...300)
+    /// The criteria for steep, upland west- through north-facing slopes.
     static let steepWestAndNorthFacingSlopes = TerrainCriteria(slopeRange: 20...80, aspectStart: 247.5, aspectEnd: 67.5, elevationRange: 300...850)
+}
+
+/// Provides access to the local raster data used by the terrain suitability analysis.
+private extension URL {
+    /// A URL to the local GeoTIFF elevation raster of the Isle of Arran, Scotland.
+    static func terrainSuitabilityArranElevation() throws -> URL {
+        guard let url = Bundle.main.url(
+            forResource: "arran",
+            withExtension: "tif",
+            subdirectory: "arran"
+        ) else {
+            throw URLError(.fileDoesNotExist)
+        }
+        return url
+    }
 }

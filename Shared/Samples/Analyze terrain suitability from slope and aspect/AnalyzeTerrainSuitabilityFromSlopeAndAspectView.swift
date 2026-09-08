@@ -19,8 +19,6 @@ import SwiftUI
 struct AnalyzeTerrainSuitabilityFromSlopeAndAspectView: View {
     /// The view model for the sample.
     @State private var model = Model()
-    /// The selected terrain suitability scenario.
-    @State private var selectedScenario = SiteScenario.gentleSouthFacingSlopes
     /// A Boolean value indicating whether the settings are showing.
     @State private var isShowingSettings = false
     /// The identifier for the currently displayed scenario toast. This is needed to trigger the toast dismissal task when the scenario changes.
@@ -43,7 +41,7 @@ struct AnalyzeTerrainSuitabilityFromSlopeAndAspectView: View {
                 }
                 .overlay(alignment: .top) {
                     if scenarioToastID != nil {
-                        Text(selectedScenario.description)
+                        Text(model.selectedScenario.description)
                             .font(.footnote)
                             .foregroundStyle(.secondary)
                             .multilineTextAlignment(.center)
@@ -67,7 +65,7 @@ struct AnalyzeTerrainSuitabilityFromSlopeAndAspectView: View {
                             isShowingSettings.toggle()
                         }
                         .popover(isPresented: $isShowingSettings) {
-                            TerrainSuitabilitySettings(selectedScenario: $selectedScenario)
+                            TerrainSuitabilitySettings(model: model)
                                 .presentationCompactAdaptation(.popover)
                                 .frame(idealWidth: 320, idealHeight: 340)
                         }
@@ -94,8 +92,7 @@ struct AnalyzeTerrainSuitabilityFromSlopeAndAspectView: View {
                         scenarioToastID = nil
                     }
                 }
-                .onChange(of: selectedScenario) {
-                    model.showAnalysis(for: selectedScenario)
+                .onChange(of: model.selectedScenario) {
                     isShowingSettings = false
                     withAnimation {
                         scenarioToastID = UUID()
@@ -106,20 +103,26 @@ struct AnalyzeTerrainSuitabilityFromSlopeAndAspectView: View {
     }
 }
 
-// MARK: Extensions
-
-/// Provides access to the local raster data used by the terrain suitability analysis.
-extension URL {
-    /// A URL to the local GeoTIFF elevation raster of the Isle of Arran, Scotland.
-    static func terrainSuitabilityArranElevation() throws -> URL {
-        guard let url = Bundle.main.url(
-            forResource: "arran",
-            withExtension: "tif",
-            subdirectory: "arran"
-        ) else {
-            throw URLError(.fileDoesNotExist)
+extension AnalyzeTerrainSuitabilityFromSlopeAndAspectView {
+    /// A view for selecting a terrain suitability scenario.
+    struct TerrainSuitabilitySettings: View {
+        /// The model containing the selected terrain suitability scenario.
+        @Bindable var model: Model
+        
+        /// The form containing the terrain suitability scenario picker.
+        var body: some View {
+            NavigationStack {
+                Form {
+                    Picker("Scenario", selection: $model.selectedScenario) {
+                        ForEach(SiteScenario.allCases) { scenario in
+                            Text(scenario.label)
+                        }
+                    }
+                    .pickerStyle(.inline)
+                }
+                .navigationTitle("Terrain Suitability")
+            }
         }
-        return url
     }
 }
 
