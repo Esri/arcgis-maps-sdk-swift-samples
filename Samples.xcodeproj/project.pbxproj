@@ -182,6 +182,8 @@
 		9520B2B52E135AD800B3BEF9 /* ShowExploratoryLineOfSightBetweenGeoelementsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9520B2B42E135AD800B3BEF9 /* ShowExploratoryLineOfSightBetweenGeoelementsView.swift */; };
 		952181E32FFEE993001D41A9 /* DownloadRasterTilesToLocalCacheView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 952181E22FFEE991001D41A9 /* DownloadRasterTilesToLocalCacheView.swift */; };
 		95321B302E554B31002E9DE2 /* ApplyRenderersToSceneLayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95321B2F2E554B20002E9DE2 /* ApplyRenderersToSceneLayerView.swift */; };
+		9533C382303BAF4700B79322 /* DisplayGeometryEditorInformationDuringInteractionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9533C381303BAF3F00B79322 /* DisplayGeometryEditorInformationDuringInteractionView.swift */; };
+		9533C385303BAF8500B79322 /* DisplayGeometryEditorInformationDuringInteractionView.Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9533C384303BAF8300B79322 /* DisplayGeometryEditorInformationDuringInteractionView.Model.swift */; };
 		9537AFD72C220EF0000923C5 /* ExchangeSetwithoutUpdates in Resources */ = {isa = PBXBuildFile; fileRef = 9537AFD62C220EF0000923C5 /* ExchangeSetwithoutUpdates */; settings = {ASSET_TAGS = (ConfigureElectronicNavigationalCharts, ); }; };
 		95398E6F2FDFAF1600E30CE8 /* NavigateMapAndIdentifyFeaturesWithKeyboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95398E6E2FDFAF1400E30CE8 /* NavigateMapAndIdentifyFeaturesWithKeyboardView.swift */; };
 		95398E732FE0C78B00E30CE8 /* NavigateMapAndIdentifyFeaturesWithKeyboardView.Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95398E722FE0C78800E30CE8 /* NavigateMapAndIdentifyFeaturesWithKeyboardView.Model.swift */; };
@@ -641,6 +643,8 @@
 		9520B2B42E135AD800B3BEF9 /* ShowExploratoryLineOfSightBetweenGeoelementsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowExploratoryLineOfSightBetweenGeoelementsView.swift; sourceTree = "<group>"; };
 		952181E22FFEE991001D41A9 /* DownloadRasterTilesToLocalCacheView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadRasterTilesToLocalCacheView.swift; sourceTree = "<group>"; };
 		95321B2F2E554B20002E9DE2 /* ApplyRenderersToSceneLayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplyRenderersToSceneLayerView.swift; sourceTree = "<group>"; };
+		9533C381303BAF3F00B79322 /* DisplayGeometryEditorInformationDuringInteractionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayGeometryEditorInformationDuringInteractionView.swift; sourceTree = "<group>"; };
+		9533C384303BAF8300B79322 /* DisplayGeometryEditorInformationDuringInteractionView.Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayGeometryEditorInformationDuringInteractionView.Model.swift; sourceTree = "<group>"; };
 		9537AFD62C220EF0000923C5 /* ExchangeSetwithoutUpdates */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ExchangeSetwithoutUpdates; sourceTree = "<group>"; };
 		95398E6E2FDFAF1400E30CE8 /* NavigateMapAndIdentifyFeaturesWithKeyboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigateMapAndIdentifyFeaturesWithKeyboardView.swift; sourceTree = "<group>"; };
 		95398E722FE0C78800E30CE8 /* NavigateMapAndIdentifyFeaturesWithKeyboardView.Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigateMapAndIdentifyFeaturesWithKeyboardView.Model.swift; sourceTree = "<group>"; };
@@ -1154,6 +1158,7 @@
 				D7635FEA2B9272CB0044AB97 /* Display clusters */,
 				00A7A1422A2FC58300F035F7 /* Display content of utility network container */,
 				D7497F382AC4B45300167AD2 /* Display dimensions */,
+				9533C383303BAF7800B79322 /* Display geometry editor information during interaction */,
 				79D22F802E9D8E4700B981A5 /* Display local scene */,
 				0074ABB328174B830037244A /* Display map */,
 				F111CCBD288B548400205358 /* Display map from mobile map package */,
@@ -2305,6 +2310,15 @@
 				95321B2F2E554B20002E9DE2 /* ApplyRenderersToSceneLayerView.swift */,
 			);
 			path = "Apply renderers to scene layer";
+			sourceTree = "<group>";
+		};
+		9533C383303BAF7800B79322 /* Display geometry editor information during interaction */ = {
+			isa = PBXGroup;
+			children = (
+				9533C381303BAF3F00B79322 /* DisplayGeometryEditorInformationDuringInteractionView.swift */,
+				9533C384303BAF8300B79322 /* DisplayGeometryEditorInformationDuringInteractionView.Model.swift */,
+			);
+			path = "Display geometry editor information during interaction";
 			sourceTree = "<group>";
 		};
 		9537AFC82C220ECB000923C5 /* 9d2987a825c646468b3ce7512fb76e2d */ = {
@@ -4056,6 +4070,7 @@
 				218F35B829C28F4A00502022 /* AuthenticateWithOAuthView.swift in Sources */,
 				002056C52DD7F6D30016B8A9 /* TakeScreenshotView.swift in Sources */,
 				79B7B80A2A1BF8EC00F57C27 /* CreateAndSaveKMLView.swift in Sources */,
+				9533C385303BAF8500B79322 /* DisplayGeometryEditorInformationDuringInteractionView.Model.swift in Sources */,
 				1C293D502DCEA74C000B0822 /* AuthenticateWithTokenView.swift in Sources */,
 				D7C6420C2B4F47E10042B8F7 /* SearchForWebMapView.Model.swift in Sources */,
 				000D43162B9918420003D3C2 /* ConfigureBasemapStyleParametersView.swift in Sources */,
@@ -4228,6 +4243,7 @@
 				D72C43F32AEB066D00B6157B /* GeocodeOfflineView.Model.swift in Sources */,
 				1C9B74C929DB43580038B06F /* ShowRealisticLightAndShadowsView.swift in Sources */,
 				10B782052BE55D7E007EAE6C /* GenerateOfflineMapWithCustomParametersView.swift in Sources */,
+				9533C382303BAF4700B79322 /* DisplayGeometryEditorInformationDuringInteractionView.swift in Sources */,
 				95DF31802FD37D33005D06E7 /* UpdateBasemapForContrastAccessibilityView.swift in Sources */,
 				D7635FF12B9272CB0044AB97 /* DisplayClustersView.swift in Sources */,
 				D7232EE12AC1E5AA0079ABFF /* PlayKMLTourView.swift in Sources */,
