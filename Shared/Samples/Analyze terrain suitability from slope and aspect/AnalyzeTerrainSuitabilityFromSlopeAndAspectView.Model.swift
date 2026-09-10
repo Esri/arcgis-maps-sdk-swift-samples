@@ -15,7 +15,6 @@
 import ArcGIS
 import SwiftUI
 
-/// Provides the types that support the terrain suitability sample.
 extension AnalyzeTerrainSuitabilityFromSlopeAndAspectView {
     /// The model that creates and manages the terrain suitability analyses.
     @MainActor
@@ -214,7 +213,6 @@ private struct TerrainCriteria {
     static let steepWestAndNorthFacingSlopes = TerrainCriteria(slopeRange: 20...80, aspectStart: 247.5, aspectEnd: 67.5, elevationRange: 300...850)
 }
 
-/// Provides access to the local raster data used by the terrain suitability analysis.
 private extension URL {
     /// A URL to the local GeoTIFF elevation raster of the Isle of Arran, Scotland.
     static func terrainSuitabilityArranElevation() throws -> URL {

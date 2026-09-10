@@ -26,7 +26,6 @@ struct AnalyzeTerrainSuitabilityFromSlopeAndAspectView: View {
     /// The error shown in the error alert.
     @State private var error: (any Error)?
     
-    /// The map and controls used to display and configure the terrain suitability analysis.
     var body: some View {
         MapViewReader { mapView in
             MapView(map: model.map, analysisOverlays: [model.analysisOverlay])
@@ -75,9 +74,7 @@ struct AnalyzeTerrainSuitabilityFromSlopeAndAspectView: View {
                     do {
                         let viewpoint = try await model.setUp()
                         await mapView.setViewpoint(viewpoint)
-                        withAnimation {
-                            scenarioToastID = UUID()
-                        }
+                        scenarioToastID = UUID()
                     } catch {
                         self.error = error
                     }
@@ -88,16 +85,13 @@ struct AnalyzeTerrainSuitabilityFromSlopeAndAspectView: View {
                     try? await Task.sleep(for: .seconds(3))
                     guard !Task.isCancelled else { return }
                     
-                    withAnimation {
-                        scenarioToastID = nil
-                    }
+                    scenarioToastID = nil
                 }
                 .onChange(of: model.selectedScenario) {
                     isShowingSettings = false
-                    withAnimation {
-                        scenarioToastID = UUID()
-                    }
+                    scenarioToastID = UUID()
                 }
+                .animation(.default, value: scenarioToastID)
                 .errorAlert(presentingError: $error)
         }
     }
@@ -109,7 +103,6 @@ extension AnalyzeTerrainSuitabilityFromSlopeAndAspectView {
         /// The model containing the selected terrain suitability scenario.
         @Bindable var model: Model
         
-        /// The form containing the terrain suitability scenario picker.
         var body: some View {
             NavigationStack {
                 Form {
