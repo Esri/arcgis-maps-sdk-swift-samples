@@ -15,7 +15,6 @@
 import ArcGIS
 import SwiftUI
 
-/// A view that analyzes elevation data to find terrain matching a selected slope and aspect scenario.
 struct AnalyzeTerrainSuitabilityFromSlopeAndAspectView: View {
     /// The view model for the sample.
     @State private var model = Model()

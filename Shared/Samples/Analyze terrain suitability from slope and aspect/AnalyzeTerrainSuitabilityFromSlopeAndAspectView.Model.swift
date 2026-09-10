@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import ArcGIS
-import SwiftUI
+import UIKit
 
 extension AnalyzeTerrainSuitabilityFromSlopeAndAspectView {
     /// The model that creates and manages the terrain suitability analyses.
@@ -22,7 +22,7 @@ extension AnalyzeTerrainSuitabilityFromSlopeAndAspectView {
     final class Model {
         /// The WGS 84 UTM zone 30N spatial reference used by the elevation data and map.
         private static let utm30N = SpatialReference(wkid: WKID(32630)!)!
-       
+        
         /// The map that displays the terrain suitability analyses.
         let map = Map(spatialReference: Model.utm30N)
         /// The overlay containing the terrain suitability analyses.
