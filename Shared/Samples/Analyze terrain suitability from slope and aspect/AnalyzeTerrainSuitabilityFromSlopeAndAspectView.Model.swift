@@ -109,9 +109,9 @@ extension AnalyzeTerrainSuitabilityFromSlopeAndAspectView {
             // true while the active analysis is updating.
             isUpdatingAnalysis = false
             gentleSouthFacingSlopesAnalysis?.isVisible =
-                selectedScenario == .gentleSouthFacingSlopes
+            selectedScenario == .gentleSouthFacingSlopes
             steepWestAndNorthFacingSlopesAnalysis?.isVisible =
-                selectedScenario == .steepWestAndNorthFacingSlopes
+            selectedScenario == .steepWestAndNorthFacingSlopes
         }
         
         /// Creates a field analysis that identifies cells matching a set of
@@ -133,10 +133,10 @@ extension AnalyzeTerrainSuitabilityFromSlopeAndAspectView {
             // slope and elevation ranges. The long-form comparison methods
             // can be used instead of these operator overloads.
             let slopeRangeMask =
-                (inputs.slopeFunction .>= criteria.slopeRange.lowerBound) .&
-                (inputs.slopeFunction .<= criteria.slopeRange.upperBound)
+            (inputs.slopeFunction .>= criteria.slopeRange.lowerBound) .&
+            (inputs.slopeFunction .<= criteria.slopeRange.upperBound)
             let elevationRangeMask =
-                (inputs.elevationFunction .>= criteria.elevationRange.lowerBound)
+            (inputs.elevationFunction .>= criteria.elevationRange.lowerBound)
                 .& (inputs.elevationFunction .<= criteria.elevationRange.upperBound)
             
             let aspectRangeMask = makeAspectRangeMask(
