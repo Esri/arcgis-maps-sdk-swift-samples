@@ -26,8 +26,8 @@ struct AnalyzeTerrainSuitabilityFromSlopeAndAspectView: View {
     @State private var error: (any Error)?
     
     var body: some View {
-        MapViewReader { mapView in
-            MapView(map: model.map, analysisOverlays: [model.analysisOverlay])
+        MapViewReader { _ in
+            MapView(map: model.map, viewpoint: model.viewpoint, analysisOverlays: [model.analysisOverlay])
                 .onAnalysisViewStateChanged { analysis, viewState in
                     guard let activeAnalysis = model.activeAnalysis,
                           analysis === activeAnalysis else {
@@ -71,8 +71,7 @@ struct AnalyzeTerrainSuitabilityFromSlopeAndAspectView: View {
                 }
                 .task {
                     do {
-                        let viewpoint = try await model.setUp()
-                        await mapView.setViewpoint(viewpoint)
+                        try await model.configureTerrainSuitabilityAnalyses()
                         scenarioToastID = UUID()
                     } catch {
                         self.error = error

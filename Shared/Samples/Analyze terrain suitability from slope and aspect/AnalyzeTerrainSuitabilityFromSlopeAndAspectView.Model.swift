@@ -25,6 +25,8 @@ extension AnalyzeTerrainSuitabilityFromSlopeAndAspectView {
         
         /// The map that displays the terrain suitability analyses.
         let map = Map(spatialReference: Model.utm30N)
+        /// The viewpoint centered on the extent of the elevation data.
+        var viewpoint: Viewpoint?
         /// The overlay containing the terrain suitability analyses.
         let analysisOverlay = AnalysisOverlay()
         /// A Boolean value indicating whether an analysis is being updated.
@@ -50,9 +52,8 @@ extension AnalyzeTerrainSuitabilityFromSlopeAndAspectView {
         }
         
         /// Creates the elevation field and terrain suitability analyses used by the sample.
-        /// - Returns: A viewpoint centered on the extent of the elevation data.
         /// - Throws: An error if the elevation data cannot be accessed or used to create a field.
-        func setUp() async throws -> Viewpoint {
+        func configureTerrainSuitabilityAnalyses() async throws {
             isUpdatingAnalysis = true
             defer { isUpdatingAnalysis = false }
             
@@ -87,7 +88,7 @@ extension AnalyzeTerrainSuitabilityFromSlopeAndAspectView {
                 steepAnalysis
             ])
             updateAnalysisVisibility()
-            return Viewpoint(center: elevationField.extent.center, scale: 200_000)
+            viewpoint = Viewpoint(center: elevationField.extent.center, scale: 200_000)
         }
         
         /// Updates the analyses so only the selected scenario is visible.
