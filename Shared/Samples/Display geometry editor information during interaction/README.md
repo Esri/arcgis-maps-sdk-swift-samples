@@ -12,7 +12,7 @@ The geometry editor can provide information about the geometry being created or 
 
 Tap a graphic to edit its geometry by moving, rotating, or scaling the geometry. During the interaction, information about the geometry will be displayed to provide feedback to the user.
 
-Use the buttons in the settings view to undo or redo changes made to the geometry and the cancel and done buttons to discard and save changes, respectively.
+Use the buttons in the toolbar to undo or redo changes made to the geometry and the cancel and done buttons to discard and save changes, respectively.
 
 ## How it works
 
