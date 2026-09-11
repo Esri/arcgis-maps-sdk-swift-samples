@@ -20,14 +20,19 @@ struct AnalyzeTerrainSuitabilityFromSlopeAndAspectView: View {
     @State private var model = Model()
     /// A Boolean value indicating whether the settings are showing.
     @State private var isShowingSettings = false
-    /// The identifier for the currently displayed scenario toast. This is needed to trigger the toast dismissal task when the scenario changes.
+    /// The identifier for the currently displayed scenario toast. This is needed
+    /// to trigger the toast dismissal task when the scenario changes.
     @State private var scenarioToastID: UUID?
     /// The error shown in the error alert.
     @State private var error: (any Error)?
     
     var body: some View {
         MapViewReader { _ in
-            MapView(map: model.map, viewpoint: model.viewpoint, analysisOverlays: [model.analysisOverlay])
+            MapView(
+                map: model.map,
+                viewpoint: model.viewpoint,
+                analysisOverlays: [model.analysisOverlay]
+            )
                 .onAnalysisViewStateChanged { analysis, viewState in
                     guard let activeAnalysis = model.activeAnalysis,
                           analysis === activeAnalysis else {
@@ -47,15 +52,22 @@ struct AnalyzeTerrainSuitabilityFromSlopeAndAspectView: View {
                             .background(.regularMaterial)
                             .clipShape(.rect(cornerRadius: 8))
                             .padding()
-                            .transition(.move(edge: .top).combined(with: .opacity))
+                            .transition(
+                                .move(edge: .top).combined(with: .opacity)
+                            )
                     }
                 }
                 .overlay(alignment: .bottom) {
-                    Text("Raster data copyright Scottish Government and SEPA (2014)")
+                    Text(
+                        "Raster data copyright Scottish Government and SEPA (2014)"
+                    )
                         .font(.caption)
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 6)
-                        .background(.thinMaterial, ignoresSafeAreaEdges: .horizontal)
+                        .background(
+                            .thinMaterial,
+                            ignoresSafeAreaEdges: .horizontal
+                        )
                 }
                 .toolbar {
                     ToolbarItem(placement: .bottomBar) {
