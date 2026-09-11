@@ -33,76 +33,76 @@ struct AnalyzeTerrainSuitabilityFromSlopeAndAspectView: View {
                 viewpoint: model.viewpoint,
                 analysisOverlays: [model.analysisOverlay]
             )
-                .onAnalysisViewStateChanged { analysis, viewState in
-                    guard let activeAnalysis = model.activeAnalysis,
-                          analysis === activeAnalysis else {
-                        return
-                    }
-                    if let analysisError = viewState.error {
-                        error = analysisError
-                    }
+            .onAnalysisViewStateChanged { analysis, viewState in
+                guard let activeAnalysis = model.activeAnalysis,
+                      analysis === activeAnalysis else {
+                    return
                 }
-                .overlay(alignment: .top) {
-                    if scenarioToastID != nil {
-                        Text(model.selectedScenario.description)
-                            .font(.footnote)
-                            .foregroundStyle(.secondary)
-                            .multilineTextAlignment(.center)
-                            .padding()
-                            .background(.regularMaterial)
-                            .clipShape(.rect(cornerRadius: 8))
-                            .padding()
-                            .transition(
-                                .move(edge: .top).combined(with: .opacity)
-                            )
-                    }
+                if let analysisError = viewState.error {
+                    error = analysisError
                 }
-                .overlay(alignment: .bottom) {
-                    Text(
-                        "Raster data copyright Scottish Government and SEPA (2014)"
-                    )
-                        .font(.caption)
-                        .frame(maxWidth: .infinity)
-                        .padding(.vertical, 6)
-                        .background(
-                            .thinMaterial,
-                            ignoresSafeAreaEdges: .horizontal
+            }
+            .overlay(alignment: .top) {
+                if scenarioToastID != nil {
+                    Text(model.selectedScenario.description)
+                        .font(.footnote)
+                        .foregroundStyle(.secondary)
+                        .multilineTextAlignment(.center)
+                        .padding()
+                        .background(.regularMaterial)
+                        .clipShape(.rect(cornerRadius: 8))
+                        .padding()
+                        .transition(
+                            .move(edge: .top).combined(with: .opacity)
                         )
                 }
-                .toolbar {
-                    ToolbarItem(placement: .bottomBar) {
-                        Button("Settings", systemImage: "gear") {
-                            isShowingSettings.toggle()
-                        }
-                        .popover(isPresented: $isShowingSettings) {
-                            TerrainSuitabilitySettings(model: model)
-                                .presentationCompactAdaptation(.popover)
-                                .frame(idealWidth: 320, idealHeight: 340)
-                        }
+            }
+            .overlay(alignment: .bottom) {
+                Text(
+                    "Raster data copyright Scottish Government and SEPA (2014)"
+                )
+                .font(.caption)
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 6)
+                .background(
+                    .thinMaterial,
+                    ignoresSafeAreaEdges: .horizontal
+                )
+            }
+            .toolbar {
+                ToolbarItem(placement: .bottomBar) {
+                    Button("Settings", systemImage: "gear") {
+                        isShowingSettings.toggle()
+                    }
+                    .popover(isPresented: $isShowingSettings) {
+                        TerrainSuitabilitySettings(model: model)
+                            .presentationCompactAdaptation(.popover)
+                            .frame(idealWidth: 320, idealHeight: 340)
                     }
                 }
-                .task {
-                    do {
-                        try await model.configureTerrainSuitabilityAnalyses()
-                        scenarioToastID = UUID()
-                    } catch {
-                        self.error = error
-                    }
-                }
-                .task(id: scenarioToastID) {
-                    guard scenarioToastID != nil else { return }
-                    
-                    try? await Task.sleep(for: .seconds(3))
-                    guard !Task.isCancelled else { return }
-                    
-                    scenarioToastID = nil
-                }
-                .onChange(of: model.selectedScenario) {
-                    isShowingSettings = false
+            }
+            .task {
+                do {
+                    try await model.configureTerrainSuitabilityAnalyses()
                     scenarioToastID = UUID()
+                } catch {
+                    self.error = error
                 }
-                .animation(.default, value: scenarioToastID)
-                .errorAlert(presentingError: $error)
+            }
+            .task(id: scenarioToastID) {
+                guard scenarioToastID != nil else { return }
+                
+                try? await Task.sleep(for: .seconds(3))
+                guard !Task.isCancelled else { return }
+                
+                scenarioToastID = nil
+            }
+            .onChange(of: model.selectedScenario) {
+                isShowingSettings = false
+                scenarioToastID = UUID()
+            }
+            .animation(.default, value: scenarioToastID)
+            .errorAlert(presentingError: $error)
         }
     }
 }
