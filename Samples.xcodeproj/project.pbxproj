@@ -2338,6 +2338,7 @@
 				9533C389303BE34C00B79322 /* AddFeaturesWithSharedTemplateView.Model.swift */,
 			);
 			path = "Add features with shared templates";
+		};
 		9533C383303BAF7800B79322 /* Display geometry editor information during interaction */ = {
 			isa = PBXGroup;
 			children = (
