@@ -195,7 +195,7 @@ extension AddFeaturesWithSharedTemplateView {
             defer { isBusy = false }
             
             do {
-let editResults = try await serviceGeodatabase.applyEdits()
+                let editResults = try await serviceGeodatabase.applyEdits()
                 guard editResults.allSatisfy({
                     $0.editResults.allSatisfy { !$0.didCompleteWithErrors }
                 }) else {
