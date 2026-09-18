@@ -37,7 +37,7 @@ extension AddFeaturesWithSharedTemplateView {
         let map = Map(
             item: PortalItem(
                 portal: .arcGISOnline(connection: .anonymous),
-                id: PortalItem.ID("b635be46dfb545b888077389ac7f0962")!
+                id: .parksAndGroundsAssets
             )
         )
         
@@ -62,9 +62,8 @@ extension AddFeaturesWithSharedTemplateView {
         /// The service geodatabase that provides the shared templates.
         private var serviceGeodatabase: ServiceGeodatabase?
         
-        /// Loads the map and creates items for one preset and one group template.
-        /// - Parameter displayScale: The display scale used to create template swatches.
-        func setUp(displayScale: CGFloat) async throws {
+        /// Loads the map and creates items for up to one preset and one group template.
+        func setUp() async throws {
             guard templateItems.isEmpty else { return }
             
             isBusy = true
@@ -73,6 +72,7 @@ extension AddFeaturesWithSharedTemplateView {
             do {
                 try await map.load()
                 
+                // Get the first service geodatabase from the map's feature layers.
                 guard let serviceGeodatabase = map.operationalLayers
                     .compactMap({ $0 as? FeatureLayer })
                     .compactMap(\.featureTable)
@@ -87,6 +87,7 @@ extension AddFeaturesWithSharedTemplateView {
                 var includedKinds: Set<SharedTemplate.Kind> = []
                 var items: [TemplateItem] = []
                 
+                // Display the first template of each supported kind, ordered by layer ID.
                 for layerID in templatesByLayer.keys.sorted() {
                     guard let templates = templatesByLayer[layerID] else { continue }
                     
@@ -98,9 +99,7 @@ extension AddFeaturesWithSharedTemplateView {
                             TemplateItem(
                                 template: template,
                                 layerID: layerID,
-                                swatch: swatch.withConfiguration(
-                                    UIImage.SymbolConfiguration(scale: displayScale >= 2 ? .large : .medium)
-                                ),
+                                swatch: swatch,
                                 kindName: template.kind == .preset ? "Preset" : "Group"
                             )
                         )
@@ -222,7 +221,7 @@ extension AddFeaturesWithSharedTemplateView {
         }
         
         /// The instruction shown while the template picker is available.
-        private static let instruction = "Tap a shared template to create features."
+        private static let instruction = "Open Shared Templates and select a template to create features."
         
         /// Resets state after pending edits are saved or undone.
         private func resetAfterEditing(status: String) {
@@ -231,6 +230,11 @@ extension AddFeaturesWithSharedTemplateView {
             self.status = "\(status) \(Self.instruction)"
         }
     }
+}
+
+private extension PortalItem.ID {
+    /// The ID of the Parks and Grounds Assets web map on ArcGIS Online.
+    static var parksAndGroundsAssets: Self { .init("b635be46dfb545b888077389ac7f0962")! }
 }
 
 private extension AddFeaturesWithSharedTemplateView.Model {

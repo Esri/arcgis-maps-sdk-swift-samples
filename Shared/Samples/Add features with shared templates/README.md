@@ -10,13 +10,13 @@ Preset and group shared templates support guided, repeatable, high-quality editi
 
 ## How to use the sample
 
-Hover over a shared template to view its description. Select a template and tap on the map to place the geometry. Choose "Complete" to create the features, "Save" to apply local edits, or "Undo" to discard them.
+Open "Shared Templates" and select a template. When using a pointer, hover over a template to view its description. Tap on the map to place a point, or tap multiple positions to sketch a line. Once the sketch is valid, choose "Complete" to create features locally, or choose "Cancel" to discard the sketch. Choose "Save" to send the local edits to the service, or "Undo" to discard all local edits.
 
 ## How it works
 
 1. Create a `Map` from a web map portal item and load it.
 2. Inspect the map's operational layers for a `FeatureLayer` backed by a `ServiceFeatureTable`, then get its `ServiceGeodatabase`, which conforms to `SharedTemplateSource`.
-3. Call `querySharedTemplates(using:)` without parameters to return all shared templates for all layers. Store each template's layer ID and display its name, kind, description, and swatch.
+3. Call `querySharedTemplates(using:)` with its default query parameters to return all shared templates for all layers. Visit the layers in layer ID order and select the first preset and group templates encountered, displaying up to one of each kind. Store each selected template's layer ID and display its name, kind, description, and swatch.
 4. Call `makeSwatch(layerID:)` to generate each template's swatch image, falling back to a default image when a swatch is unavailable.
 5. Call `defaultConstructionTool(forLayerWithID:)` and use the `GeometryConstructionTool.Kind` to start a `GeometryEditor` with either a point or polyline geometry type.
 6. After the user selects "Complete", call `stop()` on the geometry editor. Pass the returned geometry to `makeFeatures(sharedTemplate:geometry:)` to create an in-memory `SharedTemplateFeatureCreationSet` with default geometries and attributes.
