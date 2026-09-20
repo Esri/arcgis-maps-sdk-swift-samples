@@ -14,7 +14,7 @@ The sample initially displays a point cloud layer using its RGB values. Select a
 
 Use the point size control to increase or decrease the size of the rendered points. Point size is a property of the renderer's splat algorithm.
 
-Use the filter controls to show points that match selected classification codes, lidar return types, and scan direction flag values. Multiple filters can be applied at the same time. Clear an individual filter to remove it from the point cloud layer. 
+Use the filter controls to show points that match selected classification codes, lidar return types, and scan direction flag values. Multiple filters can be applied at the same time. Clear an individual filter to remove it from the point cloud layer.
 
 ## How it works
 
