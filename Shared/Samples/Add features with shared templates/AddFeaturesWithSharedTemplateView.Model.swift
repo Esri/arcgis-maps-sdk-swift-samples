@@ -13,13 +13,15 @@
 // limitations under the License.
 
 import ArcGIS
-import SwiftUI
+import Observation
+import UIKit
 
 extension AddFeaturesWithSharedTemplateView {
     /// The view model for the sample.
     @MainActor
-    final class Model: ObservableObject {
-        /// A displayable shared template and the ID of the layer it creates features for.
+    @Observable
+    final class Model {
+        /// A displayable shared template and the ID of its target layer.
         struct TemplateItem: Identifiable {
             /// A unique identifier for the item.
             let id = UUID()
@@ -29,11 +31,19 @@ extension AddFeaturesWithSharedTemplateView {
             let layerID: Int
             /// The swatch displayed for the template.
             let swatch: UIImage
+
             /// A user-friendly name for the template kind.
-            let kindName: String
+            var kindLabel: String {
+                switch template.kind {
+                case .feature: "Feature"
+                case .group: "Group"
+                case .preset: "Preset"
+                @unknown default: "Unknown"
+                }
+            }
         }
         
-        /// The map containing a service-backed feature layer with shared templates.
+        /// The map containing service-backed layers with shared templates.
         let map = Map(
             item: PortalItem(
                 portal: .arcGISOnline(connection: .anonymous),
@@ -41,29 +51,29 @@ extension AddFeaturesWithSharedTemplateView {
             )
         )
         
-        /// The geometry editor used to place the base geometry for a shared template.
+        /// The geometry editor used to place a shared template's base geometry.
         let geometryEditor = GeometryEditor()
         
         /// The shared templates displayed in the template picker.
-        @Published private(set) var templateItems: [TemplateItem] = []
+        private(set) var templateItems: [TemplateItem] = []
         
         /// The template currently being used to create features.
-        @Published private(set) var activeTemplateItem: TemplateItem?
+        private(set) var activeTemplateItem: TemplateItem?
         
-        /// A Boolean value indicating whether the geodatabase has edits to save or undo.
-        @Published private(set) var hasPendingEdits = false
+        /// Whether the geodatabase has edits to save or undo.
+        private(set) var hasPendingEdits = false
         
         /// The instructions displayed to the user.
-        @Published private(set) var status = "Loading shared templates…"
+        private(set) var status = "Loading shared templates…"
         
-        /// A Boolean value indicating whether an asynchronous operation is in progress.
-        @Published private(set) var isBusy = false
+        /// Whether an asynchronous operation is in progress.
+        private(set) var isBusy = false
         
         /// The service geodatabase that provides the shared templates.
         private var serviceGeodatabase: ServiceGeodatabase?
         
-        /// Loads the map and creates items for up to one preset and one group template.
-        func setUp() async throws {
+        /// Loads the map and its available preset and group shared templates.
+        func loadSharedTemplates() async throws {
             guard templateItems.isEmpty else { return }
             
             isBusy = true
@@ -72,7 +82,7 @@ extension AddFeaturesWithSharedTemplateView {
             do {
                 try await map.load()
                 
-                // Get the first service geodatabase from the map's feature layers.
+                // Get the first service geodatabase from the feature layers.
                 guard let serviceGeodatabase = map.operationalLayers
                     .compactMap({ $0 as? FeatureLayer })
                     .compactMap(\.featureTable)
@@ -83,31 +93,9 @@ extension AddFeaturesWithSharedTemplateView {
                 }
                 self.serviceGeodatabase = serviceGeodatabase
                 
-                let templatesByLayer = try await serviceGeodatabase.querySharedTemplates()
-                var includedKinds: Set<SharedTemplate.Kind> = []
-                var items: [TemplateItem] = []
-                
-                // Display the first template of each supported kind, ordered by layer ID.
-                for layerID in templatesByLayer.keys.sorted() {
-                    guard let templates = templatesByLayer[layerID] else { continue }
-                    
-                    for template in templates
-                    where [.preset, .group].contains(template.kind) && !includedKinds.contains(template.kind) {
-                        let swatch = (try? await template.makeSwatch(layerID: layerID))
-                            ?? UIImage(systemName: "plus.square")!
-                        items.append(
-                            TemplateItem(
-                                template: template,
-                                layerID: layerID,
-                                swatch: swatch,
-                                kindName: template.kind == .preset ? "Preset" : "Group"
-                            )
-                        )
-                        includedKinds.insert(template.kind)
-                    }
-                    
-                    if includedKinds.count == 2 { break }
-                }
+                let templatesByLayer = try await serviceGeodatabase
+                    .querySharedTemplates()
+                let items = try await makeTemplateItems(from: templatesByLayer)
                 
                 guard !items.isEmpty else {
                     throw SampleError.supportedTemplateNotFound
@@ -118,6 +106,45 @@ extension AddFeaturesWithSharedTemplateView {
                 status = "Unable to load templates."
                 throw error
             }
+        }
+
+        /// Creates picker items for the first preset and group templates,
+        /// visiting layers in ascending ID order.
+        private func makeTemplateItems(
+            from templatesByLayer: [Int: [SharedTemplate]]
+        ) async throws -> [TemplateItem] {
+            var includedKinds: Set<SharedTemplate.Kind> = []
+            var items: [TemplateItem] = []
+
+            for layerID in templatesByLayer.keys.sorted() {
+                guard let templates = templatesByLayer[layerID] else {
+                    continue
+                }
+
+                for template in templates {
+                    guard [.preset, .group].contains(template.kind),
+                          !includedKinds.contains(template.kind) else {
+                        continue
+                    }
+                    try Task.checkCancellation()
+
+                    // A missing swatch should not prevent template selection.
+                    let swatch = (try? await template.makeSwatch(
+                        layerID: layerID
+                    )) ?? UIImage(systemName: "plus.square")!
+                    // Do not treat task cancellation as a missing swatch.
+                    try Task.checkCancellation()
+                    items.append(TemplateItem(
+                        template: template,
+                        layerID: layerID,
+                        swatch: swatch
+                    ))
+                    includedKinds.insert(template.kind)
+                }
+
+                if includedKinds.count == 2 { break }
+            }
+            return items
         }
         
         /// Starts drawing a geometry for a shared template.
@@ -147,31 +174,40 @@ extension AddFeaturesWithSharedTemplateView {
             }
         }
         
-        /// Creates features from the geometry and adds them to the service geodatabase locally.
+        /// Creates features from the geometry and adds them locally
+        /// to the service geodatabase.
         func completeDrawing() async throws {
             guard let activeTemplateItem,
-                  let serviceGeodatabase,
-                  let geometry = geometryEditor.stop(),
+                  let serviceGeodatabase else { return }
+            guard geometryEditor.isStarted,
+                  let geometry = geometryEditor.geometry,
                   geometry.sketchIsValid else {
-                cancelDrawing(status: "No valid geometry was drawn.")
+                status = "Draw a valid geometry, then tap Complete or Cancel."
                 return
             }
-            
+            geometryEditor.stop()
+            self.activeTemplateItem = nil
+
             isBusy = true
             status = "Creating features…"
-            defer { isBusy = false }
-            
+            defer {
+                updateAfterEditing(status: status)
+                isBusy = false
+            }
+
             do {
-                let featureCreationSet = try await serviceGeodatabase.makeFeatures(
-                    sharedTemplate: activeTemplateItem.template,
-                    geometry: geometry
+                let featureCreationSet = try await serviceGeodatabase
+                    .makeFeatures(
+                        sharedTemplate: activeTemplateItem.template,
+                        geometry: geometry
+                    )
+                try Task.checkCancellation()
+                try await serviceGeodatabase.addFeatures(
+                    using: featureCreationSet
                 )
-                try await serviceGeodatabase.addFeatures(using: featureCreationSet)
-                hasPendingEdits = serviceGeodatabase.hasLocalEdits
-                status = "Save or undo edits."
+                status = "Features added."
             } catch {
-                self.activeTemplateItem = nil
-                status = "Unable to create or add features. \(Self.instruction)"
+                status = "Unable to create or add features."
                 throw error
             }
         }
@@ -189,11 +225,14 @@ extension AddFeaturesWithSharedTemplateView {
         /// Applies the local edits to the service.
         func saveEdits() async throws {
             guard let serviceGeodatabase else { return }
-            
+
             isBusy = true
             status = "Saving edits…"
-            defer { isBusy = false }
-            
+            defer {
+                updateAfterEditing(status: status)
+                isBusy = false
+            }
+
             do {
                 let editResults = try await serviceGeodatabase.applyEdits()
                 guard editResults.allSatisfy({
@@ -202,7 +241,7 @@ extension AddFeaturesWithSharedTemplateView {
                     status = "Unable to save edits."
                     return
                 }
-                resetAfterEditing(status: "Edits saved.")
+                status = "Edits saved."
             } catch {
                 status = "Unable to save edits."
                 throw error
@@ -212,14 +251,17 @@ extension AddFeaturesWithSharedTemplateView {
         /// Discards all local edits in the service geodatabase.
         func undoEdits() async throws {
             guard let serviceGeodatabase else { return }
-            
+
             isBusy = true
             status = "Undoing local edits…"
-            defer { isBusy = false }
-            
+            defer {
+                updateAfterEditing(status: status)
+                isBusy = false
+            }
+
             do {
                 try await serviceGeodatabase.undoLocalEdits()
-                resetAfterEditing(status: "Edits undone.")
+                status = "Edits undone."
             } catch {
                 status = "Unable to undo edits."
                 throw error
@@ -227,20 +269,25 @@ extension AddFeaturesWithSharedTemplateView {
         }
         
         /// The instruction shown while the template picker is available.
-        private static let instruction = "Open Shared Templates and select a template to create features."
+        private static let instruction = """
+            Open Shared Templates and select a template to create features.
+            """
         
-        /// Resets state after pending edits are saved or undone.
-        private func resetAfterEditing(status: String) {
-            hasPendingEdits = false
+        /// Reconciles state after an editing operation, even if it failed or was canceled.
+        private func updateAfterEditing(status: String) {
+            hasPendingEdits = serviceGeodatabase?.hasLocalEdits ?? false
             activeTemplateItem = nil
-            self.status = "\(status) \(Self.instruction)"
+            let instruction = hasPendingEdits ? "Save or undo edits." : Self.instruction
+            self.status = "\(status) \(instruction)"
         }
     }
 }
 
 private extension PortalItem.ID {
     /// The ID of the Parks and Grounds Assets web map on ArcGIS Online.
-    static var parksAndGroundsAssets: Self { .init("b635be46dfb545b888077389ac7f0962")! }
+    static var parksAndGroundsAssets: Self {
+        .init("b635be46dfb545b888077389ac7f0962")!
+    }
 }
 
 private extension AddFeaturesWithSharedTemplateView.Model {
@@ -250,6 +297,7 @@ private extension AddFeaturesWithSharedTemplateView.Model {
         case supportedTemplateNotFound
         case unsupportedConstructionTool
         
+        /// The user-facing explanation of the workflow error.
         var errorDescription: String? {
             switch self {
             case .sharedTemplateSourceNotFound:
@@ -257,7 +305,10 @@ private extension AddFeaturesWithSharedTemplateView.Model {
             case .supportedTemplateNotFound:
                 "The map does not contain a preset or group shared template."
             case .unsupportedConstructionTool:
-                "The template's default construction tool is not supported by this sample."
+                """
+                The template's default construction tool is not supported \
+                by this sample.
+                """
             }
         }
     }

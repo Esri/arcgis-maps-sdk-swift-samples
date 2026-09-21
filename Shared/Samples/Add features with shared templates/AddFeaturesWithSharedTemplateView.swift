@@ -17,21 +17,20 @@ import SwiftUI
 
 struct AddFeaturesWithSharedTemplateView: View {
     /// The view model for the sample.
-    @StateObject private var model = Model()
+    @State private var model = Model()
     
-    /// The geometry currently drawn in the geometry editor.
-    @State private var editorGeometry: Geometry?
+    /// The observed sketch validity. The geometry editor's change stream
+    /// updates this state so SwiftUI refreshes the Complete button.
+    @State private var canCompleteDrawing = false
     
-    /// A Boolean value indicating whether the shared templates popover is showing.
+    /// Whether the shared templates popover is showing.
     @State private var isShowingTemplates = false
+
+    /// The requested editing operation, used as the editing task's identity.
+    @State private var pendingAction: EditingAction?
     
     /// The error shown in the error alert.
     @State private var error: (any Error)?
-    
-    /// A Boolean value indicating whether the current sketch can be completed.
-    private var canCompleteDrawing: Bool {
-        editorGeometry?.sketchIsValid ?? false
-    }
     
     var body: some View {
         MapView(map: model.map)
@@ -56,18 +55,46 @@ struct AddFeaturesWithSharedTemplateView: View {
             }
             .task {
                 do {
-                    try await model.setUp()
+                    try await model.loadSharedTemplates()
                 } catch {
+                    guard !Task.isCancelled,
+                          !(error is CancellationError) else { return }
                     self.error = error
                 }
             }
             .task {
                 for await geometry in model.geometryEditor.$geometry {
-                    editorGeometry = geometry
+                    canCompleteDrawing = geometry?.sketchIsValid ?? false
+                }
+            }
+            // Keep this task on the map view, not the conditional buttons.
+            .task(id: pendingAction) {
+                guard let action = pendingAction else { return }
+                defer { pendingAction = nil }
+
+                do {
+                    try Task.checkCancellation()
+                    switch action {
+                    case .save:
+                        try await model.saveEdits()
+                    case .undo:
+                        try await model.undoEdits()
+                    case .complete:
+                        try await model.completeDrawing()
+                    }
+                } catch {
+                    // Cancellation does not roll back submitted service edits.
+                    guard !Task.isCancelled,
+                          !(error is CancellationError) else { return }
+                    self.error = error
                 }
             }
             .onDisappear {
-                model.cancelDrawing()
+                // Do not replay a queued action when the view reappears.
+                pendingAction = nil
+                if model.geometryEditor.isStarted {
+                    model.cancelDrawing()
+                }
             }
             .errorAlert(presentingError: $error)
     }
@@ -98,7 +125,7 @@ struct AddFeaturesWithSharedTemplateView: View {
                 .presentationCompactAdaptation(.popover)
                 .frame(idealWidth: 320)
         }
-        .disabled(model.isBusy)
+        .disabled(model.isBusy || pendingAction != nil)
     }
     
     /// The available shared templates and their swatches.
@@ -122,7 +149,7 @@ struct AddFeaturesWithSharedTemplateView: View {
                         VStack(alignment: .leading) {
                             Text(item.template.name)
                                 .fontWeight(.semibold)
-                            Text(item.kindName)
+                            Text(item.kindLabel)
                                 .font(.caption)
                         }
                         
@@ -132,7 +159,7 @@ struct AddFeaturesWithSharedTemplateView: View {
                 }
                 .buttonStyle(.plain)
                 .help(item.template.description)
-                .disabled(model.isBusy)
+                .disabled(model.isBusy || pendingAction != nil)
             }
         }
     }
@@ -141,39 +168,21 @@ struct AddFeaturesWithSharedTemplateView: View {
     private var editButtons: some View {
         Group {
             Button("Save") {
-                Task {
-                    do {
-                        try await model.saveEdits()
-                    } catch {
-                        self.error = error
-                    }
-                }
+                pendingAction = .save
             }
             
             Button("Undo", role: .destructive) {
-                Task {
-                    do {
-                        try await model.undoEdits()
-                    } catch {
-                        self.error = error
-                    }
-                }
+                pendingAction = .undo
             }
         }
-        .disabled(model.isBusy)
+        .disabled(model.isBusy || pendingAction != nil)
     }
     
     /// The controls for completing or canceling the current sketch.
     private var drawingButtons: some View {
         Group {
             Button("Complete") {
-                Task {
-                    do {
-                        try await model.completeDrawing()
-                    } catch {
-                        self.error = error
-                    }
-                }
+                pendingAction = .complete
             }
             .disabled(!canCompleteDrawing)
             
@@ -181,7 +190,16 @@ struct AddFeaturesWithSharedTemplateView: View {
                 model.cancelDrawing()
             }
         }
-        .disabled(model.isBusy)
+        .disabled(model.isBusy || pendingAction != nil)
+    }
+}
+
+private extension AddFeaturesWithSharedTemplateView {
+    /// An editing operation requested by a toolbar button.
+    enum EditingAction: Equatable {
+        case save
+        case undo
+        case complete
     }
 }
 
