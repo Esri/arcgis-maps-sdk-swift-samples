@@ -165,7 +165,7 @@ extension AddFeaturesWithSharedTemplateView {
             case .point:
                 status = "Place a point, then tap Complete or Cancel."
                 geometryEditor.start(withType: Point.self)
-            case .line:
+            case .polyline:
                 status = "Sketch a line, then tap Complete or Cancel."
                 geometryEditor.start(withType: Polyline.self)
             default:
