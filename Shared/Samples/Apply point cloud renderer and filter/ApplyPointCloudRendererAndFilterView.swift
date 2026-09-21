@@ -25,7 +25,15 @@ struct ApplyPointCloudRendererAndFilterView: View {
     /// A Boolean value indicating whether the point cloud layer is loading.
     @State private var isLoading = true
 
-    /// The error shown in the error alert.
+    /// The loading error shown with a retry action, separate from rendering
+    /// errors.
+    @State private var loadError: (any Error)?
+
+    /// The loading task's identity. Incrementing it starts another attempt
+    /// through the view's `.task(id:)` modifier.
+    @State private var loadAttempt = 0
+
+    /// The rendering error shown in the error alert.
     @State private var error: (any Error)?
 
     var body: some View {
@@ -38,6 +46,7 @@ struct ApplyPointCloudRendererAndFilterView: View {
             }
             .onLayerViewStateChanged { layer, viewState in
                 if layer === model.pointCloudLayer,
+                   model.pointCloudLayer.loadStatus == .loaded,
                    viewState.status.contains(.error),
                    let error = viewState.error {
                     self.error = error
@@ -47,15 +56,48 @@ struct ApplyPointCloudRendererAndFilterView: View {
                 if isLoading {
                     ProgressView("Loading point cloud")
                         .padding()
-                        .background(.regularMaterial, in: .rect(cornerRadius: 10))
+                        .background(
+                            .regularMaterial,
+                            in: .rect(cornerRadius: 10)
+                        )
+                } else if let loadError {
+                    VStack(spacing: 12) {
+                        Label(
+                            "Unable to Load Point Cloud",
+                            systemImage: "exclamationmark.triangle"
+                        )
+                        .font(.headline)
+                        Text(loadError.localizedDescription)
+                            .font(.subheadline)
+                        Button("Retry") {
+                            isLoading = true
+                            loadAttempt += 1
+                        }
+                        .buttonStyle(.borderedProminent)
+                    }
+                    .multilineTextAlignment(.center)
+                    .padding()
+                    .frame(maxWidth: 320)
+                    .background(.regularMaterial, in: .rect(cornerRadius: 10))
+                    .padding()
                 }
             }
-            .task {
+            .task(id: loadAttempt) {
+                isLoading = true
+                loadError = nil
                 defer { isLoading = false }
                 do {
-                    try await model.pointCloudLayer.load()
+                    // Retry failed loads on the same layer instance.
+                    if model.pointCloudLayer.loadStatus == .failed {
+                        try await model.pointCloudLayer.retryLoad()
+                    } else {
+                        try await model.pointCloudLayer.load()
+                    }
                 } catch {
-                    self.error = error
+                    // Leaving the sample should not present a loading failure.
+                    guard !Task.isCancelled,
+                          !(error is CancellationError) else { return }
+                    loadError = error
                 }
             }
             .errorAlert(presentingError: $error)
@@ -64,6 +106,7 @@ struct ApplyPointCloudRendererAndFilterView: View {
                     Button("Settings", systemImage: "gear") {
                         settingsAreVisible = true
                     }
+                    .disabled(isLoading || loadError != nil)
                     .popover(isPresented: $settingsAreVisible) {
                         NavigationStack {
                             SettingsView(model: model)
@@ -90,10 +133,14 @@ private extension ApplyPointCloudRendererAndFilterView {
                 Section("Renderer") {
                     Picker("Type", selection: $model.rendererKind) {
                         ForEach(RendererKind.allCases, id: \.self) { kind in
-                            Text(kind.rawValue).tag(kind)
+                            Text(kind.rawValue)
                         }
                     }
-                    LabeledContent("Point Size", value: model.scaleFactor, format: .number.precision(.fractionLength(1)))
+                    LabeledContent(
+                        "Point Size",
+                        value: model.scaleFactor,
+                        format: .number.precision(.fractionLength(1))
+                    )
                     Slider(value: $model.scaleFactor, in: 0.1...5, step: 0.1) {
                         Text("Point Size")
                     } minimumValueLabel: {
@@ -104,31 +151,68 @@ private extension ApplyPointCloudRendererAndFilterView {
                 }
 
                 Section {
+                    LabeledContent(
+                        "Status",
+                        value: model.classificationFilterIsActive
+                            ? "Applied" : "Not Applied"
+                    )
                     Picker("Mode", selection: $model.classificationMode) {
                         Text("Include").tag(PointCloudValueFilter.Mode.include)
                         Text("Exclude").tag(PointCloudValueFilter.Mode.exclude)
                     }
-                    ForEach(Classification.allCases, id: \.self) { classification in
+                    ForEach(
+                        Classification.allCases,
+                        id: \.self
+                    ) { classification in
                         Toggle(classification.label, isOn: Binding(
-                            get: { model.selectedClassifications.contains(classification) },
-                            set: { model.setClassification(classification, isSelected: $0) }
+                            get: {
+                                model.selectedClassifications
+                                    .contains(classification)
+                            },
+                            set: {
+                                model.setClassification(
+                                    classification,
+                                    isSelected: $0
+                                )
+                            }
                         ))
                     }
-                    Button("Clear Classification Filter", action: model.clearClassificationFilter)
+                    Button(
+                        "Clear Classification Filter",
+                        action: model.clearClassificationFilter
+                    )
+                    .disabled(!model.classificationFilterIsActive)
                 } header: {
                     Text("Classification Filter")
                 } footer: {
-                    Text("Once applied, Include with no selections hides all points; Exclude with no selections shows all points. Clear removes this filter.")
+                    Text("""
+                        Once applied, Include with no selections hides all \
+                        points; Exclude with no selections shows all points. \
+                        Clear removes this filter.
+                        """)
                 }
 
                 Section {
-                    ForEach(PointCloudReturnFilter.ReturnType.options, id: \.self) { returnType in
-                        Toggle(returnType.label, isOn: Binding(
-                            get: { model.selectedReturns.contains(returnType) },
-                            set: { model.setReturnType(returnType, isSelected: $0) }
-                        ))
+                    ForEach(ReturnOptions.types, id: \.self) { returnType in
+                        Toggle(
+                            ReturnOptions.label(for: returnType),
+                            isOn: Binding(
+                                get: {
+                                    model.selectedReturns.contains(returnType)
+                                },
+                                set: {
+                                    model.setReturnType(
+                                        returnType,
+                                        isSelected: $0
+                                    )
+                                }
+                            )
+                        )
                     }
-                    Button("Clear Return Filter", action: model.clearReturnFilter)
+                    Button(
+                        "Clear Return Filter",
+                        action: model.clearReturnFilter
+                    )
                 } header: {
                     Text("Return Filter")
                 } footer: {
@@ -137,8 +221,11 @@ private extension ApplyPointCloudRendererAndFilterView {
 
                 Section("Scan Direction Filter") {
                     Picker("Flag Bit 6", selection: $model.scanDirection) {
-                        ForEach(ScanDirection.allCases, id: \.self) { direction in
-                            Text(direction.rawValue).tag(direction)
+                        ForEach(
+                            ScanDirection.allCases,
+                            id: \.self
+                        ) { direction in
+                            Text(direction.rawValue)
                         }
                     }
                     Button("Clear Scan Direction Filter") {
