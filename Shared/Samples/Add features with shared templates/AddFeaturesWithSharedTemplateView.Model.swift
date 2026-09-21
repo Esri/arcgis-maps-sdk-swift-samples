@@ -134,11 +134,13 @@ extension AddFeaturesWithSharedTemplateView {
                     )) ?? UIImage(systemName: "plus.square")!
                     // Do not treat task cancellation as a missing swatch.
                     try Task.checkCancellation()
-                    items.append(TemplateItem(
-                        template: template,
-                        layerID: layerID,
-                        swatch: swatch
-                    ))
+                    items.append(
+                        TemplateItem(
+                            template: template,
+                            layerID: layerID,
+                            swatch: swatch
+                        )
+                    )
                     includedKinds.insert(template.kind)
                 }
 
@@ -174,8 +176,8 @@ extension AddFeaturesWithSharedTemplateView {
             }
         }
         
-        /// Creates features from the geometry and adds them locally
-        /// to the service geodatabase.
+        /// Completes the drawing in the geometry editor and adds 
+        /// the feature to the local service geodatabase.
         func completeDrawing() async throws {
             guard let activeTemplateItem,
                   let serviceGeodatabase else { return }

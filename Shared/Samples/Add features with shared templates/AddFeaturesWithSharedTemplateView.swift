@@ -155,7 +155,7 @@ struct AddFeaturesWithSharedTemplateView: View {
                         
                         Spacer()
                     }
-                    .contentShape(Rectangle())
+                    .contentShape(.rect)
                 }
                 .buttonStyle(.plain)
                 .help(item.template.description)
