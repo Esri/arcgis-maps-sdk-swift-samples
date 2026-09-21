@@ -195,6 +195,8 @@
 		955AFAC42C10FD6F009C8FE5 /* ApplyMosaicRuleToRastersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 955AFAC32C10FD6F009C8FE5 /* ApplyMosaicRuleToRastersView.swift */; };
 		956332482E3455DB0091C877 /* SimplifyGeometryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 956332472E3455D70091C877 /* SimplifyGeometryView.swift */; };
 		9563324C2E3950880091C877 /* UpdateRelatedFeaturesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9563324B2E39507E0091C877 /* UpdateRelatedFeaturesView.swift */; };
+		9579E0EA3060B3F8003923F6 /* UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9579E0E93060B3F6003923F6 /* UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView.swift */; };
+		9579E0ED3060B6E1003923F6 /* UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView.Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9579E0EC3060B6DD003923F6 /* UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView.Model.swift */; };
 		9579FCEA2C3360BB00FC8A1D /* EditFeatureAttachmentsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9579FCE92C3360BB00FC8A1D /* EditFeatureAttachmentsView.swift */; };
 		95813E392DF88FD300342CBF /* SetMapImageLayerSublayerVisibilityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95813E382DF88FD000342CBF /* SetMapImageLayerSublayerVisibilityView.swift */; };
 		95A572192C0FDCC9006E8B48 /* ShowScaleBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A572182C0FDCC9006E8B48 /* ShowScaleBarView.swift */; };
@@ -658,6 +660,8 @@
 		955AFAC32C10FD6F009C8FE5 /* ApplyMosaicRuleToRastersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplyMosaicRuleToRastersView.swift; sourceTree = "<group>"; };
 		956332472E3455D70091C877 /* SimplifyGeometryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimplifyGeometryView.swift; sourceTree = "<group>"; };
 		9563324B2E39507E0091C877 /* UpdateRelatedFeaturesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateRelatedFeaturesView.swift; sourceTree = "<group>"; };
+		9579E0E93060B3F6003923F6 /* UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView.swift; sourceTree = "<group>"; };
+		9579E0EC3060B6DD003923F6 /* UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView.Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView.Model.swift; sourceTree = "<group>"; };
 		9579FCE92C3360BB00FC8A1D /* EditFeatureAttachmentsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditFeatureAttachmentsView.swift; sourceTree = "<group>"; };
 		957B25D32E31BE23007E88F9 /* ShowWFSLayerWithXMLQueryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowWFSLayerWithXMLQueryView.swift; sourceTree = "<group>"; };
 		95813E382DF88FD000342CBF /* SetMapImageLayerSublayerVisibilityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetMapImageLayerSublayerVisibilityView.swift; sourceTree = "<group>"; };
@@ -1307,6 +1311,7 @@
 				002056C22DD7F6C70016B8A9 /* Take screenshot */,
 				7573E81229D6134C00BEED9C /* Trace utility network */,
 				95DF31812FD37D3A005D06E7 /* Update basemap for contrast accessibility */,
+				9579E0EB3060B422003923F6 /* Update labels and symbols to scale for visual accessibility */,
 				9563324D2E3950960091C877 /* Update related features */,
 				D74EA7802B6DADA5008F6C7C /* Validate utility network topology */,
 			);
@@ -2391,6 +2396,15 @@
 				9563324B2E39507E0091C877 /* UpdateRelatedFeaturesView.swift */,
 			);
 			path = "Update related features";
+			sourceTree = "<group>";
+		};
+		9579E0EB3060B422003923F6 /* Update labels and symbols to scale for visual accessibility */ = {
+			isa = PBXGroup;
+			children = (
+				9579E0E93060B3F6003923F6 /* UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView.swift */,
+				9579E0EC3060B6DD003923F6 /* UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView.Model.swift */,
+			);
+			path = "Update labels and symbols to scale for visual accessibility";
 			sourceTree = "<group>";
 		};
 		9579FCEB2C3360CA00FC8A1D /* Edit feature attachments */ = {
@@ -4328,6 +4342,7 @@
 				D75101812A2E493600B8FA48 /* ShowLabelsOnLayerView.swift in Sources */,
 				1C3B7DCB2A5F64FC00907443 /* AnalyzeNetworkWithSubnetworkTraceView.swift in Sources */,
 				95398E732FE0C78B00E30CE8 /* NavigateMapAndIdentifyFeaturesWithKeyboardView.Model.swift in Sources */,
+				9579E0EA3060B3F8003923F6 /* UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView.swift in Sources */,
 				00B042E8282EDC690072E1B4 /* SetBasemapView.swift in Sources */,
 				E004A6E62846A61F002A1FE6 /* StyleGraphicsWithSymbolsView.swift in Sources */,
 				0000FB6E2BBDB17600845921 /* Add3DTilesLayerView.swift in Sources */,
@@ -4354,6 +4369,7 @@
 				9547085C2C3C719800CA8579 /* EditFeatureAttachmentsView.Model.swift in Sources */,
 				D71C90A22C6C249B0018C63E /* StyleGeometryTypesWithSymbolsView.swift in Sources */,
 				D7CDCBA92F86C38300B6C6AE /* ShowLineOfSightAnalysisInMapView.swift in Sources */,
+				9579E0ED3060B6E1003923F6 /* UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView.Model.swift in Sources */,
 				3E54CF222C66AFBE00DD2F18 /* AddWebTiledLayerView.swift in Sources */,
 				D7F913572DF0F272009CF629 /* QueryTableStatisticsGroupAndSortView.Views.swift in Sources */,
 				0042E24528E4F82C001F33D6 /* ShowExploratoryViewshedFromPointInSceneView.ViewshedSettingsView.swift in Sources */,
