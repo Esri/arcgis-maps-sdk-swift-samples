@@ -106,7 +106,7 @@ struct AddFeaturesWithSharedTemplateView: View {
                 .multilineTextAlignment(.center)
                 .frame(maxWidth: .infinity)
             
-            if model.isBusy {
+            if model.operationIsInProgress {
                 ProgressView()
             }
         }
@@ -125,7 +125,7 @@ struct AddFeaturesWithSharedTemplateView: View {
                 .presentationCompactAdaptation(.popover)
                 .frame(idealWidth: 320)
         }
-        .disabled(model.isBusy || pendingAction != nil)
+        .disabled(model.operationIsInProgress || pendingAction != nil)
     }
     
     /// The available shared templates and their swatches.
@@ -159,7 +159,7 @@ struct AddFeaturesWithSharedTemplateView: View {
                 }
                 .buttonStyle(.plain)
                 .help(item.template.description)
-                .disabled(model.isBusy || pendingAction != nil)
+                .disabled(model.operationIsInProgress || pendingAction != nil)
             }
         }
     }
@@ -175,7 +175,7 @@ struct AddFeaturesWithSharedTemplateView: View {
                 pendingAction = .undo
             }
         }
-        .disabled(model.isBusy || pendingAction != nil)
+        .disabled(model.operationIsInProgress || pendingAction != nil)
     }
     
     /// The controls for completing or canceling the current sketch.
@@ -190,7 +190,7 @@ struct AddFeaturesWithSharedTemplateView: View {
                 model.cancelDrawing()
             }
         }
-        .disabled(model.isBusy || pendingAction != nil)
+        .disabled(model.operationIsInProgress || pendingAction != nil)
     }
 }
 

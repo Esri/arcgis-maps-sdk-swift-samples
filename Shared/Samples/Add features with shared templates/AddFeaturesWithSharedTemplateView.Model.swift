@@ -67,7 +67,7 @@ extension AddFeaturesWithSharedTemplateView {
         private(set) var status = "Loading shared templates…"
         
         /// Whether an asynchronous operation is in progress.
-        private(set) var isBusy = false
+        private(set) var operationIsInProgress = false
         
         /// The service geodatabase that provides the shared templates.
         private var serviceGeodatabase: ServiceGeodatabase?
@@ -76,8 +76,8 @@ extension AddFeaturesWithSharedTemplateView {
         func loadSharedTemplates() async throws {
             guard templateItems.isEmpty else { return }
             
-            isBusy = true
-            defer { isBusy = false }
+            operationIsInProgress = true
+            defer { operationIsInProgress = false }
             
             do {
                 try await map.load()
@@ -190,11 +190,11 @@ extension AddFeaturesWithSharedTemplateView {
             geometryEditor.stop()
             self.activeTemplateItem = nil
 
-            isBusy = true
+            operationIsInProgress = true
             status = "Creating features…"
             defer {
                 updateAfterEditing(status: status)
-                isBusy = false
+                operationIsInProgress = false
             }
 
             do {
@@ -228,11 +228,11 @@ extension AddFeaturesWithSharedTemplateView {
         func saveEdits() async throws {
             guard let serviceGeodatabase else { return }
 
-            isBusy = true
+            operationIsInProgress = true
             status = "Saving edits…"
             defer {
                 updateAfterEditing(status: status)
-                isBusy = false
+                operationIsInProgress = false
             }
 
             do {
@@ -254,11 +254,11 @@ extension AddFeaturesWithSharedTemplateView {
         func undoEdits() async throws {
             guard let serviceGeodatabase else { return }
 
-            isBusy = true
+            operationIsInProgress = true
             status = "Undoing local edits…"
             defer {
                 updateAfterEditing(status: status)
-                isBusy = false
+                operationIsInProgress = false
             }
 
             do {
