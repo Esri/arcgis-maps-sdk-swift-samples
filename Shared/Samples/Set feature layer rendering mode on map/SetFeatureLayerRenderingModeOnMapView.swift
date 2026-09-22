@@ -17,11 +17,17 @@ import SwiftUI
 
 struct SetFeatureLayerRenderingModeOnMapView: View {
     /// A map used to show dynamic rendering.
-    @State private var dynamicMap = Map()
+    @State private var dynamicMap: Map
     
     /// A map used to show static rendering.
-    @State private var staticMap = Map()
+    @State private var staticMap: Map
     
+    /// The proxy used to inspect the dynamic map's layer view states.
+    @State private var dynamicMapViewProxy: MapViewProxy?
+
+    /// The proxy used to inspect the static map's layer view states.
+    @State private var staticMapViewProxy: MapViewProxy?
+
     /// A Boolean value indicating whether the map views are zoomed in.
     @State private var isZoomedIn = true
     
@@ -32,6 +38,10 @@ struct SetFeatureLayerRenderingModeOnMapView: View {
     @State private var viewpoint: Viewpoint?
     
     init() {
+        // Configures local maps before storing them in SwiftUI state.
+        let dynamicMap = Map()
+        let staticMap = Map()
+
         // Creates service feature tables using point, polygon, and polyline services.
         let pointTable = ServiceFeatureTable(url: URL(string: "https://sampleserver6.arcgisonline.com/arcgis/rest/services/Energy/Geology/FeatureServer/0")!)
         let polylineTable = ServiceFeatureTable(url: URL(string: "https://sampleserver6.arcgisonline.com/arcgis/rest/services/Energy/Geology/FeatureServer/8")!)
@@ -58,6 +68,9 @@ struct SetFeatureLayerRenderingModeOnMapView: View {
         
         dynamicMap.initialViewpoint = .zoomedOut
         staticMap.initialViewpoint = .zoomedOut
+
+        _dynamicMap = State(initialValue: dynamicMap)
+        _staticMap = State(initialValue: staticMap)
     }
     
     var body: some View {
@@ -76,6 +89,9 @@ struct SetFeatureLayerRenderingModeOnMapView: View {
                         await mapViewProxy.setViewpoint(viewpoint, duration: 5)
                         isZooming = false
                     }
+                    .onAppear {
+                        dynamicMapViewProxy = mapViewProxy
+                    }
             }
             MapViewReader { mapViewProxy in
                 MapView(map: staticMap)
@@ -90,6 +106,9 @@ struct SetFeatureLayerRenderingModeOnMapView: View {
                         guard let viewpoint else { return }
                         await mapViewProxy.setViewpoint(viewpoint, duration: 5)
                         isZooming = false
+                    }
+                    .onAppear {
+                        staticMapViewProxy = mapViewProxy
                     }
             }
         }

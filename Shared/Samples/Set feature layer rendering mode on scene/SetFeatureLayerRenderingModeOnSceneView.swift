@@ -17,10 +17,10 @@ import SwiftUI
 
 struct SetFeatureLayerRenderingModeOnSceneView: View {
     /// Scene that displays with dynamic rendering.
-    @State private var dynamicScene = Scene()
+    @State private var dynamicScene: ArcGIS.Scene
     
     /// Scene that displays with static rendering.
-    @State private var staticScene = Scene()
+    @State private var staticScene: ArcGIS.Scene
     
     /// A Boolean value indicating whether the scene views are currently zooming.
     @State private var isZooming = false
@@ -32,6 +32,10 @@ struct SetFeatureLayerRenderingModeOnSceneView: View {
     @State private var isZoomedIn = false
     
     init() {
+        // Configures local scenes before storing them in SwiftUI state.
+        let dynamicScene = Scene()
+        let staticScene = Scene()
+
         // The service feature tables using point, polygon, and polyline services.
         let featureTables: [ServiceFeatureTable] = [.polygonTable, .polylineTable, .pointTable].map(ServiceFeatureTable.init(url:))
         // Iterate through the feature tables and use them to set up feature layers.
@@ -49,6 +53,9 @@ struct SetFeatureLayerRenderingModeOnSceneView: View {
         }
         staticScene.initialViewpoint = Viewpoint(boundingGeometry: Camera.zoomedOut.location, camera: Camera.zoomedOut)
         dynamicScene.initialViewpoint = Viewpoint(boundingGeometry: Camera.zoomedOut.location, camera: Camera.zoomedOut)
+
+        _dynamicScene = State(initialValue: dynamicScene)
+        _staticScene = State(initialValue: staticScene)
     }
     
     var body: some View {
