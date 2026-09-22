@@ -105,14 +105,14 @@ struct SetFeatureLayerRenderingModeOnMapView: View {
         // Adds layers with dynamic and static rendering
         // to the respective maps.
         for layer in featureLayers {
-            // Sets dynamic rendering.
-            layer.renderingMode = .dynamic
-            dynamicMap.addOperationalLayer(layer)
-            
             // Sets static rendering.
             let staticLayer = layer.clone()
             staticLayer.renderingMode = .static
             staticMap.addOperationalLayer(staticLayer)
+            
+            // Sets dynamic rendering.
+            layer.renderingMode = .dynamic
+            dynamicMap.addOperationalLayer(layer)
         }
         
         dynamicMap.initialViewpoint = .zoomedOut
