@@ -40,8 +40,6 @@ struct AddFeaturesWithSharedTemplateView: View {
             }
             .toolbar {
                 ToolbarItemGroup(placement: .bottomBar) {
-                    Spacer()
-                    
                     if model.hasPendingEdits {
                         editButtons
                     } else if model.activeTemplateItem != nil {
@@ -49,8 +47,6 @@ struct AddFeaturesWithSharedTemplateView: View {
                     } else if !model.templateItems.isEmpty {
                         sharedTemplatesButton
                     }
-                    
-                    Spacer()
                 }
             }
             .task {
