@@ -31,35 +31,6 @@ struct SetFeatureLayerRenderingModeOnMapView: View {
     /// The viewpoint of the map views.
     @State private var viewpoint: Viewpoint?
     
-    init() {
-        // Creates service feature tables using point, polygon, and polyline services.
-        let pointTable = ServiceFeatureTable(url: URL(string: "https://sampleserver6.arcgisonline.com/arcgis/rest/services/Energy/Geology/FeatureServer/0")!)
-        let polylineTable = ServiceFeatureTable(url: URL(string: "https://sampleserver6.arcgisonline.com/arcgis/rest/services/Energy/Geology/FeatureServer/8")!)
-        let polygonTable = ServiceFeatureTable(url: URL(string: "https://sampleserver6.arcgisonline.com/arcgis/rest/services/Energy/Geology/FeatureServer/9")!)
-        
-        let featureLayers: [FeatureLayer] = [
-            FeatureLayer(featureTable: polygonTable),
-            FeatureLayer(featureTable: polylineTable),
-            FeatureLayer(featureTable: pointTable)
-        ]
-        
-        // Adds layers with dynamic and static rendering
-        // to the respective maps.
-        for layer in featureLayers {
-            // Sets dynamic rendering.
-            layer.renderingMode = .dynamic
-            dynamicMap.addOperationalLayer(layer)
-            
-            // Sets static rendering.
-            let staticLayer = layer.clone()
-            staticLayer.renderingMode = .static
-            staticMap.addOperationalLayer(staticLayer)
-        }
-        
-        dynamicMap.initialViewpoint = .zoomedOut
-        staticMap.initialViewpoint = .zoomedOut
-    }
-    
     var body: some View {
         VStack(spacing: 0) {
             MapViewReader { mapViewProxy in
@@ -112,6 +83,40 @@ struct SetFeatureLayerRenderingModeOnMapView: View {
                 .disabled(isZooming)
             }
         }
+        .onAppear {
+            setupMapsIfNecessary()
+        }
+    }
+    
+    private func setupMapsIfNecessary() {
+        guard staticMap.operationalLayers.isEmpty && dynamicMap.operationalLayers.isEmpty else { return }
+        
+        // Creates service feature tables using point, polygon, and polyline services.
+        let pointTable = ServiceFeatureTable(url: URL(string: "https://sampleserver6.arcgisonline.com/arcgis/rest/services/Energy/Geology/FeatureServer/0")!)
+        let polylineTable = ServiceFeatureTable(url: URL(string: "https://sampleserver6.arcgisonline.com/arcgis/rest/services/Energy/Geology/FeatureServer/8")!)
+        let polygonTable = ServiceFeatureTable(url: URL(string: "https://sampleserver6.arcgisonline.com/arcgis/rest/services/Energy/Geology/FeatureServer/9")!)
+        
+        let featureLayers: [FeatureLayer] = [
+            FeatureLayer(featureTable: polygonTable),
+            FeatureLayer(featureTable: polylineTable),
+            FeatureLayer(featureTable: pointTable)
+        ]
+        
+        // Adds layers with dynamic and static rendering
+        // to the respective maps.
+        for layer in featureLayers {
+            // Sets dynamic rendering.
+            layer.renderingMode = .dynamic
+            dynamicMap.addOperationalLayer(layer)
+            
+            // Sets static rendering.
+            let staticLayer = layer.clone()
+            staticLayer.renderingMode = .static
+            staticMap.addOperationalLayer(staticLayer)
+        }
+        
+        dynamicMap.initialViewpoint = .zoomedOut
+        staticMap.initialViewpoint = .zoomedOut
     }
 }
 
