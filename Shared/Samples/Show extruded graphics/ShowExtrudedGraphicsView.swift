@@ -53,9 +53,6 @@ struct ShowExtrudedGraphicsView: View {
         return graphicsOverlay
     }()
     
-    /// A Boolean value indicating whether the graphics have been added.
-    @State private var didAddGraphics = false
-    
     var body: some View {
         SceneView(scene: scene, graphicsOverlays: [graphicsOverlay])
             .onAppear {
@@ -65,7 +62,7 @@ struct ShowExtrudedGraphicsView: View {
     
     /// Adds extruded polygon graphics to the graphics overlay once.
     private func addGraphicsIfNecessary() {
-        guard !didAddGraphics else { return }
+        guard graphicsOverlay.graphics.isEmpty else { return }
         
         let x = Point.initialLocation.x - 0.01
         let y = Point.initialLocation.y + 0.25
@@ -82,7 +79,6 @@ struct ShowExtrudedGraphicsView: View {
                 graphicsOverlay.addGraphic(graphic)
             }
         }
-        didAddGraphics = true
     }
     
     /// An extruded graphic created from a given polygon with a random height.
