@@ -42,9 +42,8 @@ struct IdentifyFeaturesInWMSLayerView: View {
     /// The error shown in the error alert.
     @State private var error: (any Error)?
     
-    init() {
-        map.addOperationalLayer(waterInfoLayer)
-    }
+    /// A Boolean value indicating whether the map has been set up.
+    @State private var didSetupMap = false
     
     var body: some View {
         MapViewReader { mapViewProxy in
@@ -98,7 +97,18 @@ struct IdentifyFeaturesInWMSLayerView: View {
                         .background(.thinMaterial, ignoresSafeAreaEdges: .horizontal)
                 }
         }
+        .onAppear {
+            setupMapIfNecessary()
+        }
         .errorAlert(presentingError: $error)
+    }
+    
+    /// Adds the WMS layer to the map once.
+    private func setupMapIfNecessary() {
+        guard !didSetupMap else { return }
+        
+        map.addOperationalLayer(waterInfoLayer)
+        didSetupMap = true
     }
 }
 
