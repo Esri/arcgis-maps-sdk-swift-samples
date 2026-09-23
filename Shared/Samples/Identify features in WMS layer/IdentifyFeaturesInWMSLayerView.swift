@@ -48,9 +48,9 @@ struct IdentifyFeaturesInWMSLayerView: View {
                 .callout(placement: $calloutPlacement.animation(.default.speed(2))) { _ in
                     ScrollView(.horizontal) {
                         WebView(htmlString: webViewText)
-                            // Set the width so the html is readable.
+                        // Set the width so the html is readable.
                             .frame(width: 800, height: 95)
-                            // Disable the WebView scrolling.
+                        // Disable the WebView scrolling.
                             .disabled(true)
                     }
                     .frame(maxWidth: 300)

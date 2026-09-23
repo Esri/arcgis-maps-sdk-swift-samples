@@ -61,11 +61,11 @@ struct ShowExploratoryViewshedFromCameraInSceneView: View {
             setupViewshedIfNecessary()
         }
     }
-
+    
     /// Sets up the camera and viewshed once for this view's state.
     private func setupViewshedIfNecessary() {
         guard viewshed == nil else { return }
-
+        
         let camera = Camera(
             location: Point(
                 x: 2.8214,
@@ -78,17 +78,17 @@ struct ShowExploratoryViewshedFromCameraInSceneView: View {
             roll: 0
         )
         self.camera = camera
-
+        
         let viewshed = ExploratoryLocationViewshed(
             camera: camera,
             minDistance: 1.0,
             maxDistance: 1_000.0
         )
-
+        
         // Set visual appearance of the viewshed.
         ExploratoryViewshed.visibleColor = .green.withAlphaComponent(0.5)
         ExploratoryViewshed.obstructedColor = .red.withAlphaComponent(0.5)
-
+        
         // Add the new viewshed to the overlay and retain it for subsequent updates.
         analysisOverlay.addAnalysis(viewshed)
         self.viewshed = viewshed
