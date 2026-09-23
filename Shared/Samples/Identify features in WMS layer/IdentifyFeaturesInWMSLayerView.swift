@@ -103,7 +103,6 @@ struct IdentifyFeaturesInWMSLayerView: View {
     /// Adds the WMS layer to the map once.
     private func setupMapIfNecessary() {
         map.addOperationalLayer(waterInfoLayer)
-        didSetupMap = true
     }
 }
 
