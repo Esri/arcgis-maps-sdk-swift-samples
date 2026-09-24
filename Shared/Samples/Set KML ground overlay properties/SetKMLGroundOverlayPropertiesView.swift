@@ -52,7 +52,7 @@ struct SetKMLGroundOverlayPropertiesView: View {
             }
             .toolbar {
                 ToolbarItem(placement: .bottomBar) {
-                    HStack {
+                    HStack(spacing: 16) {
                         Slider(value: $opacity, in: 0.0...1.0, step: 0.01)
                             .onChange(of: opacity) {
                                 // Change the color of the overlay according to the slider's value.
@@ -62,7 +62,10 @@ struct SetKMLGroundOverlayPropertiesView: View {
                             Text("Opacity")
                             Text(opacity, format: .percent.precision(.fractionLength(0)))
                         }
+                        .fixedSize(horizontal: true, vertical: false)
                     }
+                    .frame(idealWidth: 360, maxWidth: 540)
+                    .padding(.horizontal, 8)
                 }
             }
     }
