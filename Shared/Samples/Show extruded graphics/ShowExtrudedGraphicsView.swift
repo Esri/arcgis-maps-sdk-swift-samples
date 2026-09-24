@@ -53,16 +53,17 @@ struct ShowExtrudedGraphicsView: View {
         return graphicsOverlay
     }()
     
-    init() {
-        addGraphics()
-    }
-    
     var body: some View {
         SceneView(scene: scene, graphicsOverlays: [graphicsOverlay])
+            .onAppear {
+                addGraphicsIfNecessary()
+            }
     }
     
-    /// Adds extruded polygon graphics the graphics overlays.
-    private func addGraphics() {
+    /// Adds extruded polygon graphics to the graphics overlay once.
+    private func addGraphicsIfNecessary() {
+        guard graphicsOverlay.graphics.isEmpty else { return }
+        
         let x = Point.initialLocation.x - 0.01
         let y = Point.initialLocation.y + 0.25
         

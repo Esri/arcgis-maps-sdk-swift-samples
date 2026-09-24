@@ -20,7 +20,7 @@ struct ShowExploratoryViewshedFromCameraInSceneView: View {
     @State private var camera: Camera?
     
     /// The viewshed which is updated by the camera.
-    @State private var viewshed: ExploratoryLocationViewshed
+    @State private var viewshed: ExploratoryLocationViewshed?
     
     /// A 3D Scene setup with imagery basemap, elevation, and mesh layer.
     @State private var scene: ArcGIS.Scene = {
@@ -41,7 +41,31 @@ struct ShowExploratoryViewshedFromCameraInSceneView: View {
     /// An analysis overlay used to display the viewshed analysis visualization.
     @State private var analysisOverlay = AnalysisOverlay()
     
-    init() {
+    var body: some View {
+        SceneView(
+            scene: scene,
+            camera: $camera,
+            analysisOverlays: [analysisOverlay]
+        )
+        .toolbar {
+            ToolbarItem(placement: .bottomBar) {
+                Button("Viewshed From Here") {
+                    guard let camera, let viewshed else { return }
+                    
+                    // Update viewshed based on current camera location when button is tapped.
+                    viewshed.update(from: camera)
+                }
+            }
+        }
+        .onAppear {
+            setupViewshedIfNecessary()
+        }
+    }
+    
+    /// Sets up the camera and viewshed once for this view's state.
+    private func setupViewshedIfNecessary() {
+        guard viewshed == nil else { return }
+        
         let camera = Camera(
             location: Point(
                 x: 2.8214,
@@ -55,7 +79,7 @@ struct ShowExploratoryViewshedFromCameraInSceneView: View {
         )
         self.camera = camera
         
-        self.viewshed = ExploratoryLocationViewshed(
+        let viewshed = ExploratoryLocationViewshed(
             camera: camera,
             minDistance: 1.0,
             maxDistance: 1_000.0
@@ -65,26 +89,9 @@ struct ShowExploratoryViewshedFromCameraInSceneView: View {
         ExploratoryViewshed.visibleColor = .green.withAlphaComponent(0.5)
         ExploratoryViewshed.obstructedColor = .red.withAlphaComponent(0.5)
         
-        // Add the new viewshed to the overlay.
+        // Add the new viewshed to the overlay and retain it for subsequent updates.
         analysisOverlay.addAnalysis(viewshed)
-    }
-    
-    var body: some View {
-        SceneView(
-            scene: scene,
-            camera: $camera,
-            analysisOverlays: [analysisOverlay]
-        )
-        .toolbar {
-            ToolbarItem(placement: .bottomBar) {
-                Button("Viewshed From Here") {
-                    guard let camera else { return }
-                    
-                    // Update viewshed based on current camera location when button is tapped.
-                    viewshed.update(from: camera)
-                }
-            }
-        }
+        self.viewshed = viewshed
     }
 }
 
