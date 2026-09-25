@@ -1,0 +1,40 @@
+{
+    "category": "Accessibility",
+    "description": "Scale feature labels and symbols according to the system text-size setting.",
+    "ignore": false,
+    "images": [],
+    "keywords": [
+        "accessibility",
+        "Dynamic Type",
+        "label",
+        "readability",
+        "scale",
+        "symbol",
+        "text",
+        "visual impairment",
+        "ArcadeLabelExpression",
+        "FeatureLayer",
+        "GeometryEngine",
+        "LabelDefinition",
+        "MapViewProxy",
+        "SimpleMarkerSymbol",
+        "SimpleRenderer",
+        "TextSymbol"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "ArcadeLabelExpression",
+        "FeatureLayer",
+        "GeometryEngine",
+        "LabelDefinition",
+        "MapViewProxy",
+        "SimpleMarkerSymbol",
+        "SimpleRenderer",
+        "TextSymbol"
+    ],
+    "snippets": [
+        "UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView.swift",
+        "UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView.Model.swift"
+    ],
+    "title": "Update labels and symbols to scale for visual accessibility"
+}
