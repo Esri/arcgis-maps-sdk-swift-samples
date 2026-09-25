@@ -63,6 +63,8 @@ struct SetKMLGroundOverlayPropertiesView: View {
                             Text(opacity, format: .percent.precision(.fractionLength(0)))
                         }
                     }
+                    .frame(idealWidth: 360)
+                    .padding(.horizontal)
                 }
             }
     }
