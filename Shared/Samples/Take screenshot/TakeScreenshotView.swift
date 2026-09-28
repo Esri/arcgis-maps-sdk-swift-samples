@@ -20,6 +20,8 @@ struct TakeScreenshotView: View {
     @State private var currentDrawStatus: DrawStatus = .inProgress
     /// The screenshot to export.
     @State private var screenshot: Screenshot?
+    /// The error shown in the error alert.
+    @State private var error: (any Error)?
     /// The map with an imagery basemap centered on Hawaii.
     @State private var map: Map = {
         let map = Map(basemapStyle: .arcGISImageryStandard)
@@ -48,13 +50,17 @@ struct TakeScreenshotView: View {
                     ToolbarItem(placement: .bottomBar) {
                         Button {
                             Task {
-                                // The map view proxy is used to export a
-                                // screenshot of the map view.
-                                let image = try await mapViewProxy.exportImage()
-                                screenshot = Screenshot(
-                                    image: Image(uiImage: image),
-                                    caption: "A screenshot of the map."
-                                )
+                                do {
+                                    // The map view proxy is used to export a
+                                    // screenshot of the map view.
+                                    let image = try await mapViewProxy.exportImage()
+                                    screenshot = Screenshot(
+                                        image: Image(uiImage: image),
+                                        caption: "A screenshot of the map."
+                                    )
+                                } catch {
+                                    self.error = error
+                                }
                             }
                         } label: {
                             if currentDrawStatus != .completed {
@@ -67,6 +73,7 @@ struct TakeScreenshotView: View {
                     }
                 }
         }
+        .errorAlert(presentingError: $error)
     }
 }
 
