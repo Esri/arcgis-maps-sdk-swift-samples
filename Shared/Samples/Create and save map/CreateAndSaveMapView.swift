@@ -30,7 +30,7 @@ struct CreateAndSaveMapView: View {
     /// The map that we will save to the portal.
     @State private var map: Map?
     
-    /// The error that occurred, if any, when trying to save the map to the portal.
+    /// The error shown in the error alert.
     @State private var error: (any Error)?
     
     /// The status of the sample workflow.
@@ -401,9 +401,13 @@ private extension CreateAndSaveMapView {
     /// Sets up new ArcGIS and Network credential stores that will be persisted in the keychain.
     private func setupPersistentCredentialStorage() {
         Task {
-            try await ArcGISEnvironment.authenticationManager.setupPersistentCredentialStorage(
-                access: .whenUnlockedThisDeviceOnly
-            )
+            do {
+                try await ArcGISEnvironment.authenticationManager.setupPersistentCredentialStorage(
+                    access: .whenUnlockedThisDeviceOnly
+                )
+            } catch {
+                self.error = error
+            }
         }
     }
 }

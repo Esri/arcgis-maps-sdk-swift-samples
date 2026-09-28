@@ -72,6 +72,7 @@ struct AuthenticateWithIntegratedWindowsAuthenticationView: View {
         }
         .animation(.default, value: model.isConnecting)
         .authenticator(model.authenticator)
+        .errorAlert(presentingError: $model.error)
     }
     
     @ViewBuilder private var urlEntryView: some View {
@@ -111,6 +112,9 @@ extension AuthenticateWithIntegratedWindowsAuthenticationView {
         
         /// The fetched portal content.
         @Published var portalContent: Result<PortalQueryResultSet<PortalItem>, any Error>?
+        
+        /// The error shown in the error alert.
+        @Published var error: (any Error)?
         
         /// A Boolean value indicating if a portal connection is in progress.
         @Published var isConnecting = false
@@ -172,10 +176,14 @@ extension AuthenticateWithIntegratedWindowsAuthenticationView {
         /// Sets up new ArcGIS and Network credential stores that will be persisted in the keychain.
         private func setupPersistentCredentialStorage() {
             Task {
-                try await ArcGISEnvironment.authenticationManager.setupPersistentCredentialStorage(
-                    access: .whenUnlockedThisDeviceOnly,
-                    synchronizesWithiCloud: false
-                )
+                do {
+                    try await ArcGISEnvironment.authenticationManager.setupPersistentCredentialStorage(
+                        access: .whenUnlockedThisDeviceOnly,
+                        synchronizesWithiCloud: false
+                    )
+                } catch {
+                    self.error = error
+                }
             }
         }
     }

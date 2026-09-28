@@ -92,10 +92,14 @@ private extension AuthenticateWithTokenView {
     /// Sets up new ArcGIS and Network credential stores that will be persisted in the keychain.
     private func setupPersistentCredentialStorage() {
         Task {
-            try await ArcGISEnvironment.authenticationManager.setupPersistentCredentialStorage(
-                access: .whenUnlockedThisDeviceOnly,
-                synchronizesWithiCloud: false
-            )
+            do {
+                try await ArcGISEnvironment.authenticationManager.setupPersistentCredentialStorage(
+                    access: .whenUnlockedThisDeviceOnly,
+                    synchronizesWithiCloud: false
+                )
+            } catch {
+                self.error = error
+            }
         }
     }
 }
