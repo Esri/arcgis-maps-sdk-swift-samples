@@ -93,10 +93,10 @@ struct CategoriesView: View {
                             .onAppear {
                                 sampleNeedingTeardown = sampleName
                             }
-                            .environment(\.finishTeardown) {
+                            .environment(\.finishTeardown, FinishTeardownAction {
                                 // Allows the next teardown sample to appear.
                                 sampleNeedingTeardown = nil
-                            }
+                            })
                     } else {
                         SampleDetailView(sample: sample, isFullScreen: $isFullScreen)
                             .id(sampleName)
