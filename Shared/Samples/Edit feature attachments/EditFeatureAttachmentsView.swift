@@ -169,6 +169,8 @@ private extension EditFeatureAttachmentsView {
         let onDelete: ((Attachment) -> Void)
         /// The image in the attachment.
         @State private var image: Image?
+        /// The error shown in the error alert.
+        @State private var error: (any Error)?
         /// The image to show if an image cannot be created from the attachment's data.
         private let warningImage = Image(systemName: "exclamationmark.triangle")
         
@@ -179,11 +181,16 @@ private extension EditFeatureAttachmentsView {
                 Spacer()
                 Button {
                     Task {
-                        let result = try await attachment.data
-                        if let uiImage = UIImage(data: result) {
-                            image = Image(uiImage: uiImage)
-                        } else {
+                        do {
+                            let result = try await attachment.data
+                            if let uiImage = UIImage(data: result) {
+                                image = Image(uiImage: uiImage)
+                            } else {
+                                image = warningImage
+                            }
+                        } catch {
                             image = warningImage
+                            self.error = error
                         }
                     }
                 } label: {
@@ -204,6 +211,7 @@ private extension EditFeatureAttachmentsView {
                 }
                 .tint(.red)
             }
+            .errorAlert(presentingError: $error)
         }
     }
 }

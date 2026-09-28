@@ -22,6 +22,9 @@ struct AuthenticateWithOAuthView: View {
         oAuthUserConfigurations: [.arcgisDotCom]
     )
     
+    /// The error shown in the error alert.
+    @State private var error: (any Error)?
+    
     /// The map to be displayed on the map view.
     @State private var map: Map = {
         // The portal to authenticate with named user.
@@ -40,6 +43,7 @@ struct AuthenticateWithOAuthView: View {
     var body: some View {
         MapView(map: map)
             .authenticator(authenticator)
+            .errorAlert(presentingError: $error)
             .onAppear {
                 // Setting the challenge handlers here in `onAppear` so user is prompted to enter
                 // credentials every time trying the sample. In real world applications, set challenge
@@ -69,10 +73,14 @@ struct AuthenticateWithOAuthView: View {
     /// Sets up new ArcGIS and Network credential stores that will be persisted in the keychain.
     private func setupPersistentCredentialStorage() {
         Task {
-            try await ArcGISEnvironment.authenticationManager.setupPersistentCredentialStorage(
-                access: .whenUnlockedThisDeviceOnly,
-                synchronizesWithiCloud: false
-            )
+            do {
+                try await ArcGISEnvironment.authenticationManager.setupPersistentCredentialStorage(
+                    access: .whenUnlockedThisDeviceOnly,
+                    synchronizesWithiCloud: false
+                )
+            } catch {
+                self.error = error
+            }
         }
     }
 }
