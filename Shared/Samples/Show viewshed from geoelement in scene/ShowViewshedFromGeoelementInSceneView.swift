@@ -13,6 +13,7 @@
 // limitations under the License.
 
 import ArcGIS
+import Combine
 import SwiftUI
 
 struct ShowViewshedFromGeoelementInSceneView: View {
