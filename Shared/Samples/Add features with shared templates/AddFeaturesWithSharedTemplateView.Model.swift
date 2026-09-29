@@ -43,7 +43,8 @@ extension AddFeaturesWithSharedTemplateView {
             }
         }
         
-        /// The map containing service-backed layers with shared templates.
+        /// The Parks and Grounds Assets web map whose feature layers provide
+        /// the shared templates used to create features in this sample.
         let map = Map(
             item: PortalItem(
                 portal: .arcGISOnline(connection: .anonymous),
@@ -188,7 +189,7 @@ extension AddFeaturesWithSharedTemplateView {
         }
         
         /// Completes the drawing in the geometry editor and adds
-        /// the feature to the local service geodatabase.
+        /// the features to the local service geodatabase.
         func completeDrawing() async throws {
             guard let activeTemplateItem,
                   let serviceGeodatabase else { return }
