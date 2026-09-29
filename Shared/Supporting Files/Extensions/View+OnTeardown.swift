@@ -76,12 +76,12 @@ private struct OnTeardown: ViewModifier {
 }
 
 /// An action that allows the next teardown sample to appear.
-struct FinishTeardownAction: Sendable {
+@MainActor
+struct FinishTeardownAction {
     /// The action to perform on the main actor.
-    let action: @MainActor @Sendable () -> Void
+    let action: @MainActor () -> Void
     
     /// Signals that the current sample has finished tearing down.
-    @MainActor
     func callAsFunction() {
         action()
     }
