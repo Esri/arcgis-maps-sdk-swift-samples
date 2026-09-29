@@ -19,7 +19,8 @@
         "SharedTemplate",
         "SharedTemplateFeatureCreationSet",
         "SharedTemplateQueryParameters",
-        "SharedTemplateSource"
+        "SharedTemplateSource",
+        "VertexTool"
     ],
     "redirect_from": [],
     "relevant_apis": [
@@ -29,7 +30,8 @@
         "SharedTemplate",
         "SharedTemplateFeatureCreationSet",
         "SharedTemplateQueryParameters",
-        "SharedTemplateSource"
+        "SharedTemplateSource",
+        "VertexTool"
     ],
     "snippets": [
         "AddFeaturesWithSharedTemplateView.swift",
