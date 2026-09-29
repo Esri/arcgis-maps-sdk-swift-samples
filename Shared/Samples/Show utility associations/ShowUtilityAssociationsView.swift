@@ -31,8 +31,9 @@ struct ShowUtilityAssociationsView: View {
     /// An image that represents a connectivity symbol.
     @State private var connectivityImage: UIImage?
     
-    /// The error shown in the error alert.
-    @State private var error: (any Error)?
+    /// The error thrown while loading the map, utility network, or association graphics,
+    /// or `nil` if no error occurred.
+    @State private var associationLoadError: (any Error)?
     
     /// The display scale of this environment.
     @Environment(\.displayScale) private var displayScale
@@ -49,7 +50,7 @@ struct ShowUtilityAssociationsView: View {
                 do {
                     try await model.addAssociationGraphics(viewpoint: viewpoint, scale: scale)
                 } catch {
-                    self.error = error
+                    associationLoadError = error
                 }
             }
         }
@@ -59,7 +60,7 @@ struct ShowUtilityAssociationsView: View {
                 do {
                     try await model.addAssociationGraphics(viewpoint: viewpoint, scale: scale)
                 } catch {
-                    self.error = error
+                    associationLoadError = error
                 }
             }
         }
@@ -68,10 +69,10 @@ struct ShowUtilityAssociationsView: View {
                 try await model.setup()
                 try await model.addAssociationGraphics(viewpoint: viewpoint, scale: scale)
             } catch {
-                self.error = error
+                associationLoadError = error
             }
         }
-        .errorAlert(presentingError: $error)
+        .errorAlert(presentingError: $associationLoadError)
         .overlay(alignment: .topLeading) {
             legend
                 .padding()
@@ -199,7 +200,6 @@ private extension ShowUtilityAssociationsView {
             // Check if the current viewpoint is outside of the max scale.
             guard isAuthenticated, scale <= maxScale, !isAddingGraphics else { return }
             isAddingGraphics = true
-            defer { isAddingGraphics = false }
             let extent = viewpoint.targetGeometry.extent
             // Get all of the associations in extent of the viewpoint.
             let associations = try await network.associations(forExtent: extent)
@@ -222,6 +222,7 @@ private extension ShowUtilityAssociationsView {
                     )
                 }
             associationsOverlay.addGraphics(graphics)
+            isAddingGraphics = false
         }
         
         func symbol(for associationKind: UtilityAssociation.Kind) -> Symbol? {

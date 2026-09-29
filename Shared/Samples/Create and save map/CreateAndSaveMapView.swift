@@ -30,7 +30,7 @@ struct CreateAndSaveMapView: View {
     /// The map that we will save to the portal.
     @State private var map: Map?
     
-    /// The error shown in the error alert.
+    /// The error that occurred, if any, when trying to save the map to the portal.
     @State private var error: (any Error)?
     
     /// The status of the sample workflow.
