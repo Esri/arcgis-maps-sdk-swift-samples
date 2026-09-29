@@ -17,7 +17,7 @@ import Observation
 import UIKit
 
 extension ApplyPointCloudRendererAndFilterView {
-    /// Stores the expensive GIS objects and updates them as settings change.
+    /// The scene, point cloud layer, renderers, and filter settings for the sample.
     @MainActor
     @Observable
     final class Model {
@@ -33,6 +33,8 @@ extension ApplyPointCloudRendererAndFilterView {
         /// The selected renderer, initially RGB.
         var rendererKind = RendererKind.rgb {
             didSet {
+                // Filters belong to the layer, so changing its renderer leaves
+                // all active filters in place.
                 pointCloudLayer.renderer = renderers[rendererKind]
                 updatePointSize()
             }
@@ -51,8 +53,8 @@ extension ApplyPointCloudRendererAndFilterView {
         /// The classification codes selected by the user.
         private(set) var selectedClassifications: Set<Classification> = []
 
-        /// Whether a classification filter is applied, even when no codes
-        /// are selected.
+        /// A Boolean value indicating whether a classification filter is applied,
+        /// even when no codes are selected.
         private(set) var classificationFilterIsActive = false
 
         /// The return types selected by the user.
@@ -65,7 +67,7 @@ extension ApplyPointCloudRendererAndFilterView {
 
         /// Creates the local scene and its persistent point cloud renderers.
         init() {
-            let rendererPairs = RendererKind.allCases.map { kind in
+            let rendererPairs = RendererKind.allCases.lazy.map { kind in
                 let renderer = kind.makeRenderer()
                 renderer.pointsPerInch = 25
                 renderer.sizeAlgorithm = PointCloudSplatAlgorithm(scaleFactor: 1)
@@ -118,9 +120,11 @@ extension ApplyPointCloudRendererAndFilterView {
 
         /// Adds the classification filter on first use, then updates it.
         private func updateClassificationFilter() {
-            let values = selectedClassifications
+            let values = selectedClassifications.lazy
                 .map { Double($0.rawValue) }
                 .sorted()
+            // Update the layer's existing classification filter when present,
+            // or add one on first use. Other filters remain unchanged.
             if let filter = pointCloudLayer.filters.first(where: {
                 $0 is PointCloudValueFilter
             }) as? PointCloudValueFilter {
@@ -148,7 +152,7 @@ extension ApplyPointCloudRendererAndFilterView {
             classificationFilterIsActive = false
         }
 
-        /// Updates the existing return filter, or adds it on first use.
+        /// Updates the return filter, removing it when no return types are selected.
         func setReturnType(
             _ returnType: PointCloudReturnFilter.ReturnType,
             isSelected: Bool
@@ -158,19 +162,22 @@ extension ApplyPointCloudRendererAndFilterView {
             } else {
                 selectedReturns.remove(returnType)
             }
-            let includedReturns = ReturnOptions.types.filter {
-                selectedReturns.contains($0)
-            }
-            if let filter = pointCloudLayer.filters.first(where: {
-                $0 is PointCloudReturnFilter
-            }) as? PointCloudReturnFilter {
-                filter.removeAllIncludedReturns()
-                filter.addIncludedReturns(includedReturns)
+            if selectedReturns.isEmpty {
+                // An empty return filter hides all points, so remove it instead.
+                clearReturnFilter()
             } else {
-                pointCloudLayer.addFilter(PointCloudReturnFilter(
-                    attributeName: "RETURNS",
-                    includedReturns: includedReturns
-                ))
+                let includedReturns = ReturnOptions.types.filter(selectedReturns.contains)
+                if let filter = pointCloudLayer.filters.first(where: {
+                    $0 is PointCloudReturnFilter
+                }) as? PointCloudReturnFilter {
+                    filter.removeAllIncludedReturns()
+                    filter.addIncludedReturns(includedReturns)
+                } else {
+                    pointCloudLayer.addFilter(PointCloudReturnFilter(
+                        attributeName: "RETURNS",
+                        includedReturns: includedReturns
+                    ))
+                }
             }
         }
 
@@ -190,31 +197,30 @@ extension ApplyPointCloudRendererAndFilterView {
             let existingFilter = pointCloudLayer.filters.first(where: {
                 $0 is PointCloudBitfieldFilter
             }) as? PointCloudBitfieldFilter
-            guard scanDirection != .any else {
+            if scanDirection == .any {
                 if let existingFilter {
                     pointCloudLayer.removeFilter(existingFilter)
                 }
-                return
-            }
-
-            let filter: PointCloudBitfieldFilter
-            if let existingFilter {
-                filter = existingFilter
             } else {
-                filter = PointCloudBitfieldFilter(
-                    attributeName: "FLAGS",
-                    requiredClearBits: [],
-                    requiredSetBits: []
-                )
-                pointCloudLayer.addFilter(filter)
-            }
-            filter.removeAllRequiredClearBits()
-            filter.removeAllRequiredSetBits()
-            // The collections contain zero-based bit positions, not bit masks.
-            if scanDirection == .set {
-                filter.addRequiredSetBit(6)
-            } else {
-                filter.addRequiredClearBit(6)
+                let filter: PointCloudBitfieldFilter
+                if let existingFilter {
+                    filter = existingFilter
+                } else {
+                    filter = PointCloudBitfieldFilter(
+                        attributeName: "FLAGS",
+                        requiredClearBits: [],
+                        requiredSetBits: []
+                    )
+                    pointCloudLayer.addFilter(filter)
+                }
+                filter.removeAllRequiredClearBits()
+                filter.removeAllRequiredSetBits()
+                // The collections contain zero-based bit positions, not bit masks.
+                if scanDirection == .set {
+                    filter.addRequiredSetBit(6)
+                } else {
+                    filter.addRequiredClearBit(6)
+                }
             }
         }
     }
@@ -308,6 +314,8 @@ extension ApplyPointCloudRendererAndFilterView {
                         alpha: 1
                     ),
                     minValue: 40,
+                    // Use Float's largest finite value as an effectively open-ended
+                    // upper bound; convert it to Double for the class-break API.
                     maxValue: Double(Float.greatestFiniteMagnitude)
                 )
             ]
@@ -340,6 +348,9 @@ extension ApplyPointCloudRendererAndFilterView {
                 UIColor(red: 139 / 255, green: 90 / 255, blue: 43 / 255, alpha: 1),
                 UIColor(red: 17 / 255, green: 24 / 255, blue: 39 / 255, alpha: 1)
             ]
+            // CLASS_CODE is numeric, but PointCloudColorUniqueValue accepts
+            // strings, so convert each classification code to its string form.
+            // PointCloudValueFilter instead accepts the codes as Double values.
             let uniqueValues = colors.enumerated().map { index, color in
                 PointCloudColorUniqueValue(
                     color: color,

@@ -25,23 +25,25 @@ struct ApplyPointCloudRendererAndFilterView: View {
     /// A Boolean value indicating whether the point cloud layer is loading.
     @State private var isLoading = true
 
-    /// The loading error shown with a retry action, separate from rendering
-    /// errors.
+    /// An error encountered while loading the point cloud layer.
     @State private var loadError: (any Error)?
 
-    /// The loading task's identity. Incrementing it starts another attempt
-    /// through the view's `.task(id:)` modifier.
+    /// The identifier of the current point cloud loading attempt.
     @State private var loadAttempt = 0
 
-    /// The rendering error shown in the error alert.
-    @State private var error: (any Error)?
+    /// The identifier of the task currently loading the point cloud layer.
+    @State private var activeLoadID: UUID?
+
+    /// An error encountered while displaying the scene or rendering the
+    /// point cloud layer.
+    @State private var renderingError: (any Error)?
 
     var body: some View {
         // Live point cloud filter changes require a local scene view.
         LocalSceneView(scene: model.scene)
             .onGeoModelErrorChanged { error in
                 if let error {
-                    self.error = error
+                    renderingError = error
                 }
             }
             .onLayerViewStateChanged { layer, viewState in
@@ -49,7 +51,7 @@ struct ApplyPointCloudRendererAndFilterView: View {
                    model.pointCloudLayer.loadStatus == .loaded,
                    viewState.status.contains(.error),
                    let error = viewState.error {
-                    self.error = error
+                    renderingError = error
                 }
             }
             .overlay {
@@ -83,9 +85,20 @@ struct ApplyPointCloudRendererAndFilterView: View {
                 }
             }
             .task(id: loadAttempt) {
+                // Reappearing can start a new task without changing loadAttempt.
+                let loadID = UUID()
+                activeLoadID = loadID
                 isLoading = true
                 loadError = nil
-                defer { isLoading = false }
+                defer {
+                    // Only the current task owns the loading state.
+                    if activeLoadID == loadID {
+                        activeLoadID = nil
+                        if !Task.isCancelled {
+                            isLoading = false
+                        }
+                    }
+                }
                 do {
                     // Retry failed loads on the same layer instance.
                     if model.pointCloudLayer.loadStatus == .failed {
@@ -95,12 +108,13 @@ struct ApplyPointCloudRendererAndFilterView: View {
                     }
                 } catch {
                     // Leaving the sample should not present a loading failure.
-                    guard !Task.isCancelled,
+                    guard activeLoadID == loadID,
+                          !Task.isCancelled,
                           !(error is CancellationError) else { return }
                     loadError = error
                 }
             }
-            .errorAlert(presentingError: $error)
+            .errorAlert(presentingError: $renderingError)
             .toolbar {
                 ToolbarItem(placement: .bottomBar) {
                     Button("Settings", systemImage: "gear") {
@@ -187,8 +201,9 @@ private extension ApplyPointCloudRendererAndFilterView {
                 } footer: {
                     Text("""
                         Once applied, Include with no selections hides all \
-                        points; Exclude with no selections shows all points. \
-                        Clear removes this filter.
+                        points; Exclude with no selections does not restrict \
+                        classifications. Clear removes this filter. Other \
+                        filters still apply.
                         """)
                 }
 
@@ -216,7 +231,10 @@ private extension ApplyPointCloudRendererAndFilterView {
                 } header: {
                     Text("Return Filter")
                 } footer: {
-                    Text("No selected return types shows all points.")
+                    Text("""
+                        With no return types selected, this filter is removed. \
+                        Other filters still apply.
+                        """)
                 }
 
                 Section("Scan Direction Filter") {

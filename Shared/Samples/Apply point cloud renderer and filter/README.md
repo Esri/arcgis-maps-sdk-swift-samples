@@ -10,11 +10,13 @@ Point clouds contain large collections of 3D points captured by sensors such as 
 
 ## How to use the sample
 
-The sample initially displays a point cloud layer using its RGB values. Select a renderer to visualize the points by RGB color, elevation, or LAS classification code.
+The sample initially displays a point cloud layer using its RGB values. Once the layer loads, open Settings and select a renderer to visualize the points by RGB color, elevation, or LAS classification code.
 
 Use the point size control to increase or decrease the size of the rendered points. Point size is a property of the renderer's splat algorithm.
 
-Use the filter controls to show points that match selected classification codes, lidar return types, and scan direction flag values. Multiple filters can be applied at the same time. Clear an individual filter to remove it from the point cloud layer.
+Use the filter controls to include or exclude classification codes, select lidar return types, and require scan direction flag bit 6 to be set or clear. Multiple filters can be applied at the same time. Clear an individual filter to remove it without affecting the others.
+
+Once a classification filter is applied, Include with no selected codes hides all points, while Exclude with no selected codes allows all classifications. No selected return types allows all returns, and Any scan direction removes that restriction. Other active filters still apply.
 
 ## How it works
 
