@@ -22,8 +22,9 @@ struct AuthenticateWithOAuthView: View {
         oAuthUserConfigurations: [.arcgisDotCom]
     )
     
-    /// The error shown in the error alert.
-    @State private var error: (any Error)?
+    /// The error that was thrown during credential storage setup or `nil` if setup completed
+    /// successfully.
+    @State private var setupError: (any Error)?
     
     /// The map to be displayed on the map view.
     @State private var map: Map = {
@@ -43,7 +44,7 @@ struct AuthenticateWithOAuthView: View {
     var body: some View {
         MapView(map: map)
             .authenticator(authenticator)
-            .errorAlert(presentingError: $error)
+            .errorAlert(presentingError: $setupError)
             .onAppear {
                 // Setting the challenge handlers here in `onAppear` so user is prompted to enter
                 // credentials every time trying the sample. In real world applications, set challenge
@@ -79,7 +80,7 @@ struct AuthenticateWithOAuthView: View {
                     synchronizesWithiCloud: false
                 )
             } catch {
-                self.error = error
+                setupError = error
             }
         }
     }
