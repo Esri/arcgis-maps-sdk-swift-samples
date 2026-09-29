@@ -183,10 +183,10 @@ private extension EditFeatureAttachmentsView {
                     Task {
                         do {
                             let result = try await attachment.data
-                            if let uiImage = UIImage(data: result) {
-                                image = Image(uiImage: uiImage)
+                            image = if let uiImage = UIImage(data: result) {
+                                Image(uiImage: uiImage)
                             } else {
-                                image = warningImage
+                                warningImage
                             }
                         } catch {
                             image = warningImage
