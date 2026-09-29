@@ -20,8 +20,8 @@ struct TakeScreenshotView: View {
     @State private var currentDrawStatus: DrawStatus = .inProgress
     /// The screenshot to export.
     @State private var screenshot: Screenshot?
-    /// The error shown in the error alert.
-    @State private var error: (any Error)?
+    /// The error thrown while exporting a screenshot of the map, or `nil` if no error occurred.
+    @State private var screenshotExportError: (any Error)?
     /// The map with an imagery basemap centered on Hawaii.
     @State private var map: Map = {
         let map = Map(basemapStyle: .arcGISImageryStandard)
@@ -59,7 +59,7 @@ struct TakeScreenshotView: View {
                                         caption: "A screenshot of the map."
                                     )
                                 } catch {
-                                    self.error = error
+                                    screenshotExportError = error
                                 }
                             }
                         } label: {
@@ -73,7 +73,7 @@ struct TakeScreenshotView: View {
                     }
                 }
         }
-        .errorAlert(presentingError: $error)
+        .errorAlert(presentingError: $screenshotExportError)
     }
 }
 
