@@ -68,11 +68,15 @@ extension AddFeaturesWithSharedTemplateView {
         private(set) var status = "Loading shared templates…" {
             didSet {
                 nextStepInstruction = nil
+                statusResetID = nil
             }
         }
         
         /// The next-step instruction displayed separately from the operation status.
         private(set) var nextStepInstruction: String?
+
+        /// Identifies a pending replacement of the drawing cancellation message.
+        private(set) var statusResetID: UUID?
         
         /// Whether an asynchronous operation is in progress.
         private(set) var operationIsInProgress = false
@@ -233,7 +237,19 @@ extension AddFeaturesWithSharedTemplateView {
             }
             activeTemplateItem = nil
             status = "Draw canceled."
-            nextStepInstruction = Self.instruction
+            statusResetID = UUID()
+        }
+
+        /// Replaces the cancellation message after two seconds unless the status changes.
+        /// - Parameter id: The identifier of the pending status reset.
+        func resetStatus(afterDelayFor id: UUID) async {
+            do {
+                try await Task.sleep(for: .seconds(2))
+            } catch {
+                return
+            }
+            guard !Task.isCancelled, statusResetID == id else { return }
+            status = Self.instruction
         }
         
         /// Applies the local edits to the service.

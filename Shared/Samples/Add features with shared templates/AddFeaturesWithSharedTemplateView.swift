@@ -29,8 +29,9 @@ struct AddFeaturesWithSharedTemplateView: View {
     /// The requested editing operation, used as the editing task's identity.
     @State private var pendingAction: EditingAction?
     
-    /// The error shown in the error alert.
-    @State private var error: (any Error)?
+    /// An error from loading templates, starting a sketch, or editing features
+    /// that is presented in an alert. Task cancellation is not shown as an error.
+    @State private var presentedError: (any Error)?
     
     var body: some View {
         MapView(map: model.map)
@@ -55,13 +56,17 @@ struct AddFeaturesWithSharedTemplateView: View {
                 } catch {
                     guard !Task.isCancelled,
                           !(error is CancellationError) else { return }
-                    self.error = error
+                    self.presentedError = error
                 }
             }
             .task {
                 for await geometry in model.geometryEditor.$geometry {
                     canCompleteDrawing = geometry?.sketchIsValid ?? false
                 }
+            }
+            .task(id: model.statusResetID) {
+                guard let id = model.statusResetID else { return }
+                await model.resetStatus(afterDelayFor: id)
             }
             // Keep this task on the map view, not the conditional buttons.
             .task(id: pendingAction) {
@@ -82,7 +87,7 @@ struct AddFeaturesWithSharedTemplateView: View {
                     // Cancellation does not roll back submitted service edits.
                     guard !Task.isCancelled,
                           !(error is CancellationError) else { return }
-                    self.error = error
+                    self.presentedError = error
                 }
             }
             .onDisappear {
@@ -92,7 +97,7 @@ struct AddFeaturesWithSharedTemplateView: View {
                     model.cancelDrawing()
                 }
             }
-            .errorAlert(presentingError: $error)
+            .errorAlert(presentingError: $presentedError)
     }
 
     /// The instructions and progress indicator displayed above the map.
@@ -138,7 +143,7 @@ struct AddFeaturesWithSharedTemplateView: View {
                         try model.startDrawing(with: item)
                         templatesAreVisible = false
                     } catch {
-                        self.error = error
+                        self.presentedError = error
                     }
                 } label: {
                     HStack(spacing: 8) {
