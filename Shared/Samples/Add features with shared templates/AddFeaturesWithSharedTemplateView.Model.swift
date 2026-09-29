@@ -95,7 +95,7 @@ extension AddFeaturesWithSharedTemplateView {
                 
                 let templatesByLayer = try await serviceGeodatabase
                     .querySharedTemplates()
-                let items = try await makeTemplateItems(from: templatesByLayer)
+                let items = try await makeTemplateItems(templatesByLayer)
                 
                 guard !items.isEmpty else {
                     throw SampleError.supportedTemplateNotFound
@@ -110,8 +110,11 @@ extension AddFeaturesWithSharedTemplateView {
 
         /// Creates picker items for the first preset and group templates,
         /// visiting layers in ascending ID order.
+        /// - Parameter templatesByLayer: The shared templates keyed by layer ID.
+        /// - Returns: Picker items for the first available template of each supported kind,
+        ///   including their layer IDs and swatches.
         private func makeTemplateItems(
-            from templatesByLayer: [Int: [SharedTemplate]]
+            _ templatesByLayer: [Int: [SharedTemplate]]
         ) async throws -> [TemplateItem] {
             var includedKinds: Set<SharedTemplate.Kind> = []
             var items: [TemplateItem] = []
@@ -176,7 +179,7 @@ extension AddFeaturesWithSharedTemplateView {
             }
         }
         
-        /// Completes the drawing in the geometry editor and adds 
+        /// Completes the drawing in the geometry editor and adds
         /// the feature to the local service geodatabase.
         func completeDrawing() async throws {
             guard let activeTemplateItem,
@@ -271,11 +274,10 @@ extension AddFeaturesWithSharedTemplateView {
         }
         
         /// The instruction shown while the template picker is available.
-        private static let instruction = """
-            Open Shared Templates and select a template to create features.
-            """
+        private let instruction = "Open Shared Templates and select a template to create features."
         
         /// Reconciles state after an editing operation, even if it failed or was canceled.
+        /// - Parameter status: The operation status to display before the next editing instruction.
         private func finishEditing(status: String) {
             hasPendingEdits = serviceGeodatabase?.hasLocalEdits ?? false
             activeTemplateItem = nil
