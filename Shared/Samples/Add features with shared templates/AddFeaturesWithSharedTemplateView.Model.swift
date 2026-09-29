@@ -47,7 +47,7 @@ extension AddFeaturesWithSharedTemplateView {
         let map = Map(
             item: PortalItem(
                 portal: .arcGISOnline(connection: .anonymous),
-                id: .parksAndGroundsAssets
+                id: PortalItem.ID("b635be46dfb545b888077389ac7f0962")!
             )
         )
         
@@ -73,7 +73,7 @@ extension AddFeaturesWithSharedTemplateView {
         private var serviceGeodatabase: ServiceGeodatabase?
         
         /// Loads the map and its available preset and group shared templates.
-        func loadSharedTemplates() async throws {
+        func setUp() async throws {
             guard templateItems.isEmpty else { return }
             
             operationIsInProgress = true
@@ -193,7 +193,7 @@ extension AddFeaturesWithSharedTemplateView {
             operationIsInProgress = true
             status = "Creating features…"
             defer {
-                updateAfterEditing(status: status)
+                finishEditing(status: status)
                 operationIsInProgress = false
             }
 
@@ -231,7 +231,7 @@ extension AddFeaturesWithSharedTemplateView {
             operationIsInProgress = true
             status = "Saving edits…"
             defer {
-                updateAfterEditing(status: status)
+                finishEditing(status: status)
                 operationIsInProgress = false
             }
 
@@ -257,7 +257,7 @@ extension AddFeaturesWithSharedTemplateView {
             operationIsInProgress = true
             status = "Undoing local edits…"
             defer {
-                updateAfterEditing(status: status)
+                finishEditing(status: status)
                 operationIsInProgress = false
             }
 
@@ -276,7 +276,7 @@ extension AddFeaturesWithSharedTemplateView {
             """
         
         /// Reconciles state after an editing operation, even if it failed or was canceled.
-        private func updateAfterEditing(status: String) {
+        private func finishEditing(status: String) {
             hasPendingEdits = serviceGeodatabase?.hasLocalEdits ?? false
             activeTemplateItem = nil
             let instruction = hasPendingEdits ? "Save or undo edits." : Self.instruction

@@ -51,7 +51,7 @@ struct AddFeaturesWithSharedTemplateView: View {
             }
             .task {
                 do {
-                    try await model.loadSharedTemplates()
+                    try await model.setUp()
                 } catch {
                     guard !Task.isCancelled,
                           !(error is CancellationError) else { return }
