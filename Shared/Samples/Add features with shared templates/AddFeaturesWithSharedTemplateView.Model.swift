@@ -64,7 +64,14 @@ extension AddFeaturesWithSharedTemplateView {
         private(set) var hasPendingEdits = false
         
         /// The instructions displayed to the user.
-        private(set) var status = "Loading shared templates…"
+        private(set) var status = "Loading shared templates…" {
+            didSet {
+                nextStepInstruction = nil
+            }
+        }
+        
+        /// The next-step instruction displayed separately from the operation status.
+        private(set) var nextStepInstruction: String?
         
         /// Whether an asynchronous operation is in progress.
         private(set) var operationIsInProgress = false
@@ -84,6 +91,7 @@ extension AddFeaturesWithSharedTemplateView {
                 
                 // Get the first service geodatabase from the feature layers.
                 guard let serviceGeodatabase = map.operationalLayers
+                    .lazy
                     .compactMap({ $0 as? FeatureLayer })
                     .compactMap(\.featureTable)
                     .compactMap({ $0 as? ServiceFeatureTable })
@@ -95,7 +103,7 @@ extension AddFeaturesWithSharedTemplateView {
                 
                 let templatesByLayer = try await serviceGeodatabase
                     .querySharedTemplates()
-                let items = try await makeTemplateItems(templatesByLayer)
+                let items = try await makeTemplateItems(templatesByLayer: templatesByLayer)
                 
                 guard !items.isEmpty else {
                     throw SampleError.supportedTemplateNotFound
@@ -114,7 +122,7 @@ extension AddFeaturesWithSharedTemplateView {
         /// - Returns: Picker items for the first available template of each supported kind,
         ///   including their layer IDs and swatches.
         private func makeTemplateItems(
-            _ templatesByLayer: [Int: [SharedTemplate]]
+            templatesByLayer: [Int: [SharedTemplate]]
         ) async throws -> [TemplateItem] {
             var includedKinds: Set<SharedTemplate.Kind> = []
             var items: [TemplateItem] = []
@@ -196,7 +204,7 @@ extension AddFeaturesWithSharedTemplateView {
             operationIsInProgress = true
             status = "Creating features…"
             defer {
-                finishEditing(status: status)
+                finishEditing()
                 operationIsInProgress = false
             }
 
@@ -218,13 +226,13 @@ extension AddFeaturesWithSharedTemplateView {
         }
         
         /// Stops drawing and resets the template picker.
-        /// - Parameter status: The status to display after drawing stops.
-        func cancelDrawing(status: String = "Draw canceled.") {
+        func cancelDrawing() {
             if geometryEditor.isStarted {
                 geometryEditor.stop()
             }
             activeTemplateItem = nil
-            self.status = "\(status) \(Self.instruction)"
+            status = "Draw canceled."
+            nextStepInstruction = Self.instruction
         }
         
         /// Applies the local edits to the service.
@@ -234,19 +242,19 @@ extension AddFeaturesWithSharedTemplateView {
             operationIsInProgress = true
             status = "Saving edits…"
             defer {
-                finishEditing(status: status)
+                finishEditing()
                 operationIsInProgress = false
             }
 
             do {
                 let editResults = try await serviceGeodatabase.applyEdits()
-                guard editResults.allSatisfy({
+                if editResults.allSatisfy({
                     $0.editResults.allSatisfy { !$0.didCompleteWithErrors }
-                }) else {
+                }) {
+                    status = "Edits saved."
+                } else {
                     status = "Unable to save edits."
-                    return
                 }
-                status = "Edits saved."
             } catch {
                 status = "Unable to save edits."
                 throw error
@@ -260,7 +268,7 @@ extension AddFeaturesWithSharedTemplateView {
             operationIsInProgress = true
             status = "Undoing local edits…"
             defer {
-                finishEditing(status: status)
+                finishEditing()
                 operationIsInProgress = false
             }
 
@@ -274,23 +282,14 @@ extension AddFeaturesWithSharedTemplateView {
         }
         
         /// The instruction shown while the template picker is available.
-        private let instruction = "Open Shared Templates and select a template to create features."
+        private static let instruction = "Open Shared Templates and select a template to create features."
         
         /// Reconciles state after an editing operation, even if it failed or was canceled.
-        /// - Parameter status: The operation status to display before the next editing instruction.
-        private func finishEditing(status: String) {
+        private func finishEditing() {
             hasPendingEdits = serviceGeodatabase?.hasLocalEdits ?? false
             activeTemplateItem = nil
-            let instruction = hasPendingEdits ? "Save or undo edits." : Self.instruction
-            self.status = "\(status) \(instruction)"
+            nextStepInstruction = hasPendingEdits ? "Save or undo edits." : Self.instruction
         }
-    }
-}
-
-private extension PortalItem.ID {
-    /// The ID of the Parks and Grounds Assets web map on ArcGIS Online.
-    static var parksAndGroundsAssets: Self {
-        .init("b635be46dfb545b888077389ac7f0962")!
     }
 }
 

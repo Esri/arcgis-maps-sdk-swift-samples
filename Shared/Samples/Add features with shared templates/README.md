@@ -10,16 +10,16 @@ Preset and group shared templates support guided, repeatable, high-quality editi
 
 ## How to use the sample
 
-Open "Shared Templates" and select a template. When using a pointer, hover over a template to view its description. Tap on the map to place a point, or tap multiple positions to sketch a line. Once the sketch is valid, choose "Complete" to create features locally, or choose "Cancel" to discard the sketch. Choose "Save" to send the local edits to the service, or "Undo" to discard all local edits.
+Open "Shared Templates" and select a template. When using a pointer, hover over a template to view its description. Tap on the map to place a point, or tap multiple positions to sketch a line. Once the sketch is valid, choose "Complete" to create features locally. Choose "Cancel" at any time while drawing to discard the sketch. Choose "Save" to send the local edits to the service, or "Undo" to discard all local edits. Resolve any pending local edits before selecting another template.
 
 ## How it works
 
 1. Create a `Map` from a web map portal item and load it.
-2. Inspect the map's operational layers for a `FeatureLayer` backed by a `ServiceFeatureTable`, then get its `ServiceGeodatabase`, which conforms to `SharedTemplateSource`.
-3. Call `querySharedTemplates(using:)` with its default query parameters to return all shared templates for all layers. Visit the layers in layer ID order and select the first preset and group templates encountered, displaying up to one of each kind. Store each selected template's layer ID and display its name, kind, description, and swatch.
+2. Get the first available `ServiceGeodatabase` from the map's operational `FeatureLayer` objects backed by `ServiceFeatureTable` objects.
+3. Call `querySharedTemplates()` without explicit query parameters. Visit the returned layers in ascending layer ID order and select the first preset and first group template encountered, displaying at most one of each kind overall. Store each selected template's layer ID and display its name, kind, and swatch, with its description available as help text.
 4. Call `makeSwatch(layerID:)` to generate each template's swatch image, falling back to a default image when a swatch is unavailable.
-5. Call `defaultConstructionTool(forLayerWithID:)` and use the `GeometryConstructionTool.Kind` to start a `GeometryEditor` with either a point or polyline geometry type.
-6. After the user selects "Complete", call `stop()` on the geometry editor. Pass the returned geometry to `makeFeatures(sharedTemplate:geometry:)` to create an in-memory `SharedTemplateFeatureCreationSet` with default geometries and attributes.
+5. Call the selected template's `defaultConstructionTool(forLayerWithID:)`. Set the `GeometryEditor` tool to a `VertexTool`, then start the editor with `Point.self` for a `.point` construction tool kind or `Polyline.self` for `.line`. Report an error if the construction tool is unavailable or has an unsupported kind.
+6. After the user selects "Complete", verify that the geometry editor is started, capture its `geometry`, and check that the geometry's `sketchIsValid` is true. Call `stop()`, then pass the captured geometry to `makeFeatures(sharedTemplate:geometry:)` to create a feature creation set.
 7. Call `addFeatures(using:)` to add the feature creation set to the geodatabase locally.
 8. Select "Save" to apply local edits using `applyEdits()`, or select "Undo" to discard them using `undoLocalEdits()`.
 
@@ -32,6 +32,7 @@ Open "Shared Templates" and select a template. When using a pointer, hover over 
 * SharedTemplateFeatureCreationSet
 * SharedTemplateQueryParameters
 * SharedTemplateSource
+* VertexTool
 
 ## About the data
 

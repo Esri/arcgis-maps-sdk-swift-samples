@@ -24,7 +24,7 @@ struct AddFeaturesWithSharedTemplateView: View {
     @State private var canCompleteDrawing = false
     
     /// Whether the shared templates popover is showing.
-    @State private var isShowingTemplates = false
+    @State private var templatesAreVisible = false
 
     /// The requested editing operation, used as the editing task's identity.
     @State private var pendingAction: EditingAction?
@@ -98,9 +98,14 @@ struct AddFeaturesWithSharedTemplateView: View {
     /// The instructions and progress indicator displayed above the map.
     private var statusOverlay: some View {
         HStack {
-            Text(model.status)
-                .multilineTextAlignment(.center)
-                .frame(maxWidth: .infinity)
+            VStack {
+                Text(model.status)
+                if let instruction = model.nextStepInstruction {
+                    Text(instruction)
+                }
+            }
+            .multilineTextAlignment(.center)
+            .frame(maxWidth: .infinity)
             
             if model.operationIsInProgress {
                 ProgressView()
@@ -113,9 +118,9 @@ struct AddFeaturesWithSharedTemplateView: View {
     /// The button that presents the shared template picker.
     private var sharedTemplatesButton: some View {
         Button("Shared Templates", systemImage: "square.grid.2x2") {
-            isShowingTemplates.toggle()
+            templatesAreVisible = true
         }
-        .popover(isPresented: $isShowingTemplates) {
+        .popover(isPresented: $templatesAreVisible) {
             templatePickerContent
                 .padding()
                 .presentationCompactAdaptation(.popover)
@@ -131,7 +136,7 @@ struct AddFeaturesWithSharedTemplateView: View {
                 Button {
                     do {
                         try model.startDrawing(with: item)
-                        isShowingTemplates = false
+                        templatesAreVisible = false
                     } catch {
                         self.error = error
                     }
@@ -167,6 +172,8 @@ struct AddFeaturesWithSharedTemplateView: View {
                 pendingAction = .save
             }
             
+            Spacer()
+            
             Button("Undo", role: .destructive) {
                 pendingAction = .undo
             }
@@ -181,6 +188,8 @@ struct AddFeaturesWithSharedTemplateView: View {
                 pendingAction = .complete
             }
             .disabled(!canCompleteDrawing)
+            
+            Spacer()
             
             Button("Cancel", role: .cancel) {
                 model.cancelDrawing()
