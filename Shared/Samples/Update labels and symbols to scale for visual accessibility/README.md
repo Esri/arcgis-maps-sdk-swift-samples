@@ -10,7 +10,7 @@ Improve map readability for users who increase text size in accessibility settin
 
 ## How to use the sample
 
-Use **Text Size Help** in the toolbar for instructions and an **Open Accessibility Settings** action. On iOS, the action opens **Personal Voice**; navigate back to **Accessibility**, then select **Display & Text Size** > **Larger Text**. No Personal Voice changes are needed. Enable **Larger Accessibility Sizes** for additional sizes, then return to the sample. On Mac Catalyst, navigate to **Accessibility** > **Display** > **Text size**; support depends on the system and app settings. A tip also appears above the map when space and text size permit.
+Use **Text Size Help** in the toolbar for instructions and an **Open Accessibility Settings** action. On iOS, the action opens the **Accessibility** menu; select **Display & Text Size** > **Larger Text**. Enable **Larger Accessibility Sizes** for additional sizes, then return to the sample. On Mac Catalyst, navigate to **Accessibility** > **Display** > **Text size**; support depends on the system and app settings. A tip also appears above the map when space and text size permit.
 
 Turn off **Scale Labels** below the map to restore labels to their base size. Symbols continue to follow Dynamic Type. The legend appears below the toggle when space and text size permit. **Text Size Help** provides instructions and an action to open settings. Select a restaurant to show its name and WGS 84 coordinates. Select elsewhere to clear the selection and callout.
 
@@ -45,7 +45,7 @@ ArcGIS Maps SDK for Swift 300.1 does not expose WPF's `GeoView.UseSystemTextScal
 
 Dynamic Type scaling depends on the text style. The displayed percentage is relative to the default Body text size, not a universal operating-system percentage. Label and marker base sizes are 12 points, and the marker outline's base width is 1.5 points. Sizes are always recalculated from these base values to avoid cumulative scaling.
 
-iOS does not provide a public destination for opening Larger Text settings directly. The sample uses `AccessibilitySettings.openSettings(for: .personalVoiceAllowAppsToRequestToUse)`, available on iOS 18 and later, to open a supported Accessibility subpage. Navigate back to Accessibility to reach the text-size settings; the sample does not use Personal Voice. An alert provides manual navigation instructions if opening settings fails. Mac Catalyst continues to use a URL to the Accessibility Display pane. SwiftUI observes text-size changes without a manual notification subscription.
+iOS does not provide a public destination for opening Larger Text settings directly. The sample opens the Accessibility menu in the Settings app with the `App-prefs:ACCESSIBILITY` URL, and Mac Catalyst uses a URL to the Accessibility Display pane. An alert provides manual navigation instructions if opening settings fails. SwiftUI observes text-size changes without a manual notification subscription.
 
 ### Layout and behavior checks
 

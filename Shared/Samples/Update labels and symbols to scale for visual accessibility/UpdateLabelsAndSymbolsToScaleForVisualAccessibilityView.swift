@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import Accessibility
 import ArcGIS
 import SwiftUI
 import TipKit
@@ -124,9 +123,7 @@ struct UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView: View {
                         map.addOperationalLayer(model.restaurantsLayer)
                     }
                     
-                    // Configure tips when the view appears and report any
-                    // failure without preventing use of the map.
-                    
+                    // TipKit configuration is intended to happen once per process.
                     try? Tips.configure([.displayFrequency(.immediate)])
                 }
                 .overlay(alignment: .top) {
@@ -304,30 +301,15 @@ private extension UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView {
     /// Opens accessibility settings, with manual guidance if opening fails.
     func openAccessibilitySettings() {
         #if targetEnvironment(macCatalyst)
-        openURL(.accessibilityDisplaySettings) { accepted in
+        let settingsURL: URL = .accessibilityDisplaySettings
+        #else
+        let settingsURL: URL = .accessibilitySettings
+        #endif
+        openURL(settingsURL) { accepted in
             if !accepted {
                 error = OpenSettingsError()
             }
         }
-        #else
-        Task {
-            do {
-                // Use destinations supported by the current iOS version.
-                // The API has no explicit destination for Larger Text.
-                if #available(iOS 26.0, *) {
-                    try await AccessibilitySettings.openSettings(
-                        for: .assistiveTouchDevices
-                    )
-                } else {
-                    try await AccessibilitySettings.openSettings(
-                        for: .personalVoiceAllowAppsToRequestToUse
-                    )
-                }
-            } catch {
-                self.error = OpenSettingsError()
-            }
-        }
-        #endif
     }
     
     /// An error opening settings, including manual navigation instructions.
@@ -349,6 +331,11 @@ private extension UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView {
 }
 
 private extension URL {
+    /// The Accessibility menu in the iOS Settings app.
+    static var accessibilitySettings: URL {
+        URL(string: "App-prefs:ACCESSIBILITY")!
+    }
+    
     /// The Display pane of macOS Accessibility settings.
     static var accessibilityDisplaySettings: URL {
         URL(

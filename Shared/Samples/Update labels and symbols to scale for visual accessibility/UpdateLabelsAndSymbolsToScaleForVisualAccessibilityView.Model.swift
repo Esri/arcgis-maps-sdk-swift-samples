@@ -31,8 +31,8 @@ extension UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView {
         /// The marker outline width in points at the default system text size.
         private static let baseMarkerOutlineWidth: CGFloat = 1.5
         
-        /// The layer containing the Redlands restaurants.
-        let restaurantsLayer: FeatureLayer
+        /// The label halo width in points when system text scaling is disabled or at its default.
+        private static let baseLabelHaloWidth: CGFloat = 2
         
         /// The dark blue color shared by the restaurant markers and legend.
         static let markerColor = UIColor(
@@ -41,6 +41,9 @@ extension UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView {
             blue: 138 / 255,
             alpha: 1
         )
+        
+        /// The layer containing the Redlands restaurants.
+        let restaurantsLayer: FeatureLayer
         
         /// Whether restaurant labels follow the system text size.
         var labelsUseSystemTextScale = true {
@@ -88,7 +91,7 @@ extension UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView {
                 size: Self.baseLabelSize
             )
             labelSymbol.haloColor = .white
-            labelSymbol.haloWidth = 2
+            labelSymbol.haloWidth = Self.baseLabelHaloWidth
             let labelDefinition = LabelDefinition(
                 labelExpression: ArcadeLabelExpression(
                     arcadeString: "$feature.name"
@@ -118,9 +121,10 @@ extension UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView {
         private func updateLabelSize() {
             // A factor of 1 restores the base label size when scaling is off.
             // Markers continue to follow the system text scale independently.
-            labelSymbol.size = Self.baseLabelSize * (
-                labelsUseSystemTextScale ? systemTextScale : 1
-            )
+            let labelScale = labelsUseSystemTextScale ? systemTextScale : 1
+            labelSymbol.size = Self.baseLabelSize * labelScale
+            // Scale the halo with the text so it stays legible at large sizes.
+            labelSymbol.haloWidth = Self.baseLabelHaloWidth * labelScale
         }
     }
 }

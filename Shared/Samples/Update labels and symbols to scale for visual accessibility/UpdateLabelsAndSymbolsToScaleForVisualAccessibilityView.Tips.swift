@@ -59,11 +59,11 @@ extension UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView {
         #else
         Text(
             """
-            Enable Larger Accessibility Sizes for additional \
-            sizes, then return to see restaurant labels and symbols scale.
-            
             Open Settings > Accessibility > Display & Text Size > \
             Larger Text.
+            
+            Enable Larger Accessibility Sizes for additional \
+            sizes, then return to see restaurant labels and symbols scale.
             
             Select a restaurant to view its name and coordinates.
             """
