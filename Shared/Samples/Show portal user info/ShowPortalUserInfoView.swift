@@ -231,7 +231,7 @@ private extension ShowPortalUserInfoView {
                 // Show the user's thumbnail image as a circular avatar.
                 Image(uiImage: model.portalUser?.thumbnail?.image ?? .defaultUserImage)
                     .resizable()
-                    .aspectRatio(contentMode: .fill)
+                    .scaledToFill()
                     .frame(width: 150, height: 150)
                     .clipShape(Circle())
                 

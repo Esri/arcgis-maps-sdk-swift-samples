@@ -99,7 +99,7 @@ private extension TakeScreenshotView {
         var body: some View {
             screenshot.image
                 .resizable()
-                .aspectRatio(contentMode: .fit)
+                .scaledToFit()
                 .toolbar {
                     ToolbarItem(placement: .confirmationAction) {
                         Button("Done") {

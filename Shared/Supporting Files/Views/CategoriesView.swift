@@ -128,7 +128,7 @@ private extension CategoriesView {
         var body: some View {
             Image("\(name.replacingOccurrences(of: " ", with: "-"))-bg")
                 .resizable()
-                .aspectRatio(contentMode: .fit)
+                .scaledToFit()
                 .overlay {
                     Color(red: 0.24, green: 0.24, blue: 0.26, opacity: 0.6)
                     
