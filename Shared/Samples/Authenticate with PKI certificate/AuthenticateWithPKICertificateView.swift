@@ -72,7 +72,6 @@ struct AuthenticateWithPKICertificateView: View {
         }
         .animation(.default, value: model.isConnecting)
         .authenticator(model.authenticator)
-        .errorAlert(presentingError: $model.setupError)
     }
     
     @ViewBuilder private var urlEntryView: some View {
@@ -112,10 +111,6 @@ extension AuthenticateWithPKICertificateView {
         
         /// The fetched portal content.
         @Published var portalContent: Result<PortalQueryResultSet<PortalItem>, any Error>?
-        
-        /// The error that was thrown during credential storage setup or `nil` if setup completed
-        /// successfully.
-        @Published var setupError: (any Error)?
         
         /// A Boolean value indicating if a portal connection is in progress.
         @Published var isConnecting = false
@@ -159,7 +154,7 @@ extension AuthenticateWithPKICertificateView {
             
             // In your application you may want to uncomment this code to persist
             // credentials in the keychain.
-            // setupPersistentCredentialStorage()
+            // try await setupPersistentCredentialStorage()
         }
         
         /// Stops the authenticator from handling the challenges and clears credentials.
@@ -175,17 +170,11 @@ extension AuthenticateWithPKICertificateView {
         }
         
         /// Sets up new ArcGIS and Network credential stores that will be persisted in the keychain.
-        private func setupPersistentCredentialStorage() {
-            Task {
-                do {
-                    try await ArcGISEnvironment.authenticationManager.setupPersistentCredentialStorage(
-                        access: .whenUnlockedThisDeviceOnly,
-                        synchronizesWithiCloud: false
-                    )
-                } catch {
-                    self.setupError = error
-                }
-            }
+        private func setupPersistentCredentialStorage() async throws {
+            try await ArcGISEnvironment.authenticationManager.setupPersistentCredentialStorage(
+                access: .whenUnlockedThisDeviceOnly,
+                synchronizesWithiCloud: false
+            )
         }
     }
 }
