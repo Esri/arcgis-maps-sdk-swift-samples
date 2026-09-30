@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import Accessibility
 import ArcGIS
 import SwiftUI
 import TipKit
@@ -47,6 +48,15 @@ struct UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView: View {
     /// Whether the text-size instructions are presented.
     @State private var isShowingTextSizeHelp = false
     
+    /// The legend's content height before any scrolling is needed.
+    @State private var scalingStatusHeight: CGFloat?
+
+    /// The map height available above the bottom controls.
+    @State private var mapHeight: CGFloat = 0
+
+    /// The callout's content height before any scrolling is needed.
+    @State private var calloutContentHeight: CGFloat?
+
     /// The latest identify request, with a unique ID so repeated taps
     /// at the same point restart the task.
     @State private var identifyRequest: IdentifyRequest?
@@ -61,6 +71,19 @@ struct UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView: View {
     @ScaledMetric(relativeTo: .body) private var systemTextScale: CGFloat = 1
     
     var body: some View {
+        VStack(spacing: 0) {
+            mapContent
+                .onGeometryChange(for: CGFloat.self) { geometry in
+                    geometry.size.height
+                } action: { height in
+                    mapHeight = height
+                }
+            scalingControls
+        }
+    }
+
+    /// The map and its selection, tip, and help interactions.
+    private var mapContent: some View {
         MapViewReader { mapView in
             MapView(map: map)
                 .callout(placement: $calloutPlacement) { _ in
@@ -123,7 +146,9 @@ struct UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView: View {
                         map.addOperationalLayer(model.restaurantsLayer)
                     }
                     
-                    // TipKit configuration is intended to happen once per process.
+                    // Configure tips when the view appears and report any
+                    // failure without preventing use of the map.
+                    
                     try? Tips.configure([.displayFrequency(.immediate)])
                 }
                 .overlay(alignment: .top) {
@@ -140,9 +165,6 @@ struct UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView: View {
                                 .allowsHitTesting(false)
                         }
                     }
-                }
-                .safeAreaInset(edge: .bottom, spacing: 0) {
-                    scalingControls
                 }
                 .toolbar {
                     ToolbarItem(placement: .primaryAction) {
@@ -196,24 +218,39 @@ private extension UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView {
                     Text("Longitude: \(location.x, format: coordinateFormat)")
                 }
             }
+            .fixedSize(horizontal: false, vertical: true)
             .padding()
+            .onGeometryChange(for: CGFloat.self) { geometry in
+                geometry.size.height
+            } action: { height in
+                calloutContentHeight = height
+            }
         }
-        .fixedSize(horizontal: false, vertical: true)
+        // Let the callout container propose a smaller scrolling viewport.
+        .frame(maxHeight: min(calloutContentHeight ?? mapHeight, mapHeight))
     }
     
     /// Content-sized controls, with a legend when space and text size permit.
     var scalingControls: some View {
-        ViewThatFits(in: .vertical) {
-            VStack(alignment: .leading) {
-                labelScalingToggle
-                if verticalSizeClass != .compact
-                    && !dynamicTypeSize.isAccessibilitySize {
+        VStack(alignment: .leading) {
+            if verticalSizeClass != .compact
+                && !dynamicTypeSize.isAccessibilitySize {
+                ScrollView {
                     scalingStatus
+                        .fixedSize(horizontal: false, vertical: true)
+                        .onGeometryChange(for: CGFloat.self) { geometry in
+                            geometry.size.height
+                        } action: { height in
+                            scalingStatusHeight = height
+                        }
                 }
+                .frame(maxHeight: scalingStatusHeight)
             }
-            .fixedSize(horizontal: false, vertical: true)
             labelScalingToggle
+                .fixedSize(horizontal: false, vertical: true)
+                .layoutPriority(1)
         }
+        .frame(maxWidth: .infinity, alignment: .leading)
         .padding()
         .background(.regularMaterial)
     }
@@ -301,15 +338,30 @@ private extension UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView {
     /// Opens accessibility settings, with manual guidance if opening fails.
     func openAccessibilitySettings() {
         #if targetEnvironment(macCatalyst)
-        let settingsURL: URL = .accessibilityDisplaySettings
-        #else
-        let settingsURL: URL = .accessibilitySettings
-        #endif
-        openURL(settingsURL) { accepted in
+        openURL(.accessibilityDisplaySettings) { accepted in
             if !accepted {
                 error = OpenSettingsError()
             }
         }
+        #else
+        Task {
+            do {
+                // Use destinations supported by the current iOS version.
+                // The API has no explicit destination for Larger Text.
+                if #available(iOS 26.0, *) {
+                    try await AccessibilitySettings.openSettings(
+                        for: .assistiveTouchDevices
+                    )
+                } else {
+                    try await AccessibilitySettings.openSettings(
+                        for: .personalVoiceAllowAppsToRequestToUse
+                    )
+                }
+            } catch {
+                self.error = OpenSettingsError()
+            }
+        }
+        #endif
     }
     
     /// An error opening settings, including manual navigation instructions.
@@ -331,11 +383,6 @@ private extension UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView {
 }
 
 private extension URL {
-    /// The Accessibility menu in the iOS Settings app.
-    static var accessibilitySettings: URL {
-        URL(string: "App-prefs:ACCESSIBILITY")!
-    }
-    
     /// The Display pane of macOS Accessibility settings.
     static var accessibilityDisplaySettings: URL {
         URL(
@@ -345,7 +392,7 @@ private extension URL {
     }
 }
 
-#Preview("Portrait") {
+#Preview {
     NavigationStack {
         UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView()
     }
