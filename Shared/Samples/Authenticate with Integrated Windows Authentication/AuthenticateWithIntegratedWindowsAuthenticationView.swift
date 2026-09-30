@@ -154,7 +154,13 @@ extension AuthenticateWithIntegratedWindowsAuthenticationView {
             
             // In your application you may want to uncomment this code to persist
             // credentials in the keychain.
-            // setupPersistentCredentialStorage()
+            // Task {
+            //    do {
+            //        try await setupPersistentCredentialStorage()
+            //    } catch {
+            //        print("Failed to set up persistent credential storage: \(error.localizedDescription)")
+            //    }
+            // }
         }
         
         /// Stops the authenticator from handling the challenges and clears credentials.
@@ -170,17 +176,11 @@ extension AuthenticateWithIntegratedWindowsAuthenticationView {
         }
         
         /// Sets up new ArcGIS and Network credential stores that will be persisted in the keychain.
-        private func setupPersistentCredentialStorage() {
-            Task {
-                do {
-                    try await ArcGISEnvironment.authenticationManager.setupPersistentCredentialStorage(
-                        access: .whenUnlockedThisDeviceOnly,
-                        synchronizesWithiCloud: false
-                    )
-                } catch {
-                    print("Failed to set up persistent credential storage: \(error.localizedDescription)")
-                }
-            }
+        private func setupPersistentCredentialStorage() async throws {
+            try await ArcGISEnvironment.authenticationManager.setupPersistentCredentialStorage(
+                access: .whenUnlockedThisDeviceOnly,
+                synchronizesWithiCloud: false
+            )
         }
     }
 }
