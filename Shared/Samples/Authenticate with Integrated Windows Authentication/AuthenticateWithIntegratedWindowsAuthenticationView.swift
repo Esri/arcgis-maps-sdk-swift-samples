@@ -72,7 +72,6 @@ struct AuthenticateWithIntegratedWindowsAuthenticationView: View {
         }
         .animation(.default, value: model.isConnecting)
         .authenticator(model.authenticator)
-        .errorAlert(presentingError: $model.setupError)
     }
     
     @ViewBuilder private var urlEntryView: some View {
@@ -112,10 +111,6 @@ extension AuthenticateWithIntegratedWindowsAuthenticationView {
         
         /// The fetched portal content.
         @Published var portalContent: Result<PortalQueryResultSet<PortalItem>, any Error>?
-        
-        /// The error that was thrown during credential storage setup or `nil` if setup completed
-        /// successfully.
-        @Published var setupError: (any Error)?
         
         /// A Boolean value indicating if a portal connection is in progress.
         @Published var isConnecting = false
@@ -183,7 +178,7 @@ extension AuthenticateWithIntegratedWindowsAuthenticationView {
                         synchronizesWithiCloud: false
                     )
                 } catch {
-                    self.setupError = error
+                    print("Failed to set up persistent credential storage: \(error.localizedDescription)")
                 }
             }
         }
