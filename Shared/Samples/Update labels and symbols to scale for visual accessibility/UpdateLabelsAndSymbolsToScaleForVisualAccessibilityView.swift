@@ -29,8 +29,8 @@ struct UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView: View {
     /// Instructions for changing the system text size.
     private let textSizeTip = TextSizeTip()
     
-    /// The screen point to identify, if any.
-    @State private var identifyPoint: CGPoint?
+    /// The latest identify request, with a unique ID so repeated taps at the same point restart the task.
+    @State private var identifyRequest: IdentifyRequest?
     
     /// The selected restaurant and its callout placement.
     @State private var selectedFeature: Feature?
@@ -53,15 +53,15 @@ struct UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView: View {
                     model.restaurantsLayer.clearSelection()
                     selectedFeature = nil
                     calloutPlacement = nil
-                    identifyPoint = screenPoint
+                    identifyRequest = IdentifyRequest(screenPoint: screenPoint)
                 }
-                .task(id: identifyPoint) {
-                    guard let identifyPoint else { return }
+                .task(id: identifyRequest?.id) {
+                    guard let identifyRequest else { return }
                     do {
                         // Identify at most one restaurant near the tap.
                         let result = try await mapViewProxy.identify(
                             on: model.restaurantsLayer,
-                            screenPoint: identifyPoint,
+                            screenPoint: identifyRequest.screenPoint,
                             tolerance: 12,
                             maximumResults: 1
                         )
@@ -133,6 +133,12 @@ struct UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView: View {
 }
 
 private extension UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView {
+    /// A uniquely identified map tap and the screen point to identify.
+    struct IdentifyRequest {
+        let id = UUID()
+        let screenPoint: CGPoint
+    }
+
     /// The selected restaurant's name and WGS 84 coordinates.
     func calloutContent(for feature: Feature) -> some View {
         let name = (feature.attributes["name"] as? String)?
