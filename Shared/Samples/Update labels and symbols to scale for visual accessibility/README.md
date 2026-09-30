@@ -2,6 +2,8 @@
 
 Scale feature labels and symbols according to the system text-size setting.
 
+![Screenshot of update labels and symbols to scale for visual accessibility sample](update-labels-and-symbols-to-scale-for-visual-accessibility.png)
+
 ## Use case
 
 Improve map readability for users who increase text size in accessibility settings. Use SwiftUI Dynamic Type to scale restaurant labels and symbols, with independent control over label scaling.
@@ -24,14 +26,14 @@ Turn off **Scale Labels** in the bottom toolbar to restore labels to their base 
 
 ## Relevant API
 
-- ArcadeLabelExpression
-- FeatureLayer
-- GeometryEngine
-- LabelDefinition
-- MapViewProxy
-- SimpleMarkerSymbol
-- SimpleRenderer
-- TextSymbol
+* ArcadeLabelExpression
+* FeatureLayer
+* GeometryEngine
+* LabelDefinition
+* MapViewProxy
+* SimpleMarkerSymbol
+* SimpleRenderer
+* TextSymbol
 
 ## About the data
 
@@ -47,4 +49,4 @@ iOS does not provide a public URL for opening Larger Text settings directly. The
 
 ## Tags
 
-accessibility, Dynamic Type, label, readability, scale, symbol, text, visual impairment
+accessibility, dynamic type, label, readability, scale, symbol, text, visual impairment

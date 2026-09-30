@@ -2,10 +2,12 @@
     "category": "Accessibility",
     "description": "Scale feature labels and symbols according to the system text-size setting.",
     "ignore": false,
-    "images": [],
+    "images": [
+        "update-labels-and-symbols-to-scale-for-visual-accessibility.png"
+    ],
     "keywords": [
         "accessibility",
-        "Dynamic Type",
+        "dynamic type",
         "label",
         "readability",
         "scale",
