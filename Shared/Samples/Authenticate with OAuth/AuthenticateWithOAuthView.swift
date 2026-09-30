@@ -44,7 +44,6 @@ struct AuthenticateWithOAuthView: View {
     var body: some View {
         MapView(map: map)
             .authenticator(authenticator)
-            .errorAlert(presentingError: $setupError)
             .onAppear {
                 // Setting the challenge handlers here in `onAppear` so user is prompted to enter
                 // credentials every time trying the sample. In real world applications, set challenge
@@ -56,7 +55,7 @@ struct AuthenticateWithOAuthView: View {
                 
                 // In real world applications, uncomment this code to persist credentials in the
                 // keychain and remove `signOut()` from `onTeardown`.
-                // setupPersistentCredentialStorage()
+                // try await setupPersistentCredentialStorage()
             }
             .onTeardown {
                 // Resetting the challenge handlers and clearing credentials here in `onDisappear`
@@ -72,17 +71,11 @@ struct AuthenticateWithOAuthView: View {
     }
     
     /// Sets up new ArcGIS and Network credential stores that will be persisted in the keychain.
-    private func setupPersistentCredentialStorage() {
-        Task {
-            do {
-                try await ArcGISEnvironment.authenticationManager.setupPersistentCredentialStorage(
-                    access: .whenUnlockedThisDeviceOnly,
-                    synchronizesWithiCloud: false
-                )
-            } catch {
-                setupError = error
-            }
-        }
+    private func setupPersistentCredentialStorage() async throws {
+        try await ArcGISEnvironment.authenticationManager.setupPersistentCredentialStorage(
+            access: .whenUnlockedThisDeviceOnly,
+            synchronizesWithiCloud: false
+        )
     }
 }
 
