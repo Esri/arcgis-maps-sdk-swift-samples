@@ -207,6 +207,7 @@
 		95DEB9B62C127A92009BEC35 /* ShowViewshedCalculatedFromGeoprocessingTaskView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95DEB9B52C127A92009BEC35 /* ShowViewshedCalculatedFromGeoprocessingTaskView.swift */; };
 		95DF31802FD37D33005D06E7 /* UpdateBasemapForContrastAccessibilityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95DF317F2FD37D33005D06E7 /* UpdateBasemapForContrastAccessibilityView.swift */; };
 		95E980712C26183000CB8912 /* BrowseOGCAPIFeatureServiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95E980702C26183000CB8912 /* BrowseOGCAPIFeatureServiceView.swift */; };
+		95EDE312306CA78400C0F57A /* UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView.Tips.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95EDE311306CA77D00C0F57A /* UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView.Tips.swift */; };
 		95F3A52B2C07F09C00885DED /* SetSurfaceNavigationConstraintView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95F3A52A2C07F09C00885DED /* SetSurfaceNavigationConstraintView.swift */; };
 		95F891292C46E9D60010EBED /* ShowDeviceLocationUsingIndoorPositioningView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95F891282C46E9D60010EBED /* ShowDeviceLocationUsingIndoorPositioningView.swift */; };
 		95FEAE552E3BF42A00727ABA /* ShowWFSLayerWithXMLQueryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 957B25D32E31BE23007E88F9 /* ShowWFSLayerWithXMLQueryView.swift */; };
@@ -673,6 +674,7 @@
 		95DEB9B52C127A92009BEC35 /* ShowViewshedCalculatedFromGeoprocessingTaskView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowViewshedCalculatedFromGeoprocessingTaskView.swift; sourceTree = "<group>"; };
 		95DF317F2FD37D33005D06E7 /* UpdateBasemapForContrastAccessibilityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateBasemapForContrastAccessibilityView.swift; sourceTree = "<group>"; };
 		95E980702C26183000CB8912 /* BrowseOGCAPIFeatureServiceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowseOGCAPIFeatureServiceView.swift; sourceTree = "<group>"; };
+		95EDE311306CA77D00C0F57A /* UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView.Tips.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView.Tips.swift; sourceTree = "<group>"; };
 		95F3A52A2C07F09C00885DED /* SetSurfaceNavigationConstraintView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetSurfaceNavigationConstraintView.swift; sourceTree = "<group>"; };
 		95F891282C46E9D60010EBED /* ShowDeviceLocationUsingIndoorPositioningView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowDeviceLocationUsingIndoorPositioningView.swift; sourceTree = "<group>"; };
 		D70082EA2ACF900100E0C3C2 /* IdentifyKMLFeaturesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IdentifyKMLFeaturesView.swift; sourceTree = "<group>"; };
@@ -2403,6 +2405,7 @@
 			children = (
 				9579E0E93060B3F6003923F6 /* UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView.swift */,
 				9579E0EC3060B6DD003923F6 /* UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView.Model.swift */,
+				95EDE311306CA77D00C0F57A /* UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView.Tips.swift */,
 			);
 			path = "Update labels and symbols to scale for visual accessibility";
 			sourceTree = "<group>";
@@ -4219,6 +4222,7 @@
 				10CFF4CA2DBAAFAC0027F144 /* AddFeatureLayerWithTimeOffsetView.swift in Sources */,
 				D74F03F02B609A7D00E83688 /* AddFeaturesWithContingentValuesView.Model.swift in Sources */,
 				95A86A5B2E1C50C2000BF570 /* ShowPortalUserInfoView.swift in Sources */,
+				95EDE312306CA78400C0F57A /* UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView.Tips.swift in Sources */,
 				E004A6F3284E4FEB002A1FE6 /* ShowResultOfSpatialOperationsView.swift in Sources */,
 				955AFAC42C10FD6F009C8FE5 /* ApplyMosaicRuleToRastersView.swift in Sources */,
 				D751018E2A2E962D00B8FA48 /* IdentifyLayerFeaturesView.swift in Sources */,

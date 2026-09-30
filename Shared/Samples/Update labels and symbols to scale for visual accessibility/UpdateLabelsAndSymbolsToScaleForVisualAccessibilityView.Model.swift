@@ -17,11 +17,19 @@ import Observation
 import UIKit
 
 extension UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView {
+    /// Configures restaurant labeling and scales marker and label symbols
+    /// in response to Dynamic Type changes.
     @MainActor
     @Observable
     final class Model {
-        /// The map displayed in the map view.
-        let map: Map
+        /// The marker size in points at the default system text size.
+        private static let baseMarkerSize: CGFloat = 12
+        
+        /// The label size in points when system text scaling is disabled or at its default.
+        private static let baseLabelSize: CGFloat = 12
+        
+        /// The marker outline width in points at the default system text size.
+        private static let baseMarkerOutlineWidth: CGFloat = 1.5
         
         /// The layer containing the Redlands restaurants.
         let restaurantsLayer: FeatureLayer
@@ -46,28 +54,24 @@ extension UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView {
         private(set) var systemTextScale: CGFloat = 1
         
         /// The calculated marker size in points.
-        var markerSize: CGFloat { 12 * systemTextScale }
+        var markerSize: CGFloat { Self.baseMarkerSize * systemTextScale }
         
-        /// The restaurant marker and label symbols, sized in points.
+        /// The restaurant marker symbol whose size and outline follow the system text scale.
         private let markerSymbol: SimpleMarkerSymbol
+        
+        /// The restaurant label symbol whose size scales when label scaling is enabled.
         private let labelSymbol: TextSymbol
         
         init() {
-            map = Map(basemapStyle: .arcGISLightGray)
-            map.initialViewpoint = Viewpoint(
-                latitude: 34.0556,
-                longitude: -117.1793,
-                scale: 2_500
-            )
             markerSymbol = SimpleMarkerSymbol(
                 style: .circle,
                 color: Self.markerColor,
-                size: 12
+                size: Self.baseMarkerSize
             )
             markerSymbol.outline = SimpleLineSymbol(
                 style: .solid,
                 color: .white,
-                width: 1.5
+                width: Self.baseMarkerOutlineWidth
             )
             restaurantsLayer = FeatureLayer(
                 featureTable: ServiceFeatureTable(url: .redlandsRestaurants)
@@ -81,7 +85,7 @@ extension UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView {
                     blue: 40 / 255,
                     alpha: 1
                 ),
-                size: 12
+                size: Self.baseLabelSize
             )
             labelSymbol.haloColor = .white
             labelSymbol.haloWidth = 2
@@ -92,25 +96,29 @@ extension UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView {
                 textSymbol: labelSymbol
             )
             labelDefinition.placement = .pointAboveCenter
-            labelDefinition.deconflictionStrategy = .noDeconfliction
+            // Move labels to avoid overlaps, omitting those that cannot fit.
+            labelDefinition.deconflictionStrategy = .dynamic
             restaurantsLayer.addLabelDefinitions([labelDefinition])
             restaurantsLayer.labelsAreEnabled = true
-            map.addOperationalLayer(restaurantsLayer)
         }
         
         /// Applies Dynamic Type scaling independently to symbols and labels.
+        /// - Parameter scale: A multiplier relative to the default Body text
+        ///   size, where `1` represents the default size.
         func applySystemTextScale(_ scale: CGFloat) {
             systemTextScale = scale
             // Calculate from the base size to avoid compounding scale changes.
             markerSymbol.size = markerSize
-            markerSymbol.outline?.width = 1.5 * scale
+            markerSymbol.outline?.width = Self.baseMarkerOutlineWidth * scale
             updateLabelSize()
         }
         
         /// Scales labels explicitly because the Swift SDK has no
         /// system-text-scale modifier.
         private func updateLabelSize() {
-            labelSymbol.size = 12 * (
+            // A factor of 1 restores the base label size when scaling is off.
+            // Markers continue to follow the system text scale independently.
+            labelSymbol.size = Self.baseLabelSize * (
                 labelsUseSystemTextScale ? systemTextScale : 1
             )
         }

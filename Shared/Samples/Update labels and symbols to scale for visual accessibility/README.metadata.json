@@ -36,7 +36,8 @@
     ],
     "snippets": [
         "UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView.swift",
-        "UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView.Model.swift"
+        "UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView.Model.swift",
+        "UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView.Tips.swift"
     ],
     "title": "Update labels and symbols to scale for visual accessibility"
 }

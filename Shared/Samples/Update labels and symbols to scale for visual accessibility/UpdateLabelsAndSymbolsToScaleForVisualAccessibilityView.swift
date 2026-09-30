@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import Accessibility
 import ArcGIS
 import SwiftUI
 import TipKit
@@ -20,30 +21,49 @@ struct UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView: View {
     /// The view model for the sample.
     @State private var model = Model()
     
-    /// The error shown in an alert, if any.
+    /// The map displaying restaurants in Redlands, California.
+    @State private var map: Map = {
+        let map = Map(basemapStyle: .arcGISLightGray)
+        map.initialViewpoint = Viewpoint(
+            latitude: 34.0556,
+            longitude: -117.1793,
+            scale: 2_500
+        )
+        return map
+    }()
+    
+    /// An error from identifying a restaurant, loading the layer,
+    /// configuring tips, or opening settings.
     @State private var error: (any Error)?
     
     /// Opens the platform's accessibility settings.
     @Environment(\.openURL) private var openURL
     
-    /// Instructions for changing the system text size.
-    private let textSizeTip = TextSizeTip()
+    /// The text size used to decide whether to show inline instructions.
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     
-    /// The latest identify request, with a unique ID so repeated taps at the same point restart the task.
+    /// Whether the available layout has a compact height.
+    @Environment(\.verticalSizeClass) private var verticalSizeClass
+    
+    /// Whether the text-size instructions are presented.
+    @State private var isShowingTextSizeHelp = false
+    
+    /// The latest identify request, with a unique ID so repeated taps
+    /// at the same point restart the task.
     @State private var identifyRequest: IdentifyRequest?
     
-    /// The selected restaurant and its callout placement.
+    /// The selected restaurant whose details are shown in the callout, if any.
     @State private var selectedFeature: Feature?
+    
+    /// The placement of the restaurant details callout, or `nil` when hidden.
     @State private var calloutPlacement: CalloutPlacement?
     
     /// A scale factor relative to the default body text size.
     @ScaledMetric(relativeTo: .body) private var systemTextScale: CGFloat = 1
     
     var body: some View {
-        @Bindable var model = model
-        
-        MapViewReader { mapViewProxy in
-            MapView(map: model.map)
+        MapViewReader { mapView in
+            MapView(map: map)
                 .callout(placement: $calloutPlacement) { _ in
                     if let selectedFeature {
                         calloutContent(for: selectedFeature)
@@ -59,7 +79,7 @@ struct UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView: View {
                     guard let identifyRequest else { return }
                     do {
                         // Identify at most one restaurant near the tap.
-                        let result = try await mapViewProxy.identify(
+                        let result = try await mapView.identify(
                             on: model.restaurantsLayer,
                             screenPoint: identifyRequest.screenPoint,
                             tolerance: 12,
@@ -71,7 +91,9 @@ struct UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView: View {
                         guard
                             let feature = result.geoElements.first as? Feature,
                             let location = feature.geometry as? Point
-                        else { return }
+                        else {
+                            return
+                        }
                         model.restaurantsLayer.selectFeature(feature)
                         selectedFeature = feature
                         calloutPlacement = .geoElement(
@@ -97,37 +119,56 @@ struct UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView: View {
                     model.applySystemTextScale(newValue)
                 }
                 .onAppear {
-                    // Configure TipKit once per process. Ignore errors if
-                    // another sample has already configured it.
-                    try? Tips.configure([.displayFrequency(.immediate)])
+                    // Avoid adding the layer again when the view reappears.
+                    if map.operationalLayers.isEmpty {
+                        map.addOperationalLayer(model.restaurantsLayer)
+                    }
+                    
+                    // Configure tips when the view appears and report any
+                    // failure without preventing use of the map.
+                    do {
+                        try Tips.configure([.displayFrequency(.immediate)])
+                    } catch {
+                        self.error = error
+                    }
                 }
                 .overlay(alignment: .top) {
-                    TipView(textSizeTip) { action in
-                        if action.id == TextSizeTip.openSettingsActionID {
-                            openAccessibilitySettings()
+                    if verticalSizeClass != .compact
+                        && !dynamicTypeSize.isAccessibilitySize {
+                        ViewThatFits(in: .vertical) {
+                            TipView(TextSizeTip()) { _ in
+                                openAccessibilitySettings()
+                            }
+                            .fixedSize(horizontal: false, vertical: true)
+                            .padding()
+                            // Help remains available if the tip cannot fit.
+                            Color.clear
+                                .allowsHitTesting(false)
                         }
                     }
-                    .padding()
                 }
-                .overlay(alignment: .bottom) {
-                    scalingStatus
+                .safeAreaInset(edge: .bottom, spacing: 0) {
+                    scalingControls
                 }
                 .toolbar {
-                    ToolbarItem(placement: .bottomBar) {
-                        Toggle(
-                            "Scale Labels",
-                            isOn: $model.labelsUseSystemTextScale
-                        )
-                        .toggleStyle(.switch)
-                        .accessibilityHint(
-                            """
-                            Apply system text size to restaurant labels. \
-                            Symbols always follow the system text size.
-                            """
-                        )
+                    ToolbarItem(placement: .primaryAction) {
+                        Button {
+                            isShowingTextSizeHelp = true
+                        } label: {
+                            Label(
+                                "Text Size Help",
+                                systemImage: "textformat.size"
+                            )
+                        }
                     }
                 }
-                .errorAlert(presentingError: $error)
+                .sheet(isPresented: $isShowingTextSizeHelp) {
+                    textSizeHelp
+                }
+                .errorAlert(presentingError: Binding(
+                    get: { isShowingTextSizeHelp ? nil : error },
+                    set: { error = $0 }
+                ))
         }
     }
 }
@@ -135,10 +176,13 @@ struct UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView: View {
 private extension UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView {
     /// A uniquely identified map tap and the screen point to identify.
     struct IdentifyRequest {
+        /// A unique task ID so each tap starts a new identify operation.
         let id = UUID()
+        
+        /// The tapped position in the map view's screen coordinates.
         let screenPoint: CGPoint
     }
-
+    
     /// The selected restaurant's name and WGS 84 coordinates.
     func calloutContent(for feature: Feature) -> some View {
         let name = (feature.attributes["name"] as? String)?
@@ -146,46 +190,95 @@ private extension UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView {
         let location = (feature.geometry as? Point).flatMap {
             GeometryEngine.project($0, into: .wgs84)
         }
+        let coordinateFormat = FloatingPointFormatStyle<Double>.number
+            .precision(.fractionLength(5))
         
         return ScrollView {
             VStack(alignment: .leading) {
                 Text(name.flatMap { $0.isEmpty ? nil : $0 } ?? "Restaurant")
                     .font(.headline)
                 if let location {
-                    Text(
-                        """
-                        Latitude: \(location.y,
-                        format: .number.precision(.fractionLength(5)))
-                        """
-                    )
-                    Text(
-                        """
-                        Longitude: \(location.x,
-                        format: .number.precision(.fractionLength(5)))
-                        """
-                    )
+                    Text("Latitude: \(location.y, format: coordinateFormat)")
+                    Text("Longitude: \(location.x, format: coordinateFormat)")
                 }
             }
-            .padding(5)
+            .padding()
         }
-        .frame(maxHeight: 250)
         .fixedSize(horizontal: false, vertical: true)
+    }
+    
+    /// Content-sized controls, with a legend when space and text size permit.
+    var scalingControls: some View {
+        ViewThatFits(in: .vertical) {
+            VStack(alignment: .leading) {
+                labelScalingToggle
+                if verticalSizeClass != .compact
+                    && !dynamicTypeSize.isAccessibilitySize {
+                    scalingStatus
+                }
+            }
+            .fixedSize(horizontal: false, vertical: true)
+            labelScalingToggle
+        }
+        .padding()
+        .background(.regularMaterial)
+    }
+    
+    /// The label-scaling control below the map.
+    var labelScalingToggle: some View {
+        @Bindable var model = model
+        
+        return Toggle("Scale Labels", isOn: $model.labelsUseSystemTextScale)
+            .toggleStyle(.switch)
+            .accessibilityHint(
+                """
+                Apply system text size to restaurant labels. \
+                Symbols always follow the system text size.
+                """
+            )
+    }
+    
+    /// Instructions available when the inline tip is hidden or dismissed.
+    var textSizeHelp: some View {
+        NavigationStack {
+            Form {
+                Self.textSizeInstructions
+                Button("Open Accessibility Settings") {
+                    openAccessibilitySettings()
+                }
+            }
+            .navigationTitle("Text Size")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Done") {
+                        isShowingTextSizeHelp = false
+                    }
+                }
+            }
+            .errorAlert(presentingError: $error)
+        }
+        .presentationDetents([.medium, .large])
     }
     
     /// A compact legend showing the current scaling source and values.
     var scalingStatus: some View {
-        VStack(alignment: .leading, spacing: 8) {
+        let scaleFormat = FloatingPointFormatStyle<CGFloat>.Percent()
+            .precision(.fractionLength(0))
+        let markerFormat = FloatingPointFormatStyle<CGFloat>()
+            .precision(.fractionLength(1))
+        
+        return VStack(alignment: .leading) {
             Text(
                 """
-                System text scale (Body): \(model.systemTextScale,
-                format: .percent.precision(.fractionLength(0)))
+                System text scale (Body): \
+                \(model.systemTextScale, format: scaleFormat)
                 """
             )
             Label {
                 Text(
                     model.labelsUseSystemTextScale
-                    ? "Labels: Dynamic Type"
-                    : "Labels: fixed size"
+                        ? "Labels: Dynamic Type" : "Labels: fixed size"
                 )
             } icon: {
                 Text("Aa")
@@ -195,8 +288,8 @@ private extension UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView {
             Label {
                 Text(
                     """
-                    Symbols: Dynamic Type — \(model.markerSize,
-                    format: .number.precision(.fractionLength(1))) pt
+                    Symbols: Dynamic Type — \
+                    \(model.markerSize, format: markerFormat) pt
                     """
                 )
             } icon: {
@@ -207,24 +300,37 @@ private extension UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView {
                     .accessibilityHidden(true)
             }
         }
-        .font(.footnote)
-        .padding(8)
+        .font(.body)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(.regularMaterial)
     }
     
     /// Opens accessibility settings, with manual guidance if opening fails.
     func openAccessibilitySettings() {
         #if targetEnvironment(macCatalyst)
-        let url = URL.accessibilityDisplaySettings
-        #else
-        let url = URL.accessibilitySettings
-        #endif
-        openURL(url) { accepted in
+        openURL(.accessibilityDisplaySettings) { accepted in
             if !accepted {
                 error = OpenSettingsError()
             }
         }
+        #else
+        Task {
+            do {
+                // Use destinations supported by the current iOS version.
+                // The API has no explicit destination for Larger Text.
+                if #available(iOS 26.0, *) {
+                    try await AccessibilitySettings.openSettings(
+                        for: .assistiveTouchDevices
+                    )
+                } else {
+                    try await AccessibilitySettings.openSettings(
+                        for: .personalVoiceAllowAppsToRequestToUse
+                    )
+                }
+            } catch {
+                self.error = OpenSettingsError()
+            }
+        }
+        #endif
     }
     
     /// An error opening settings, including manual navigation instructions.
@@ -245,60 +351,7 @@ private extension UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView {
     }
 }
 
-private extension UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView {
-    /// Instructions for trying Dynamic Type scaling in the sample.
-    struct TextSizeTip: Tip {
-        /// The identifier of the action that opens accessibility settings.
-        static let openSettingsActionID = "openSettings"
-        
-        var title: Text {
-            Text("Try changing the system text size")
-        }
-        
-        var message: Text? {
-            #if targetEnvironment(macCatalyst)
-            Text(
-                """
-                Open System Settings > Accessibility > Display > Text size \
-                to scale restaurant labels and symbols. Text-size support \
-                depends on the system and app settings.
-                
-                Select a restaurant to view its name and coordinates.
-                """
-            )
-            #else
-            Text(
-                """
-                Open Settings > Accessibility > Display & Text Size > \
-                Larger Text. Enable Larger Accessibility Sizes for additional \
-                sizes, then return to see restaurant labels and symbols scale.
-                
-                Select a restaurant to view its name and coordinates.
-                """
-            )
-            #endif
-        }
-        
-        var image: Image? {
-            Image(systemName: "textformat.size")
-        }
-        
-        var actions: [Action] {
-            Action(
-                id: Self.openSettingsActionID,
-                title: "Open Accessibility Settings"
-            )
-        }
-    }
-}
-
 private extension URL {
-    /// A best-effort link matching the keyboard-navigation sample.
-    /// This undocumented URL may not open Accessibility on every iOS version.
-    static var accessibilitySettings: URL {
-        URL(string: "App-prefs:ACCESSIBILITY")!
-    }
-    
     /// The Display pane of macOS Accessibility settings.
     static var accessibilityDisplaySettings: URL {
         URL(
@@ -308,7 +361,7 @@ private extension URL {
     }
 }
 
-#Preview {
+#Preview("Portrait") {
     NavigationStack {
         UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView()
     }
