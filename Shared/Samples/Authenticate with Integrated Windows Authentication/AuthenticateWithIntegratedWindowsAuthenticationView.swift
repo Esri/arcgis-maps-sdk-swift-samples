@@ -154,13 +154,7 @@ extension AuthenticateWithIntegratedWindowsAuthenticationView {
             
             // In your application you may want to uncomment this code to persist
             // credentials in the keychain.
-            // Task {
-            //    do {
-            //        try await setupPersistentCredentialStorage()
-            //    } catch {
-            //        print("Failed to set up persistent credential storage: \(error.localizedDescription)")
-            //    }
-            // }
+            // try await setupPersistentCredentialStorage()
         }
         
         /// Stops the authenticator from handling the challenges and clears credentials.
