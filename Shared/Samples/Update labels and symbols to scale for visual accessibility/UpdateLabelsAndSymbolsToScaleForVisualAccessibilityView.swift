@@ -126,11 +126,7 @@ struct UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView: View {
                     
                     // Configure tips when the view appears and report any
                     // failure without preventing use of the map.
-                    do {
-                        try Tips.configure([.displayFrequency(.immediate)])
-                    } catch {
-                        self.error = error
-                    }
+try? Tips.configure([.displayFrequency(.immediate)])
                 }
                 .overlay(alignment: .top) {
                     if verticalSizeClass != .compact
