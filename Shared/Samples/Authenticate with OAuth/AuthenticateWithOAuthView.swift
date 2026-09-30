@@ -22,10 +22,6 @@ struct AuthenticateWithOAuthView: View {
         oAuthUserConfigurations: [.arcgisDotCom]
     )
     
-    /// The error that was thrown during credential storage setup or `nil` if setup completed
-    /// successfully.
-    @State private var setupError: (any Error)?
-    
     /// The map to be displayed on the map view.
     @State private var map: Map = {
         // The portal to authenticate with named user.
