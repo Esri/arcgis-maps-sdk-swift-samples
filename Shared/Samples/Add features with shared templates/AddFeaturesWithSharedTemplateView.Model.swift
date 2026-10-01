@@ -95,13 +95,9 @@ extension AddFeaturesWithSharedTemplateView {
                 try await map.load()
                 
                 // Get the first service geodatabase from the feature layers.
-                guard let serviceGeodatabase = map.operationalLayers
-                    .lazy
-                    .compactMap({ $0 as? FeatureLayer })
-                    .compactMap(\.featureTable)
-                    .compactMap({ $0 as? ServiceFeatureTable })
-                    .compactMap(\.serviceGeodatabase)
-                    .first else {
+                guard let featureLayer = map.operationalLayers.first(where: { $0 is FeatureLayer }) as! FeatureLayer?,
+                      let featureTable = featureLayer.featureTable as? ServiceFeatureTable,
+                      let serviceGeodatabase = featureTable.serviceGeodatabase else {
                     throw SampleError.sharedTemplateSourceNotFound
                 }
                 self.serviceGeodatabase = serviceGeodatabase
@@ -132,11 +128,7 @@ extension AddFeaturesWithSharedTemplateView {
             var includedKinds: Set<SharedTemplate.Kind> = []
             var items: [TemplateItem] = []
 
-            for layerID in templatesByLayer.keys.sorted() {
-                guard let templates = templatesByLayer[layerID] else {
-                    continue
-                }
-
+            for (layerID, templates) in templatesByLayer.sorted(by: { $0.key < $1.key }) {
                 for template in templates {
                     guard [.preset, .group].contains(template.kind),
                           !includedKinds.contains(template.kind) else {
@@ -265,12 +257,12 @@ extension AddFeaturesWithSharedTemplateView {
 
             do {
                 let editResults = try await serviceGeodatabase.applyEdits()
-                if editResults.allSatisfy({
+                status = if editResults.allSatisfy({
                     $0.editResults.allSatisfy { !$0.didCompleteWithErrors }
                 }) {
-                    status = "Edits saved."
+                    "Edits saved."
                 } else {
-                    status = "Unable to save edits."
+                    "Unable to save edits."
                 }
             } catch {
                 status = "Unable to save edits."

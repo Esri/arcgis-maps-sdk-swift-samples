@@ -53,9 +53,9 @@ struct AddFeaturesWithSharedTemplateView: View {
             .task {
                 do {
                     try await model.setUp()
+                } catch is CancellationError {
+                    // Do nothing.
                 } catch {
-                    guard !Task.isCancelled,
-                          !(error is CancellationError) else { return }
                     self.presentedError = error
                 }
             }
@@ -74,7 +74,6 @@ struct AddFeaturesWithSharedTemplateView: View {
                 defer { pendingAction = nil }
 
                 do {
-                    try Task.checkCancellation()
                     switch action {
                     case .save:
                         try await model.saveEdits()
@@ -83,10 +82,9 @@ struct AddFeaturesWithSharedTemplateView: View {
                     case .complete:
                         try await model.completeDrawing()
                     }
-                } catch {
+                } catch is CancellationError {
                     // Cancellation does not roll back submitted service edits.
-                    guard !Task.isCancelled,
-                          !(error is CancellationError) else { return }
+                } catch {
                     self.presentedError = error
                 }
             }
