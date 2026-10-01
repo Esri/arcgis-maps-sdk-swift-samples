@@ -159,7 +159,7 @@ extension AuthenticateWithIntegratedWindowsAuthenticationView {
             
             // In your application you may want to uncomment this code to persist
             // credentials in the keychain.
-            // try await setupPersistentCredentialStorage()
+            // setupPersistentCredentialStorage()
         }
         
         /// Stops the authenticator from handling the challenges and clears credentials.
