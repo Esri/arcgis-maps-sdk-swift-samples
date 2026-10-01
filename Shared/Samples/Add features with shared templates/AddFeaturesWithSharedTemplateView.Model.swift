@@ -1,4 +1,4 @@
-// Copyright 2026 Esri
+83// Copyright 2026 Esri
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,15 +13,15 @@
 // limitations under the License.
 
 import ArcGIS
+import Foundation
 import Observation
-import UIKit
 
 extension AddFeaturesWithSharedTemplateView {
     /// The view model for the sample.
     @MainActor
     @Observable
     final class Model {
-        /// A displayable shared template and the ID of its target layer.
+        /// A shared template and the ID of its target layer.
         struct TemplateItem: Identifiable {
             /// A unique identifier for the item.
             let id = UUID()
@@ -29,18 +29,26 @@ extension AddFeaturesWithSharedTemplateView {
             let template: SharedTemplate
             /// The ID of a layer referenced by the template.
             let layerID: Int
-            /// The swatch displayed for the template.
-            let swatch: UIImage
+        }
 
-            /// A user-friendly name for the template kind.
-            var kindLabel: String {
-                switch template.kind {
-                case .feature: "Feature"
-                case .group: "Group"
-                case .preset: "Preset"
-                @unknown default: "Unknown"
-                }
-            }
+        /// The current stage or outcome of the shared template workflow.
+        enum WorkflowState {
+            case loading
+            case ready
+            case loadingFailed
+            case drawingPoint
+            case drawingLine
+            case invalidGeometry
+            case creatingFeatures
+            case featuresAdded
+            case creationFailed
+            case drawingCanceled
+            case savingEdits
+            case editsSaved
+            case savingFailed
+            case undoingEdits
+            case editsUndone
+            case undoFailed
         }
         
         /// The Parks and Grounds Assets web map whose feature layers provide
@@ -64,19 +72,15 @@ extension AddFeaturesWithSharedTemplateView {
         /// Whether the geodatabase has edits to save or undo.
         private(set) var hasPendingEdits = false
         
-        /// The instructions displayed to the user.
-        private(set) var status = "Loading shared templates…" {
+        /// The current workflow state, interpreted by the view.
+        private(set) var state: WorkflowState = .loading {
             didSet {
-                nextStepInstruction = nil
-                statusResetID = nil
+                stateResetID = nil
             }
         }
         
-        /// The next-step instruction displayed separately from the operation status.
-        private(set) var nextStepInstruction: String?
-
-        /// Identifies a pending replacement of the drawing cancellation message.
-        private(set) var statusResetID: UUID?
+        /// Identifies a pending transition from canceled drawing to ready.
+        private(set) var stateResetID: UUID?
         
         /// Whether an asynchronous operation is in progress.
         private(set) var operationIsInProgress = false
@@ -86,8 +90,9 @@ extension AddFeaturesWithSharedTemplateView {
         
         /// Loads the map and its available preset and group shared templates.
         func setUp() async throws {
-            guard templateItems.isEmpty else { return }
+            guard state == .loading || state == .loadingFailed else { return }
             
+            state = .loading
             operationIsInProgress = true
             defer { operationIsInProgress = false }
             
@@ -104,15 +109,13 @@ extension AddFeaturesWithSharedTemplateView {
                 
                 let templatesByLayer = try await serviceGeodatabase
                     .querySharedTemplates()
-                let items = try await makeTemplateItems(templatesByLayer: templatesByLayer)
-                
-                guard !items.isEmpty else {
-                    throw SampleError.supportedTemplateNotFound
-                }
-                templateItems = items
-                status = Self.instruction
+                try Task.checkCancellation()
+                templateItems = makeTemplateItems(
+                    templatesByLayer: templatesByLayer
+                )
+                state = .ready
             } catch {
-                status = "Unable to load templates."
+                state = .loadingFailed
                 throw error
             }
         }
@@ -121,10 +124,10 @@ extension AddFeaturesWithSharedTemplateView {
         /// visiting layers in ascending ID order.
         /// - Parameter templatesByLayer: The shared templates keyed by layer ID.
         /// - Returns: Picker items for the first available template of each supported kind,
-        ///   including their layer IDs and swatches.
+        ///   including their layer IDs.
         private func makeTemplateItems(
             templatesByLayer: [Int: [SharedTemplate]]
-        ) async throws -> [TemplateItem] {
+        ) -> [TemplateItem] {
             var includedKinds: Set<SharedTemplate.Kind> = []
             var items: [TemplateItem] = []
 
@@ -134,19 +137,10 @@ extension AddFeaturesWithSharedTemplateView {
                           !includedKinds.contains(template.kind) else {
                         continue
                     }
-                    try Task.checkCancellation()
-
-                    // A missing swatch should not prevent template selection.
-                    let swatch = (try? await template.makeSwatch(
-                        layerID: layerID
-                    )) ?? UIImage(systemName: "plus.square")!
-                    // Do not treat task cancellation as a missing swatch.
-                    try Task.checkCancellation()
                     items.append(
                         TemplateItem(
                             template: template,
-                            layerID: layerID,
-                            swatch: swatch
+                            layerID: layerID
                         )
                     )
                     includedKinds.insert(template.kind)
@@ -173,10 +167,10 @@ extension AddFeaturesWithSharedTemplateView {
             
             switch constructionTool.kind {
             case .point:
-                status = "Place a point, then tap Complete or Cancel."
+                state = .drawingPoint
                 geometryEditor.start(withType: Point.self)
             case .line:
-                status = "Sketch a line, then tap Complete or Cancel."
+                state = .drawingLine
                 geometryEditor.start(withType: Polyline.self)
             default:
                 activeTemplateItem = nil
@@ -192,14 +186,14 @@ extension AddFeaturesWithSharedTemplateView {
             guard geometryEditor.isStarted,
                   let geometry = geometryEditor.geometry,
                   geometry.sketchIsValid else {
-                status = "Draw a valid geometry, then tap Complete or Cancel."
+                state = .invalidGeometry
                 return
             }
             geometryEditor.stop()
             self.activeTemplateItem = nil
 
             operationIsInProgress = true
-            status = "Creating features…"
+            state = .creatingFeatures
             defer {
                 finishEditing()
                 operationIsInProgress = false
@@ -215,9 +209,9 @@ extension AddFeaturesWithSharedTemplateView {
                 try await serviceGeodatabase.addFeatures(
                     using: featureCreationSet
                 )
-                status = "Features added."
+                state = .featuresAdded
             } catch {
-                status = "Unable to create or add features."
+                state = .creationFailed
                 throw error
             }
         }
@@ -228,20 +222,20 @@ extension AddFeaturesWithSharedTemplateView {
                 geometryEditor.stop()
             }
             activeTemplateItem = nil
-            status = "Draw canceled."
-            statusResetID = UUID()
+            state = .drawingCanceled
+            stateResetID = UUID()
         }
 
-        /// Replaces the cancellation message after two seconds unless the status changes.
-        /// - Parameter id: The identifier of the pending status reset.
-        func resetStatus(afterDelayFor id: UUID) async {
+        /// Returns to ready after two seconds unless the workflow changes.
+        /// - Parameter id: The identifier of the pending state reset.
+        func resetState(afterDelayFor id: UUID) async {
             do {
                 try await Task.sleep(for: .seconds(2))
             } catch {
                 return
             }
-            guard !Task.isCancelled, statusResetID == id else { return }
-            status = Self.instruction
+            guard !Task.isCancelled, stateResetID == id else { return }
+            state = .ready
         }
         
         /// Applies the local edits to the service.
@@ -249,7 +243,7 @@ extension AddFeaturesWithSharedTemplateView {
             guard let serviceGeodatabase else { return }
 
             operationIsInProgress = true
-            status = "Saving edits…"
+            state = .savingEdits
             defer {
                 finishEditing()
                 operationIsInProgress = false
@@ -257,15 +251,15 @@ extension AddFeaturesWithSharedTemplateView {
 
             do {
                 let editResults = try await serviceGeodatabase.applyEdits()
-                status = if editResults.allSatisfy({
+                state = if editResults.allSatisfy({
                     $0.editResults.allSatisfy { !$0.didCompleteWithErrors }
                 }) {
-                    "Edits saved."
+                    .editsSaved
                 } else {
-                    "Unable to save edits."
+                    .savingFailed
                 }
             } catch {
-                status = "Unable to save edits."
+                state = .savingFailed
                 throw error
             }
         }
@@ -275,7 +269,7 @@ extension AddFeaturesWithSharedTemplateView {
             guard let serviceGeodatabase else { return }
 
             operationIsInProgress = true
-            status = "Undoing local edits…"
+            state = .undoingEdits
             defer {
                 finishEditing()
                 operationIsInProgress = false
@@ -283,45 +277,25 @@ extension AddFeaturesWithSharedTemplateView {
 
             do {
                 try await serviceGeodatabase.undoLocalEdits()
-                status = "Edits undone."
+                state = .editsUndone
             } catch {
-                status = "Unable to undo edits."
+                state = .undoFailed
                 throw error
             }
         }
-        
-        /// The instruction shown while the template picker is available.
-        private static let instruction = "Open Shared Templates and select a template to create features."
         
         /// Reconciles state after an editing operation, even if it failed or was canceled.
         private func finishEditing() {
             hasPendingEdits = serviceGeodatabase?.hasLocalEdits ?? false
             activeTemplateItem = nil
-            nextStepInstruction = hasPendingEdits ? "Save or undo edits." : Self.instruction
         }
     }
 }
 
-private extension AddFeaturesWithSharedTemplateView.Model {
+extension AddFeaturesWithSharedTemplateView.Model {
     /// An error associated with the shared template workflow.
-    enum SampleError: LocalizedError {
+    enum SampleError: Error {
         case sharedTemplateSourceNotFound
-        case supportedTemplateNotFound
         case unsupportedConstructionTool
-        
-        /// The user-facing explanation of the workflow error.
-        var errorDescription: String? {
-            switch self {
-            case .sharedTemplateSourceNotFound:
-                "The map does not contain a shared template source."
-            case .supportedTemplateNotFound:
-                "The map does not contain a preset or group shared template."
-            case .unsupportedConstructionTool:
-                """
-                The template's default construction tool is not supported \
-                by this sample.
-                """
-            }
-        }
     }
 }

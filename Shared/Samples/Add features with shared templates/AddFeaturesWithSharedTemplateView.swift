@@ -37,7 +37,23 @@ struct AddFeaturesWithSharedTemplateView: View {
         MapView(map: model.map)
             .geometryEditor(model.geometryEditor)
             .overlay(alignment: .top) {
-                statusOverlay
+                if !templatesAreUnavailable {
+                    statusOverlay
+                }
+            }
+            .overlay {
+                if templatesAreUnavailable {
+                    ContentUnavailableView(
+                        "No Templates",
+                        systemImage: "square.grid.2x2",
+                        description: Text(
+                            """
+                            This map has no preset or group shared templates.
+                            """
+                        )
+                    )
+                    .background(.regularMaterial)
+                }
             }
             .toolbar {
                 ToolbarItemGroup(placement: .bottomBar) {
@@ -64,9 +80,9 @@ struct AddFeaturesWithSharedTemplateView: View {
                     canCompleteDrawing = geometry?.sketchIsValid ?? false
                 }
             }
-            .task(id: model.statusResetID) {
-                guard let id = model.statusResetID else { return }
-                await model.resetStatus(afterDelayFor: id)
+            .task(id: model.stateResetID) {
+                guard let id = model.stateResetID else { return }
+                await model.resetState(afterDelayFor: id)
             }
             // Keep this task on the map view, not the conditional buttons.
             .task(id: pendingAction) {
@@ -98,14 +114,17 @@ struct AddFeaturesWithSharedTemplateView: View {
             .errorAlert(presentingError: $presentedError)
     }
 
+    /// Whether loading succeeded without any supported templates.
+    private var templatesAreUnavailable: Bool {
+        model.state == .ready && model.templateItems.isEmpty
+    }
+
     /// The instructions and progress indicator displayed above the map.
     private var statusOverlay: some View {
         HStack {
             VStack {
-                Text(model.status)
-                if let instruction = model.nextStepInstruction {
-                    Text(instruction)
-                }
+                statusText
+                nextStepInstruction
             }
             .multilineTextAlignment(.center)
             .frame(maxWidth: .infinity)
@@ -116,6 +135,80 @@ struct AddFeaturesWithSharedTemplateView: View {
         }
         .padding(8)
         .background(.regularMaterial, ignoresSafeAreaEdges: .horizontal)
+    }
+
+    /// The localized presentation of the current workflow state.
+    private var statusText: Text {
+        switch model.state {
+        case .loading:
+            Text("Loading shared templates…")
+        case .ready:
+            templateInstruction
+        case .loadingFailed:
+            Text("Unable to load templates.")
+        case .drawingPoint:
+            Text("Place a point, then tap Complete or Cancel.")
+        case .drawingLine:
+            Text("Sketch a line, then tap Complete or Cancel.")
+        case .invalidGeometry:
+            Text("Draw a valid geometry, then tap Complete or Cancel.")
+        case .creatingFeatures:
+            Text("Creating features…")
+        case .featuresAdded:
+            Text("Features added.")
+        case .creationFailed:
+            Text("Unable to create or add features.")
+        case .drawingCanceled:
+            Text("Draw canceled.")
+        case .savingEdits:
+            Text("Saving edits…")
+        case .editsSaved:
+            Text("Edits saved.")
+        case .savingFailed:
+            Text("Unable to save edits.")
+        case .undoingEdits:
+            Text("Undoing local edits…")
+        case .editsUndone:
+            Text("Edits undone.")
+        case .undoFailed:
+            Text("Unable to undo edits.")
+        }
+    }
+
+    /// The next action after an editing operation, based on current edits.
+    @ViewBuilder private var nextStepInstruction: some View {
+        switch model.state {
+        case .featuresAdded, .creationFailed, .editsSaved, .savingFailed,
+             .editsUndone, .undoFailed:
+            if model.hasPendingEdits {
+                Text("Save or undo edits.")
+            } else {
+                templateInstruction
+            }
+        default:
+            EmptyView()
+        }
+    }
+
+    /// The instruction shown while the template picker is available.
+    private var templateInstruction: Text {
+        Text(
+            """
+            Open Shared Templates and select a template to create features.
+            """
+        )
+    }
+
+    /// A localized label for a shared template kind.
+    /// - Parameter kind: The kind of shared template to describe.
+    /// - Returns: The template kind's display text.
+    private func kindLabel(for kind: SharedTemplate.Kind) -> Text {
+        switch kind {
+        case .feature: Text("Feature")
+        case .group: Text("Group")
+        case .preset: Text("Preset")
+        @unknown default: Text("Unknown")
+        }
     }
     
     /// The button that presents the shared template picker.
@@ -145,15 +238,12 @@ struct AddFeaturesWithSharedTemplateView: View {
                     }
                 } label: {
                     HStack(spacing: 8) {
-                        Image(uiImage: item.swatch)
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 36, height: 36)
+                        TemplateSwatch(item: item)
                         
                         VStack(alignment: .leading) {
                             Text(item.template.name)
                                 .fontWeight(.semibold)
-                            Text(item.kindLabel)
+                            kindLabel(for: item.template.kind)
                                 .font(.caption)
                         }
                         
@@ -177,7 +267,7 @@ struct AddFeaturesWithSharedTemplateView: View {
             
             Spacer()
             
-            Button("Undo", role: .destructive) {
+            Button("Undo") {
                 pendingAction = .undo
             }
         }
@@ -187,27 +277,71 @@ struct AddFeaturesWithSharedTemplateView: View {
     /// The controls for completing or canceling the current sketch.
     private var drawingButtons: some View {
         Group {
+            Button("Cancel", role: .cancel) {
+                model.cancelDrawing()
+            }
+            
+            Spacer()
+            
             Button("Complete") {
                 pendingAction = .complete
             }
             .disabled(!canCompleteDrawing)
-            
-            Spacer()
-            
-            Button("Cancel", role: .cancel) {
-                model.cancelDrawing()
-            }
         }
         .disabled(model.operationIsInProgress || pendingAction != nil)
     }
 }
 
 private extension AddFeaturesWithSharedTemplateView {
+    /// A template's swatch, rendered when its picker row appears.
+    struct TemplateSwatch: View {
+        /// The template and target layer used to render the swatch.
+        let item: Model.TemplateItem
+
+        /// The rendered swatch or a placeholder while it is unavailable.
+        @State private var image = Image(systemName: "plus.square")
+
+        var body: some View {
+            image
+                .resizable()
+                .scaledToFit()
+                .frame(width: 36, height: 36)
+                .accessibilityHidden(true)
+                .task(id: item.id) {
+                    image = Image(systemName: "plus.square")
+                    // A missing swatch should not prevent template selection.
+                    guard let swatch = try? await item.template.makeSwatch(
+                        layerID: item.layerID
+                    ), !Task.isCancelled else { return }
+                    image = Image(uiImage: swatch)
+                }
+        }
+    }
+
     /// An editing operation requested by a toolbar button.
     enum EditingAction: Equatable {
         case save
         case undo
         case complete
+    }
+}
+
+extension AddFeaturesWithSharedTemplateView.Model.SampleError: LocalizedError {
+    /// The localized, user-facing explanation presented by the view.
+    var errorDescription: String? {
+        switch self {
+        case .sharedTemplateSourceNotFound:
+            String(localized:
+                "The map does not contain a shared template source."
+            )
+        case .unsupportedConstructionTool:
+            String(localized:
+                """
+                The template's default construction tool is not supported \
+                by this sample.
+                """
+            )
+        }
     }
 }
 
