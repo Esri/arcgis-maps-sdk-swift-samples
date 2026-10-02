@@ -140,46 +140,46 @@ struct AddFeaturesWithSharedTemplateView: View {
     /// The localized presentation of the current workflow state.
     private var statusText: Text {
         switch model.state {
-        case .loading:
-            Text("Loading shared templates…")
-        case .ready:
-            templateInstruction
-        case .loadingFailed:
-            Text("Unable to load templates.")
-        case .drawingPoint:
-            Text("Place a point, then tap Complete or Cancel.")
-        case .drawingLine:
-            Text("Sketch a line, then tap Complete or Cancel.")
-        case .invalidGeometry:
-            Text("Draw a valid geometry, then tap Complete or Cancel.")
         case .creatingFeatures:
             Text("Creating features…")
-        case .featuresAdded:
-            Text("Features added.")
         case .creationFailed:
             Text("Unable to create or add features.")
         case .drawingCanceled:
             Text("Draw canceled.")
-        case .savingEdits:
-            Text("Saving edits…")
+        case .drawingLine:
+            Text("Sketch a line, then tap Complete or Cancel.")
+        case .drawingPoint:
+            Text("Place a point, then tap Complete or Cancel.")
         case .editsSaved:
             Text("Edits saved.")
-        case .savingFailed:
-            Text("Unable to save edits.")
-        case .undoingEdits:
-            Text("Undoing local edits…")
         case .editsUndone:
             Text("Edits undone.")
+        case .featuresAdded:
+            Text("Features added.")
+        case .invalidGeometry:
+            Text("Draw a valid geometry, then tap Complete or Cancel.")
+        case .loading:
+            Text("Loading shared templates…")
+        case .loadingFailed:
+            Text("Unable to load templates.")
+        case .ready:
+            templateInstruction
+        case .savingEdits:
+            Text("Saving edits…")
+        case .savingFailed:
+            Text("Unable to save edits.")
         case .undoFailed:
             Text("Unable to undo edits.")
+        case .undoingEdits:
+            Text("Undoing local edits…")
         }
     }
 
     /// The next action after an editing operation, based on current edits.
     @ViewBuilder private var nextStepInstruction: some View {
         switch model.state {
-        case .featuresAdded, .creationFailed, .editsSaved, .savingFailed,
-             .editsUndone, .undoFailed:
+        case .creationFailed, .editsSaved, .editsUndone, .featuresAdded,
+             .savingFailed, .undoFailed:
             if model.hasPendingEdits {
                 Text("Save or undo edits.")
             } else {

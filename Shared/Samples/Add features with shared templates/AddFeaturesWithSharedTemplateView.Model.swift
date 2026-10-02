@@ -33,22 +33,22 @@ extension AddFeaturesWithSharedTemplateView {
 
         /// The current stage or outcome of the shared template workflow.
         enum WorkflowState {
-            case loading
-            case ready
-            case loadingFailed
-            case drawingPoint
-            case drawingLine
-            case invalidGeometry
             case creatingFeatures
-            case featuresAdded
             case creationFailed
             case drawingCanceled
-            case savingEdits
+            case drawingLine
+            case drawingPoint
             case editsSaved
-            case savingFailed
-            case undoingEdits
             case editsUndone
+            case featuresAdded
+            case invalidGeometry
+            case loading
+            case loadingFailed
+            case ready
+            case savingEdits
+            case savingFailed
             case undoFailed
+            case undoingEdits
         }
         
         /// The Parks and Grounds Assets web map whose feature layers provide
