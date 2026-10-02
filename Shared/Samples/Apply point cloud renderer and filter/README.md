@@ -12,9 +12,11 @@ Point clouds contain large collections of 3D points captured by sensors such as 
 
 The sample initially displays a point cloud layer using its RGB values. Once the layer loads, open Settings and select a renderer to visualize the points by RGB color, elevation, or LAS classification code.
 
-Use the point size control to increase or decrease the size of the rendered points. Point size is a property of the renderer's splat algorithm.
+Use the Point Size Scale control to increase or decrease the size of the rendered points. The value is a multiplier that modifies the renderer's splat algorithm `scaleFactor`, not a fixed size in pixels or map units.
 
 Use the filter controls to include or exclude classification codes, select lidar return types, and require scan direction flag bit 6 to be set or clear. Multiple filters can be applied at the same time. Clear an individual filter to remove it without affecting the others.
+
+With no classification filter, all Include switches are on and all Exclude switches are off. Switching modes inverts the selections to preserve which listed classification codes are allowed. Clearing the classification filter restores these unrestricted switch states for the current mode.
 
 Once a classification filter is applied, Include with no selected codes hides all points, while Exclude with no selected codes allows all classifications. No selected return types allows all returns, and Any scan direction removes that restriction. Other active filters still apply.
 
@@ -23,8 +25,8 @@ Once a classification filter is applied, Include with no selected codes hides al
 1. Create a `PointCloudLayer` with the Sonoma Area 1 point cloud scene layer URL and add it to a scene's operational layers. Create the scene with `Scene(viewingMode: .local, basemapStyle: .arcGISImagery)` and display it in a `LocalSceneView`; live point cloud filter changes are not supported by `SceneView`.
 2. Create the following point cloud renderers:
    * Create a `PointCloudRGBRenderer` using the `RGB` attribute.
-   * Create a `PointCloudStretchRenderer` using the `ELEVATION` attribute and three `PointCloudColorStop` objects distributed across the elevation range.
-   * Create a `PointCloudClassBreaksRenderer` using the `ELEVATION` attribute and three `PointCloudColorClassBreak` objects distributed across the elevation range.
+   * Create a `PointCloudStretchRenderer` using the `ELEVATION` attribute and three `PointCloudColorStop` objects with fixed example elevation values of 0, 30, and 90.
+   * Create a `PointCloudClassBreaksRenderer` using the `ELEVATION` attribute and three `PointCloudColorClassBreak` objects with fixed example elevation ranges from an effectively open-ended lower bound to 20, 20 to 40, and 40 to an effectively open-ended upper bound. The first range includes negative elevations.
    * Create a `PointCloudUniqueValueRenderer` using the `CLASS_CODE` attribute and `PointCloudColorUniqueValue` objects for classification values 1 through 18.
 3. Set a `PointCloudSplatAlgorithm` on each renderer and set the renderer's `pointsPerInch` property to `25`. Modify the active renderer's existing splat algorithm to update its `scaleFactor`.
 4. Set the selected renderer on the point cloud layer's `renderer` property. The `PointCloudRGBRenderer` we constructed is applied initially.

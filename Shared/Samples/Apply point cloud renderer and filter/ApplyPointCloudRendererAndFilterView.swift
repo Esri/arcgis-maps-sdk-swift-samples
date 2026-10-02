@@ -150,13 +150,11 @@ private extension ApplyPointCloudRendererAndFilterView {
                             Text(kind.rawValue)
                         }
                     }
-                    LabeledContent(
-                        "Point Size",
-                        value: model.scaleFactor,
-                        format: .number.precision(.fractionLength(1))
-                    )
+                    LabeledContent("Point Size Scale") {
+                        Text("\(model.scaleFactor, format: .number.precision(.fractionLength(1)))")
+                    }
                     Slider(value: $model.scaleFactor, in: 0.1...5, step: 0.1) {
-                        Text("Point Size")
+                        Text("Point Size Scale")
                     } minimumValueLabel: {
                         Text("0.1")
                     } maximumValueLabel: {
@@ -165,11 +163,6 @@ private extension ApplyPointCloudRendererAndFilterView {
                 }
 
                 Section {
-                    LabeledContent(
-                        "Status",
-                        value: model.classificationFilterIsActive
-                            ? "Applied" : "Not Applied"
-                    )
                     Picker("Mode", selection: $model.classificationMode) {
                         Text("Include").tag(PointCloudValueFilter.Mode.include)
                         Text("Exclude").tag(PointCloudValueFilter.Mode.exclude)
@@ -200,6 +193,9 @@ private extension ApplyPointCloudRendererAndFilterView {
                     Text("Classification Filter")
                 } footer: {
                     Text("""
+                        With no classification filter, all Include switches \
+                        are on and all Exclude switches are off. Changing \
+                        modes inverts the selections for the listed codes. \
                         Once applied, Include with no selections hides all \
                         points; Exclude with no selections does not restrict \
                         classifications. Clear removes this filter. Other \
@@ -233,7 +229,9 @@ private extension ApplyPointCloudRendererAndFilterView {
                 } footer: {
                     Text("""
                         With no return types selected, this filter is removed. \
-                        Other filters still apply.
+                        Other filters still apply. Last includes both Last of \
+                        Many and Single. Selecting either alongside Last does \
+                        not include additional points.
                         """)
                 }
 

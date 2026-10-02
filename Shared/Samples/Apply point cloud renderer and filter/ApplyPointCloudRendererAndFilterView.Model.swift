@@ -47,11 +47,18 @@ extension ApplyPointCloudRendererAndFilterView {
 
         /// Whether selected classification codes are included or excluded.
         var classificationMode = PointCloudValueFilter.Mode.include {
-            didSet { updateClassificationFilter() }
+            didSet {
+                guard classificationMode != oldValue else { return }
+                selectedClassifications = Set(Classification.allCases)
+                    .subtracting(selectedClassifications)
+                if classificationFilterIsActive {
+                    updateClassificationFilter()
+                }
+            }
         }
 
         /// The classification codes selected by the user.
-        private(set) var selectedClassifications: Set<Classification> = []
+        private(set) var selectedClassifications = Set(Classification.allCases)
 
         /// A Boolean value indicating whether a classification filter is applied,
         /// even when no codes are selected.
@@ -148,7 +155,8 @@ extension ApplyPointCloudRendererAndFilterView {
             }) {
                 pointCloudLayer.removeFilter(filter)
             }
-            selectedClassifications.removeAll()
+            selectedClassifications = classificationMode == .include
+                ? Set(Classification.allCases) : []
             classificationFilterIsActive = false
         }
 
@@ -293,7 +301,7 @@ extension ApplyPointCloudRendererAndFilterView {
                         blue: 151 / 255,
                         alpha: 1
                     ),
-                    minValue: 0,
+                    minValue: -Double(Float.greatestFiniteMagnitude),
                     maxValue: 20
                 ),
                 PointCloudColorClassBreak(
