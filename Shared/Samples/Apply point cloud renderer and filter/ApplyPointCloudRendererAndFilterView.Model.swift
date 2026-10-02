@@ -127,7 +127,7 @@ extension ApplyPointCloudRendererAndFilterView {
         
         /// Adds the classification filter on first use, then updates it.
         private func updateClassificationFilter() {
-            let values = selectedClassifications.lazy
+            let values = selectedClassifications
                 .map { Double($0.rawValue) }
                 .sorted()
             // Update the layer's existing classification filter when present,
@@ -234,11 +234,21 @@ extension ApplyPointCloudRendererAndFilterView {
     }
     
     /// The available point cloud renderers.
-    enum RendererKind: String, CaseIterable {
-        case rgb = "RGB"
-        case stretch = "Elevation Stretch"
-        case classBreaks = "Elevation Class Breaks"
-        case uniqueValue = "Classification"
+    enum RendererKind: CaseIterable {
+        case rgb
+        case stretch
+        case classBreaks
+        case uniqueValue
+
+        /// The user-facing name of the renderer.
+        var label: String {
+            switch self {
+            case .rgb: "RGB"
+            case .stretch: "Elevation Stretch"
+            case .classBreaks: "Elevation Class Breaks"
+            case .uniqueValue: "Classification"
+            }
+        }
         
         /// Creates a renderer with the appropriate attribute and colors.
         func makeRenderer() -> PointCloudRenderer {
@@ -389,10 +399,19 @@ extension ApplyPointCloudRendererAndFilterView {
     }
     
     /// The possible requirements for scan direction flag bit 6.
-    enum ScanDirection: String, CaseIterable {
-        case any = "Any"
-        case set = "Required Set"
-        case clear = "Required Clear"
+    enum ScanDirection: CaseIterable {
+        case any
+        case set
+        case clear
+
+        /// The user-facing name of the scan direction requirement.
+        var label: String {
+            switch self {
+            case .any: "Any"
+            case .set: "Required Set"
+            case .clear: "Required Clear"
+            }
+        }
     }
     
     /// The return types and labels offered by this sample's settings.

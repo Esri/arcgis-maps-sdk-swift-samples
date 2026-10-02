@@ -25,25 +25,15 @@ struct ApplyPointCloudRendererAndFilterView: View {
     /// A Boolean value indicating whether the point cloud layer is loading.
     @State private var isLoading = true
     
-    /// An error encountered while loading the point cloud layer.
-    @State private var loadError: (any Error)?
-    
-    /// The identifier of the current point cloud loading attempt.
-    @State private var loadAttempt = 0
-    
-    /// The identifier of the task currently loading the point cloud layer.
-    @State private var activeLoadID: UUID?
-    
-    /// An error encountered while displaying the scene or rendering the
-    /// point cloud layer.
-    @State private var renderingError: (any Error)?
+    /// An error encountered while loading or displaying the scene.
+    @State private var error: (any Error)?
     
     var body: some View {
         // Live point cloud filter changes require a local scene view.
         LocalSceneView(scene: model.scene)
             .onGeoModelErrorChanged { error in
                 if let error {
-                    renderingError = error
+                    self.error = error
                 }
             }
             .onLayerViewStateChanged { layer, viewState in
@@ -51,7 +41,7 @@ struct ApplyPointCloudRendererAndFilterView: View {
                    model.pointCloudLayer.loadStatus == .loaded,
                    viewState.status.contains(.error),
                    let error = viewState.error {
-                    renderingError = error
+                    self.error = error
                 }
             }
             .overlay {
@@ -62,65 +52,24 @@ struct ApplyPointCloudRendererAndFilterView: View {
                             .regularMaterial,
                             in: .rect(cornerRadius: 10)
                         )
-                } else if let loadError {
-                    VStack(spacing: 12) {
-                        Label(
-                            "Unable to Load Point Cloud",
-                            systemImage: "exclamationmark.triangle"
-                        )
-                        .font(.headline)
-                        Text(loadError.localizedDescription)
-                            .font(.subheadline)
-                        Button("Retry") {
-                            isLoading = true
-                            loadAttempt += 1
-                        }
-                        .buttonStyle(.borderedProminent)
-                    }
-                    .multilineTextAlignment(.center)
-                    .padding()
-                    .frame(maxWidth: 320)
-                    .background(.regularMaterial, in: .rect(cornerRadius: 10))
-                    .padding()
                 }
             }
-            .task(id: loadAttempt) {
-                // Reappearing can start a new task without changing loadAttempt.
-                let loadID = UUID()
-                activeLoadID = loadID
-                isLoading = true
-                loadError = nil
-                defer {
-                    // Only the current task owns the loading state.
-                    if activeLoadID == loadID {
-                        activeLoadID = nil
-                        if !Task.isCancelled {
-                            isLoading = false
-                        }
+            .task {
+                for await status in model.pointCloudLayer.$loadStatus {
+                    guard !Task.isCancelled else { return }
+                    isLoading = status == .notLoaded || status == .loading
+                    if status == .failed {
+                        error = model.pointCloudLayer.loadError
                     }
-                }
-                do {
-                    // Retry failed loads on the same layer instance.
-                    if model.pointCloudLayer.loadStatus == .failed {
-                        try await model.pointCloudLayer.retryLoad()
-                    } else {
-                        try await model.pointCloudLayer.load()
-                    }
-                } catch {
-                    // Leaving the sample should not present a loading failure.
-                    guard activeLoadID == loadID,
-                          !Task.isCancelled,
-                          !(error is CancellationError) else { return }
-                    loadError = error
                 }
             }
-            .errorAlert(presentingError: $renderingError)
+            .errorAlert(presentingError: $error)
             .toolbar {
                 ToolbarItem(placement: .bottomBar) {
                     Button("Settings", systemImage: "gear") {
                         settingsAreVisible = true
                     }
-                    .disabled(isLoading || loadError != nil)
+                    .disabled(isLoading || model.pointCloudLayer.loadStatus != .loaded)
                     .popover(isPresented: $settingsAreVisible) {
                         NavigationStack {
                             SettingsView(model: model)
@@ -147,7 +96,7 @@ private extension ApplyPointCloudRendererAndFilterView {
                 Section("Renderer") {
                     Picker("Type", selection: $model.rendererKind) {
                         ForEach(RendererKind.allCases, id: \.self) { kind in
-                            Text(kind.rawValue)
+                            Text(LocalizedStringKey(kind.label))
                         }
                     }
                     LabeledContent("Point Size Scale") {
@@ -241,7 +190,7 @@ private extension ApplyPointCloudRendererAndFilterView {
                             ScanDirection.allCases,
                             id: \.self
                         ) { direction in
-                            Text(direction.rawValue)
+                            Text(LocalizedStringKey(direction.label))
                         }
                     }
                     Button("Clear Scan Direction Filter") {
