@@ -74,7 +74,7 @@ extension ApplyPointCloudRendererAndFilterView {
         
         /// Creates the local scene and its persistent point cloud renderers.
         init() {
-            let rendererPairs = RendererKind.allCases.lazy.map { kind in
+            let rendererPairs = RendererKind.allCases.map { kind in
                 let renderer = kind.makeRenderer()
                 renderer.pointsPerInch = 25
                 renderer.sizeAlgorithm = PointCloudSplatAlgorithm(scaleFactor: 1)
