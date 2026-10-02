@@ -112,7 +112,7 @@ private extension AugmentRealityToCollectDataView {
     @MainActor
     class Model: ObservableObject {
         /// A scene with an imagery basemap.
-        @State var scene: ArcGIS.Scene = {
+        let scene: ArcGIS.Scene = {
             // Creates an elevation source from Terrain3D REST service.
             let elevationServiceURL = URL(
                 string: "https://elevation3d.arcgis.com/arcgis/rest/services/WorldElevation3D/Terrain3D/ImageServer"
@@ -133,7 +133,7 @@ private extension AugmentRealityToCollectDataView {
             url: URL(string: "https://services2.arcgis.com/ZQgQTuoyBrtmoGdP/arcgis/rest/services/AR_Tree_Survey/FeatureServer/0")!
         )
         /// The graphics overlay which shows marker symbols.
-        @State var graphicsOverlay: GraphicsOverlay = {
+        let graphicsOverlay: GraphicsOverlay = {
             let graphicsOverlay = GraphicsOverlay()
             let tappedPointSymbol = SimpleMarkerSceneSymbol(
                 style: .diamond,
