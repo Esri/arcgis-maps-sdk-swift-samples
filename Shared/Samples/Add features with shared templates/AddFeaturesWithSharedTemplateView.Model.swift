@@ -30,7 +30,7 @@ extension AddFeaturesWithSharedTemplateView {
             /// The ID of a layer referenced by the template.
             let layerID: Int
         }
-
+        
         /// The current stage or outcome of the shared template workflow.
         enum WorkflowState {
             case creatingFeatures
@@ -119,7 +119,7 @@ extension AddFeaturesWithSharedTemplateView {
                 throw error
             }
         }
-
+        
         /// Creates picker items for the first preset and group templates,
         /// visiting layers in ascending ID order.
         /// - Parameter templatesByLayer: The shared templates keyed by layer ID.
@@ -130,7 +130,7 @@ extension AddFeaturesWithSharedTemplateView {
         ) -> [TemplateItem] {
             var includedKinds: Set<SharedTemplate.Kind> = []
             var items: [TemplateItem] = []
-
+            
             for (layerID, templates) in templatesByLayer.sorted(by: { $0.key < $1.key }) {
                 for template in templates {
                     guard [.preset, .group].contains(template.kind),
@@ -145,7 +145,7 @@ extension AddFeaturesWithSharedTemplateView {
                     )
                     includedKinds.insert(template.kind)
                 }
-
+                
                 if includedKinds.count == 2 { break }
             }
             return items
@@ -191,14 +191,14 @@ extension AddFeaturesWithSharedTemplateView {
             }
             geometryEditor.stop()
             self.activeTemplateItem = nil
-
+            
             operationIsInProgress = true
             state = .creatingFeatures
             defer {
                 finishEditing()
                 operationIsInProgress = false
             }
-
+            
             do {
                 let featureCreationSet = try await serviceGeodatabase
                     .makeFeatures(
@@ -225,7 +225,7 @@ extension AddFeaturesWithSharedTemplateView {
             state = .drawingCanceled
             stateResetID = UUID()
         }
-
+        
         /// Returns to ready after two seconds unless the workflow changes.
         /// - Parameter id: The identifier of the pending state reset.
         func resetState(afterDelayFor id: UUID) async {
