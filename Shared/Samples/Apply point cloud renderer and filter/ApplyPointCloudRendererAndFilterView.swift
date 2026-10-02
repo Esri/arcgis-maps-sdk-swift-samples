@@ -18,26 +18,26 @@ import SwiftUI
 struct ApplyPointCloudRendererAndFilterView: View {
     /// The model that stores the scene, layer, and renderers.
     @State private var model = Model()
-
+    
     /// A Boolean value indicating whether the settings are visible.
     @State private var settingsAreVisible = false
-
+    
     /// A Boolean value indicating whether the point cloud layer is loading.
     @State private var isLoading = true
-
+    
     /// An error encountered while loading the point cloud layer.
     @State private var loadError: (any Error)?
-
+    
     /// The identifier of the current point cloud loading attempt.
     @State private var loadAttempt = 0
-
+    
     /// The identifier of the task currently loading the point cloud layer.
     @State private var activeLoadID: UUID?
-
+    
     /// An error encountered while displaying the scene or rendering the
     /// point cloud layer.
     @State private var renderingError: (any Error)?
-
+    
     var body: some View {
         // Live point cloud filter changes require a local scene view.
         LocalSceneView(scene: model.scene)
@@ -138,10 +138,10 @@ private extension ApplyPointCloudRendererAndFilterView {
     struct SettingsView: View {
         /// The action to dismiss the settings.
         @Environment(\.dismiss) private var dismiss
-
+        
         /// The model whose settings are edited by the controls.
         @Bindable var model: Model
-
+        
         var body: some View {
             Form {
                 Section("Renderer") {
@@ -161,7 +161,7 @@ private extension ApplyPointCloudRendererAndFilterView {
                         Text("5")
                     }
                 }
-
+                
                 Section {
                     Picker("Mode", selection: $model.classificationMode) {
                         Text("Include").tag(PointCloudValueFilter.Mode.include)
@@ -202,7 +202,7 @@ private extension ApplyPointCloudRendererAndFilterView {
                         filters still apply.
                         """)
                 }
-
+                
                 Section {
                     ForEach(ReturnOptions.types, id: \.self) { returnType in
                         Toggle(
@@ -234,7 +234,7 @@ private extension ApplyPointCloudRendererAndFilterView {
                         not include additional points.
                         """)
                 }
-
+                
                 Section("Scan Direction Filter") {
                     Picker("Flag Bit 6", selection: $model.scanDirection) {
                         ForEach(

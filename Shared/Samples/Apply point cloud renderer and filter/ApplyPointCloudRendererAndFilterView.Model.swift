@@ -23,13 +23,13 @@ extension ApplyPointCloudRendererAndFilterView {
     final class Model {
         /// The scene containing the point cloud layer.
         let scene: ArcGIS.Scene
-
+        
         /// The Sonoma Area 1 LiDAR point cloud layer.
         let pointCloudLayer = PointCloudLayer(url: .sonomaPointCloud)
-
+        
         /// The renderers, retained to avoid replacements when switching.
         private let renderers: [RendererKind: PointCloudRenderer]
-
+        
         /// The selected renderer, initially RGB.
         var rendererKind = RendererKind.rgb {
             didSet {
@@ -39,12 +39,12 @@ extension ApplyPointCloudRendererAndFilterView {
                 updatePointSize()
             }
         }
-
+        
         /// The scale factor applied to the active renderer's splat algorithm.
         var scaleFactor = 1.0 {
             didSet { updatePointSize() }
         }
-
+        
         /// Whether selected classification codes are included or excluded.
         var classificationMode = PointCloudValueFilter.Mode.include {
             didSet {
@@ -56,22 +56,22 @@ extension ApplyPointCloudRendererAndFilterView {
                 }
             }
         }
-
+        
         /// The classification codes selected by the user.
         private(set) var selectedClassifications = Set(Classification.allCases)
-
+        
         /// A Boolean value indicating whether a classification filter is applied,
         /// even when no codes are selected.
         private(set) var classificationFilterIsActive = false
-
+        
         /// The return types selected by the user.
         private(set) var selectedReturns: Set<PointCloudReturnFilter.ReturnType> = []
-
+        
         /// The mutually exclusive requirements for scan direction flag bit 6.
         var scanDirection = ScanDirection.any {
             didSet { updateScanDirectionFilter() }
         }
-
+        
         /// Creates the local scene and its persistent point cloud renderers.
         init() {
             let rendererPairs = RendererKind.allCases.lazy.map { kind in
@@ -83,7 +83,7 @@ extension ApplyPointCloudRendererAndFilterView {
             renderers = Dictionary(uniqueKeysWithValues: rendererPairs)
             pointCloudLayer.renderer = renderers[.rgb]
             // Filters are added when the user interacts with their controls.
-
+            
             // Live point cloud filtering requires a local scene view.
             scene = Scene(viewingMode: .local, basemapStyle: .arcGISImagery)
             scene.baseSurface.addElevationSource(
@@ -104,14 +104,14 @@ extension ApplyPointCloudRendererAndFilterView {
                 )
             )
         }
-
+        
         /// Updates the existing size algorithm without replacing the renderer.
         private func updatePointSize() {
             let algorithm = pointCloudLayer.renderer?.sizeAlgorithm
-                as? PointCloudSplatAlgorithm
+            as? PointCloudSplatAlgorithm
             algorithm?.scaleFactor = scaleFactor
         }
-
+        
         /// Updates a classification selection and applies its filter.
         func setClassification(
             _ classification: Classification,
@@ -124,7 +124,7 @@ extension ApplyPointCloudRendererAndFilterView {
             }
             updateClassificationFilter()
         }
-
+        
         /// Adds the classification filter on first use, then updates it.
         private func updateClassificationFilter() {
             let values = selectedClassifications.lazy
@@ -147,7 +147,7 @@ extension ApplyPointCloudRendererAndFilterView {
             }
             classificationFilterIsActive = true
         }
-
+        
         /// Removes the classification filter without affecting other filters.
         func clearClassificationFilter() {
             if let filter = pointCloudLayer.filters.first(where: {
@@ -156,10 +156,10 @@ extension ApplyPointCloudRendererAndFilterView {
                 pointCloudLayer.removeFilter(filter)
             }
             selectedClassifications = classificationMode == .include
-                ? Set(Classification.allCases) : []
+            ? Set(Classification.allCases) : []
             classificationFilterIsActive = false
         }
-
+        
         /// Updates the return filter, removing it when no return types are selected.
         func setReturnType(
             _ returnType: PointCloudReturnFilter.ReturnType,
@@ -188,7 +188,7 @@ extension ApplyPointCloudRendererAndFilterView {
                 }
             }
         }
-
+        
         /// Removes only the return filter and resets its selections.
         func clearReturnFilter() {
             if let filter = pointCloudLayer.filters.first(where: {
@@ -198,7 +198,7 @@ extension ApplyPointCloudRendererAndFilterView {
             }
             selectedReturns.removeAll()
         }
-
+        
         /// Updates the bitfield filter without requiring the same bit
         /// to be both set and clear.
         private func updateScanDirectionFilter() {
@@ -232,14 +232,14 @@ extension ApplyPointCloudRendererAndFilterView {
             }
         }
     }
-
+    
     /// The available point cloud renderers.
     enum RendererKind: String, CaseIterable {
         case rgb = "RGB"
         case stretch = "Elevation Stretch"
         case classBreaks = "Elevation Class Breaks"
         case uniqueValue = "Classification"
-
+        
         /// Creates a renderer with the appropriate attribute and colors.
         func makeRenderer() -> PointCloudRenderer {
             switch self {
@@ -253,7 +253,7 @@ extension ApplyPointCloudRendererAndFilterView {
                 return makeUniqueValueRenderer()
             }
         }
-
+        
         /// Creates an elevation renderer that interpolates between color stops.
         private func makeStretchRenderer() -> PointCloudStretchRenderer {
             let stops = [
@@ -290,7 +290,7 @@ extension ApplyPointCloudRendererAndFilterView {
                 stops: stops
             )
         }
-
+        
         /// Creates an elevation renderer with three discrete color ranges.
         private func makeClassBreaksRenderer() -> PointCloudClassBreaksRenderer {
             let classBreaks = [
@@ -332,7 +332,7 @@ extension ApplyPointCloudRendererAndFilterView {
                 classBreaks: classBreaks
             )
         }
-
+        
         /// Creates a renderer with one color for each LAS classification code.
         private func makeUniqueValueRenderer() -> PointCloudUniqueValueRenderer {
             // Colors for LAS classification codes 1 through 18, in code order.
@@ -371,13 +371,13 @@ extension ApplyPointCloudRendererAndFilterView {
             )
         }
     }
-
+    
     /// The LAS classification codes offered by the classification filter.
     enum Classification: Int, CaseIterable {
         case ground = 2
         case highVegetation = 5
         case building = 6
-
+        
         /// The user-facing name of the classification.
         var label: String {
             switch self {
@@ -387,21 +387,21 @@ extension ApplyPointCloudRendererAndFilterView {
             }
         }
     }
-
+    
     /// The possible requirements for scan direction flag bit 6.
     enum ScanDirection: String, CaseIterable {
         case any = "Any"
         case set = "Required Set"
         case clear = "Required Clear"
     }
-
+    
     /// The return types and labels offered by this sample's settings.
     enum ReturnOptions {
         /// The return types in display order.
         static let types: [PointCloudReturnFilter.ReturnType] = [
             .firstOfMany, .last, .lastOfMany, .single
         ]
-
+        
         /// The user-facing name of a return type.
         static func label(
             for returnType: PointCloudReturnFilter.ReturnType
@@ -422,7 +422,7 @@ private extension URL {
     static var sonomaPointCloud: URL {
         URL(string: "https://tiles.arcgis.com/tiles/z2tnIkrLQ2BRzr6P/arcgis/rest/services/SONOMA_AREA1_LiDAR_RGB/SceneServer/layers/0")!
     }
-
+    
     /// The URL of the World Elevation 3D terrain service.
     static var worldElevationService: URL {
         URL(string: "https://elevation3d.arcgis.com/arcgis/rest/services/WorldElevation3D/Terrain3D/ImageServer")!
