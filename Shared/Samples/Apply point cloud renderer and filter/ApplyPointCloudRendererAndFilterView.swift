@@ -169,10 +169,6 @@ private extension ApplyPointCloudRendererAndFilterView {
                             )
                         )
                     }
-                    Button(
-                        "Clear Return Filter",
-                        action: model.clearReturnFilter
-                    )
                 } header: {
                     Text("Return Filter")
                 } footer: {
@@ -192,9 +188,6 @@ private extension ApplyPointCloudRendererAndFilterView {
                         ) { direction in
                             Text(LocalizedStringKey(direction.label))
                         }
-                    }
-                    Button("Clear Scan Direction Filter") {
-                        model.scanDirection = .any
                     }
                 }
             }
