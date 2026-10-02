@@ -75,9 +75,21 @@ private struct OnTeardown: ViewModifier {
     }
 }
 
+/// An action that allows the next teardown sample to appear.
+@MainActor
+struct FinishTeardownAction {
+    /// The action to perform on the main actor.
+    let action: @MainActor () -> Void
+    
+    /// Signals that the current sample has finished tearing down.
+    func callAsFunction() {
+        action()
+    }
+}
+
 extension EnvironmentValues {
     /// The action to run when a sample is done tearing down.
     ///
     /// Calling this allows a blocked ``Sample/hasTeardown`` sample to appear.
-    @Entry var finishTeardown: () -> Void = {}
+    @Entry var finishTeardown = FinishTeardownAction(action: {})
 }

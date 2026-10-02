@@ -152,9 +152,13 @@ extension AuthenticateWithIntegratedWindowsAuthenticationView {
             // challenges.
             ArcGISEnvironment.authenticationManager.handleChallenges(using: authenticator)
             
-            // In your application you may want to uncomment this code to persist
-            // credentials in the keychain.
-            // setupPersistentCredentialStorage()
+            // In your application, you may want to persist the credentials in
+            // the keychain:
+            //
+            // try await ArcGISEnvironment.authenticationManager.setupPersistentCredentialStorage(
+            //     access: .whenUnlockedThisDeviceOnly,
+            //     synchronizesWithiCloud: false
+            // )
         }
         
         /// Stops the authenticator from handling the challenges and clears credentials.
@@ -167,16 +171,6 @@ extension AuthenticateWithIntegratedWindowsAuthenticationView {
             // might make sense to remove credentials when the user taps
             // a "sign out" button.
             await ArcGISEnvironment.authenticationManager.signOut()
-        }
-        
-        /// Sets up new ArcGIS and Network credential stores that will be persisted in the keychain.
-        private func setupPersistentCredentialStorage() {
-            Task {
-                try await ArcGISEnvironment.authenticationManager.setupPersistentCredentialStorage(
-                    access: .whenUnlockedThisDeviceOnly,
-                    synchronizesWithiCloud: false
-                )
-            }
         }
     }
 }
