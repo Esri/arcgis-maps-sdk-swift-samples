@@ -50,13 +50,13 @@ struct UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView: View {
     
     /// The legend's content height before any scrolling is needed.
     @State private var scalingStatusHeight: CGFloat?
-
+    
     /// The map height available above the bottom controls.
     @State private var mapHeight: CGFloat = 0
-
+    
     /// The callout's content height before any scrolling is needed.
     @State private var calloutContentHeight: CGFloat?
-
+    
     /// The latest identify request, with a unique ID so repeated taps
     /// at the same point restart the task.
     @State private var identifyRequest: IdentifyRequest?
@@ -81,7 +81,7 @@ struct UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView: View {
             scalingControls
         }
     }
-
+    
     /// The map and its selection, tip, and help interactions.
     private var mapContent: some View {
         MapViewReader { mapView in
@@ -308,7 +308,7 @@ private extension UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView {
             Label {
                 Text(
                     model.labelsUseSystemTextScale
-                        ? "Labels: Dynamic Type" : "Labels: fixed size"
+                    ? "Labels: Dynamic Type" : "Labels: fixed size"
                 )
             } icon: {
                 Text("Aa")
@@ -336,13 +336,13 @@ private extension UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView {
     
     /// Opens accessibility settings, with manual guidance if opening fails.
     func openAccessibilitySettings() {
-        #if targetEnvironment(macCatalyst)
+#if targetEnvironment(macCatalyst)
         openURL(.accessibilityDisplaySettings) { accepted in
             if !accepted {
                 error = OpenSettingsError()
             }
         }
-        #else
+#else
         Task {
             do {
                 // Use destinations supported by the current iOS version.
@@ -360,23 +360,23 @@ private extension UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView {
                 self.error = OpenSettingsError()
             }
         }
-        #endif
+#endif
     }
     
     /// An error opening settings, including manual navigation instructions.
     struct OpenSettingsError: LocalizedError {
         var errorDescription: String? {
-            #if targetEnvironment(macCatalyst)
+#if targetEnvironment(macCatalyst)
             String(localized: """
                 Unable to open settings. Open System Settings > \
                 Accessibility > Display > Text size manually.
                 """)
-            #else
+#else
             String(localized: """
                 Unable to open settings. Open Settings > Accessibility > \
                 Display & Text Size > Larger Text manually.
                 """)
-            #endif
+#endif
         }
     }
 }
@@ -386,7 +386,7 @@ private extension URL {
     static var accessibilityDisplaySettings: URL {
         URL(
             string: "x-apple.systempreferences:"
-                + "com.apple.preference.universalaccess?Seeing_Display"
+            + "com.apple.preference.universalaccess?Seeing_Display"
         )!
     }
 }

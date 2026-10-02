@@ -44,7 +44,7 @@ extension UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView {
     
     /// The platform-specific instructions shared by the tip and help sheet.
     nonisolated static var textSizeInstructions: Text {
-        #if targetEnvironment(macCatalyst)
+#if targetEnvironment(macCatalyst)
         Text(
             """
             Text-size support \
@@ -56,7 +56,7 @@ extension UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView {
             Select a restaurant to view its name and coordinates.
             """
         )
-        #else
+#else
         Text(
             """
             Open Settings > Accessibility > Display & Text Size > \
@@ -68,6 +68,6 @@ extension UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView {
             Select a restaurant to view its name and coordinates.
             """
         )
-        #endif
+#endif
     }
 }

@@ -134,7 +134,7 @@ private extension URL {
     static var redlandsRestaurants: URL {
         URL(
             string: "https://services2.arcgis.com/ZQgQTuoyBrtmoGdP"
-                + "/arcgis/rest/services/redlands_food/FeatureServer/0"
+            + "/arcgis/rest/services/redlands_food/FeatureServer/0"
         )!
     }
 }
