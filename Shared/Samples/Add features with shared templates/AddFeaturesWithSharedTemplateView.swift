@@ -192,11 +192,7 @@ struct AddFeaturesWithSharedTemplateView: View {
 
     /// The instruction shown while the template picker is available.
     private var templateInstruction: Text {
-        Text(
-            """
-            Open Shared Templates and select a template to create features.
-            """
-        )
+        Text("Open Shared Templates and select a template to create features.")
     }
 
     /// A localized label for a shared template kind.
