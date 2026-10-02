@@ -146,9 +146,8 @@ struct UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView: View {
                         map.addOperationalLayer(model.restaurantsLayer)
                     }
                     
-                    // Configure tips when the view appears and report any
-                    // failure without preventing use of the map.
-                    
+                    // Configure tips on a best-effort basis, ignoring failures
+                    // such as tips already being configured for this process.
                     try? Tips.configure([.displayFrequency(.immediate)])
                 }
                 .overlay(alignment: .top) {

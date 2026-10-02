@@ -49,7 +49,7 @@ iOS does not provide a public destination for opening the Accessibility menu or 
 
 ### Layout and behavior checks
 
-Instructions remain available through **Text Size Help** even after dismissing the tip. The floating tip and callout use content sizing rather than fixed or percentage-based dimensions. The tip is omitted when it cannot fit in full; compact-height layouts and accessibility text sizes show only the toggle below the map. Xcode previews cover portrait, short, narrow, and wide layouts, including the largest Dynamic Type size. Previews do not replace on-device checks:
+Instructions remain available through **Text Size Help** even after dismissing the tip. The floating tip and callout use content sizing rather than fixed or percentage-based dimensions. The tip is omitted when it cannot fit in full; compact-height layouts and accessibility text sizes show only the toggle below the map. The sample includes a default Xcode preview. Recommended validation cases include portrait, short, narrow, and wide layouts, including the largest Dynamic Type size. Previews do not replace on-device checks:
 
 * Record the Xcode version, device or simulator model, OS version, window size or orientation, and Dynamic Type setting for each layout check.
 * On iPhone, test portrait and landscape at default and largest accessibility text sizes. Confirm the tip action is fully visible when shown, the toggle is usable, and callout content and help can be scrolled.
@@ -57,7 +57,7 @@ Instructions remain available through **Text Size Help** even after dismissing t
 * Dismiss the tip and reopen help. Return from settings and verify that the displayed scale and symbols update when the system supplies a new text size. With **Scale Labels** off, labels should stay at their base size.
 * Select restaurants repeatedly, clear the selection, and rotate or resize with a callout open. Confirm the callout remains usable and stale identify results do not reappear.
 
-The project has no native visionOS target; these previews do not establish behavior for an iPad-compatible app running on Apple Vision Pro.
+The project has no native visionOS target; the default preview does not establish behavior for an iPad-compatible app running on Apple Vision Pro.
 
 ## Tags
 
