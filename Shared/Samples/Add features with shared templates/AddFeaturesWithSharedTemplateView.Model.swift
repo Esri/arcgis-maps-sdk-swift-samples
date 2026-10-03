@@ -241,14 +241,14 @@ extension AddFeaturesWithSharedTemplateView {
         /// Applies the local edits to the service.
         func saveEdits() async throws {
             guard let serviceGeodatabase else { return }
-
+            
             operationIsInProgress = true
             state = .savingEdits
             defer {
                 finishEditing()
                 operationIsInProgress = false
             }
-
+            
             do {
                 let editResults = try await serviceGeodatabase.applyEdits()
                 state = if editResults.allSatisfy({
@@ -267,14 +267,14 @@ extension AddFeaturesWithSharedTemplateView {
         /// Discards all local edits in the service geodatabase.
         func undoEdits() async throws {
             guard let serviceGeodatabase else { return }
-
+            
             operationIsInProgress = true
             state = .undoingEdits
             defer {
                 finishEditing()
                 operationIsInProgress = false
             }
-
+            
             do {
                 try await serviceGeodatabase.undoLocalEdits()
                 state = .editsUndone

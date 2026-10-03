@@ -25,7 +25,7 @@ struct AddFeaturesWithSharedTemplateView: View {
     
     /// Whether the shared templates popover is showing.
     @State private var templatePickerIsPresented = false
-
+    
     /// The requested editing operation, used as the editing task's identity.
     @State private var pendingGeodatabaseAction: EditingAction?
     
@@ -82,11 +82,11 @@ struct AddFeaturesWithSharedTemplateView: View {
                 guard let id = model.stateResetID else { return }
                 await model.resetStateAfterDelay(for: id)
             }
-            // Keep this task on the map view, not the conditional buttons.
+        // Keep this task on the map view, not the conditional buttons.
             .task(id: pendingGeodatabaseAction) {
                 guard let action = pendingGeodatabaseAction else { return }
                 defer { pendingGeodatabaseAction = nil }
-
+                
                 do {
                     switch action {
                     case .save:
@@ -111,12 +111,12 @@ struct AddFeaturesWithSharedTemplateView: View {
             }
             .errorAlert(presentingError: $presentedError)
     }
-
+    
     /// Whether loading succeeded without any supported templates.
     private var templatesAreUnavailable: Bool {
         model.state == .ready && model.templateItems.isEmpty
     }
-
+    
     /// The instructions and progress indicator displayed above the map.
     private var statusOverlay: some View {
         HStack {
@@ -136,7 +136,7 @@ struct AddFeaturesWithSharedTemplateView: View {
         .padding(8)
         .background(.regularMaterial, ignoresSafeAreaEdges: .horizontal)
     }
-
+    
     /// The localized presentation of the current workflow state.
     private var statusText: LocalizedStringKey {
         switch model.state {
@@ -174,23 +174,23 @@ struct AddFeaturesWithSharedTemplateView: View {
             "Undoing local edits…"
         }
     }
-
+    
     /// The next action after an editing operation, based on current edits.
     private var nextStepInstruction: LocalizedStringKey? {
         switch model.state {
         case .creationFailed, .editsSaved, .editsUndone, .featuresAdded,
-             .savingFailed, .undoFailed:
+                .savingFailed, .undoFailed:
             model.hasPendingEdits ? "Save or undo edits." : templateInstruction
         default:
             nil
         }
     }
-
+    
     /// The instruction shown while the template picker is available.
     private var templateInstruction: LocalizedStringKey {
         "Open Shared Templates and select a template to create features."
     }
-
+    
     /// A localized label for a shared template kind.
     /// - Parameter kind: The kind of shared template to describe.
     /// - Returns: The template kind's localized string key.
@@ -289,27 +289,33 @@ private extension AddFeaturesWithSharedTemplateView {
     struct TemplateSwatch: View {
         /// The template and target layer used to render the swatch.
         let item: Model.TemplateItem
-
-        /// The rendered swatch or a placeholder while it is unavailable.
-        @State private var image = Image(systemName: "plus.square")
-
+        
+        /// The rendered swatch for the template.
+        @State private var swatch: UIImage?
+        
         var body: some View {
+            let image = if let swatch {
+                Image(uiImage: swatch)
+            } else {
+                Image(systemName: "plus.square")
+            }
             image
                 .resizable()
                 .scaledToFit()
                 .frame(width: 36, height: 36)
                 .accessibilityHidden(true)
                 .task(id: item.id) {
-                    image = Image(systemName: "plus.square")
+                    swatch = nil
                     // A missing swatch should not prevent template selection.
-                    guard let swatch = try? await item.template.makeSwatch(
-                        layerID: item.layerID
-                    ), !Task.isCancelled else { return }
-                    image = Image(uiImage: swatch)
+                    guard let swatch = try? await item.template
+                        .makeSwatch(layerID: item.layerID) else {
+                        return
+                    }
+                    self.swatch = swatch
                 }
         }
     }
-
+    
     /// An editing operation requested by a toolbar button.
     enum EditingAction: Equatable {
         case save
