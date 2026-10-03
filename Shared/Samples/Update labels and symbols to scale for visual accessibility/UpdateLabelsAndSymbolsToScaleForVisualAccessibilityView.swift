@@ -32,10 +32,19 @@ struct UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView: View {
         return map
     }()
     
-    /// An error from identifying a restaurant, loading the layer,
-    /// configuring tips, or opening settings.
+    /// An error from identifying a restaurant, loading the layer or symbol,
+    /// creating its swatch, or opening settings.
     @State private var error: (any Error)?
     
+    /// Whether the restaurant layer and symbol are loading.
+    @State private var isLoading = true
+
+    /// A legend swatch matching the restaurant symbol's current size.
+    @State private var markerSwatch: UIImage?
+
+    /// The display scale used to render the legend swatch.
+    @Environment(\.displayScale) private var displayScale
+
     /// Opens the platform's accessibility settings.
     @Environment(\.openURL) private var openURL
     
@@ -92,6 +101,7 @@ struct UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView: View {
                     }
                 }
                 .onSingleTapGesture { screenPoint, _ in
+                    guard !isLoading, !map.operationalLayers.isEmpty else { return }
                     model.restaurantsLayer.clearSelection()
                     selectedFeature = nil
                     calloutPlacement = nil
@@ -129,8 +139,15 @@ struct UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView: View {
                     }
                 }
                 .task {
+                    isLoading = true
+                    defer { isLoading = false }
                     do {
-                        try await model.restaurantsLayer.load()
+                        try await model.load()
+                        try Task.checkCancellation()
+                        // Display only the configured layer, and don't add it twice.
+                        if map.operationalLayers.isEmpty {
+                            map.addOperationalLayer(model.restaurantsLayer)
+                        }
                     } catch {
                         if !Task.isCancelled {
                             self.error = error
@@ -141,14 +158,16 @@ struct UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView: View {
                     model.applySystemTextScale(newValue)
                 }
                 .onAppear {
-                    // Avoid adding the layer again when the view reappears.
-                    if map.operationalLayers.isEmpty {
-                        map.addOperationalLayer(model.restaurantsLayer)
-                    }
-                    
                     // Configure tips on a best-effort basis, ignoring failures
                     // such as tips already being configured for this process.
                     try? Tips.configure([.displayFrequency(.immediate)])
+                }
+                .overlay {
+                    if isLoading {
+                        ProgressView("Loading restaurants…")
+                            .padding()
+                            .background(.regularMaterial)
+                    }
                 }
                 .overlay(alignment: .top) {
                     if verticalSizeClass != .compact
@@ -229,22 +248,19 @@ private extension UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView {
         .frame(maxHeight: min(calloutContentHeight ?? mapHeight, mapHeight))
     }
     
-    /// Content-sized controls, with a legend when space and text size permit.
+    /// Content-sized controls, with a scrolling legend above the pinned toggle.
     var scalingControls: some View {
         VStack(alignment: .leading) {
-            if verticalSizeClass != .compact
-                && !dynamicTypeSize.isAccessibilitySize {
-                ScrollView {
-                    scalingStatus
-                        .fixedSize(horizontal: false, vertical: true)
-                        .onGeometryChange(for: CGFloat.self) { geometry in
-                            geometry.size.height
-                        } action: { height in
-                            scalingStatusHeight = height
-                        }
-                }
-                .frame(maxHeight: scalingStatusHeight)
+            ScrollView {
+                scalingStatus
+                    .fixedSize(horizontal: false, vertical: true)
+                    .onGeometryChange(for: CGFloat.self) { geometry in
+                        geometry.size.height
+                    } action: { height in
+                        scalingStatusHeight = height
+                    }
             }
+            .frame(maxHeight: scalingStatusHeight)
             labelScalingToggle
                 .fixedSize(horizontal: false, vertical: true)
                 .layoutPriority(1)
@@ -296,7 +312,7 @@ private extension UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView {
         let scaleFormat = FloatingPointFormatStyle<CGFloat>.Percent()
             .precision(.fractionLength(0))
         let markerFormat = FloatingPointFormatStyle<CGFloat>()
-            .precision(.fractionLength(1))
+            .precision(.fractionLength(0...1))
         
         return VStack(alignment: .leading) {
             Text(
@@ -319,21 +335,53 @@ private extension UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView {
                 Text(
                     """
                     Symbols: Dynamic Type — \
+                    \(Model.baseMarkerSize, format: markerFormat) pt × \
+                    \(model.systemTextScale, format: scaleFormat) = \
                     \(model.markerSize, format: markerFormat) pt
                     """
                 )
             } icon: {
-                Circle()
-                    .fill(Color(uiColor: Model.markerColor))
-                    .overlay(Circle().stroke(.white, lineWidth: 1.5))
-                    .frame(width: 14, height: 14)
+                if let symbol = model.markerSymbol {
+                    Group {
+                        if let markerSwatch {
+                            Image(uiImage: markerSwatch)
+                                .resizable()
+                                .scaledToFit()
+                        } else {
+                            Color.clear
+                        }
+                    }
+                    .frame(
+                        width: model.markerSize,
+                        height: model.markerSize
+                    )
                     .accessibilityHidden(true)
+                    .task(id: [model.markerSize, displayScale]) {
+                        await updateMarkerSwatch(for: symbol)
+                    }
+                }
             }
         }
         .font(.body)
         .frame(maxWidth: .infinity, alignment: .leading)
     }
     
+    /// Creates a swatch at the current size without changing the map symbol.
+    func updateMarkerSwatch(for symbol: MultilayerPointSymbol) async {
+        do {
+            let legendSymbol = symbol.clone()
+            legendSymbol.size = Double(model.markerSize)
+            let swatch = try await legendSymbol.makeSwatch(scale: displayScale)
+            // Don't replace the image with a cancelled request's swatch.
+            try Task.checkCancellation()
+            markerSwatch = swatch
+        } catch {
+            if !Task.isCancelled {
+                self.error = error
+            }
+        }
+    }
+
     /// Opens accessibility settings, with manual guidance if opening fails.
     func openAccessibilitySettings() {
 #if targetEnvironment(macCatalyst)
@@ -378,6 +426,12 @@ private extension UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView {
                 """)
 #endif
         }
+    }
+}
+
+extension UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView.Model.RestaurantSymbolError: LocalizedError {
+    var errorDescription: String? {
+        "The web style did not return a restaurant point symbol."
     }
 }
 

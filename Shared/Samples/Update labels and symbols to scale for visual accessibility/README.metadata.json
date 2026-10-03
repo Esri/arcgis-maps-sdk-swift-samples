@@ -19,8 +19,10 @@
         "GeometryEngine",
         "LabelDefinition",
         "MapViewProxy",
-        "SimpleMarkerSymbol",
+        "MultilayerPointSymbol",
         "SimpleRenderer",
+        "Symbol",
+        "SymbolStyle",
         "TextSymbol"
     ],
     "redirect_from": [],
@@ -30,8 +32,10 @@
         "GeometryEngine",
         "LabelDefinition",
         "MapViewProxy",
-        "SimpleMarkerSymbol",
+        "MultilayerPointSymbol",
         "SimpleRenderer",
+        "Symbol",
+        "SymbolStyle",
         "TextSymbol"
     ],
     "snippets": [

@@ -23,23 +23,18 @@ extension UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView {
     @Observable
     final class Model {
         /// The marker size in points at the default system text size.
-        private static let baseMarkerSize: CGFloat = 12
+        static let baseMarkerSize: CGFloat = 24
         
         /// The label size in points when system text scaling is disabled or at its default.
         private static let baseLabelSize: CGFloat = 12
         
-        /// The marker outline width in points at the default system text size.
-        private static let baseMarkerOutlineWidth: CGFloat = 1.5
-        
         /// The label halo width in points when system text scaling is disabled or at its default.
         private static let baseLabelHaloWidth: CGFloat = 2
         
-        /// The dark blue color shared by the restaurant markers and legend.
-        static let markerColor = UIColor(
-            red: 11 / 255,
-            green: 79 / 255,
-            blue: 138 / 255,
-            alpha: 1
+        /// Esri's web style containing the restaurant point symbol.
+        private let restaurantSymbolStyle = SymbolStyle(
+            styleName: "Esri2DPointSymbolsStyle",
+            portal: .arcGISOnline(connection: .anonymous)
         )
         
         /// The layer containing the Redlands restaurants.
@@ -59,27 +54,16 @@ extension UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView {
         /// The calculated marker size in points.
         var markerSize: CGFloat { Self.baseMarkerSize * systemTextScale }
         
-        /// The restaurant marker symbol whose size and outline follow the system text scale.
-        private let markerSymbol: SimpleMarkerSymbol
+        /// The loaded restaurant symbol whose size follows the system text scale.
+        private(set) var markerSymbol: MultilayerPointSymbol?
         
         /// The restaurant label symbol whose size scales when label scaling is enabled.
         private let labelSymbol: TextSymbol
         
         init() {
-            markerSymbol = SimpleMarkerSymbol(
-                style: .circle,
-                color: Self.markerColor,
-                size: Self.baseMarkerSize
-            )
-            markerSymbol.outline = SimpleLineSymbol(
-                style: .solid,
-                color: .white,
-                width: Self.baseMarkerOutlineWidth
-            )
             restaurantsLayer = FeatureLayer(
                 featureTable: ServiceFeatureTable(url: .redlandsRestaurants)
             )
-            restaurantsLayer.renderer = SimpleRenderer(symbol: markerSymbol)
             
             labelSymbol = TextSymbol(
                 color: UIColor(
@@ -105,14 +89,33 @@ extension UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView {
             restaurantsLayer.labelsAreEnabled = true
         }
         
+        /// Loads the layer and applies the restaurant symbol before displaying it.
+        func load() async throws {
+            try await restaurantsLayer.load()
+            try Task.checkCancellation()
+            // Keep the existing renderer and symbol when the view reappears.
+            guard markerSymbol == nil else { return }
+            try await restaurantSymbolStyle.load()
+            try Task.checkCancellation()
+            guard let symbol = try await restaurantSymbolStyle.symbol(forKeys: ["restaurant"])
+                as? MultilayerPointSymbol else {
+                throw RestaurantSymbolError()
+            }
+            try Task.checkCancellation()
+            // Read the latest scale after loading, not the scale at task startup.
+            // There is no suspension between sizing and installing the symbol.
+            symbol.size = Double(markerSize)
+            restaurantsLayer.renderer = SimpleRenderer(symbol: symbol)
+            markerSymbol = symbol
+        }
+
         /// Applies Dynamic Type scaling independently to symbols and labels.
         /// - Parameter scale: A multiplier relative to the default Body text
         ///   size, where `1` represents the default size.
         func applySystemTextScale(_ scale: CGFloat) {
             systemTextScale = scale
             // Calculate from the base size to avoid compounding scale changes.
-            markerSymbol.size = markerSize
-            markerSymbol.outline?.width = Self.baseMarkerOutlineWidth * scale
+            markerSymbol?.size = Double(markerSize)
             updateLabelSize()
         }
         
@@ -126,6 +129,9 @@ extension UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView {
             // Scale the halo with the text so it stays legible at large sizes.
             labelSymbol.haloWidth = Self.baseLabelHaloWidth * labelScale
         }
+
+        /// An unexpected symbol type returned by the web style.
+        struct RestaurantSymbolError: Error {}
     }
 }
 
