@@ -331,8 +331,7 @@ extension AddFeaturesWithSharedTemplateView.Model.SampleError: LocalizedError {
             "The map does not contain a shared template source."
         case .unsupportedConstructionTool:
             """
-            The template's default construction tool is not supported \
-            by this sample.
+            The template's default construction tool is not supported by this sample.
             """
         }
     }
