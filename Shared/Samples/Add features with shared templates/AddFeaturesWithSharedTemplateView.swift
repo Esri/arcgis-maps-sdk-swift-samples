@@ -27,7 +27,7 @@ struct AddFeaturesWithSharedTemplateView: View {
     @State private var templatePickerIsPresented = false
 
     /// The requested editing operation, used as the editing task's identity.
-    @State private var pendingAction: EditingAction?
+    @State private var pendingGeodatabaseAction: EditingAction?
     
     /// An error from loading templates, starting a sketch, or editing features
     /// that is presented in an alert. Task cancellation is not shown as an error.
@@ -80,12 +80,12 @@ struct AddFeaturesWithSharedTemplateView: View {
             }
             .task(id: model.stateResetID) {
                 guard let id = model.stateResetID else { return }
-                await model.resetState(afterDelayFor: id)
+                await model.resetStateAfterDelay(for: id)
             }
             // Keep this task on the map view, not the conditional buttons.
-            .task(id: pendingAction) {
-                guard let action = pendingAction else { return }
-                defer { pendingAction = nil }
+            .task(id: pendingGeodatabaseAction) {
+                guard let action = pendingGeodatabaseAction else { return }
+                defer { pendingGeodatabaseAction = nil }
 
                 do {
                     switch action {
@@ -104,7 +104,7 @@ struct AddFeaturesWithSharedTemplateView: View {
             }
             .onDisappear {
                 // Do not replay a queued action when the view reappears.
-                pendingAction = nil
+                pendingGeodatabaseAction = nil
                 if model.geometryEditor.isStarted {
                     model.cancelDrawing()
                 }
@@ -206,15 +206,15 @@ struct AddFeaturesWithSharedTemplateView: View {
     /// The button that presents the shared template picker.
     private var sharedTemplatesButton: some View {
         Button("Shared Templates", systemImage: "square.grid.2x2") {
-            templatesAreVisible = true
+            templatePickerIsPresented = true
         }
-        .popover(isPresented: $templatesAreVisible) {
+        .popover(isPresented: $templatePickerIsPresented) {
             templatePickerContent
                 .padding()
                 .presentationCompactAdaptation(.popover)
                 .frame(idealWidth: 320)
         }
-        .disabled(model.operationIsInProgress || pendingAction != nil)
+        .disabled(model.operationIsInProgress || pendingGeodatabaseAction != nil)
     }
     
     /// The available shared templates and their swatches.
@@ -224,7 +224,7 @@ struct AddFeaturesWithSharedTemplateView: View {
                 Button {
                     do {
                         try model.startDrawing(with: item)
-                        templatesAreVisible = false
+                        templatePickerIsPresented = false
                     } catch {
                         self.presentedError = error
                     }
@@ -245,7 +245,7 @@ struct AddFeaturesWithSharedTemplateView: View {
                 }
                 .buttonStyle(.plain)
                 .help(item.template.description)
-                .disabled(model.operationIsInProgress || pendingAction != nil)
+                .disabled(model.operationIsInProgress || pendingGeodatabaseAction != nil)
             }
         }
     }
@@ -254,16 +254,16 @@ struct AddFeaturesWithSharedTemplateView: View {
     private var editButtons: some View {
         Group {
             Button("Save") {
-                pendingAction = .save
+                pendingGeodatabaseAction = .save
             }
             
             Spacer()
             
             Button("Undo") {
-                pendingAction = .undo
+                pendingGeodatabaseAction = .undo
             }
         }
-        .disabled(model.operationIsInProgress || pendingAction != nil)
+        .disabled(model.operationIsInProgress || pendingGeodatabaseAction != nil)
     }
     
     /// The controls for completing or canceling the current sketch.
@@ -276,11 +276,11 @@ struct AddFeaturesWithSharedTemplateView: View {
             Spacer()
             
             Button("Complete") {
-                pendingAction = .complete
+                pendingGeodatabaseAction = .complete
             }
             .disabled(!canCompleteDrawing)
         }
-        .disabled(model.operationIsInProgress || pendingAction != nil)
+        .disabled(model.operationIsInProgress || pendingGeodatabaseAction != nil)
     }
 }
 
