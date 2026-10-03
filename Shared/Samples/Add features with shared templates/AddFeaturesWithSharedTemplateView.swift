@@ -290,28 +290,22 @@ private extension AddFeaturesWithSharedTemplateView {
         /// The template and target layer used to render the swatch.
         let item: Model.TemplateItem
 
-        /// The rendered swatch for the template.
-        @State private var swatch: UIImage?
+        /// The rendered swatch or a placeholder while it is unavailable.
+        @State private var image = Image(systemName: "plus.square")
 
         var body: some View {
-            let image = if let swatch {
-                Image(uiImage: swatch)
-            } else {
-                Image(systemName: "plus.square")
-            }
             image
                 .resizable()
                 .scaledToFit()
                 .frame(width: 36, height: 36)
                 .accessibilityHidden(true)
                 .task(id: item.id) {
-                    swatch = nil
+                    image = Image(systemName: "plus.square")
                     // A missing swatch should not prevent template selection.
-                    guard let swatch = try? await item.template
-                        .makeSwatch(layerID: item.layerID) else {
-                        return
-                    }
-                    self.swatch = swatch
+                    guard let swatch = try? await item.template.makeSwatch(
+                        layerID: item.layerID
+                    ), !Task.isCancelled else { return }
+                    image = Image(uiImage: swatch)
                 }
         }
     }
@@ -325,20 +319,15 @@ private extension AddFeaturesWithSharedTemplateView {
 }
 
 extension AddFeaturesWithSharedTemplateView.Model.SampleError: LocalizedError {
-    /// The localized, user-facing explanation presented by the view.
     var errorDescription: String? {
         switch self {
         case .sharedTemplateSourceNotFound:
-            String(localized:
-                "The map does not contain a shared template source."
-            )
+            "The map does not contain a shared template source."
         case .unsupportedConstructionTool:
-            String(localized:
-                """
-                The template's default construction tool is not supported \
-                by this sample.
-                """
-            )
+            """
+            The template's default construction tool is not supported \
+            by this sample.
+            """
         }
     }
 }
