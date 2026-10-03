@@ -123,8 +123,10 @@ struct AddFeaturesWithSharedTemplateView: View {
     private var statusOverlay: some View {
         HStack {
             VStack {
-                statusText
-                nextStepInstruction
+                Text(statusText)
+                if let instruction = nextStepInstruction {
+                    Text(instruction)
+                }
             }
             .multilineTextAlignment(.center)
             .frame(maxWidth: .infinity)
@@ -138,72 +140,68 @@ struct AddFeaturesWithSharedTemplateView: View {
     }
 
     /// The localized presentation of the current workflow state.
-    private var statusText: Text {
+    private var statusText: LocalizedStringKey {
         switch model.state {
         case .creatingFeatures:
-            Text("Creating features…")
+            "Creating features…"
         case .creationFailed:
-            Text("Unable to create or add features.")
+            "Unable to create or add features."
         case .drawingCanceled:
-            Text("Draw canceled.")
+            "Draw canceled."
         case .drawingLine:
-            Text("Sketch a line, then tap Complete or Cancel.")
+            "Sketch a line, then tap Complete or Cancel."
         case .drawingPoint:
-            Text("Place a point, then tap Complete or Cancel.")
+            "Place a point, then tap Complete or Cancel."
         case .editsSaved:
-            Text("Edits saved.")
+            "Edits saved."
         case .editsUndone:
-            Text("Edits undone.")
+            "Edits undone."
         case .featuresAdded:
-            Text("Features added.")
+            "Features added."
         case .invalidGeometry:
-            Text("Draw a valid geometry, then tap Complete or Cancel.")
+            "Draw a valid geometry, then tap Complete or Cancel."
         case .loading:
-            Text("Loading shared templates…")
+            "Loading shared templates…"
         case .loadingFailed:
-            Text("Unable to load templates.")
+            "Unable to load templates."
         case .ready:
             templateInstruction
         case .savingEdits:
-            Text("Saving edits…")
+            "Saving edits…"
         case .savingFailed:
-            Text("Unable to save edits.")
+            "Unable to save edits."
         case .undoFailed:
-            Text("Unable to undo edits.")
+            "Unable to undo edits."
         case .undoingEdits:
-            Text("Undoing local edits…")
+            "Undoing local edits…"
         }
     }
 
     /// The next action after an editing operation, based on current edits.
-    @ViewBuilder private var nextStepInstruction: some View {
+    private var nextStepInstruction: LocalizedStringKey? {
         switch model.state {
         case .creationFailed, .editsSaved, .editsUndone, .featuresAdded,
              .savingFailed, .undoFailed:
-            if model.hasPendingEdits {
-                Text("Save or undo edits.")
-            } else {
-                templateInstruction
-            }
+            model.hasPendingEdits ? "Save or undo edits." : templateInstruction
         default:
-            EmptyView()
+            nil
         }
     }
 
     /// The instruction shown while the template picker is available.
-    private var templateInstruction: Text {
-        Text("Open Shared Templates and select a template to create features.")
+    private var templateInstruction: LocalizedStringKey {
+        "Open Shared Templates and select a template to create features."
     }
 
     /// A localized label for a shared template kind.
     /// - Parameter kind: The kind of shared template to describe.
-    /// - Returns: The template kind's display text.
-    private func kindLabel(for kind: SharedTemplate.Kind) -> Text {
+    /// - Returns: The template kind's localized string key.
+    private func kindLabel(for kind: SharedTemplate.Kind) -> LocalizedStringKey {
         switch kind {
-        case .feature: Text("Feature")
-        case .group: Text("Group")
-        case .preset: Text("Preset")
-        @unknown default: Text("Unknown")
+        case .feature: "Feature"
+        case .group: "Group"
+        case .preset: "Preset"
+        @unknown default: "Unknown"
         }
     }
     
@@ -239,7 +237,7 @@ struct AddFeaturesWithSharedTemplateView: View {
                         VStack(alignment: .leading) {
                             Text(item.template.name)
                                 .fontWeight(.semibold)
-                            kindLabel(for: item.template.kind)
+                            Text(kindLabel(for: item.template.kind))
                                 .font(.caption)
                         }
                         
