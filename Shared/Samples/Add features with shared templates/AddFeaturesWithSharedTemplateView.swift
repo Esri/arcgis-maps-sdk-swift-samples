@@ -24,7 +24,7 @@ struct AddFeaturesWithSharedTemplateView: View {
     @State private var canCompleteDrawing = false
     
     /// Whether the shared templates popover is showing.
-    @State private var templatesAreVisible = false
+    @State private var templatePickerIsPresented = false
 
     /// The requested editing operation, used as the editing task's identity.
     @State private var pendingAction: EditingAction?

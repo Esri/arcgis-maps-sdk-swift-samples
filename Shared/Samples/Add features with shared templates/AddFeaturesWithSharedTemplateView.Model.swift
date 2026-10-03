@@ -228,7 +228,7 @@ extension AddFeaturesWithSharedTemplateView {
         
         /// Returns to ready after two seconds unless the workflow changes.
         /// - Parameter id: The identifier of the pending state reset.
-        func resetState(afterDelayFor id: UUID) async {
+        func resetStateAfterDelay(for id: UUID) async {
             do {
                 try await Task.sleep(for: .seconds(2))
             } catch {
