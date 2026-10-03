@@ -47,9 +47,7 @@ struct AddFeaturesWithSharedTemplateView: View {
                         "No Templates",
                         systemImage: "square.grid.2x2",
                         description: Text(
-                            """
-                            This map has no preset or group shared templates.
-                            """
+                            "This map has no preset or group shared templates."
                         )
                     )
                     .background(.regularMaterial)
@@ -294,22 +292,28 @@ private extension AddFeaturesWithSharedTemplateView {
         /// The template and target layer used to render the swatch.
         let item: Model.TemplateItem
 
-        /// The rendered swatch or a placeholder while it is unavailable.
-        @State private var image = Image(systemName: "plus.square")
+        /// The rendered swatch for the template.
+        @State private var swatch: UIImage?
 
         var body: some View {
+            let image = if let swatch {
+                Image(uiImage: swatch)
+            } else {
+                Image(systemName: "plus.square")
+            }
             image
                 .resizable()
                 .scaledToFit()
                 .frame(width: 36, height: 36)
                 .accessibilityHidden(true)
                 .task(id: item.id) {
-                    image = Image(systemName: "plus.square")
+                    swatch = nil
                     // A missing swatch should not prevent template selection.
-                    guard let swatch = try? await item.template.makeSwatch(
-                        layerID: item.layerID
-                    ), !Task.isCancelled else { return }
-                    image = Image(uiImage: swatch)
+                    guard let swatch = try? await item.template
+                        .makeSwatch(layerID: item.layerID) else {
+                        return
+                    }
+                    self.swatch = swatch
                 }
         }
     }
