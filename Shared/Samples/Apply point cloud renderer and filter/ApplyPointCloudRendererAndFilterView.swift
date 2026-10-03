@@ -118,7 +118,9 @@ private extension ApplyPointCloudRendererAndFilterView {
                         Text("Include").tag(
                             PointCloudValueFilter.Mode.include
                         )
-                        Text("Exclude").tag(PointCloudValueFilter.Mode.exclude)
+                        Text("Exclude").tag(
+                            PointCloudValueFilter.Mode.exclude
+                        )
                     }
                     ForEach(
                         Classification.allCases,

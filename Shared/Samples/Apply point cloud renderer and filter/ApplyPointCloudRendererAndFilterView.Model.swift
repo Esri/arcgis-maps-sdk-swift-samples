@@ -366,6 +366,7 @@ extension ApplyPointCloudRendererAndFilterView {
                 UIColor(red: 139 / 255, green: 90 / 255, blue: 43 / 255, alpha: 1),
                 UIColor(red: 17 / 255, green: 24 / 255, blue: 39 / 255, alpha: 1)
             ]
+            
             // CLASS_CODE is numeric, but PointCloudColorUniqueValue accepts
             // strings, so convert each classification code to its string form.
             // PointCloudValueFilter instead accepts the codes as Double values.
@@ -375,6 +376,7 @@ extension ApplyPointCloudRendererAndFilterView {
                     values: [String(index + 1)]
                 )
             }
+            
             return PointCloudUniqueValueRenderer(
                 attributeName: "CLASS_CODE",
                 uniqueValues: uniqueValues
