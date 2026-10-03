@@ -96,7 +96,7 @@ private extension ApplyPointCloudRendererAndFilterView {
                 Section("Renderer") {
                     Picker("Type", selection: $model.rendererKind) {
                         ForEach(RendererKind.allCases, id: \.self) { kind in
-                            Text(LocalizedStringKey(kind.label))
+                            Text(kind.label)
                         }
                     }
                     LabeledContent("Point Size Scale") {
@@ -186,7 +186,7 @@ private extension ApplyPointCloudRendererAndFilterView {
                             ScanDirection.allCases,
                             id: \.self
                         ) { direction in
-                            Text(LocalizedStringKey(direction.label))
+                            Text(direction.label)
                         }
                     }
                 }
