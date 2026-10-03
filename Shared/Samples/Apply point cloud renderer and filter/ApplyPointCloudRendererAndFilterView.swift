@@ -69,7 +69,9 @@ struct ApplyPointCloudRendererAndFilterView: View {
                     Button("Settings", systemImage: "gear") {
                         settingsAreVisible = true
                     }
-                    .disabled(isLoading || model.pointCloudLayer.loadStatus != .loaded)
+                    .disabled(
+                        isLoading || model.pointCloudLayer.loadStatus != .loaded
+                    )
                     .popover(isPresented: $settingsAreVisible) {
                         NavigationStack {
                             SettingsView(model: model)
@@ -113,8 +115,12 @@ private extension ApplyPointCloudRendererAndFilterView {
                 
                 Section {
                     Picker("Mode", selection: $model.classificationMode) {
-                        Text("Include").tag(PointCloudValueFilter.Mode.include)
-                        Text("Exclude").tag(PointCloudValueFilter.Mode.exclude)
+                        Text("Include").tag(
+                            PointCloudValueFilter.Mode.include
+                        )
+                        Text("Exclude").tag(
+                            PointCloudValueFilter.Mode.exclude
+                        )
                     }
                     ForEach(
                         Classification.allCases,
