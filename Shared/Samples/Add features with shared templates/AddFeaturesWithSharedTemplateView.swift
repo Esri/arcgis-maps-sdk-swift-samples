@@ -82,7 +82,7 @@ struct AddFeaturesWithSharedTemplateView: View {
                 guard let id = model.stateResetID else { return }
                 await model.resetStateAfterDelay(for: id)
             }
-        // Keep this task on the map view, not the conditional buttons.
+            // Keep this task on the map view, not the conditional buttons.
             .task(id: pendingGeodatabaseAction) {
                 guard let action = pendingGeodatabaseAction else { return }
                 defer { pendingGeodatabaseAction = nil }
@@ -330,9 +330,7 @@ extension AddFeaturesWithSharedTemplateView.Model.SampleError: LocalizedError {
         case .sharedTemplateSourceNotFound:
             "The map does not contain a shared template source."
         case .unsupportedConstructionTool:
-            """
-            The template's default construction tool is not supported by this sample.
-            """
+            "The template's default construction tool is not supported by this sample."
         }
     }
 }
