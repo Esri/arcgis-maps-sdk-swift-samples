@@ -195,6 +195,8 @@
 		955AFAC42C10FD6F009C8FE5 /* ApplyMosaicRuleToRastersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 955AFAC32C10FD6F009C8FE5 /* ApplyMosaicRuleToRastersView.swift */; };
 		956332482E3455DB0091C877 /* SimplifyGeometryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 956332472E3455D70091C877 /* SimplifyGeometryView.swift */; };
 		9563324C2E3950880091C877 /* UpdateRelatedFeaturesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9563324B2E39507E0091C877 /* UpdateRelatedFeaturesView.swift */; };
+		9579E0E530609A73003923F6 /* ApplyPointCloudRendererAndFilterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9579E0E430609A63003923F6 /* ApplyPointCloudRendererAndFilterView.swift */; };
+		9579E0E830609CD9003923F6 /* ApplyPointCloudRendererAndFilterView.Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9579E0E730609CD2003923F6 /* ApplyPointCloudRendererAndFilterView.Model.swift */; };
 		9579FCEA2C3360BB00FC8A1D /* EditFeatureAttachmentsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9579FCE92C3360BB00FC8A1D /* EditFeatureAttachmentsView.swift */; };
 		95813E392DF88FD300342CBF /* SetMapImageLayerSublayerVisibilityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95813E382DF88FD000342CBF /* SetMapImageLayerSublayerVisibilityView.swift */; };
 		95A572192C0FDCC9006E8B48 /* ShowScaleBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A572182C0FDCC9006E8B48 /* ShowScaleBarView.swift */; };
@@ -658,6 +660,8 @@
 		955AFAC32C10FD6F009C8FE5 /* ApplyMosaicRuleToRastersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplyMosaicRuleToRastersView.swift; sourceTree = "<group>"; };
 		956332472E3455D70091C877 /* SimplifyGeometryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimplifyGeometryView.swift; sourceTree = "<group>"; };
 		9563324B2E39507E0091C877 /* UpdateRelatedFeaturesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateRelatedFeaturesView.swift; sourceTree = "<group>"; };
+		9579E0E430609A63003923F6 /* ApplyPointCloudRendererAndFilterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplyPointCloudRendererAndFilterView.swift; sourceTree = "<group>"; };
+		9579E0E730609CD2003923F6 /* ApplyPointCloudRendererAndFilterView.Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplyPointCloudRendererAndFilterView.Model.swift; sourceTree = "<group>"; };
 		9579FCE92C3360BB00FC8A1D /* EditFeatureAttachmentsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditFeatureAttachmentsView.swift; sourceTree = "<group>"; };
 		957B25D32E31BE23007E88F9 /* ShowWFSLayerWithXMLQueryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowWFSLayerWithXMLQueryView.swift; sourceTree = "<group>"; };
 		95813E382DF88FD000342CBF /* SetMapImageLayerSublayerVisibilityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetMapImageLayerSublayerVisibilityView.swift; sourceTree = "<group>"; };
@@ -1109,6 +1113,7 @@
 				88E52E6D2DC969CF00F48409 /* Apply hillshade renderer to raster */,
 				00D6C1B92F719F99000CA40E /* Apply map algebra */,
 				955AFAC52C10FD74009C8FE5 /* Apply mosaic rule to rasters */,
+				9579E0E630609AA0003923F6 /* Apply point cloud renderer and filter */,
 				D771D0C52CD55211004C13CB /* Apply raster rendering rule */,
 				95321B312E554B76002E9DE2 /* Apply renderers to scene layer */,
 				00FA4E612DCA72DA008A34CF /* Apply RGB renderer */,
@@ -2391,6 +2396,15 @@
 				9563324B2E39507E0091C877 /* UpdateRelatedFeaturesView.swift */,
 			);
 			path = "Update related features";
+			sourceTree = "<group>";
+		};
+		9579E0E630609AA0003923F6 /* Apply point cloud renderer and filter */ = {
+			isa = PBXGroup;
+			children = (
+				9579E0E430609A63003923F6 /* ApplyPointCloudRendererAndFilterView.swift */,
+				9579E0E730609CD2003923F6 /* ApplyPointCloudRendererAndFilterView.Model.swift */,
+			);
+			path = "Apply point cloud renderer and filter";
 			sourceTree = "<group>";
 		};
 		9579FCEB2C3360CA00FC8A1D /* Edit feature attachments */ = {
@@ -4256,6 +4270,7 @@
 				1CAF831F2A20305F000E1E60 /* ShowUtilityAssociationsView.swift in Sources */,
 				00E7C15C2BBE1BF000B85D69 /* SnapGeometryEditsView.swift in Sources */,
 				E004A6C128414332002A1FE6 /* SetViewpointRotationView.swift in Sources */,
+				9579E0E530609A73003923F6 /* ApplyPointCloudRendererAndFilterView.swift in Sources */,
 				883C121529C9136600062FF9 /* DownloadPreplannedMapAreaView.MapPicker.swift in Sources */,
 				D72C43F32AEB066D00B6157B /* GeocodeOfflineView.Model.swift in Sources */,
 				1C9B74C929DB43580038B06F /* ShowRealisticLightAndShadowsView.swift in Sources */,
@@ -4307,6 +4322,7 @@
 				D710996D2A27D9210065A1C1 /* DensifyAndGeneralizeGeometryView.swift in Sources */,
 				88F93CC129C3D59D0006B28E /* CreateAndEditGeometriesView.swift in Sources */,
 				1C0C1C3929D34DAE005C8B24 /* ChangeViewpointView.swift in Sources */,
+				9579E0E830609CD9003923F6 /* ApplyPointCloudRendererAndFilterView.Model.swift in Sources */,
 				955271612C0E6749009B1ED4 /* AddRasterFromServiceView.swift in Sources */,
 				79D22F822E9D8EA900B981A5 /* DisplayLocalSceneView.swift in Sources */,
 				D7AE861E2AC39DC50049B626 /* DisplayAnnotationView.swift in Sources */,
