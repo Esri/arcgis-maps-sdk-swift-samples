@@ -82,7 +82,7 @@ struct AddFeaturesWithSharedTemplateView: View {
                 guard let id = model.stateResetID else { return }
                 await model.resetStateAfterDelay(for: id)
             }
-            // Keep this task on the map view, not the conditional buttons.
+        // Keep this task on the map view, not the conditional buttons.
             .task(id: pendingGeodatabaseAction) {
                 guard let action = pendingGeodatabaseAction else { return }
                 defer { pendingGeodatabaseAction = nil }
@@ -269,16 +269,31 @@ struct AddFeaturesWithSharedTemplateView: View {
     /// The controls for completing or canceling the current sketch.
     private var drawingButtons: some View {
         Group {
-            Button("Cancel", systemImage: "xmark.circle.fill") {
-                model.cancelDrawing()
+            if #available(iOS 26, *) {
+                Button(role: .cancel) {
+                    model.cancelDrawing()
+                }
+            } else {
+                Button("Cancel", systemImage: "xmark") {
+                    model.cancelDrawing()
+                }
+                .buttonStyle(.plain)
             }
             
             Spacer()
             
-            Button("Complete", systemImage: "checkmark.circle.fill") {
-                pendingGeodatabaseAction = .complete
+            if #available(iOS 26, *) {
+                Button(role: .confirm) {
+                    pendingGeodatabaseAction = .complete
+                }
+                .disabled(!canCompleteDrawing)
+            } else {
+                Button("Done", systemImage: "checkmark") {
+                    pendingGeodatabaseAction = .complete
+                }
+                .disabled(!canCompleteDrawing)
+                .buttonStyle(.plain)
             }
-            .disabled(!canCompleteDrawing)
         }
         .disabled(model.operationIsInProgress || pendingGeodatabaseAction != nil)
     }
