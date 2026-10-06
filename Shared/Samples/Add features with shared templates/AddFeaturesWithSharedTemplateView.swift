@@ -269,13 +269,13 @@ struct AddFeaturesWithSharedTemplateView: View {
     /// The controls for completing or canceling the current sketch.
     private var drawingButtons: some View {
         Group {
-            Button("Cancel", role: .cancel) {
+            Button("Cancel", systemImage: "xmark.circle.fill") {
                 model.cancelDrawing()
             }
             
             Spacer()
             
-            Button("Complete") {
+            Button("Complete", systemImage: "checkmark.circle.fill") {
                 pendingGeodatabaseAction = .complete
             }
             .disabled(!canCompleteDrawing)
