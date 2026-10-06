@@ -82,7 +82,7 @@ struct AddFeaturesWithSharedTemplateView: View {
                 guard let id = model.stateResetID else { return }
                 await model.resetStateAfterDelay(for: id)
             }
-        // Keep this task on the map view, not the conditional buttons.
+            // Keep this task on the map view, not the conditional buttons.
             .task(id: pendingGeodatabaseAction) {
                 guard let action = pendingGeodatabaseAction else { return }
                 defer { pendingGeodatabaseAction = nil }
