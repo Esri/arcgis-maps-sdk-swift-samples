@@ -117,10 +117,12 @@ struct FilterMosaicDatasetRasterByTimeExtentView: View {
         timestamps = try await raster.distinctTimestamps
         map.addOperationalLayer(layer)
         
+        if !timestamps.isEmpty {
+            selectTimestamp(at: 0)
+        }
+        
         if let fullExtent = layer.fullExtent {
             await mapViewProxy.setViewpointGeometry(fullExtent, padding: 100)
         }
-        
-        selectTimestamp(at: 0)
     }
 }
