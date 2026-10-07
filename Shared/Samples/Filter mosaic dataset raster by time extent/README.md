@@ -35,4 +35,4 @@ The sample uses a mobile mosaic dataset [ElToroMosaicDataset](https://www.arcgis
 
 ## Tags
 
-aerial imagery, date, mosaic dataset, raster, time, timestamp, time extent, time-aware, time-enabled
+aerial imagery, date, mosaic dataset, raster, time, time extent, time-aware, time-enabled, timestamp
