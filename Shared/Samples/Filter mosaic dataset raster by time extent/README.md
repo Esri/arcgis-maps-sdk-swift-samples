@@ -18,7 +18,7 @@ When the sample starts, the mosaic dataset raster is displayed in a map view and
 2. Create and load a `MosaicDatasetRaster` from the sample mobile mosaic dataset and use it to create a raster layer.
 3. Add the raster layer to the map.
 4. Get the raster's `distinctTimestamps`.
-5. Creates a time extent with a time instant of the initial timestamp and set it on the map view.
+5. Create a time extent with a time instant of the initial timestamp and set it on the map view.
 6. Update the time extent on the map view when the selected timestamp changes.
 
 ## Relevant API
