@@ -38,6 +38,8 @@
 		00A7A1462A2FC58300F035F7 /* DisplayContentOfUtilityNetworkContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00A7A1432A2FC58300F035F7 /* DisplayContentOfUtilityNetworkContainerView.swift */; };
 		00A7A14A2A2FC5B700F035F7 /* DisplayContentOfUtilityNetworkContainerView.Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00A7A1492A2FC5B700F035F7 /* DisplayContentOfUtilityNetworkContainerView.Model.swift */; };
 		00ABA94E2BF6721700C0488C /* ShowGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00ABA94D2BF6721700C0488C /* ShowGridView.swift */; };
+		00AFB70D3076E64D00D5132F /* FilterMosaicDatasetRasterByTimeExtentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00AFB70C3076E64D00D5132F /* FilterMosaicDatasetRasterByTimeExtentView.swift */; };
+		00AFB74A3076EB3F00D5132F /* ElToroMosaicDataset in Resources */ = {isa = PBXBuildFile; fileRef = 00AFB7493076EB3C00D5132F /* ElToroMosaicDataset */; settings = {ASSET_TAGS = (FilterMosaicDatasetRasterByTimeExtent, ); }; };
 		00B04273282EC59E0072E1B4 /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00B04272282EC59E0072E1B4 /* AboutView.swift */; };
 		00B042E8282EDC690072E1B4 /* SetBasemapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00B042E5282EDC690072E1B4 /* SetBasemapView.swift */; };
 		00B04FB5283EEBA80026C882 /* DisplayOverviewMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00B04FB4283EEBA80026C882 /* DisplayOverviewMapView.swift */; };
@@ -501,6 +503,8 @@
 		00A7A1432A2FC58300F035F7 /* DisplayContentOfUtilityNetworkContainerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DisplayContentOfUtilityNetworkContainerView.swift; sourceTree = "<group>"; };
 		00A7A1492A2FC5B700F035F7 /* DisplayContentOfUtilityNetworkContainerView.Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayContentOfUtilityNetworkContainerView.Model.swift; sourceTree = "<group>"; };
 		00ABA94D2BF6721700C0488C /* ShowGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowGridView.swift; sourceTree = "<group>"; };
+		00AFB70C3076E64D00D5132F /* FilterMosaicDatasetRasterByTimeExtentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterMosaicDatasetRasterByTimeExtentView.swift; sourceTree = "<group>"; };
+		00AFB7493076EB3C00D5132F /* ElToroMosaicDataset */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ElToroMosaicDataset; sourceTree = "<group>"; };
 		00B04272282EC59E0072E1B4 /* AboutView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
 		00B042E5282EDC690072E1B4 /* SetBasemapView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetBasemapView.swift; sourceTree = "<group>"; };
 		00B04FB4283EEBA80026C882 /* DisplayOverviewMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayOverviewMapView.swift; sourceTree = "<group>"; };
@@ -1192,6 +1196,7 @@
 				79FFD35A2ED10D6A00800C23 /* Filter building scene layer */,
 				D7D9FCF52BF2CC8600F972A2 /* Filter by definition expression or display filter */,
 				1C26ED122A859525009B7721 /* Filter features in scene */,
+				00AFB70B3076E61000D5132F /* Filter mosaic dataset raster by time extent */,
 				D73FCFF32B02A3AA0006360D /* Find address with reverse geocode */,
 				D7705D5F2AFC570700CC0335 /* Find closest facility from point */,
 				D7705D542AFC244E00CC0335 /* Find closest facility to multiple points */,
@@ -1379,6 +1384,22 @@
 			path = "Show grid";
 			sourceTree = "<group>";
 		};
+		00AFB70B3076E61000D5132F /* Filter mosaic dataset raster by time extent */ = {
+			isa = PBXGroup;
+			children = (
+				00AFB70C3076E64D00D5132F /* FilterMosaicDatasetRasterByTimeExtentView.swift */,
+			);
+			path = "Filter mosaic dataset raster by time extent";
+			sourceTree = "<group>";
+		};
+		00AFB71F3076EA0500D5132F /* 5d1c805850054a098667cdb217d76476 */ = {
+			isa = PBXGroup;
+			children = (
+				00AFB7493076EB3C00D5132F /* ElToroMosaicDataset */,
+			);
+			path = 5d1c805850054a098667cdb217d76476;
+			sourceTree = "<group>";
+		};
 		00B042E3282EDC690072E1B4 /* Set basemap */ = {
 			isa = PBXGroup;
 			children = (
@@ -1419,6 +1440,7 @@
 				9520B26A2E13555800B3BEF9 /* 3af5cfec0fd24dac8d88aea679027cb9 */,
 				D7781D472B7EB03400E53C51 /* 4caec8c55ea2463982f1af7d9611b8d5 */,
 				D7C16D1D2AC5FE8200689E89 /* 5a9b60cee9ba41e79640a06bcdf8084d */,
+				00AFB71F3076EA0500D5132F /* 5d1c805850054a098667cdb217d76476 */,
 				00C94A0228B53DCC004E42D9 /* 7c4c679ab06a4df19dc497f577f111bd */,
 				D701D7242A37C7E4006FF0C8 /* 07d62a792ab6496d9b772a24efea45d0 */,
 				D7D1F3512ADDBE5D009CE2DA /* 7dd2f97bb007466ea939160d0de96a9d */,
@@ -3933,6 +3955,7 @@
 				1CC755E12DC5A6A7004B346F /* Shasta_Elevation in Resources */,
 				D7F8C0412B605E720072BFA7 /* FillmoreTopographicMap.vtpk in Resources */,
 				D71C01602E3C2A6200E87E3D /* phx_air_traffic.json in Resources */,
+				00AFB74A3076EB3F00D5132F /* ElToroMosaicDataset in Resources */,
 				1C293D4D2DCD91BF000B0822 /* color.json in Resources */,
 				9537AFD72C220EF0000923C5 /* ExchangeSetwithoutUpdates in Resources */,
 				D7F8C03E2B605AF60072BFA7 /* ContingentValuesBirdNests.geodatabase in Resources */,
@@ -4145,6 +4168,7 @@
 				D71563E92D5AC2B600D2E948 /* CreateKMLMultiTrackView.swift in Sources */,
 				D73CCF1F2DE6858000622FEF /* QueryMapImageSublayerView.swift in Sources */,
 				4C8127612DCBED62006EF7D2 /* ApplyStretchRendererView.swift in Sources */,
+				00AFB70D3076E64D00D5132F /* FilterMosaicDatasetRasterByTimeExtentView.swift in Sources */,
 				7900C5F62A83FC3F002D430F /* AddCustomDynamicEntityDataSourceView.Vessel.swift in Sources */,
 				D71099702A2802FA0065A1C1 /* DensifyAndGeneralizeGeometryView.SettingsView.swift in Sources */,
 				1C7B85E32DF0B86F00B267EA /* SetAtmosphereEffectInSceneView.swift in Sources */,
