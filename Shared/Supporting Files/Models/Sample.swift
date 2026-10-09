@@ -61,12 +61,22 @@ extension Sample {
     
     /// The URL to a sample's `README.md` file.
     var readmeURL: URL {
-        Bundle.main.url(forResource: name, withExtension: "md", subdirectory: "READMEs")!
+        Bundle.main.url(
+            forResource: "README",
+            withExtension: "md",
+            subdirectory: "Samples/\(name)"
+        )!
     }
     
     /// The URLs to a sample's source code files.
     var snippetURLs: [URL] {
-        snippets.compactMap { Bundle.main.url(forResource: $0, withExtension: nil) }
+        snippets.compactMap { snippet in
+            Bundle.main.url(
+                forResource: snippet,
+                withExtension: nil,
+                subdirectory: "Samples/\(name)"
+            )
+        }
     }
     
     /// By default, a sample doesn't have dependencies.

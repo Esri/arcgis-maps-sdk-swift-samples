@@ -60,7 +60,7 @@ struct ListGeodatabaseVersionsView: View {
     }
     
     /// Fetches geodatabase versions using a geoprocessing job.
-    private func fetchGeodatabaseVersions() async throws -> FeatureSet {
+    private func fetchGeodatabaseVersions() async throws -> any FeatureSet {
         // Creates and configures the job's parameters.
         let parameters = try await geoprocessingTask.makeDefaultParameters()
         
@@ -86,7 +86,7 @@ struct ListGeodatabaseVersionsView: View {
     /// Converts the features to an array of `GeodatabaseVersionInfo`.
     /// - Parameter featureSet: The features with version info from the job.
     /// - Returns: An array of `GeodatabaseVersionInfo`.
-    private func makeGeodatabaseVersionInfos(from featureSet: FeatureSet) -> [GeodatabaseVersionInfo] {
+    private func makeGeodatabaseVersionInfos(from featureSet: some FeatureSet) -> [GeodatabaseVersionInfo] {
         featureSet
             .features()
             .compactMap { version in
@@ -108,7 +108,7 @@ struct ListGeodatabaseVersionsView: View {
         let parentVersionName: String
         let description: String
         
-        init?(from dictionary: [String: Sendable]) {
+        init?(from dictionary: [String: any Sendable]) {
             guard let access = dictionary["access"] as? String,
                   let created = dictionary["created"] as? Date,
                   let description = dictionary["description"] as? String,

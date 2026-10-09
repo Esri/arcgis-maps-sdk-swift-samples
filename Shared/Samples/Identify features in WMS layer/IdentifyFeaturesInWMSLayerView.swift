@@ -42,10 +42,6 @@ struct IdentifyFeaturesInWMSLayerView: View {
     /// The error shown in the error alert.
     @State private var error: (any Error)?
     
-    init() {
-        map.addOperationalLayer(waterInfoLayer)
-    }
-    
     var body: some View {
         MapViewReader { mapViewProxy in
             MapView(map: map)
@@ -98,7 +94,16 @@ struct IdentifyFeaturesInWMSLayerView: View {
                         .background(.thinMaterial, ignoresSafeAreaEdges: .horizontal)
                 }
         }
+        .onAppear {
+            setupMapIfNecessary()
+        }
         .errorAlert(presentingError: $error)
+    }
+    
+    /// Adds the WMS layer to the map once.
+    private func setupMapIfNecessary() {
+        guard map.operationalLayers.isEmpty else { return }
+        map.addOperationalLayer(waterInfoLayer)
     }
 }
 

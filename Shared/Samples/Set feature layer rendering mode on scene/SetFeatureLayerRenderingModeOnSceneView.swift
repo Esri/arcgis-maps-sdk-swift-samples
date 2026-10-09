@@ -31,26 +31,6 @@ struct SetFeatureLayerRenderingModeOnSceneView: View {
     /// A Boolean value indicating whether the scene is fully zoomed in.
     @State private var isZoomedIn = false
     
-    init() {
-        // The service feature tables using point, polygon, and polyline services.
-        let featureTables: [ServiceFeatureTable] = [.polygonTable, .polylineTable, .pointTable].map(ServiceFeatureTable.init(url:))
-        // Iterate through the feature tables and use them to set up feature layers.
-        // Set the rendering mode for either dynamic or static rendering,
-        // and add the feature layers to the scene.
-        for featureTable in featureTables {
-            // Set up the dynamic scene first.
-            let dynamicFeatureLayer = FeatureLayer(featureTable: featureTable)
-            dynamicFeatureLayer.renderingMode = .dynamic
-            dynamicScene.addOperationalLayer(dynamicFeatureLayer)
-            // Then set up the static scene using a clone of the dynamic feature layer.
-            let staticFeatureLayer = dynamicFeatureLayer.clone()
-            staticFeatureLayer.renderingMode = .static
-            staticScene.addOperationalLayer(staticFeatureLayer)
-        }
-        staticScene.initialViewpoint = Viewpoint(boundingGeometry: Camera.zoomedOut.location, camera: Camera.zoomedOut)
-        dynamicScene.initialViewpoint = Viewpoint(boundingGeometry: Camera.zoomedOut.location, camera: Camera.zoomedOut)
-    }
-    
     var body: some View {
         VStack(spacing: 0) {
             SceneViewReader { sceneViewProxy in
@@ -94,6 +74,35 @@ struct SetFeatureLayerRenderingModeOnSceneView: View {
                 .disabled(isZooming)
             }
         }
+        .onAppear {
+            setupScenesIfNecessary()
+        }
+    }
+    
+    private func setupScenesIfNecessary() {
+        // The service feature tables using point, polygon, and polyline services.
+        let featureLayers: [FeatureLayer] = [
+            URL.polygonTable,
+            URL.polylineTable,
+            URL.pointTable
+        ]
+            .map(ServiceFeatureTable.init(url:))
+            .map(FeatureLayer.init(featureTable:))
+        // Iterate through the feature tables and use them to set up feature layers.
+        // Set the rendering mode for either dynamic or static rendering,
+        // and add the feature layers to the scene.
+        for featureLayer in featureLayers {
+            // Set up the static scene using a clone of the dynamic feature layer.
+            let staticFeatureLayer = featureLayer.clone()
+            staticFeatureLayer.renderingMode = .static
+            staticScene.addOperationalLayer(staticFeatureLayer)
+            
+            // Set up the dynamic scene.
+            featureLayer.renderingMode = .dynamic
+            dynamicScene.addOperationalLayer(featureLayer)
+        }
+        staticScene.initialViewpoint = Viewpoint(boundingGeometry: Camera.zoomedOut.location, camera: Camera.zoomedOut)
+        dynamicScene.initialViewpoint = Viewpoint(boundingGeometry: Camera.zoomedOut.location, camera: Camera.zoomedOut)
     }
 }
 

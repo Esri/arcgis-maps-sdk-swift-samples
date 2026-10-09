@@ -16,7 +16,7 @@ import SwiftUI
 
 struct SampleMenuButtons: View {
     /// The sample to show the menu buttons for.
-    let sample: Sample
+    let sample: any Sample
     
     /// The names of the favorite samples loaded from user defaults.
     @AppFavorites private var favoriteNames
