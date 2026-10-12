@@ -17,7 +17,7 @@ import Observation
 import UIKit
 
 extension UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView {
-    /// Configures restaurant labeling and scales marker and label symbols
+    /// Configures restaurant labeling, scales marker, and label symbols
     /// in response to Dynamic Type changes.
     @MainActor
     @Observable
@@ -40,7 +40,7 @@ extension UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView {
         /// The layer containing the Redlands restaurants.
         let restaurantsLayer: FeatureLayer
         
-        /// Whether restaurant labels follow the system text size.
+        /// A Boolean value indicating whether restaurant labels follow the system text size.
         var labelsUseSystemTextScale = true {
             didSet {
                 updateLabelSize()
