@@ -21,7 +21,7 @@ struct UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView: View {
     /// The view model for the sample.
     @State private var model = Model()
     
-    /// The map displaying restaurants in Redlands, California.
+    /// A map displaying restaurants in Redlands, California.
     @State private var map: Map = {
         let map = Map(basemapStyle: .arcGISLightGray)
         map.initialViewpoint = Viewpoint(
@@ -36,7 +36,7 @@ struct UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView: View {
     /// creating its swatch, or opening settings.
     @State private var error: (any Error)?
     
-    /// Whether the restaurant layer and symbol are loading.
+    /// A Boolean value indicating whether the restaurant layer and symbols are loading.
     @State private var isLoading = true
 
     /// A legend swatch matching the restaurant symbol's current size.
@@ -54,7 +54,7 @@ struct UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView: View {
     /// Whether the available layout has a compact height.
     @Environment(\.verticalSizeClass) private var verticalSizeClass
     
-    /// Whether the text-size instructions are presented.
+    /// A Boolean value indicating whether the text-size instructions are presented.
     @State private var isShowingTextSizeHelp = false
     
     /// The legend's content height before any scrolling is needed.
@@ -210,10 +210,10 @@ struct UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView: View {
 private extension UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView {
     /// A uniquely identified map tap and the screen point to identify.
     struct IdentifyRequest {
-        /// A unique task ID so each tap starts a new identify operation.
+        /// A unique task identifier associated with a new identify operation.
         let id = UUID()
         
-        /// The tapped position in the map view's screen coordinates.
+        /// The screen point to perform an identify operation.
         let screenPoint: CGPoint
     }
     
