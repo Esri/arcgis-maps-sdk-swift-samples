@@ -80,6 +80,8 @@ struct SetFeatureLayerRenderingModeOnSceneView: View {
     }
     
     private func setupScenesIfNecessary() {
+        guard staticScene.operationalLayers.isEmpty && dynamicScene.operationalLayers.isEmpty else { return }
+
         // The service feature tables using point, polygon, and polyline services.
         let featureLayers: [FeatureLayer] = [
             URL.polygonTable,
