@@ -66,9 +66,8 @@ struct UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView: View {
     /// The callout's content height before any scrolling is needed.
     @State private var calloutContentHeight: CGFloat?
     
-    /// The latest identify request, with a unique ID so repeated taps
-    /// at the same point restart the task.
-    @State private var identifyRequest: IdentifyRequest?
+    /// The screen point to perform an identify operation.
+    @State private var identifyScreenPoint: CGPoint?
     
     /// The selected restaurant whose details are shown in the callout, if any.
     @State private var selectedFeature: Feature?
@@ -105,15 +104,15 @@ struct UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView: View {
                     model.restaurantsLayer.clearSelection()
                     selectedFeature = nil
                     calloutPlacement = nil
-                    identifyRequest = IdentifyRequest(screenPoint: screenPoint)
+                    identifyScreenPoint = screenPoint
                 }
-                .task(id: identifyRequest?.id) {
-                    guard let identifyRequest else { return }
+                .task(id: identifyScreenPoint) {
+                    guard let identifyScreenPoint = identifyScreenPoint else { return }
                     do {
                         // Identify at most one restaurant near the tap.
                         let result = try await mapView.identify(
                             on: model.restaurantsLayer,
-                            screenPoint: identifyRequest.screenPoint,
+                            screenPoint: identifyScreenPoint,
                             tolerance: 12,
                             maximumResults: 1
                         )
@@ -208,15 +207,6 @@ struct UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView: View {
 }
 
 private extension UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView {
-    /// A uniquely identified map tap and the screen point to identify.
-    struct IdentifyRequest {
-        /// A unique task identifier associated with a new identify operation.
-        let id = UUID()
-        
-        /// The screen point to perform an identify operation.
-        let screenPoint: CGPoint
-    }
-    
     /// The selected restaurant's name and WGS 84 coordinates.
     func calloutContent(for feature: Feature) -> some View {
         let name = (feature.attributes["name"] as? String)?
