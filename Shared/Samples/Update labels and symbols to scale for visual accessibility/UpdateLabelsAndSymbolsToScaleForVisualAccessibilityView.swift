@@ -38,7 +38,7 @@ struct UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView: View {
     
     /// A Boolean value indicating whether the restaurant layer and symbols are loading.
     @State private var isLoading = true
-
+    
     /// A legend swatch matching the restaurant symbol's current size.
     @State private var markerSwatch: UIImage?
 
@@ -61,7 +61,7 @@ struct UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView: View {
     @State private var scalingStatusHeight: CGFloat?
     
     /// The map height available above the bottom controls.
-    @State private var mapHeight: CGFloat = 0
+    @State private var mapHeight: Double = 0
     
     /// The callout's content height before any scrolling is needed.
     @State private var calloutContentHeight: CGFloat?
@@ -119,10 +119,8 @@ struct UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView: View {
                         // Don't show stale results after another tap
                         // or dismissal.
                         try Task.checkCancellation()
-                        guard
-                            let feature = result.geoElements.first as? Feature,
-                            let location = feature.geometry as? Point
-                        else {
+                        guard let feature = result.geoElements.first as? Feature,
+                              let location = feature.geometry as? Point else {
                             return
                         }
                         model.restaurantsLayer.selectFeature(feature)
@@ -153,8 +151,8 @@ struct UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView: View {
                         }
                     }
                 }
-                .onChange(of: systemTextScale, initial: true) { _, newValue in
-                    model.applySystemTextScale(newValue)
+                .onChange(of: systemTextScale, initial: true) {
+                    model.applySystemTextScale(systemTextScale)
                 }
                 .onAppear {
                     // Configure tips on a best-effort basis, ignoring failures
@@ -185,13 +183,8 @@ struct UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView: View {
                 }
                 .toolbar {
                     ToolbarItem(placement: .primaryAction) {
-                        Button {
+                        Button("Text Size Help", systemImage: "textformat.size") {
                             isShowingTextSizeHelp = true
-                        } label: {
-                            Label(
-                                "Text Size Help",
-                                systemImage: "textformat.size"
-                            )
                         }
                     }
                 }
@@ -262,9 +255,7 @@ private extension UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView {
     
     /// The label-scaling control below the map.
     var labelScalingToggle: some View {
-        @Bindable var model = model
-        
-        return Toggle("Scale Labels", isOn: $model.labelsUseSystemTextScale)
+        Toggle("Scale Labels", isOn: $model.labelsUseSystemTextScale)
             .toggleStyle(.switch)
             .accessibilityHint(
                 """
@@ -314,7 +305,8 @@ private extension UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView {
             Label {
                 Text(
                     model.labelsUseSystemTextScale
-                    ? "Labels: Dynamic Type" : "Labels: fixed size"
+                    ? "Labels: Dynamic Type" 
+                    : "Labels: fixed size"
                 )
             } icon: {
                 Text("Aa")
