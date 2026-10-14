@@ -3893,6 +3893,7 @@
 					EditAndSyncFeaturesWithFeatureService,
 					EditFeaturesWithFeatureLinkedAnnotation,
 					EditGeodatabaseWithTransactions,
+					FilterMosaicDatasetRasterByTimeExtent,
 					FindRouteInMobileMapPackage,
 					FindRouteInTransportNetwork,
 					GenerateGeodatabaseReplicaFromFeatureService,
