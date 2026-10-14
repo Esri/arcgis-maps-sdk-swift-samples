@@ -17,13 +17,19 @@ import SwiftUI
 
 struct FilterMosaicDatasetRasterByTimeExtentView: View {
     /// The map displayed in the view.
-    @State private var map = Map(basemapStyle: .arcGISLightGrayBase)
+    @State private var map = Map(basemapStyle: .arcGISImageryStandard)
     /// The time extent used to filter the mosaic dataset raster.
     @State private var timeExtent: TimeExtent?
     /// The timestamps from the mosaic dataset raster.
     @State private var timestamps: [Date] = []
     /// The index of the currently selected timestamp.
     @State private var selectedIndex = 0
+    /// The raster layer added to the map.
+    @State private var rasterLayer: RasterLayer?
+    /// The opacity of the raster layer.
+    @State private var rasterOpacity: Double = 1
+    /// A Boolean value indicating whether the opacity controls are shown.
+    @State private var isShowingOpacityControls = false
     /// A Boolean value indicating whether the raster is loading.
     @State private var isLoading = true
     /// The error shown in the error alert.
@@ -38,42 +44,24 @@ struct FilterMosaicDatasetRasterByTimeExtentView: View {
                     withAnimation { attributionBarHeight = height }
                 }
                 .overlay(alignment: .bottom) {
-                    HStack {
-                        Button("Previous timestamp", systemImage: "chevron.left") {
-                            selectTimestamp(at: selectedIndex - 1)
-                        }
-                        .labelStyle(.iconOnly)
-                        .disabled(timestamps.isEmpty || selectedIndex <= 0)
-                        
-                        Divider()
-                        
-                        if isLoading {
-                            HStack {
-                                ProgressView()
-                                Text("Loading…")
+                    VStack {
+                        timestampStepper
+                            .fixedSize(horizontal: false, vertical: true)
+
+                        if isShowingOpacityControls {
+                            VStack {
+                                LabeledContent("Opacity", value: rasterOpacity, format: .percent)
+                                Slider(value: $rasterOpacity, in: 0...1, step: 0.01)
+                                    .onChange(of: rasterOpacity) { _, newOpacity in
+                                        rasterLayer?.opacity = Float(newOpacity)
+                                    }
                             }
-                        } else if timestamps.indices.contains(selectedIndex) {
-                            Text(
-                                timestamps[selectedIndex],
-                                format: .dateTime.month(.twoDigits).day(.twoDigits).year()
-                            )
-                            .monospacedDigit()
-                        } else {
-                            Text("No timestamps available")
+                            .frame(idealWidth: 320, maxWidth: 440)
                         }
-                        
-                        Divider()
-                        
-                        Button("Next timestamp", systemImage: "chevron.right") {
-                            selectTimestamp(at: selectedIndex + 1)
-                        }
-                        .labelStyle(.iconOnly)
-                        .disabled(timestamps.isEmpty || selectedIndex >= timestamps.count - 1)
                     }
-                    .frame(height: 44)
                     .padding()
                     .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 16))
-                    .padding(.bottom, 16)
+                    .padding([.horizontal, .bottom])
                     .padding(.bottom, attributionBarHeight)
                 }
                 .task {
@@ -89,6 +77,65 @@ struct FilterMosaicDatasetRasterByTimeExtentView: View {
         }
     }
     
+    private var timestampStepper: some View {
+        HStack {
+            Button("First timestamp", systemImage: "chevron.backward.to.line") {
+                selectFirstTimestamp()
+            }
+            .labelStyle(.iconOnly)
+            .disabled(timestamps.isEmpty || selectedIndex <= 0)
+            
+            Divider()
+            
+            Button("Previous timestamp", systemImage: "chevron.left") {
+                selectTimestamp(at: selectedIndex - 1)
+            }
+            .labelStyle(.iconOnly)
+            .disabled(timestamps.isEmpty || selectedIndex <= 0)
+            
+            Divider()
+            
+            if isLoading {
+                HStack {
+                    ProgressView()
+                    Text("Loading…")
+                }
+            } else if timestamps.indices.contains(selectedIndex) {
+                Text(
+                    timestamps[selectedIndex],
+                    format: .dateTime.month(.twoDigits).day(.twoDigits).year()
+                )
+                .monospacedDigit()
+            } else {
+                Text("No timestamps available")
+            }
+            
+            Divider()
+            
+            Button("Next timestamp", systemImage: "chevron.right") {
+                selectTimestamp(at: selectedIndex + 1)
+            }
+            .labelStyle(.iconOnly)
+            .disabled(timestamps.isEmpty || selectedIndex >= timestamps.count - 1)
+            
+            Divider()
+            
+            Button("Last timestamp", systemImage: "chevron.forward.to.line") {
+                selectLastTimestamp()
+            }
+            .labelStyle(.iconOnly)
+            .disabled(timestamps.isEmpty || selectedIndex >= timestamps.count - 1)
+            
+            Divider()
+            
+            Button("Adjust opacity", systemImage: "slider.horizontal.below.rectangle") {
+                withAnimation { isShowingOpacityControls.toggle() }
+            }
+            .labelStyle(.iconOnly)
+            .disabled(rasterLayer == nil)
+        }
+    }
+    
     /// Sets the time extent to the timestamp at the specified index.
     /// - Parameter index: The index of the timestamp to select.
     private func selectTimestamp(at index: Int) {
@@ -97,6 +144,18 @@ struct FilterMosaicDatasetRasterByTimeExtentView: View {
         }
         selectedIndex = index
         timeExtent = TimeExtent(date: timestamps[index])
+    }
+
+    /// Sets the time extent to the first timestamp.
+    private func selectFirstTimestamp() {
+        guard let firstIndex = timestamps.indices.first else { return }
+        selectTimestamp(at: firstIndex)
+    }
+
+    /// Sets the time extent to the last timestamp.
+    private func selectLastTimestamp() {
+        guard let lastIndex = timestamps.indices.last else { return }
+        selectTimestamp(at: lastIndex)
     }
     
     /// Loads the mosaic dataset raster and adds it to the map.
@@ -113,6 +172,8 @@ struct FilterMosaicDatasetRasterByTimeExtentView: View {
         let raster = MosaicDatasetRaster(databaseURL: databaseURL, name: rasterName)
         let layer = RasterLayer(raster: raster)
         try await layer.load()
+        rasterLayer = layer
+        layer.opacity = Float(rasterOpacity)
         
         timestamps = try await raster.distinctTimestamps
         map.addOperationalLayer(layer)
