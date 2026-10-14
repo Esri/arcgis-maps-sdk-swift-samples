@@ -47,7 +47,7 @@ struct FilterMosaicDatasetRasterByTimeExtentView: View {
                     VStack {
                         timestampStepper
                             .fixedSize(horizontal: false, vertical: true)
-
+                        
                         if isShowingOpacityControls {
                             VStack {
                                 LabeledContent("Opacity", value: rasterOpacity, format: .percent)
@@ -145,13 +145,13 @@ struct FilterMosaicDatasetRasterByTimeExtentView: View {
         selectedIndex = index
         timeExtent = TimeExtent(date: timestamps[index])
     }
-
+    
     /// Sets the time extent to the first timestamp.
     private func selectFirstTimestamp() {
         guard let firstIndex = timestamps.indices.first else { return }
         selectTimestamp(at: firstIndex)
     }
-
+    
     /// Sets the time extent to the last timestamp.
     private func selectLastTimestamp() {
         guard let lastIndex = timestamps.indices.last else { return }
