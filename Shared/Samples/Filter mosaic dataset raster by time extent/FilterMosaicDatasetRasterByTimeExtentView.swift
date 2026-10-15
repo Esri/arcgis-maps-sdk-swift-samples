@@ -38,7 +38,7 @@ struct FilterMosaicDatasetRasterByTimeExtentView: View {
     @State private var attributionBarHeight: CGFloat?
     
     var body: some View {
-        MapViewReader { mapViewProxy in
+        MapViewReader { mapView in
             MapView(map: map, timeExtent: $timeExtent)
                 .onAttributionBarHeightChanged { height in
                     withAnimation { attributionBarHeight = height }
@@ -52,15 +52,15 @@ struct FilterMosaicDatasetRasterByTimeExtentView: View {
                             VStack {
                                 LabeledContent("Opacity", value: rasterOpacity, format: .percent)
                                 Slider(value: $rasterOpacity, in: 0...1, step: 0.01)
-                                    .onChange(of: rasterOpacity) { _, newOpacity in
-                                        rasterLayer?.opacity = Float(newOpacity)
+                                    .onChange(of: rasterOpacity) {
+                                        rasterLayer?.opacity = Float(rasterOpacity)
                                     }
                             }
                             .frame(idealWidth: 320, maxWidth: 440)
                         }
                     }
                     .padding()
-                    .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 16))
+                    .background(.regularMaterial, in: .rect(cornerRadius: 16))
                     .padding([.horizontal, .bottom])
                     .padding(.bottom, attributionBarHeight)
                 }
@@ -98,7 +98,7 @@ struct FilterMosaicDatasetRasterByTimeExtentView: View {
             if isLoading {
                 HStack {
                     ProgressView()
-                    Text("Loading…")
+                    Text("Loading")
                 }
             } else if timestamps.indices.contains(selectedIndex) {
                 Text(
