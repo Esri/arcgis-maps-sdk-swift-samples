@@ -225,7 +225,6 @@ extension ApplyPointCloudRendererAndFilterView {
                     } else {
                         filter.addRequiredClearBit(6)
                     }
-
                 }
             }
         }
