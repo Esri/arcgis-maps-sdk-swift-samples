@@ -7,36 +7,17 @@
     ],
     "keywords": [
         "accessibility",
-        "dynamic type",
         "label",
         "readability",
         "scale",
         "symbol",
         "text",
         "visual impairment",
-        "ArcadeLabelExpression",
-        "FeatureLayer",
-        "GeometryEngine",
-        "LabelDefinition",
-        "MapViewProxy",
-        "MultilayerPointSymbol",
-        "SimpleRenderer",
-        "Symbol",
-        "SymbolStyle",
-        "TextSymbol"
+        "View.dynamicTypeSize(_:)"
     ],
     "redirect_from": [],
     "relevant_apis": [
-        "ArcadeLabelExpression",
-        "FeatureLayer",
-        "GeometryEngine",
-        "LabelDefinition",
-        "MapViewProxy",
-        "MultilayerPointSymbol",
-        "SimpleRenderer",
-        "Symbol",
-        "SymbolStyle",
-        "TextSymbol"
+        "View.dynamicTypeSize(_:)"
     ],
     "snippets": [
         "UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView.swift",

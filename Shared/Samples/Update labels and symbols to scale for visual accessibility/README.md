@@ -40,4 +40,4 @@ SwiftUI Dynamic Type scales restaurant symbols and, when **Scale Labels** is ena
 
 ## Tags
 
-accessibility, dynamic type, label, readability, scale, symbol, text, visual impairment
+accessibility, label, readability, scale, symbol, text, visual impairment
