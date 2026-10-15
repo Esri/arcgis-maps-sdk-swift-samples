@@ -6,11 +6,11 @@ Visualize changes in rasters over time by filtering a mosaic dataset raster for 
 
 ## Use case
 
-A mosaic dataset can contain rasters collected over the same area at different times. Viewing the imagery one timestamp at a time makes it easier to compare how a place has changed, such as urban development, changes in vegetation, or the effects of a natural event.
+A mosaic dataset can contain rasters collected over the same area at different times. Viewing the imagery one timestamp at a time makes it easier to compare how a place has changed, such as when tracking urban development, changes in vegetation, or the effects of a natural event.
 
 ## How to use the sample
 
-When the sample starts, the mosaic dataset raster is displayed in a map view and the available acquisition timestamps are loaded. Use the previous and next controls to step through the distinct timestamps in chronological order. The currently selected timestamp is shown, and the map view updates to display imagery for that time.
+When the sample starts, the mosaic dataset raster is displayed in a map view and the available acquisition timestamps are loaded. Use the previous and next controls to step through the distinct timestamps in chronological order. The currently selected timestamp is shown, and the map view updates to display imagery for that time. Use the slider to adjust the opacity of the raster layer to compare it to the imagery basemap.
 
 ## How it works
 
