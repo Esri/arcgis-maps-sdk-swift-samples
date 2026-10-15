@@ -123,12 +123,6 @@ struct UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView: View {
     }
 }
 
-extension UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView.Model.RestaurantSymbolError: LocalizedError {
-    var errorDescription: String? {
-        "The web style did not return a restaurant point symbol."
-    }
-}
-
 #Preview {
     NavigationStack {
         UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView()
