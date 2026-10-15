@@ -183,10 +183,8 @@ extension ApplyPointCloudRendererAndFilterView {
                         includedReturns: includedReturns
                     ))
                 }
-                
             }
         }
-        
         
         /// Removes only the return filter and resets its selections.
         func clearReturnFilter() {
