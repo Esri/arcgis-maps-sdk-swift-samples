@@ -22,7 +22,7 @@ struct ApplyPointCloudRendererAndFilterView: View {
     /// A Boolean value indicating whether the settings are visible.
     @State private var settingsAreVisible = false
     
-    /// A Boolean value indicating whether the point cloud layer is loading.
+    /// A Boolean value indicating whether the point cloud layer has not yet loaded.
     @State private var isLoading = true
     
     /// An error encountered while loading or displaying the scene.
@@ -45,7 +45,7 @@ struct ApplyPointCloudRendererAndFilterView: View {
                 }
             }
             .overlay {
-                if isLoading {
+                if isLoading && model.pointCloudLayer.loadStatus != .failed {
                     ProgressView("Loading point cloud")
                         .padding()
                         .background(
@@ -57,7 +57,7 @@ struct ApplyPointCloudRendererAndFilterView: View {
             .task {
                 for await status in model.pointCloudLayer.$loadStatus {
                     guard !Task.isCancelled else { return }
-                    isLoading = status == .notLoaded || status == .loading
+                    isLoading = status != .loaded
                     if status == .failed {
                         error = model.pointCloudLayer.loadError
                     }
@@ -69,9 +69,7 @@ struct ApplyPointCloudRendererAndFilterView: View {
                     Button("Settings", systemImage: "gear") {
                         settingsAreVisible = true
                     }
-                    .disabled(
-                        isLoading || model.pointCloudLayer.loadStatus != .loaded
-                    )
+                    .disabled(isLoading)
                     .popover(isPresented: $settingsAreVisible) {
                         NavigationStack {
                             SettingsView(model: model)
