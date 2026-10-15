@@ -130,9 +130,7 @@ extension ApplyPointCloudRendererAndFilterView {
             let values = selectedClassifications.map { Double($0.rawValue) }
             // Update the layer's existing classification filter when present,
             // or add one on first use. Other filters remain unchanged.
-            if let filter = pointCloudLayer.filters.first(where: {
-                $0 is PointCloudValueFilter
-            }) as? PointCloudValueFilter {
+            if let filter = pointCloudLayer.filters.lazy.compactMap({ $0 as? PointCloudValueFilter }).first {
                 filter.removeAllValues()
                 filter.addValues(values)
                 filter.mode = classificationMode
@@ -143,6 +141,7 @@ extension ApplyPointCloudRendererAndFilterView {
                     mode: classificationMode
                 ))
             }
+            
             classificationFilterIsActive = true
         }
         
@@ -237,7 +236,7 @@ extension ApplyPointCloudRendererAndFilterView {
         case stretch
         case classBreaks
         case uniqueValue
-
+        
         /// The user-facing name of the renderer.
         var label: String {
             switch self {
@@ -403,7 +402,7 @@ extension ApplyPointCloudRendererAndFilterView {
         case any
         case set
         case clear
-
+        
         /// The user-facing name of the scan direction requirement.
         var label: String {
             switch self {
