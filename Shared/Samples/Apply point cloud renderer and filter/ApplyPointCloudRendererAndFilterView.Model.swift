@@ -212,6 +212,8 @@ extension ApplyPointCloudRendererAndFilterView {
                 let filter: PointCloudBitfieldFilter
                 if let existingFilter {
                     filter = existingFilter
+                    filter.removeAllRequiredClearBits()
+                    filter.removeAllRequiredSetBits()
                 } else {
                     filter = PointCloudBitfieldFilter(
                         attributeName: "FLAGS",
@@ -219,12 +221,13 @@ extension ApplyPointCloudRendererAndFilterView {
                         requiredSetBits: []
                     )
                     pointCloudLayer.addFilter(filter)
-                }
-                // The collections contain zero-based bit positions, not bit masks.
-                if scanDirection == .set {
-                    filter.addRequiredSetBit(6)
-                } else {
-                    filter.addRequiredClearBit(6)
+                    // The collections contain zero-based bit positions, not bit masks.
+                    if scanDirection == .set {
+                        filter.addRequiredSetBit(6)
+                    } else {
+                        filter.addRequiredClearBit(6)
+                    }
+
                 }
             }
         }
