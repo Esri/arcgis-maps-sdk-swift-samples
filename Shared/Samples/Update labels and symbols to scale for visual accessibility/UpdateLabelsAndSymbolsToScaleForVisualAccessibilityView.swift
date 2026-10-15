@@ -19,24 +19,10 @@ struct UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView: View {
     /// The view model for the sample.
     @State private var model = Model()
     
-    /// A map displaying restaurants in Redlands, California.
-    @State private var map: Map = {
-        let map = Map(basemapStyle: .arcGISLightGray)
-        map.initialViewpoint = Viewpoint(
-            latitude: 34.0556,
-            longitude: -117.1793,
-            scale: 2_500
-        )
-        return map
-    }()
-    
     /// An error from identifying a restaurant, loading the layer or symbol,
     /// creating its swatch, or opening settings.
     @State private var error: (any Error)?
     
-    /// A Boolean value indicating whether the restaurant layer and symbols are loading.
-    @State private var isLoading = true
-
     /// The map height available above the bottom controls.
     @State private var mapHeight: CGFloat = 0
     
@@ -67,14 +53,14 @@ struct UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView: View {
     /// The map and its loading and selection interactions.
     private var mapContent: some View {
         MapViewReader { mapView in
-            MapView(map: map)
+            MapView(map: model.map)
                 .callout(placement: $calloutPlacement) { _ in
                     if let selectedFeature {
                         RestaurantCalloutView(feature: selectedFeature, mapHeight: mapHeight)
                     }
                 }
                 .onSingleTapGesture { screenPoint, _ in
-                    guard !isLoading, !map.operationalLayers.isEmpty else { return }
+                    guard !model.isLoading, !model.map.operationalLayers.isEmpty else { return }
                     model.restaurantsLayer.clearSelection()
                     selectedFeature = nil
                     calloutPlacement = nil
@@ -112,15 +98,8 @@ struct UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView: View {
                     }
                 }
                 .task {
-                    isLoading = true
-                    defer { isLoading = false }
                     do {
                         try await model.load()
-                        try Task.checkCancellation()
-                        // Display only the configured layer, and don't add it twice.
-                        if map.operationalLayers.isEmpty {
-                            map.addOperationalLayer(model.restaurantsLayer)
-                        }
                     } catch {
                         if !Task.isCancelled {
                             self.error = error
@@ -131,7 +110,7 @@ struct UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView: View {
                     model.applySystemTextScale(newValue)
                 }
                 .overlay {
-                    if isLoading {
+                    if model.isLoading {
                         ProgressView("Loading restaurants…")
                             .padding()
                             .background(.regularMaterial)

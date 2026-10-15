@@ -12,45 +12,46 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import ArcGIS
 import SwiftUI
-import ArcGiS
+
 
 extension UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView {
     /// Content-sized controls, with a scrolling legend above the pinned toggle.
     struct ScalingControlsView: View {
         /// The shared scaling settings edited by the toggle.
         @Bindable var model: Model
-
+        
         /// An operational error presented by the sample.
         @Binding var error: (any Error)?
-
+        
         /// The legend's content height before any scrolling is needed.
         @State private var scalingStatusHeight: CGFloat?
-
+        
         var body: some View {
             VStack(alignment: .leading) {
-                ScrollView {
-                    ScalingStatusView(model: model, error: $error)
-                        .fixedSize(horizontal: false, vertical: true)
-                        .onGeometryChange(for: CGFloat.self) { geometry in
-                            geometry.size.height
-                        } action: { height in
-                            scalingStatusHeight = height
-                        }
+                ViewThatFits(in: .vertical) {
+                    ScrollView {
+                        ScalingStatusView(model: model, error: $error)
+                            .fixedSize(horizontal: false, vertical: true)
+                            .onGeometryChange(for: CGFloat.self) { geometry in
+                                geometry.size.height
+                            } action: { height in
+                                scalingStatusHeight = height
+                            }
+                    }
                 }
-                .frame(maxHeight: scalingStatusHeight)
                 Toggle("Scale Labels", isOn: $model.labelsUseSystemTextScale)
                     .toggleStyle(.switch)
                     .accessibilityHint(
-                        """
-                        Apply system text size to restaurant labels. \
-                        Symbols always follow the system text size.
-                        """
+                                       """
+                                       Apply system text size to restaurant labels. \
+                                       Symbols always follow the system text size.
+                                       """
                     )
                     .fixedSize(horizontal: false, vertical: true)
                     .layoutPriority(1)
             }
-            .frame(maxWidth: .infinity, alignment: .leading)
             .padding()
             .background(.regularMaterial)
         }

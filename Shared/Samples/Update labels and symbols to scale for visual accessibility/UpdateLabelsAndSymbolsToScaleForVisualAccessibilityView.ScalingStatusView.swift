@@ -20,22 +20,22 @@ extension UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView {
     struct ScalingStatusView: View {
         /// The shared scaling settings and restaurant symbol.
         let model: Model
-
+        
         /// An operational error presented by the sample.
         @Binding var error: (any Error)?
-
+        
         /// A legend swatch matching the restaurant symbol's current size.
         @State private var markerSwatch: UIImage?
-
+        
         /// The display scale used to render the legend swatch.
         @Environment(\.displayScale) private var displayScale
-
+        
         var body: some View {
             let scaleFormat = FloatingPointFormatStyle<CGFloat>.Percent()
                 .precision(.fractionLength(0))
             let markerFormat = FloatingPointFormatStyle<CGFloat>()
                 .precision(.fractionLength(0...1))
-
+            
             VStack(alignment: .leading) {
                 Text(
                     """
@@ -49,7 +49,7 @@ extension UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView {
                         ? "Labels: Dynamic Type" : "Labels: fixed size"
                     )
                 } icon: {
-                    Text("Aa")
+                    Image(systemName: "textformat")
                         .bold()
                         .accessibilityHidden(true)
                 }
@@ -84,10 +84,9 @@ extension UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView {
                     }
                 }
             }
-            .font(.body)
             .frame(maxWidth: .infinity, alignment: .leading)
         }
-
+        
         /// Creates a swatch at the current size without changing the map symbol.
         private func updateMarkerSwatch(for symbol: MultilayerPointSymbol) async {
             do {

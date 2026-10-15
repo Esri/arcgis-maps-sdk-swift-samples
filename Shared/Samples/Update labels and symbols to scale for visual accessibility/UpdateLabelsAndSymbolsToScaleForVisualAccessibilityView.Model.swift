@@ -22,6 +22,20 @@ extension UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView {
     @MainActor
     @Observable
     final class Model {
+        /// A map displaying restaurants in Redlands, California.
+        let map: Map = {
+            let map = Map(basemapStyle: .arcGISLightGray)
+            map.initialViewpoint = Viewpoint(
+                latitude: 34.0556,
+                longitude: -117.1793,
+                scale: 2_500
+            )
+            return map
+        }()
+        
+        /// A Boolean value indicating whether the restaurant layer and symbols are loading.
+        private(set) var isLoading = true
+        
         /// The marker size in points at the default system text size.
         static let baseMarkerSize: CGFloat = 24
         
@@ -91,24 +105,32 @@ extension UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView {
         
         /// Loads the layer and applies the restaurant symbol before displaying it.
         func load() async throws {
+            isLoading = true
+            defer { isLoading = false }
             try await restaurantsLayer.load()
             try Task.checkCancellation()
             // Keep the existing renderer and symbol when the view reappears.
-            guard markerSymbol == nil else { return }
-            try await restaurantSymbolStyle.load()
-            try Task.checkCancellation()
-            guard let symbol = try await restaurantSymbolStyle.symbol(forKeys: ["restaurant"])
-                as? MultilayerPointSymbol else {
-                throw RestaurantSymbolError()
+            if markerSymbol == nil {
+                try await restaurantSymbolStyle.load()
+                try Task.checkCancellation()
+                guard let symbol = try await restaurantSymbolStyle.symbol(forKeys: ["restaurant"])
+                        as? MultilayerPointSymbol else {
+                    throw RestaurantSymbolError()
+                }
+                try Task.checkCancellation()
+                // Read the latest scale after loading, not the scale at task startup.
+                // There is no suspension between sizing and installing the symbol.
+                symbol.size = Double(markerSize)
+                restaurantsLayer.renderer = SimpleRenderer(symbol: symbol)
+                markerSymbol = symbol
             }
             try Task.checkCancellation()
-            // Read the latest scale after loading, not the scale at task startup.
-            // There is no suspension between sizing and installing the symbol.
-            symbol.size = Double(markerSize)
-            restaurantsLayer.renderer = SimpleRenderer(symbol: symbol)
-            markerSymbol = symbol
+            // Display only the configured layer, and don't add it twice.
+            if map.operationalLayers.isEmpty {
+                map.addOperationalLayer(restaurantsLayer)
+            }
         }
-
+        
         /// Applies Dynamic Type scaling independently to symbols and labels.
         /// - Parameter scale: A multiplier relative to the default Body text
         ///   size, where `1` represents the default size.
@@ -129,9 +151,13 @@ extension UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView {
             // Scale the halo with the text so it stays legible at large sizes.
             labelSymbol.haloWidth = Self.baseLabelHaloWidth * labelScale
         }
-
+        
         /// An unexpected symbol type returned by the web style.
-        struct RestaurantSymbolError: Error {}
+        struct RestaurantSymbolError: Error {
+            var errorDescription: String? {
+                "The web style did not return a restaurant point symbol."
+            }
+        }
     }
 }
 
