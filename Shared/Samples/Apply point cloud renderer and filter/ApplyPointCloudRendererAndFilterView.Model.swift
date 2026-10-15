@@ -127,9 +127,7 @@ extension ApplyPointCloudRendererAndFilterView {
         
         /// Adds the classification filter on first use, then updates it.
         private func updateClassificationFilter() {
-            let values = selectedClassifications
-                .map { Double($0.rawValue) }
-                .sorted()
+            let values = selectedClassifications.map { Double($0.rawValue) }
             // Update the layer's existing classification filter when present,
             // or add one on first use. Other filters remain unchanged.
             if let filter = pointCloudLayer.filters.first(where: {
