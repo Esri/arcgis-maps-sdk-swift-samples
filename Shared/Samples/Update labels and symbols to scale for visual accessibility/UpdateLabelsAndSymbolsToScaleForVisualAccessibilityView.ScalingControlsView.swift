@@ -13,6 +13,7 @@
 // limitations under the License.
 
 import SwiftUI
+import ArcGiS
 
 extension UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView {
     /// Content-sized controls, with a scrolling legend above the pinned toggle.
