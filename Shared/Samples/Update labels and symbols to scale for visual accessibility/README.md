@@ -26,16 +26,7 @@ Turn off **Scale Labels** below the map to restore labels to their base size. Sy
 
 ## Relevant API
 
-* ArcadeLabelExpression
-* FeatureLayer
-* GeometryEngine
-* LabelDefinition
-* MapViewProxy
-* MultilayerPointSymbol
-* SimpleRenderer
-* Symbol
-* SymbolStyle
-* TextSymbol
+* View.dynamicTypeSize(_:)
 
 ## About the data
 
@@ -45,23 +36,7 @@ The `restaurant` symbol is provided by Esri's [Esri2DPointSymbols web style](htt
 
 ## Additional information
 
-SwiftUI's `@ScaledMetric(relativeTo: .body)` and `onChange(of:initial:_:)` provide the text-size factor and change observation on iOS and Mac Catalyst. Windows `UISettings.TextScaleFactor` and `TextScaleFactorChanged` are not used. ArcGIS Maps SDK for Swift 300.1 does not expose WPF's `GeoView.UseSystemTextScale` API. This sample explicitly scales restaurant label text symbols instead; the toggle does not change basemap labels.
-
-Dynamic Type scaling depends on the text style. The displayed percentage is relative to the default Body text size, not a universal operating-system percentage. The label base size is 12 points and the marker base size is 24 points. Setting the multilayer symbol's size scales its component layers together, preserving the web style's appearance. Sizes are always recalculated from their base values to avoid cumulative scaling. The legend swatch stays at a fixed 14-point size; the adjacent calculation shows the map symbol's base size multiplied by the current scale and the resulting size in points, using localized number and percent formats.
-
-iOS does not provide a public destination for opening the Accessibility menu or Larger Text settings directly. The sample uses `AccessibilitySettings.openSettings(for:)`, available on iOS 18 and later, to open a supported page within Accessibility settings: `.assistiveTouchDevices` on iOS 26 and `.personalVoiceAllowAppsToRequestToUse` on iOS 18. Navigate back to Accessibility to reach the text-size settings; the sample does not use those features. An alert provides manual navigation instructions if opening settings fails. Mac Catalyst uses a URL to the Accessibility Display pane. SwiftUI observes text-size changes without a manual notification subscription.
-
-### Layout and behavior checks
-
-Instructions remain available through **Text Size Help** even after dismissing the tip. The floating tip and callout use content sizing rather than fixed or percentage-based dimensions. The tip is omitted when it cannot fit in full and is hidden in compact-height layouts and at accessibility text sizes. The legend uses a content-based maximum height and remains scrollable above the pinned toggle in those layouts. The sample includes a default Xcode preview. Recommended validation cases include portrait, short, narrow, and wide layouts, including the largest Dynamic Type size. Previews do not replace on-device checks:
-
-* Record the Xcode version, device or simulator model, OS version, window size or orientation, and Dynamic Type setting for each layout check.
-* On iPhone, test portrait and landscape at default and largest accessibility text sizes. Confirm the tip action is fully visible when shown, the toggle is usable, and callout content and help can be scrolled.
-* On iPad, repeat in narrow multitasking and full-screen windows. On Mac Catalyst, resize the window and verify pointer interaction and settings guidance.
-* Dismiss the tip and reopen help. Return from settings and verify that the displayed scale and symbols update when the system supplies a new text size. With **Scale Labels** off, labels should stay at their base size.
-* Select restaurants repeatedly, clear the selection, and rotate or resize with a callout open. Confirm the callout remains usable and stale identify results do not reappear.
-
-The project has no native visionOS target; the default preview does not establish behavior for an iPad-compatible app running on Apple Vision Pro.
+SwiftUI Dynamic Type scales restaurant symbols and, when **Scale Labels** is enabled, restaurant labels; basemap labels are unaffected. Sizes are recalculated from their base values to avoid cumulative scaling.
 
 ## Tags
 

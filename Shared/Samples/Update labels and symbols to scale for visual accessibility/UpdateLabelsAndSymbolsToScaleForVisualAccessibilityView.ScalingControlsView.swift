@@ -15,7 +15,6 @@
 import ArcGIS
 import SwiftUI
 
-
 extension UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView {
     /// Content-sized controls, with a scrolling legend above the pinned toggle.
     struct ScalingControlsView: View {
