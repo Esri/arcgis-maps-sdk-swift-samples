@@ -127,10 +127,14 @@ extension ApplyPointCloudRendererAndFilterView {
         
         /// Adds the classification filter on first use, then updates it.
         private func updateClassificationFilter() {
-            let values = selectedClassifications.map { Double($0.rawValue) }
+            let values = selectedClassifications
+                .map { Double($0.rawValue) }
+                .sorted()
             // Update the layer's existing classification filter when present,
             // or add one on first use. Other filters remain unchanged.
-            if let filter = pointCloudLayer.filters.lazy.compactMap({ $0 as? PointCloudValueFilter }).first {
+            if let filter = pointCloudLayer.filters.first(where: {
+                $0 is PointCloudValueFilter
+            }) as? PointCloudValueFilter {
                 filter.removeAllValues()
                 filter.addValues(values)
                 filter.mode = classificationMode
@@ -141,7 +145,6 @@ extension ApplyPointCloudRendererAndFilterView {
                     mode: classificationMode
                 ))
             }
-            
             classificationFilterIsActive = true
         }
         
@@ -157,7 +160,6 @@ extension ApplyPointCloudRendererAndFilterView {
             classificationFilterIsActive = false
         }
         
-        /// Updates the return filter, removing it when no return types are selected.
         func setReturnType(
             _ returnType: PointCloudReturnFilter.ReturnType,
             isSelected: Bool
@@ -172,9 +174,7 @@ extension ApplyPointCloudRendererAndFilterView {
                 clearReturnFilter()
             } else {
                 let includedReturns = ReturnOptions.types.filter(selectedReturns.contains)
-                if let filter = pointCloudLayer.filters.first(where: {
-                    $0 is PointCloudReturnFilter
-                }) as? PointCloudReturnFilter {
+                if let filter = pointCloudLayer.filters.lazy.compactMap({ $0 as? PointCloudReturnFilter }).first {
                     filter.removeAllIncludedReturns()
                     filter.addIncludedReturns(includedReturns)
                 } else {
@@ -183,8 +183,10 @@ extension ApplyPointCloudRendererAndFilterView {
                         includedReturns: includedReturns
                     ))
                 }
+                
             }
         }
+        
         
         /// Removes only the return filter and resets its selections.
         func clearReturnFilter() {
@@ -218,8 +220,6 @@ extension ApplyPointCloudRendererAndFilterView {
                     )
                     pointCloudLayer.addFilter(filter)
                 }
-                filter.removeAllRequiredClearBits()
-                filter.removeAllRequiredSetBits()
                 // The collections contain zero-based bit positions, not bit masks.
                 if scanDirection == .set {
                     filter.addRequiredSetBit(6)
