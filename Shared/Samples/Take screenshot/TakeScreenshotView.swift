@@ -20,6 +20,8 @@ struct TakeScreenshotView: View {
     @State private var currentDrawStatus: DrawStatus = .inProgress
     /// The screenshot to export.
     @State private var screenshot: Screenshot?
+    /// The error thrown while exporting a screenshot of the map, or `nil` if no error occurred.
+    @State private var screenshotExportError: (any Error)?
     /// The map with an imagery basemap centered on Hawaii.
     @State private var map: Map = {
         let map = Map(basemapStyle: .arcGISImageryStandard)
@@ -48,13 +50,17 @@ struct TakeScreenshotView: View {
                     ToolbarItem(placement: .bottomBar) {
                         Button {
                             Task {
-                                // The map view proxy is used to export a
-                                // screenshot of the map view.
-                                let image = try await mapViewProxy.exportImage()
-                                screenshot = Screenshot(
-                                    image: Image(uiImage: image),
-                                    caption: "A screenshot of the map."
-                                )
+                                do {
+                                    // The map view proxy is used to export a
+                                    // screenshot of the map view.
+                                    let image = try await mapViewProxy.exportImage()
+                                    screenshot = Screenshot(
+                                        image: Image(uiImage: image),
+                                        caption: "A screenshot of the map."
+                                    )
+                                } catch {
+                                    screenshotExportError = error
+                                }
                             }
                         } label: {
                             if currentDrawStatus != .completed {
@@ -67,6 +73,7 @@ struct TakeScreenshotView: View {
                     }
                 }
         }
+        .errorAlert(presentingError: $screenshotExportError)
     }
 }
 
@@ -92,7 +99,7 @@ private extension TakeScreenshotView {
         var body: some View {
             screenshot.image
                 .resizable()
-                .aspectRatio(contentMode: .fit)
+                .scaledToFit()
                 .toolbar {
                     ToolbarItem(placement: .confirmationAction) {
                         Button("Done") {

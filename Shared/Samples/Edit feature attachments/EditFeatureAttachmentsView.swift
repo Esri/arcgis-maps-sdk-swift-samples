@@ -179,11 +179,11 @@ private extension EditFeatureAttachmentsView {
                 Spacer()
                 Button {
                     Task {
-                        let result = try await attachment.data
-                        if let uiImage = UIImage(data: result) {
-                            image = Image(uiImage: uiImage)
+                        let result = try? await attachment.data
+                        image = if let result, let uiImage = UIImage(data: result) {
+                            Image(uiImage: uiImage)
                         } else {
-                            image = warningImage
+                            warningImage
                         }
                     }
                 } label: {

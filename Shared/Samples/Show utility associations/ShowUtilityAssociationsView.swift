@@ -31,6 +31,10 @@ struct ShowUtilityAssociationsView: View {
     /// An image that represents a connectivity symbol.
     @State private var connectivityImage: UIImage?
     
+    /// The error thrown while loading the map, utility network, or association graphics,
+    /// or `nil` if no error occurred.
+    @State private var associationLoadError: (any Error)?
+    
     /// The display scale of this environment.
     @Environment(\.displayScale) private var displayScale
     
@@ -42,16 +46,33 @@ struct ShowUtilityAssociationsView: View {
         )
         .onScaleChanged {
             scale = $0
-            Task { try await model.addAssociationGraphics(viewpoint: viewpoint, scale: scale) }
+            Task {
+                do {
+                    try await model.addAssociationGraphics(viewpoint: viewpoint, scale: scale)
+                } catch {
+                    associationLoadError = error
+                }
+            }
         }
         .onViewpointChanged(kind: .boundingGeometry) {
             viewpoint = $0
-            Task { try await model.addAssociationGraphics(viewpoint: viewpoint, scale: scale) }
+            Task {
+                do {
+                    try await model.addAssociationGraphics(viewpoint: viewpoint, scale: scale)
+                } catch {
+                    associationLoadError = error
+                }
+            }
         }
         .task {
-            try? await model.setup()
-            try? await model.addAssociationGraphics(viewpoint: viewpoint, scale: scale)
+            do {
+                try await model.setup()
+                try await model.addAssociationGraphics(viewpoint: viewpoint, scale: scale)
+            } catch {
+                associationLoadError = error
+            }
         }
+        .errorAlert(presentingError: $associationLoadError)
         .overlay(alignment: .topLeading) {
             legend
                 .padding()
