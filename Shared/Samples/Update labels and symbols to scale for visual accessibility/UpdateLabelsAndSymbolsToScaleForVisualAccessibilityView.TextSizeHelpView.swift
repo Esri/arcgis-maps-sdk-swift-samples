@@ -36,21 +36,10 @@ extension UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView {
 
         var body: some View {
             // Keep the help presentation available even when the inline tip is hidden.
-            VStack(spacing: 0) {
-                if verticalSizeClass != .compact
-                    && !dynamicTypeSize.isAccessibilitySize {
-                    ViewThatFits(in: .vertical) {
-                        TipView(TextSizeTip()) { _ in
-                            openAccessibilitySettings()
-                        }
-                        .fixedSize(horizontal: false, vertical: true)
-                        .padding()
-                        // Help remains available if the tip cannot fit.
-                        Color.clear
-                            .allowsHitTesting(false)
-                    }
-                }
+            TipView(TextSizeTip()) { _ in
+                openAccessibilitySettings()
             }
+            .padding()
             .onAppear {
                 // Configure tips on a best-effort basis, ignoring failures
                 // such as tips already being configured for this process.
