@@ -68,7 +68,7 @@ struct FilterMosaicDatasetRasterByTimeExtentView: View {
                     do {
                         isLoading = true
                         defer { isLoading = false }
-                        try await loadRaster(mapViewProxy: mapViewProxy)
+                        try await loadRaster(mapViewProxy: mapView)
                     } catch {
                         loadError = error
                     }
@@ -82,7 +82,6 @@ struct FilterMosaicDatasetRasterByTimeExtentView: View {
             Button("First timestamp", systemImage: "chevron.backward.to.line") {
                 selectFirstTimestamp()
             }
-            .labelStyle(.iconOnly)
             .disabled(timestamps.isEmpty || selectedIndex <= 0)
             
             Divider()
@@ -90,7 +89,6 @@ struct FilterMosaicDatasetRasterByTimeExtentView: View {
             Button("Previous timestamp", systemImage: "chevron.left") {
                 selectTimestamp(at: selectedIndex - 1)
             }
-            .labelStyle(.iconOnly)
             .disabled(timestamps.isEmpty || selectedIndex <= 0)
             
             Divider()
@@ -115,7 +113,6 @@ struct FilterMosaicDatasetRasterByTimeExtentView: View {
             Button("Next timestamp", systemImage: "chevron.right") {
                 selectTimestamp(at: selectedIndex + 1)
             }
-            .labelStyle(.iconOnly)
             .disabled(timestamps.isEmpty || selectedIndex >= timestamps.count - 1)
             
             Divider()
@@ -123,7 +120,6 @@ struct FilterMosaicDatasetRasterByTimeExtentView: View {
             Button("Last timestamp", systemImage: "chevron.forward.to.line") {
                 selectLastTimestamp()
             }
-            .labelStyle(.iconOnly)
             .disabled(timestamps.isEmpty || selectedIndex >= timestamps.count - 1)
             
             Divider()
@@ -131,9 +127,9 @@ struct FilterMosaicDatasetRasterByTimeExtentView: View {
             Button("Adjust opacity", systemImage: "slider.horizontal.below.rectangle") {
                 withAnimation { isShowingOpacityControls.toggle() }
             }
-            .labelStyle(.iconOnly)
             .disabled(rasterLayer == nil)
         }
+        .labelStyle(.iconOnly)
     }
     
     /// Sets the time extent to the timestamp at the specified index.
