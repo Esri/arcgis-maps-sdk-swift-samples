@@ -17,7 +17,11 @@ import Combine
 import UIKit
 
 extension ValidateUtilityNetworkTopologyView {
-    /// The view model for the sample.
+    /// Manages the edit, validate, and trace cycle for a branch-versioned utility network.
+    ///
+    /// The model loads the sample web map, creates an isolated service version,
+    /// exposes the current network state to the UI, and coordinates the edits
+    /// required to produce dirty areas before validating network topology.
     @MainActor
     class Model: ObservableObject {
         // MARK: Properties
@@ -67,7 +71,11 @@ extension ValidateUtilityNetworkTopologyView {
         
         // MARK: Methods
         
-        /// Gets the current state of the utility network and updates the status with the results.
+        /// Reads the current utility network state and derives the UI's enabled actions.
+        ///
+        /// This is the main status refresh entry point after edits or validation
+        /// because it determines whether tracing is currently allowed and whether
+        /// the network still contains dirty areas or errors.
         func getState() async throws {
             statusMessage = "Getting utility network state…"
             
@@ -268,7 +276,11 @@ extension ValidateUtilityNetworkTopologyView {
             addLabels(to: .lineTableName, for: .nominalVoltageField, color: .red)
         }
         
-        /// Loads the utility network and switches to a new version on the service.
+        /// Loads the utility network and switches the backing geodatabase to a new private version.
+        ///
+        /// The sample performs edits against a fresh branch version so topology
+        /// changes stay isolated from the default version while still exercising
+        /// the full validate-and-trace workflow.
         private func setupUtilityNetwork() async throws {
             statusMessage = "Loading utility network…"
             

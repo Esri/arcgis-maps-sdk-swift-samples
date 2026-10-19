@@ -16,7 +16,11 @@ import ArcGIS
 import UIKit.UIColor
 
 extension TraceUtilityNetworkView {
-    /// The model used to manage the state of the trace view.
+    /// Coordinates the interactive utility trace workflow for the sample.
+    ///
+    /// The model owns the loaded utility network, tracks whether the user is
+    /// adding start locations or barriers, and translates map taps into
+    /// `UtilityElement` inputs that can be passed into a trace.
     @MainActor
     class Model: ObservableObject {
         // MARK: Properties
@@ -124,11 +128,12 @@ extension TraceUtilityNetworkView {
             lastAddedElement = element
         }
         
-        /// Adds a provided feature to the pending trace.
+        /// Converts an identified feature into a trace input and updates map state.
         ///
-        /// For junction features with more than one terminal, the user should be prompted to pick a
-        /// terminal. For edge features, the fractional point along the feature's edge should be
-        /// computed.
+        /// Junction features are added at their feature geometry and may require
+        /// terminal disambiguation. Edge features are converted into trace
+        /// elements by computing the fractional distance along the line nearest
+        /// the tap location.
         /// - Parameters:
         ///   - feature: The feature to be added to the pending trace.
         ///   - mapPoint: The location on the map where the feature was discovered. If the feature is a
@@ -203,11 +208,10 @@ extension TraceUtilityNetworkView {
             }
         }
         
-        /// Runs a trace with the pending trace configuration and selects features in the map that
-        /// correspond to the element results.
+        /// Executes the pending trace and selects the returned features in the map.
         ///
-        /// - Note: Elements are grouped by network source prior to selection so that all selections
-        /// per operational layer can be made at once.
+        /// Trace results are grouped by network source before selection so each
+        /// feature layer can fetch and highlight its result set in a single pass.
         func trace() async throws {
             guard let pendingTraceParameters = pendingTraceParameters else { return }
             let traceResults = try await network

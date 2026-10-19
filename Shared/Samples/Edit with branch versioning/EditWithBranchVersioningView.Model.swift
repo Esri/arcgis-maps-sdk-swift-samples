@@ -16,7 +16,12 @@ import ArcGIS
 import Foundation
 
 extension EditWithBranchVersioningView {
-    /// The view model for the sample.
+    /// Demonstrates version-aware editing against a branch-versioned feature service.
+    ///
+    /// The model loads the service geodatabase, tracks the default and
+    /// user-created versions visible to the sample, and coordinates switching,
+    /// selection, and update behavior so each version transition leaves the local
+    /// edit state in a predictable condition.
     @MainActor
     final class Model: ObservableObject {
         /// The names of the versions added by the user.
@@ -79,7 +84,11 @@ extension EditWithBranchVersioningView {
             return versionInfo.name
         }
         
-        /// Switches the geodatabase version to a version with a given name.
+        /// Switches the service geodatabase to a different branch-versioning context.
+        ///
+        /// The sample explicitly discards local edits on default and applies them
+        /// on user-created versions so the transition behavior matches the edit
+        /// policy demonstrated in the UI.
         /// - Parameter versionName: The name of the version to connect to.
         func switchToVersion(named versionName: String) async throws {
             if onDefaultVersion {

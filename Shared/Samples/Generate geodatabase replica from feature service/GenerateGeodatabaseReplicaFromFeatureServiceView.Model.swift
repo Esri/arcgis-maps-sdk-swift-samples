@@ -16,7 +16,12 @@ import ArcGIS
 import Foundation
 
 extension GenerateGeodatabaseReplicaFromFeatureServiceView {
-    /// The view model for the sample.
+    /// Generates a local replica from a sync-enabled feature service and swaps the map over to it.
+    ///
+    /// The sample first shows service-backed layers, then creates a local
+    /// geodatabase for a chosen extent, replaces the operational layers with the
+    /// replica tables, and unregisters the replica because the workflow is meant
+    /// for local viewing rather than edit-and-sync.
     @MainActor
     @Observable
     final class Model {
@@ -64,7 +69,11 @@ extension GenerateGeodatabaseReplicaFromFeatureServiceView {
             map.addOperationalLayers(featureLayers)
         }
         
-        /// Generates a geodatabase from the feature service.
+        /// Creates the local replica, loads it, and replaces the online layers with replica layers.
+        ///
+        /// Once the tables are swapped into the map, the replica is unregistered
+        /// because this sample is intentionally demonstrating one-way generation
+        /// instead of a persistent sync relationship.
         /// - Parameter extent: The extent of the data to be included in the generated geodatabase.
         func generateGeodatabase(extent: Envelope) async throws {
             // Creates the parameters for generating the geodatabase.

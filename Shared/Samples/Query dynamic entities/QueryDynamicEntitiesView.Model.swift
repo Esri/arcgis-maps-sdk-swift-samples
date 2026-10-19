@@ -16,7 +16,11 @@ import ArcGIS
 import Foundation
 
 extension QueryDynamicEntitiesView {
-    /// The view model for this sample.
+    /// Manages the dynamic entity query experience for the sample air-traffic feed.
+    ///
+    /// The model owns the custom dynamic entity data source, configures the map
+    /// layer used to render aircraft observations, and exposes query entry points
+    /// for geometry, attribute, and track-ID driven selection.
     @MainActor
     @Observable
     final class Model {
@@ -109,7 +113,11 @@ extension QueryDynamicEntitiesView {
             }
         }
         
-        /// Queries the dynamic entities on the data source.
+        /// Runs one of the sample's supported dynamic entity queries and updates the display.
+        ///
+        /// The method delegates to a query-specific helper, reveals the airport
+        /// buffer only for geometry queries, and selects the returned entities on
+        /// the dynamic entity layer when the query succeeds.
         /// - Parameter type: The type of query to perform.
         /// - Returns: The result of the query operation.
         func queryDynamicEntities(type: QueryType) async -> Result<[DynamicEntity], any Error> {
@@ -139,7 +147,11 @@ extension QueryDynamicEntitiesView {
             graphicsOverlay.isVisible = false
         }
         
-        /// Sets up the dynamic entity layer's properties and adds it to the map.
+        /// Configures how live aircraft observations are rendered, labeled, and tracked on the map.
+        ///
+        /// This setup enables track lines and recent observations so query results
+        /// are easier to interpret in the context of current and historical plane
+        /// positions.
         private func setUpDynamicEntityLayer() {
             // Sets display tracking properties on the layer.
             let trackDisplayProperties = dynamicEntityLayer.trackDisplayProperties

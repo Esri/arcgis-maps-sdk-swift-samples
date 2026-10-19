@@ -19,7 +19,11 @@ import UniformTypeIdentifiers
 extension CreateMobileGeodatabaseView {
     // MARK: Model
     
-    /// The model used to store the geo model and other expensive objects used in the view.
+    /// Creates and populates a mobile geodatabase that can be exported from the sample.
+    ///
+    /// The model owns the temporary geodatabase file, defines the schema for the
+    /// location history table, adds new point features with timestamps, and keeps
+    /// the map and exported file in sync with the current local data.
     @MainActor
     class Model: ObservableObject {
         /// A map with a topographic basemap centered on Harpers Ferry, WV, USA.
@@ -58,7 +62,7 @@ extension CreateMobileGeodatabaseView {
         /// The list of features in the feature table.
         @Published private(set) var features: [FeatureItem] = []
         
-        /// Creates a new feature table from a geodatabase.
+        /// Creates the empty mobile geodatabase, adds its table, and exposes it as a layer.
         func createFeatureTable() async throws {
             // Create a new geodatabase.
             try await geodatabaseFile.createGeodatabase()
@@ -95,7 +99,11 @@ extension CreateMobileGeodatabaseView {
             }
         }
         
-        /// Removes all the existing features from the map.
+        /// Deletes the current mobile geodatabase and clears the map-backed state.
+        ///
+        /// Reset removes both the persisted file contents and the in-memory list of
+        /// captured features so the sample can start over with a brand new
+        /// geodatabase export.
         func resetFeatures() throws {
             // Delete the geodatabase.
             try geodatabaseFile.deleteGeodatabase()

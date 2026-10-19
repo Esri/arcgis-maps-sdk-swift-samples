@@ -17,7 +17,11 @@ import Combine
 import UIKit
 
 extension FindRouteInTransportNetworkView {
-    /// The view model for the sample.
+    /// Builds a route incrementally through a local transport network dataset.
+    ///
+    /// Each new stop extends or replaces the last solved segment, while the model
+    /// keeps separate overlays for stops and route graphics and accumulates the
+    /// combined time and distance shown in the UI.
     @MainActor
     class Model: ObservableObject {
         // MARK: Properties
@@ -89,7 +93,10 @@ extension FindRouteInTransportNetworkView {
             addRoute(replacingLast: replacingLast)
         }
         
-        /// Creates a route using the route parameters and adds a graphic for the route to the map.
+        /// Solves the current segment and merges its result into the displayed route totals.
+        ///
+        /// The sample solves one segment at a time from the active stop subset
+        /// rather than recomputing one large multi-stop result for every tap.
         /// - Parameter replacingLast: A Boolean value indicating whether to replace the last route with the new one.
         func addRoute(replacingLast: Bool = false) {
             Task { [weak self] in
@@ -178,7 +185,11 @@ extension FindRouteInTransportNetworkView {
             stopGraphicsOverlay.addGraphic(stopGraphic)
         }
         
-        /// Updates the route parameters stops using graphics in the stop graphics overlay.
+        /// Rebuilds the active stop list from a range of stop graphics.
+        ///
+        /// This helper is used both when extending the route and when replacing
+        /// the last stop so the underlying route parameters always describe the
+        /// exact segment that will be solved next.
         /// - Parameter indices: A range of indices corresponding to the graphics to create the stops from.
         private func updateRouteParametersStops(using indices: Range<Int>) {
             guard indices.lowerBound >= 0 && indices.upperBound <= stopGraphicsCount else { return }

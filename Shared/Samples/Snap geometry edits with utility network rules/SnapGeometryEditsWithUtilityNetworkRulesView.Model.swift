@@ -17,7 +17,11 @@ import Combine
 import Foundation
 
 extension SnapGeometryEditsWithUtilityNetworkRulesView {
-    /// The view model for the sample.
+    /// Drives the snapping workflow for geometry edits constrained by utility network rules.
+    ///
+    /// The model loads the local utility network data, derives valid snap sources
+    /// from network connectivity rules, and keeps the geometry editor and layer
+    /// rendering in sync with the currently selected feature.
     @MainActor
     final class Model: ObservableObject {
         // MARK: Properties
@@ -203,7 +207,10 @@ extension SnapGeometryEditsWithUtilityNetworkRulesView {
             geometryEditor.start(withInitial: geometry)
         }
         
-        /// Sets up the snap source settings.
+        /// Builds snap source settings from utility network rules for the selected asset type.
+        ///
+        /// The resulting settings mirror the rule analysis so the editor only
+        /// offers snap targets that would produce valid utility network edits.
         /// - Parameter assetType: The utility asset type for selected feature.
         private func setUpSnapSourcesSettings(using assetType: UtilityAssetType) async throws {
             // Analyzes the utility network to get the snap rules for the asset type.
@@ -228,7 +235,11 @@ extension SnapGeometryEditsWithUtilityNetworkRulesView {
             }
         }
         
-        /// Recursively filters a list of snap source settings.
+        /// Recursively reduces the full snap source tree to the sources highlighted by this sample.
+        ///
+        /// The geometry editor may surface many sources after rule analysis. This
+        /// helper keeps only the relevant graphics and subtype layers so the UI
+        /// and custom symbology stay focused on the example workflow.
         /// - Parameter settings: The list of snap source settings to filter.
         /// - Returns: The snap sources settings used by this sample.
         private func filterSnapSourceSettings(

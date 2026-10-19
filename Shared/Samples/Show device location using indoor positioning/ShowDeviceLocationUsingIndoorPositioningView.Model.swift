@@ -17,6 +17,12 @@ import Combine
 import Foundation
 
 extension ShowDeviceLocationUsingIndoorPositioningView {
+    /// Drives indoor positioning setup and maps live indoor updates into view state.
+    ///
+    /// The model loads an IPS-aware, floor-aware web map, installs an
+    /// `IndoorsLocationDataSource` from the map's positioning definition, and
+    /// keeps the displayed floor, signal source metadata, and accuracy labels in
+    /// sync with the incoming indoor locations.
     @MainActor
     class Model: ObservableObject {
         /// An IPS-aware and floor-aware web map for all three floors of
@@ -65,8 +71,11 @@ extension ShowDeviceLocationUsingIndoorPositioningView {
             try await setUpIndoorsLocationDataSource()
         }
         
-        /// Sets the indoors location data source on the location display
-        /// using the map's indoor positioning definition.
+        /// Replaces the default system data source with the map-defined indoor one.
+        ///
+        /// The indoor positioning definition contains the data needed to produce
+        /// indoor-aware locations, so loading it is the boundary between merely
+        /// opening the map and actually starting IPS tracking.
         private func setUpIndoorsLocationDataSource() async throws {
             if let indoorPositioningDefinition = map.indoorPositioningDefinition {
                 // Gets indoor positioning definition from the IPS-aware map
@@ -81,7 +90,11 @@ extension ShowDeviceLocationUsingIndoorPositioningView {
             try await locationDisplay.dataSource.start()
         }
         
-        /// Updates the location when the location data source is triggered.
+        /// Projects each indoor location update into floor visibility and status text.
+        ///
+        /// Additional source properties expose indoor-specific metadata such as the
+        /// current floor and signal source counts, which the sample surfaces
+        /// alongside the map display.
         func updateDisplayOnLocationChange() async {
             for await location in locationDisplay.dataSource.locations {
                 // The floor level from the location.

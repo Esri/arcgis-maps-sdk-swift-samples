@@ -14,6 +14,12 @@
 
 import SwiftUI
 
+/// Hosts a sample view inside the shared detail-shell UI used across the app.
+///
+/// This wrapper is responsible for deciding whether a sample can be shown
+/// immediately or must wait for on-demand resources, and for attaching the
+/// shared toolbar actions, info sheet, review tracking, and optional full-screen
+/// behavior around the sample's own body.
 struct SampleDetailView: View {
     /// The sample to display in the view.
     let sample: Sample
@@ -44,7 +50,10 @@ struct SampleDetailView: View {
 #endif
     }
     
-    /// The sample's view body.
+    /// The sample content wrapped with request-review lifecycle updates.
+    ///
+    /// The sample body itself is created lazily so the surrounding view can add
+    /// shared app-shell behavior without changing each sample implementation.
     private var sampleBody: some View {
         sample.makeBody()
             .onAppear {

@@ -17,7 +17,11 @@ import Combine
 import Foundation
 
 extension RunValveIsolationTraceView {
-    /// The view model for this sample.
+    /// Coordinates the valve isolation trace workflow for the gas utility sample.
+    ///
+    /// The model loads the utility network, seeds a fixed starting location,
+    /// lets the user add optional filter barriers or category filters, and then
+    /// applies the resulting trace configuration to the map's operational layers.
     @MainActor
     class Model: ObservableObject {
         /// A web map with a utility network used to run the isolation trace.
@@ -266,7 +270,11 @@ extension RunValveIsolationTraceView {
             resetEnabled = false
         }
         
-        /// Gets the utility tier's trace configuration and apply category comparison.
+        /// Creates the trace configuration used for the current isolation run.
+        ///
+        /// The configuration starts from the tier default and then layers on the
+        /// optional category filter and the caller's choice to include isolated
+        /// features in the trace output.
         private func makeTraceConfiguration(category: UtilityCategory?, includeIsolatedFeatures: Bool) -> UtilityTraceConfiguration {
             // Get a default trace configuration from a tier in the network.
             guard let configuration = utilityNetwork
@@ -291,7 +299,11 @@ extension RunValveIsolationTraceView {
             return configuration
         }
         
-        /// Adds a graphic at the tapped location for the filter barrier.
+        /// Adds a feature as a filter barrier and records any required terminal or edge metadata.
+        ///
+        /// Junction barriers may require terminal selection before they are fully
+        /// usable, while edge barriers compute `fractionAlongEdge` from the tap so
+        /// the trace uses the correct position on the network.
         /// - Parameters:
         ///   - feature: The geo element retrieved as a `Feature`.
         ///   - location: The `Point` used to identify utility elements in the utility network.

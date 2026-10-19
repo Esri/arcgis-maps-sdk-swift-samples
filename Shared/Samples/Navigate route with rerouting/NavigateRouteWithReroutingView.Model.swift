@@ -17,7 +17,11 @@ import AVFAudio
 import Combine
 
 extension NavigateRouteWithReroutingView {
-    /// The view model for the sample.
+    /// Manages route solving, simulated navigation, and automatic rerouting for the sample.
+    ///
+    /// The model prepares the solved route, wires a simulated location source to
+    /// a `RouteTracker`, keeps the route graphics current, and converts tracker
+    /// status changes into text and voice guidance for the UI.
     @MainActor
     class Model: ObservableObject {
         // MARK: Properties
@@ -162,7 +166,11 @@ extension NavigateRouteWithReroutingView {
             try await initializeNavigation()
         }
         
-        /// Updates the status message and route graphics using the progress from a given tracking status.
+        /// Updates the displayed route progress and status text from the latest tracker event.
+        ///
+        /// This method keeps the remaining and traversed route graphics in sync
+        /// with the snapped navigation position and derives user-facing distance,
+        /// time, and maneuver text from the tracker state.
         /// - Parameter status: The `TrackingStatus`.
         func updateProgress(using status: TrackingStatus) async {
             // Update the route graphics.
@@ -222,7 +230,11 @@ extension NavigateRouteWithReroutingView {
             speechSynthesizer.speak(utterance)
         }
         
-        /// Initializes the route tracker, location display, and route graphic.
+        /// Rebuilds the tracker-backed navigation state after setup or reset.
+        ///
+        /// Initialization recreates the route tracker, connects it to the route
+        /// tracker location data source, and resets the route graphics and
+        /// viewpoint so navigation can start from a clean state.
         private func initializeNavigation() async throws {
             // Make the route tracker.
             routeTracker = try await makeRouteTracker(

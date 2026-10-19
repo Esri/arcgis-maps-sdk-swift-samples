@@ -16,8 +16,11 @@ import ArcGIS
 import Foundation
 
 extension GenerateOfflineMapWithCustomParametersView {
-    /// The model used to store the geo model and other expensive objects
-    /// used in this view.
+    /// Owns the offline map generation workflow and its parameter customization points.
+    ///
+    /// The model loads the source web map, creates the default offline map
+    /// parameters and overrides, and exposes focused helpers that demonstrate
+    /// how individual basemap and operational-layer options affect the download.
     @MainActor
     class Model: ObservableObject {
         /// The offline map that is generated.
@@ -95,8 +98,11 @@ extension GenerateOfflineMapWithCustomParametersView {
             )
         }
         
-        /// Sets up the model by getting the generate offline map parameters and parameter
-        /// overrides.
+        /// Loads the default offline map parameters and the mutable overrides used by the sample.
+        ///
+        /// This method should be called after the user has defined an area of
+        /// interest because the returned parameter objects become the backing
+        /// state for all later customization helpers.
         func setUpParametersAndOverrides() async throws {
             guard let extent else { return }
             offlineMapParameters = try await makeGenerateOfflineMapParameters(areaOfInterest: extent)
@@ -166,9 +172,11 @@ extension GenerateOfflineMapWithCustomParametersView {
             }
         }
         
-        /// Sets the scale level range so that only the levels between the min and max inclusive,
-        /// are downloaded. Note that lower values are zoomed further out,
-        /// i.e. 0 has the least detail, but one tile covers the entire Earth.
+        /// Restricts the basemap export to an inclusive range of scale level IDs.
+        ///
+        /// Lower scale level IDs represent less detail, so this helper trims the
+        /// default level set to reduce package size while keeping only the levels
+        /// relevant to the sample's chosen area of interest.
         /// Parameters:
         /// - minScaleLevel: The minimum scale level to download for the basemap.
         /// - maxScaleLevel: The maximum scale level to download for the basemap.
@@ -222,8 +230,11 @@ extension GenerateOfflineMapWithCustomParametersView {
             return nil
         }
         
-        /// Filters the hydrants that will be shown in the map by flow rate. Only hydrants the have
-        /// a higher flow rate than the minimum flow rate will be shown.
+        /// Filters hydrant features in the generated geodatabase by minimum flow rate.
+        ///
+        /// The helper updates the generated layer options rather than the source
+        /// map itself, which makes it clear that the filter only affects offline
+        /// content included in the download package.
         /// - Parameter minHydrantFlowRate: The minimum flow rate for hydrants shown on the map.
         func filterHydrantFlowRate(to minHydrantFlowRate: Double) {
             for option in getGenerateGeodatabaseParametersLayerOptions(forLayerNamed: "Hydrant") {
