@@ -77,6 +77,7 @@ struct FilterMosaicDatasetRasterByTimeExtentView: View {
         }
     }
     
+    /// A view for stepping through the timestamps of the mosaic dataset raster.
     private var timestampStepper: some View {
         HStack {
             Button("First timestamp", systemImage: "chevron.backward.to.line") {
