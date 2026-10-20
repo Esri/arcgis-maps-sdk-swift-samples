@@ -68,7 +68,7 @@ struct FilterMosaicDatasetRasterByTimeExtentView: View {
                     do {
                         isLoading = true
                         defer { isLoading = false }
-                        try await loadRaster(mapViewProxy: mapView)
+                        try await loadRaster(mapView: mapView)
                     } catch {
                         loadError = error
                     }
@@ -155,8 +155,8 @@ struct FilterMosaicDatasetRasterByTimeExtentView: View {
     }
     
     /// Loads the mosaic dataset raster and adds it to the map.
-    /// - Parameter mapViewProxy: The map view.
-    private func loadRaster(mapViewProxy: MapViewProxy) async throws {
+    /// - Parameter mapView: The map view.
+    private func loadRaster(mapView: MapViewProxy) async throws {
         guard let databaseURL = Bundle.main.url(
             forResource: "el_toro",
             withExtension: "geodatabase",
@@ -179,7 +179,7 @@ struct FilterMosaicDatasetRasterByTimeExtentView: View {
         }
         
         if let fullExtent = layer.fullExtent {
-            await mapViewProxy.setViewpointGeometry(fullExtent, padding: 100)
+            await mapView.setViewpointGeometry(fullExtent, padding: 100)
         }
     }
 }
