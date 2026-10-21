@@ -1,0 +1,32 @@
+{
+    "category": "Accessibility",
+    "description": "Scale feature labels and symbols according to the system text-size setting.",
+    "ignore": false,
+    "images": [
+        "update-labels-and-symbols-to-scale-for-visual-accessibility.png"
+    ],
+    "keywords": [
+        "accessibility",
+        "label",
+        "readability",
+        "scale",
+        "symbol",
+        "text",
+        "visual impairment",
+        "View.dynamicTypeSize(_:)"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "View.dynamicTypeSize(_:)"
+    ],
+    "snippets": [
+        "UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView.swift",
+        "UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView.Model.swift",
+        "UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView.RestaurantCalloutView.swift",
+        "UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView.ScalingControlsView.swift",
+        "UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView.ScalingStatusView.swift",
+        "UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView.TextSizeHelpView.swift",
+        "UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView.Tips.swift"
+    ],
+    "title": "Update labels and symbols to scale for visual accessibility"
+}
