@@ -184,7 +184,7 @@ private extension ApplyPointCloudRendererAndFilterView {
                         """)
                 }
                 
-                Section("Scan Direction Filter") {
+                Section {
                     Picker("Flag Bit 6", selection: $model.scanDirection) {
                         ForEach(
                             ScanDirection.allCases,
@@ -193,6 +193,15 @@ private extension ApplyPointCloudRendererAndFilterView {
                             Text(LocalizedStringKey(direction.label))
                         }
                     }
+                } header: {
+                    Text("Scan Direction Filter")
+                } footer: {
+                    Text("""
+                        Scan direction records the lidar scanner's sweep \
+                        direction when a point was captured. Required Set \
+                        selects flag bit 6 = 1; Required Clear selects 0. Any \
+                        removes this filter. Other filters still apply.
+                        """)
                 }
             }
             .navigationTitle("Settings")
