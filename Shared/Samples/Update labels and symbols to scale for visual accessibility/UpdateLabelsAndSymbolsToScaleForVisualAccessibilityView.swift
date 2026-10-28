@@ -24,11 +24,20 @@ struct UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView: View {
     /// creating its swatch, or opening settings.
     @State private var error: (any Error)?
     
-    /// The map height available above the bottom controls.
-    @State private var mapHeight: CGFloat = 0
+    /// A Boolean value indicating whether the text-size instructions are presented.
+    @State private var isShowingTextSizeHelp = false
+    
+    /// A Boolean value indicating whether the scaling controls are presented.
+    @State private var isShowingScalingControls = false
+    
+    /// The available map height for sizing the callout.
+    @State private var mapHeight: Double = 0
     
     /// The screen point to perform an identify operation.
     @State private var identifyScreenPoint: CGPoint?
+    
+    /// A unique identifier for each identify operation.
+    @State private var identifyRequestID: UUID?
     
     /// The selected restaurant whose details are shown in the callout, if any.
     @State private var selectedFeature: Feature?
@@ -37,18 +46,55 @@ struct UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView: View {
     @State private var calloutPlacement: CalloutPlacement?
     
     /// A scale factor relative to the default body text size.
-    @ScaledMetric(relativeTo: .body) private var systemTextScale: CGFloat = 1
+    @ScaledMetric(relativeTo: .body) private var systemTextScale: Double = 1
+    
+    /// The system text size, independent of the map's label-scaling override.
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     
     var body: some View {
-        VStack(spacing: 0) {
-            mapContent
-                .onGeometryChange(for: CGFloat.self) { geometry in
-                    geometry.size.height
-                } action: { height in
-                    mapHeight = height
+        mapContent
+            .onGeometryChange(for: Double.self) { geometry in
+                Double(geometry.size.height)
+            } action: { height in
+                mapHeight = height
+            }
+            .toolbar {
+                ToolbarItem(placement: .primaryAction) {
+                    Button {
+                        isShowingTextSizeHelp = true
+                    } label: {
+                        Label("Text Size Help", systemImage: "textformat.size")
+                    }
+                    .sheet(isPresented: $isShowingTextSizeHelp) {
+                        TextSizeHelpView(error: $error)
+                    }
                 }
-            ScalingControlsView(model: model, error: $error)
-        }
+                ToolbarItemGroup(placement: .bottomBar) {
+                    Button("Scaling Controls") {
+                        isShowingScalingControls = true
+                    }
+                    .sheet(isPresented: $isShowingScalingControls) {
+                        NavigationStack {
+                            ScalingControlsView(model: model, error: $error)
+                                .navigationTitle("Scaling Controls")
+                                .navigationBarTitleDisplayMode(.inline)
+                                .toolbar {
+                                    ToolbarItem(placement: .confirmationAction) {
+                                        Button("Done") {
+                                            isShowingScalingControls = false
+                                        }
+                                    }
+                                }
+                                .errorAlert(presentingError: $error)
+                        }
+                        .presentationDetents([.medium, .large])
+                    }
+                }
+            }
+            .errorAlert(presentingError: Binding(
+                get: { isShowingTextSizeHelp || isShowingScalingControls ? nil : error },
+                set: { error = $0 }
+            ))
     }
     
     /// The map and its loading and selection interactions.
@@ -58,6 +104,7 @@ struct UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView: View {
                 .callout(placement: $calloutPlacement) { _ in
                     if let selectedFeature {
                         RestaurantCalloutView(feature: selectedFeature, mapHeight: mapHeight)
+                            .dynamicTypeSize(dynamicTypeSize)
                     }
                 }
                 .onSingleTapGesture { screenPoint, _ in
@@ -66,9 +113,11 @@ struct UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView: View {
                     selectedFeature = nil
                     calloutPlacement = nil
                     identifyScreenPoint = screenPoint
+                    identifyRequestID = UUID()
                 }
-                .task(id: identifyScreenPoint) {
-                    guard let identifyScreenPoint = identifyScreenPoint else { return }
+                .dynamicTypeSize(model.labelsUseSystemTextScale ? dynamicTypeSize : .large)
+                .task(id: identifyRequestID) {
+                    guard let identifyRequestID, let identifyScreenPoint else { return }
                     do {
                         // Identify at most one restaurant near the tap.
                         let result = try await mapView.identify(
@@ -80,10 +129,9 @@ struct UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView: View {
                         // Don't show stale results after another tap
                         // or dismissal.
                         try Task.checkCancellation()
-                        guard
-                            let feature = result.geoElements.first as? Feature,
-                            let location = feature.geometry as? Point
-                        else {
+                        guard self.identifyRequestID == identifyRequestID else { return }
+                        guard let feature = result.geoElements.first as? Feature,
+                              let location = feature.geometry as? Point else {
                             return
                         }
                         model.restaurantsLayer.selectFeature(feature)
@@ -93,7 +141,7 @@ struct UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView: View {
                             tapLocation: location
                         )
                     } catch {
-                        if !Task.isCancelled {
+                        if !Task.isCancelled, self.identifyRequestID == identifyRequestID {
                             self.error = error
                         }
                     }
@@ -107,18 +155,15 @@ struct UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView: View {
                         }
                     }
                 }
-                .onChange(of: systemTextScale, initial: true) { _, newValue in
-                    model.applySystemTextScale(newValue)
+                .onChange(of: systemTextScale, initial: true) {
+                    model.applySystemTextScale(systemTextScale)
                 }
                 .overlay {
                     if model.isLoading {
-                        ProgressView("Loading restaurants…")
+                        ProgressView("Loading restaurants")
                             .padding()
                             .background(.regularMaterial)
                     }
-                }
-                .overlay(alignment: .top) {
-                    TextSizeHelpView(error: $error)
                 }
         }
     }
