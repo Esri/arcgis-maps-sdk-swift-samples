@@ -36,14 +36,16 @@ extension UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView {
             }
             let coordinateFormat = FloatingPointFormatStyle<Double>.number
                 .precision(.fractionLength(5))
+                .grouping(.never)
+                .locale(Locale(identifier: "en_US_POSIX"))
             
             ScrollView {
                 VStack(alignment: .leading) {
                     Text(name.flatMap { $0.isEmpty ? nil : $0 } ?? "Restaurant")
                         .font(.headline)
                     if let location {
-                        Text("Latitude: \(location.y, format: coordinateFormat)")
-                        Text("Longitude: \(location.x, format: coordinateFormat)")
+                        Text("Latitude: \(coordinateFormat.format(location.y))")
+                        Text("Longitude: \(coordinateFormat.format(location.x))")
                     }
                 }
                 .fixedSize(horizontal: false, vertical: true)
@@ -81,10 +83,6 @@ extension UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView {
 
                 Section("Scaling Legend") {
                     ScalingStatusView(model: model, error: $error)
-                }
-
-                Section("Change Text Size") {
-                    TextSizeInstructionsView(error: $error)
                 }
             }
         }
@@ -151,7 +149,6 @@ extension UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView {
                 Text("Current Values")
                     .font(.headline)
                 LabeledContent("System text scale (Body)", value: model.systemTextScale, format: scaleFormat)
-                LabeledContent("Automatic label scaling", value: model.labelsUseSystemTextScale ? "On" : "Off")
                 LabeledContent("Symbol size") {
                     Text("\(model.markerSize, format: markerFormat) pt")
                         .accessibilityLabel("\(model.markerSize, format: markerFormat) points")

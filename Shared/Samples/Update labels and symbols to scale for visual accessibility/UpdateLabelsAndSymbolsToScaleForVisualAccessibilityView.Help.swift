@@ -47,7 +47,7 @@ extension UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView {
         }
     }
 
-    /// Manual instructions and the supported app-specific Settings destination.
+    /// Manual instructions and best-effort access to Settings.
     struct TextSizeInstructionsView: View {
         /// An operational error routed to the currently visible presentation.
         @Binding var error: (any Error)?
@@ -62,24 +62,40 @@ extension UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView {
             .padding(.vertical, 4)
 
             Button {
-                guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
+                // This undocumented scheme can stop working or cause App Store rejection.
+                guard let url = URL(string: "App-prefs:ACCESSIBILITY") else {
+                    openAppSettings()
+                    return
+                }
                 openURL(url) { accepted in
                     if !accepted {
-                        error = OpenSettingsError()
+                        openAppSettings()
                     }
                 }
             } label: {
-                Label("Open App Settings", systemImage: "gear")
+                Label("Try Opening Settings", systemImage: "gear")
             }
-            Text("iOS cannot open Larger Text directly. From App Settings, navigate back to Settings, then follow the path above.")
+            Text("The destination can vary. You may need to navigate manually to Accessibility and Larger Text. If the shortcut fails, the app's settings may open instead.")
                 .font(.footnote)
                 .foregroundStyle(.secondary)
+        }
+
+        private func openAppSettings() {
+            guard let url = URL(string: UIApplication.openSettingsURLString) else {
+                error = OpenSettingsError()
+                return
+            }
+            openURL(url) { accepted in
+                if !accepted {
+                    error = OpenSettingsError()
+                }
+            }
         }
 
         /// An error opening settings, including manual navigation instructions.
         private struct OpenSettingsError: LocalizedError {
             var errorDescription: String? {
-                "Unable to open App Settings. Open Settings > Accessibility > Display & Text Size > Larger Text manually."
+                "Unable to open Settings. Open the Settings app manually, then choose Accessibility > Display & Text Size > Larger Text."
             }
         }
     }

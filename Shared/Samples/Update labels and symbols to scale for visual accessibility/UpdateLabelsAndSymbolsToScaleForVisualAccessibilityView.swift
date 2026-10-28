@@ -60,10 +60,8 @@ struct UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView: View {
             }
             .toolbar {
                 ToolbarItem(placement: .primaryAction) {
-                    Button {
+                    Button("Text Size Help", systemImage: "textformat.size") {
                         isShowingTextSizeHelp = true
-                    } label: {
-                        Label("Text Size Help", systemImage: "textformat.size")
                     }
                     .sheet(isPresented: $isShowingTextSizeHelp) {
                         TextSizeHelpView(error: $error)

@@ -2446,13 +2446,13 @@
 		9579E0EB3060B422003923F6 /* Update labels and symbols to scale for visual accessibility */ = {
 			isa = PBXGroup;
 			children = (
-				9579E0EC3060B6DD003923F6 /* UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView.Model.swift */,
 				95EDE311306CA77D00C0F57A /* UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView.Help.swift */,
+				9579E0EC3060B6DD003923F6 /* UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView.Model.swift */,
 				9574D5343092889E0026D17B /* UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView.Views.swift */,
 				9579E0E93060B3F6003923F6 /* UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView.swift */,
 			);
 			path = "Update labels and symbols to scale for visual accessibility";
-      sourceTree = "<group>";
+			sourceTree = "<group>";
 		};
 		9579E0E630609AA0003923F6 /* Apply point cloud renderer and filter */ = {
 			isa = PBXGroup;

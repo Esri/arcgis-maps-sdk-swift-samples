@@ -37,6 +37,9 @@ extension UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView {
         
         /// A Boolean value indicating whether the restaurant layer and symbols are loading.
         private(set) var isLoading = true
+
+        /// Identifies the most recent view-lifetime load operation.
+        private var loadID: UUID?
         
         /// The marker size in points at the default system text size.
         static let baseMarkerSize: Double = 24
@@ -67,7 +70,10 @@ extension UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView {
             restaurantsLayer = FeatureLayer(
                 featureTable: ServiceFeatureTable(url: .redlandsRestaurants)
             )
-            
+        }
+
+        /// Adds the sample's label definition to the loaded feature layer.
+        private func configureLabels() {
             let labelSymbol = TextSymbol(
                 color: UIColor(
                     red: 31 / 255,
@@ -86,29 +92,38 @@ extension UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView {
                 textSymbol: labelSymbol
             )
             labelDefinition.placement = .pointAboveCenter
-            // Move labels to avoid overlaps, omitting those that cannot fit.
-            labelDefinition.deconflictionStrategy = .dynamic
+            // Keep the preferred position even when labels overlap.
+            labelDefinition.deconflictionStrategy = .noDeconfliction
             restaurantsLayer.addLabelDefinitions([labelDefinition])
             restaurantsLayer.labelsAreEnabled = true
         }
         
         /// Loads the layer and applies the restaurant symbol before displaying it.
         func load() async throws {
-            isLoading = true
-            defer { isLoading = false }
-            try await restaurantsLayer.load()
             try Task.checkCancellation()
+            let loadID = UUID()
+            self.loadID = loadID
+            isLoading = true
+            defer {
+                if self.loadID == loadID { isLoading = false }
+            }
+            try await restaurantsLayer.retryLoad()
+            try Task.checkCancellation()
+            guard self.loadID == loadID else { return }
             // Keep the existing renderer and symbol when the view reappears.
             if markerSymbol == nil {
-                try await restaurantSymbolStyle.load()
+                try await restaurantSymbolStyle.retryLoad()
                 try Task.checkCancellation()
+                guard self.loadID == loadID else { return }
                 guard let symbol = try await restaurantSymbolStyle.symbol(forKeys: ["restaurant"]) as? MultilayerPointSymbol else {
                     throw RestaurantSymbolError()
                 }
                 try Task.checkCancellation()
+                guard self.loadID == loadID else { return }
                 // Read the latest scale after loading, not the scale at task startup.
                 // There is no suspension between sizing and installing the symbol.
                 symbol.size = markerSize
+                configureLabels()
                 restaurantsLayer.renderer = SimpleRenderer(symbol: symbol)
                 markerSymbol = symbol
             }
