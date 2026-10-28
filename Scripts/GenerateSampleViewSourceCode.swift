@@ -49,6 +49,17 @@ private struct SampleMetadata: Decodable {
 }
 
 extension SampleMetadata {
+    /// Whether the sample's Swift sources are excluded from the Mac Catalyst build.
+    var isMacCatalystSourceExcluded: Bool {
+        viewName == "UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView"
+    }
+
+    /// Whether the sample is unavailable on Mac Catalyst.
+    var isMacCatalystUnavailable: Bool {
+        category == "Augmented Reality"
+            || isMacCatalystSourceExcluded
+    }
+
     /// The SwiftUI View name of the root view of the sample. It is the same as
     /// the first filename without extension in the snippets array.
     var viewName: Substring {
@@ -125,7 +136,7 @@ private let sampleStructs = sampleMetadata
         let portalItemIDs = (sample.offlineData ?? [])
             .map { #"PortalItem.ID("\#($0)")!"# }
         return """
-        \(sample.category == "Augmented Reality" ? "@available(macCatalyst, unavailable)" : "")
+        \(sample.isMacCatalystSourceExcluded ? "#if !targetEnvironment(macCatalyst)" : sample.isMacCatalystUnavailable ? "@available(macCatalyst, unavailable)" : "")
         struct \(sample.structName): Sample {
             var name: String { \"\(sample.title)\" }
             var category: String { \"\(sample.category)\" }
@@ -136,17 +147,24 @@ private let sampleStructs = sampleMetadata
             var hasTeardown: Bool { \(sample.hasTeardown ?? false) }
             func makeBody() -> AnyView { .init(\(sample.viewName)()) }
         }
+        \(sample.isMacCatalystSourceExcluded ? "#endif" : "")
         """
     }
     .joined(separator: "\n")
 
 // The set of samples supported on all supported platforms.
 private let commonSamples = sampleMetadata
-    .filter { $0.category != "Augmented Reality" }
+    .filter { !$0.isMacCatalystUnavailable }
     .map { sample in "\(sample.structName)()" }
     .joined(separator: ",\n            ")
 
-// The set of samples supported only on iOS.
+// The set of samples supported on iOS, including Simulator, but not Mac Catalyst.
+private let iOSSimulatorSamples = sampleMetadata
+    .filter { $0.isMacCatalystUnavailable && $0.category != "Augmented Reality" }
+    .map { sample in "\(sample.structName)()" }
+    .joined(separator: ",\n                ")
+
+// The set of samples supported only on physical iOS devices.
 private let iOSSpecificSamples = sampleMetadata
     .filter { $0.category == "Augmented Reality" }
     .map { sample in "\(sample.structName)()" }
@@ -160,15 +178,19 @@ private let commonSamplesArrayRepresentation = """
 
 private let iOSSamplesArrayRepresentation = """
     {
-    #if !targetEnvironment(macCatalyst) && !targetEnvironment(simulator)
-                // Exclude AR samples from Mac Catalyst and Simulator targets
-                // as they don't have camera and sensors available.
-                [
+                var samples: [any Sample] = []
+    #if !targetEnvironment(macCatalyst)
+                samples += [
+                    \(iOSSimulatorSamples)
+                ]
+    #if !targetEnvironment(simulator)
+                // AR samples require camera and sensors on a physical device.
+                samples += [
                     \(iOSSpecificSamples)
                 ]
-    #else
-                []
     #endif
+    #endif
+                return samples
             }()
     """
 
