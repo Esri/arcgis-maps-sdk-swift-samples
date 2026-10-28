@@ -15,7 +15,6 @@
 import ArcGIS
 import SwiftUI
 
-@available(macCatalyst, unavailable)
 struct UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView: View {
     /// The view model for the sample.
     @State private var model = Model()
@@ -167,10 +166,8 @@ struct UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView: View {
     }
 }
 
-#if !targetEnvironment(macCatalyst)
 #Preview {
     NavigationStack {
         UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView()
     }
 }
-#endif

@@ -15,7 +15,6 @@
 import SwiftUI
 import UIKit
 
-@available(macCatalyst, unavailable)
 extension UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView {
     /// Text-size instructions and access to system settings.
     struct TextSizeHelpView: View {

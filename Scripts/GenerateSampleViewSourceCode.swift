@@ -49,10 +49,15 @@ private struct SampleMetadata: Decodable {
 }
 
 extension SampleMetadata {
+    /// Whether the sample's Swift sources are excluded from the Mac Catalyst build.
+    var isMacCatalystSourceExcluded: Bool {
+        viewName == "UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView"
+    }
+
     /// Whether the sample is unavailable on Mac Catalyst.
     var isMacCatalystUnavailable: Bool {
         category == "Augmented Reality"
-            || viewName == "UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView"
+            || isMacCatalystSourceExcluded
     }
 
     /// The SwiftUI View name of the root view of the sample. It is the same as
@@ -131,7 +136,7 @@ private let sampleStructs = sampleMetadata
         let portalItemIDs = (sample.offlineData ?? [])
             .map { #"PortalItem.ID("\#($0)")!"# }
         return """
-        \(sample.isMacCatalystUnavailable ? "@available(macCatalyst, unavailable)" : "")
+        \(sample.isMacCatalystSourceExcluded ? "#if !targetEnvironment(macCatalyst)" : sample.isMacCatalystUnavailable ? "@available(macCatalyst, unavailable)" : "")
         struct \(sample.structName): Sample {
             var name: String { \"\(sample.title)\" }
             var category: String { \"\(sample.category)\" }
@@ -142,6 +147,7 @@ private let sampleStructs = sampleMetadata
             var hasTeardown: Bool { \(sample.hasTeardown ?? false) }
             func makeBody() -> AnyView { .init(\(sample.viewName)()) }
         }
+        \(sample.isMacCatalystSourceExcluded ? "#endif" : "")
         """
     }
     .joined(separator: "\n")

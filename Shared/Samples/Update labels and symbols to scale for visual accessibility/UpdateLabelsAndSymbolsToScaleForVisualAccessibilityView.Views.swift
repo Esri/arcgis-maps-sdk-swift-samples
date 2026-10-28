@@ -15,7 +15,6 @@
 import ArcGIS
 import SwiftUI
 
-@available(macCatalyst, unavailable)
 extension UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView {
     /// The selected restaurant's name and WGS 84 coordinates.
     struct RestaurantCalloutView: View {

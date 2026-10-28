@@ -16,11 +16,9 @@ import ArcGIS
 import Observation
 import UIKit
 
-@available(macCatalyst, unavailable)
 extension UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView {
     /// Configures restaurant labeling and scales marker symbols
     /// in response to Dynamic Type changes.
-    @available(macCatalyst, unavailable)
     @MainActor
     @Observable
     final class Model {
