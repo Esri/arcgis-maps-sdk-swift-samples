@@ -37,7 +37,7 @@ extension UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView {
         
         /// A Boolean value indicating whether the restaurant layer and symbols are loading.
         private(set) var isLoading = true
-
+        
         /// Identifies the most recent view-lifetime load operation.
         private var loadID: UUID?
         
@@ -71,7 +71,7 @@ extension UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView {
                 featureTable: ServiceFeatureTable(url: .redlandsRestaurants)
             )
         }
-
+        
         /// Adds the sample's label definition to the loaded feature layer.
         private func configureLabels() {
             let labelSymbol = TextSymbol(

@@ -46,13 +46,13 @@ extension UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView {
             .presentationDetents([.medium, .large])
         }
     }
-
+    
     /// Manual instructions and best-effort access to Settings.
     struct TextSizeInstructionsView: View {
         /// An operational error routed to the currently visible presentation.
         @Binding var error: (any Error)?
         @Environment(\.openURL) private var openURL
-
+        
         var body: some View {
             VStack(alignment: .leading, spacing: 8) {
                 Text("Open Settings > Accessibility > Display & Text Size > Larger Text.")
@@ -60,7 +60,7 @@ extension UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView {
                     .foregroundStyle(.secondary)
             }
             .padding(.vertical, 4)
-
+            
             Button {
                 // This undocumented scheme can stop working or cause App Store rejection.
                 guard let url = URL(string: "App-prefs:ACCESSIBILITY") else {
@@ -79,7 +79,7 @@ extension UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView {
                 .font(.footnote)
                 .foregroundStyle(.secondary)
         }
-
+        
         private func openAppSettings() {
             guard let url = URL(string: UIApplication.openSettingsURLString) else {
                 error = OpenSettingsError()
@@ -91,7 +91,7 @@ extension UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView {
                 }
             }
         }
-
+        
         /// An error opening settings, including manual navigation instructions.
         private struct OpenSettingsError: LocalizedError {
             var errorDescription: String? {

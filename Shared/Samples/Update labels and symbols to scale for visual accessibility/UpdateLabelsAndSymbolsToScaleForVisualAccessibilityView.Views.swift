@@ -80,14 +80,14 @@ extension UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView {
                 } footer: {
                     Text("Symbols and callout text follow the system text size independently of this switch.")
                 }
-
+                
                 Section("Scaling Legend") {
                     ScalingStatusView(model: model, error: $error)
                 }
             }
         }
     }
-
+    
     /// A legend showing scaling sources, current values, and the symbol swatch.
     struct ScalingStatusView: View {
         /// The shared scaling settings and restaurant symbol.
@@ -107,7 +107,7 @@ extension UpdateLabelsAndSymbolsToScaleForVisualAccessibilityView {
                 .precision(.fractionLength(0))
             let markerFormat = FloatingPointFormatStyle<Double>()
                 .precision(.fractionLength(0...1))
-
+            
             Label {
                 VStack(alignment: .leading) {
                     Text("Map labels")
