@@ -200,7 +200,7 @@ struct PortalItemView: View {
             if let thumbnail {
                 Image(uiImage: thumbnail)
                     .resizable()
-                    .aspectRatio(contentMode: .fill)
+                    .scaledToFill()
                     .frame(width: thumbnailSize, height: thumbnailSize)
                     .clipShape(.rect(cornerRadius: 10))
             } else {

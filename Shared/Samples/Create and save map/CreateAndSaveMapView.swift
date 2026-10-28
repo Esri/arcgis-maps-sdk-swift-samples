@@ -401,9 +401,13 @@ private extension CreateAndSaveMapView {
     /// Sets up new ArcGIS and Network credential stores that will be persisted in the keychain.
     private func setupPersistentCredentialStorage() {
         Task {
-            try await ArcGISEnvironment.authenticationManager.setupPersistentCredentialStorage(
-                access: .whenUnlockedThisDeviceOnly
-            )
+            do {
+                try await ArcGISEnvironment.authenticationManager.setupPersistentCredentialStorage(
+                    access: .whenUnlockedThisDeviceOnly
+                )
+            } catch {
+                self.error = error
+            }
         }
     }
 }

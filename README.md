@@ -15,6 +15,7 @@ This repository contains Swift sample code demonstrating the capabilities of the
 * Analysis - Perform spatial analysis via geoprocessing tasks and services
 * Cloud and Portal - Search for web maps and securely connect to your portal
 * Utility Networks - Work with utility networks, performing traces and exploring network elements
+* Accessibility - Improve map usability with adaptive text, symbols, contrast, and accessible interactions
 
 ## Requirements
 

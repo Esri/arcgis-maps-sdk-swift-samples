@@ -34,7 +34,7 @@ Note: There are several types of KML features. This sample only identifies featu
 
 ## About the data
 
-This sample shows a forecast for [significant weather within the U.S. Regions](https://www.wpc.ncep.noaa.gov/kml/kmlproducts.php#sigwx) of severe thunderstorms, flooding, snowfall, and freezing rain are shown.
+This sample shows a forecast for [significant weather within the U.S. Regions](https://www.arcgis.com/sharing/rest/content/items/f5e0e5cd088846a5b97b7ed66a8bad5c/data) of severe thunderstorms, flooding, snowfall, and freezing rain are shown.
 
 ## Additional information
 
