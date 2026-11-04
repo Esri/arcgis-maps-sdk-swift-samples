@@ -1,0 +1,42 @@
+{
+    "category": "Layers",
+    "description": "Build and delete raster pyramids to compare the display performance of a raster.",
+    "ignore": false,
+    "images": [
+        "generate-raster-pyramids.png"
+    ],
+    "keywords": [
+        "GeoPDF",
+        "image",
+        "offline",
+        "optimization",
+        "overview",
+        "PDF",
+        "performance",
+        "pyramids",
+        "raster",
+        "vector",
+        "BuildRasterPyramidsOperation",
+        "BuildRasterPyramidsParameters",
+        "Raster",
+        "RasterLayer",
+        "RasterPyramidInfo",
+        "RasterPyramids"
+    ],
+    "offline_data": [
+        "a5b6e3c425f34631bba1bfbf859d5052"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "BuildRasterPyramidsOperation",
+        "BuildRasterPyramidsParameters",
+        "Raster",
+        "RasterLayer",
+        "RasterPyramidInfo",
+        "RasterPyramids"
+    ],
+    "snippets": [
+        "GenerateRasterPyramidsView.swift"
+    ],
+    "title": "Generate raster pyramids"
+}
