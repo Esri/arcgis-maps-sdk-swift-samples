@@ -116,8 +116,6 @@ private extension GenerateRasterPyramidsView {
         @ObservationIgnored private var temporaryDirectory: URL?
         /// The raster for building pyramids.
         @ObservationIgnored private var raster: Raster?
-        /// The raster layer in the map.
-        @ObservationIgnored private var layer: RasterLayer?
         /// The raster pyramids for the raster.
         @ObservationIgnored private var pyramids: RasterPyramids?
         /// The operation that builds the raster pyramids.
@@ -161,7 +159,6 @@ private extension GenerateRasterPyramidsView {
             let raster = Raster(fileURL: rasterFile)
             let layer = RasterLayer(raster: raster)
             self.raster = raster
-            self.layer = layer
             map.addOperationalLayer(layer)
             do {
                 try await layer.load()
@@ -243,11 +240,9 @@ private extension GenerateRasterPyramidsView {
         /// Tears down the model and cleans up resources.
         func tearDown() {
             pyramids = nil
+            map.removeAllOperationalLayers()
             if let buildOperation = buildOperation.take() {
                 buildOperation.cancel()
-            }
-            if let layer = layer.take() {
-                map.removeOperationalLayer(layer)
             }
             if let raster = raster.take() {
                 raster.close()
