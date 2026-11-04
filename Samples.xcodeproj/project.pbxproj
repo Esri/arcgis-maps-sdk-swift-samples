@@ -16,6 +16,8 @@
 		001C6DE127FE8A9400D472C2 /* AppSecrets.swift.masque in Sources */ = {isa = PBXBuildFile; fileRef = 001C6DD827FE585A00D472C2 /* AppSecrets.swift.masque */; };
 		002056C52DD7F6D30016B8A9 /* TakeScreenshotView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 002056C42DD7F6CF0016B8A9 /* TakeScreenshotView.swift */; };
 		002056E82DDD404C0016B8A9 /* DisplayOGCAPICollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 002056E72DDD40430016B8A9 /* DisplayOGCAPICollectionView.swift */; };
+		00246306309A700C000D70F5 /* GenerateRasterPyramidsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00246305309A700A000D70F5 /* GenerateRasterPyramidsView.swift */; };
+		002467CF309BEACA000D70F5 /* YOSE_ParkMap.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 002467CD309BEACA000D70F5 /* YOSE_ParkMap.pdf */; settings = {ASSET_TAGS = (GenerateRasterPyramids, ); }; };
 		00273CF42A82AB5900A7A77D /* SamplesSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00273CF32A82AB5900A7A77D /* SamplesSearchView.swift */; };
 		00273CF62A82AB8700A7A77D /* SampleLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00273CF52A82AB8700A7A77D /* SampleLink.swift */; };
 		0042E24328E4BF8F001F33D6 /* ShowExploratoryViewshedFromPointInSceneView.Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0042E24228E4BF8F001F33D6 /* ShowExploratoryViewshedFromPointInSceneView.Model.swift */; };
@@ -481,6 +483,8 @@
 		001C6DD827FE585A00D472C2 /* AppSecrets.swift.masque */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = AppSecrets.swift.masque; sourceTree = "<group>"; };
 		002056C42DD7F6CF0016B8A9 /* TakeScreenshotView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TakeScreenshotView.swift; sourceTree = "<group>"; };
 		002056E72DDD40430016B8A9 /* DisplayOGCAPICollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayOGCAPICollectionView.swift; sourceTree = "<group>"; };
+		00246305309A700A000D70F5 /* GenerateRasterPyramidsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenerateRasterPyramidsView.swift; sourceTree = "<group>"; };
+		002467CD309BEACA000D70F5 /* YOSE_ParkMap.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = YOSE_ParkMap.pdf; sourceTree = "<group>"; };
 		00273CF32A82AB5900A7A77D /* SamplesSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SamplesSearchView.swift; sourceTree = "<group>"; };
 		00273CF52A82AB8700A7A77D /* SampleLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleLink.swift; sourceTree = "<group>"; };
 		003D7C342821EBCC009DDFD2 /* masquerade */ = {isa = PBXFileReference; lastKnownFileType = text; path = masquerade; sourceTree = "<group>"; };
@@ -971,6 +975,22 @@
 			path = "Display OGC API collection";
 			sourceTree = "<group>";
 		};
+		00246303309A6FF6000D70F5 /* Generate raster pyramids */ = {
+			isa = PBXGroup;
+			children = (
+				00246305309A700A000D70F5 /* GenerateRasterPyramidsView.swift */,
+			);
+			path = "Generate raster pyramids";
+			sourceTree = "<group>";
+		};
+		002467CE309BEACA000D70F5 /* a5b6e3c425f34631bba1bfbf859d5052 */ = {
+			isa = PBXGroup;
+			children = (
+				002467CD309BEACA000D70F5 /* YOSE_ParkMap.pdf */,
+			);
+			path = a5b6e3c425f34631bba1bfbf859d5052;
+			sourceTree = "<group>";
+		};
 		003D7C332821EBCC009DDFD2 /* Scripts */ = {
 			isa = PBXGroup;
 			children = (
@@ -1214,6 +1234,7 @@
 				E088E1722863B5E600413100 /* Generate offline map */,
 				10B782032BE55C52007EAE6C /* Generate offline map with custom parameters */,
 				10D321942BDB1C2E00B39B1B /* Generate offline map with local basemap */,
+				00246303309A6FF6000D70F5 /* Generate raster pyramids */,
 				D7553CD62AE2DFEC00DC2A70 /* Geocode offline */,
 				0044288C29C90BD500160767 /* Get elevation at point on surface */,
 				D704AA562AB22B7A00A3BB63 /* Group layers together */,
@@ -1471,6 +1492,7 @@
 				D73F8CF22AB1089900CD39DA /* 751138a2e0844e06853522d54103222a */,
 				D7BEBA9F2CBD9CCA00F882E7 /* 98092369c4ae4d549bbbd45dba993ebc */,
 				D721EEA62ABDFF550040BE46 /* 174150279af74a2ba6f8b87a567f480b */,
+				002467CE309BEACA000D70F5 /* a5b6e3c425f34631bba1bfbf859d5052 */,
 				792222DB2A81AA5D00619FFE /* a8a942c228af4fac96baa78ad60f511f */,
 				0082E7122F730C93006A4C7F /* aa97788593e34a32bcaae33947fdc271 */,
 				000DADC72F772ECC00C0F2A3 /* ae9739163a76437ea02482e1a807b806 */,
@@ -3980,6 +4002,7 @@
 				D7C16D1F2AC5FE8200689E89 /* Pyrenees.csv in Resources */,
 				000DADCD2F772EE400C0F2A3 /* srtm in Resources */,
 				E041AC1A287F54580056009B /* highlight.min.js in Resources */,
+				002467CF309BEACA000D70F5 /* YOSE_ParkMap.pdf in Resources */,
 				D7497F402AC4BA4100167AD2 /* Edinburgh_Pylon_Dimensions.mmpk in Resources */,
 				D7C523402BED9BBF00E8221A /* SanFrancisco.tpkx in Resources */,
 				00E5402027F3CCA200CF66D5 /* Assets.xcassets in Resources */,
@@ -4323,6 +4346,7 @@
 				D7010EBF2B05616900D43F55 /* DisplaySceneFromMobileScenePackageView.swift in Sources */,
 				D7337C602ABD142D00A5D865 /* ShowMobileMapPackageExpirationDateView.swift in Sources */,
 				00E5401E27F3CCA200CF66D5 /* ContentView.swift in Sources */,
+				00246306309A700C000D70F5 /* GenerateRasterPyramidsView.swift in Sources */,
 				D7634FAF2A43B7AC00F8AEFB /* CreateConvexHullAroundGeometriesView.swift in Sources */,
 				E066DD382860AB28004D3D5B /* StyleGraphicsWithRendererView.swift in Sources */,
 				108EC04129D25B2C000F35D0 /* QueryFeatureTableView.swift in Sources */,

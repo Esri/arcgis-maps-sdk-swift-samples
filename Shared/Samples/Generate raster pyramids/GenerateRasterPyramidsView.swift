@@ -262,7 +262,7 @@ private extension GenerateRasterPyramidsView {
 private extension URL {
     /// The URL for the Yosemite GeoPDF raster.
     static var yosemiteGeoPDF: URL {
-        Bundle.main.url(forResource: "YOSEmap1", withExtension: "pdf")!
+        Bundle.main.url(forResource: "YOSE_ParkMap", withExtension: "pdf")!
     }
 }
 
