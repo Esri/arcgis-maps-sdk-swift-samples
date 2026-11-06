@@ -92,6 +92,7 @@ extension BuildRasterPyramidsView {
             } catch {
                 self.error = error
                 status = .error(details: "Failed to load raster layer")
+                return
             }
             self.layer = layer
             map.addOperationalLayer(layer)
