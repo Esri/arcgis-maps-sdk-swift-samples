@@ -27,6 +27,7 @@ exception_proper_nouns = {
     'ArcGIS Online',
     'ArcGIS Pro',
     'Authenticate with Integrated Windows Authentication',
+    'GeoPDF',
     'GeoPackage',
     'OAuth',
     'OpenStreetMap',
