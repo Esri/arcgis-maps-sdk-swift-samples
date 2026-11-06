@@ -29,6 +29,7 @@ exception_proper_nouns = {
     'Authenticate with Integrated Windows Authentication',
     'GeoPDF',
     'GeoPackage',
+    'geospatial PDF',
     'OAuth',
     'OpenStreetMap',
     'SwiftUI',
