@@ -3,15 +3,16 @@
     "description": "Build and delete raster pyramids to compare the display performance of a raster.",
     "ignore": false,
     "images": [
-        "generate-raster-pyramids.png"
+        "build-raster-pyramids.png"
     ],
     "keywords": [
         "GeoPDF",
+        "PDF",
+        "geospatial PDF",
         "image",
         "offline",
         "optimization",
         "overview",
-        "PDF",
         "performance",
         "pyramids",
         "raster",
@@ -36,7 +37,8 @@
         "RasterPyramids"
     ],
     "snippets": [
-        "GenerateRasterPyramidsView.swift"
+        "BuildRasterPyramidsView.swift",
+        "BuildRasterPyramidsView.Model.swift"
     ],
-    "title": "Generate raster pyramids"
+    "title": "Build raster pyramids"
 }

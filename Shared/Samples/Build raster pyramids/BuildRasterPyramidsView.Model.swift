@@ -13,89 +13,14 @@
 // limitations under the License.
 
 import ArcGIS
-import SwiftUI
+import Foundation
+import Observation
 
-struct GenerateRasterPyramidsView: View {
-    /// The model that owns the working dataset and its build operation.
-    @State private var model = Model()
-    /// The current draw status of the map view.
-    @State private var currentDrawStatus: DrawStatus = .inProgress
-    /// A Boolean value indicating whether the map view is drawing.
-    private var drawInProgress: Bool { currentDrawStatus == .inProgress }
-    
-    var body: some View {
-        MapView(map: model.map, viewpoint: model.viewpoint)
-            .onViewpointChanged(kind: .boundingGeometry) {
-                model.viewpoint = $0
-            }
-            .onDrawStatusChanged { drawStatus in
-                withAnimation { currentDrawStatus = drawStatus }
-            }
-            .interactionModes(model.isBusy ? [] : .all)
-            .overlay(alignment: .top) {
-                HStack {
-                    Text("Status:")
-                    Text(status)
-                        .italic()
-                }
-                .frame(maxWidth: .infinity)
-                .padding(.vertical, 6)
-                .background(.thinMaterial, ignoresSafeAreaEdges: .horizontal)
-            }
-            .toolbar {
-                ToolbarItemGroup(placement: .bottomBar) {
-                    if let operation = model.buildOperation {
-                        ProgressView(operation.progress)
-                            .progressViewStyle(.gauge)
-                    } else if drawInProgress || model.isBusy {
-                        ProgressView()
-                    } else {
-                        Image(systemName: "checkmark.circle")
-                            .foregroundStyle(.green)
-                    }
-                    
-                    Spacer()
-                    
-                    Button("Build") {
-                        Task { await model.buildPyramids() }
-                    }
-                    .disabled(drawInProgress || !model.canBuild)
-                    
-                    Spacer()
-                    
-                    Button("Delete") {
-                        model.deletePyramids()
-                    }
-                    .disabled(drawInProgress || !model.canDelete)
-                }
-            }
-            .errorAlert(presentingError: $model.error)
-            .task { await model.setup() }
-            .onTeardown { model.tearDown() }
-    }
-    
-    /// The status text for the model.
-    private var status: String {
-        switch model.status {
-        case .loading:
-            "Loading raster"
-        case .building:
-            "Building pyramids"
-        case .built:
-            "Pyramids built"
-        case .notBuilt(let additionalInfo):
-            "Pyramids not built: \(additionalInfo)"
-        case .error(let details):
-            "Error: \(details)"
-        }
-    }
-}
-
-private extension GenerateRasterPyramidsView {
+extension BuildRasterPyramidsView {
     @Observable
     final class Model {
         /// The state of the model.
-        enum State {
+        enum State: Equatable {
             case loading
             case building
             case built
@@ -103,10 +28,10 @@ private extension GenerateRasterPyramidsView {
             case error(details: String)
         }
         
-        /// A map with topographic basemap and a raster layer.
+        /// A map with light gray basemap and a raster layer.
         let map = Map(basemapStyle: .arcGISLightGrayBase)
-        /// The current viewpoint.
-        var viewpoint: Viewpoint?
+        /// The initial viewpoint for the map view.
+        @ObservationIgnored private(set) var initialViewpoint: Viewpoint?
         /// The error that occurred during raster pyramid operations.
         var error: (any Error)?
         /// The status of the model's actions.
@@ -116,10 +41,16 @@ private extension GenerateRasterPyramidsView {
         @ObservationIgnored private var temporaryDirectory: URL?
         /// The raster for building pyramids.
         @ObservationIgnored private var raster: Raster?
+        /// The raster layer.
+        @ObservationIgnored private var layer: RasterLayer?
         /// The raster pyramids for the raster.
         @ObservationIgnored private var pyramids: RasterPyramids?
         /// The operation that builds the raster pyramids.
         private(set) var buildOperation: BuildRasterPyramidsOperation?
+        /// The number of pyramids levels.
+        var levelCount: Int {
+            pyramids?.info?.levelCount ?? 0
+        }
         
         /// A Boolean value indicating whether the model is performing an action.
         var isBusy: Bool {
@@ -152,22 +83,20 @@ private extension GenerateRasterPyramidsView {
         /// Sets up the model.
         @MainActor
         func setup() async {
-            guard let rasterFile = prepareWorkingCopy() else {
-                status = .error(details: "Failed to prepare working copy")
-                return
-            }
+            guard let rasterFile = prepareWorkingCopy() else { return }
             let raster = Raster(fileURL: rasterFile)
             let layer = RasterLayer(raster: raster)
             self.raster = raster
-            map.addOperationalLayer(layer)
             do {
                 try await layer.load()
             } catch {
                 self.error = error
                 status = .error(details: "Failed to load raster layer")
             }
+            self.layer = layer
+            map.addOperationalLayer(layer)
             if let extent = layer.fullExtent {
-                viewpoint = Viewpoint(boundingGeometry: extent)
+                initialViewpoint = Viewpoint(boundingGeometry: extent)
             }
             pyramids = raster.pyramids
             guard let pyramids else {
@@ -185,6 +114,33 @@ private extension GenerateRasterPyramidsView {
             } else {
                 status = .notBuilt(additionalInfo: "Ready")
             }
+        }
+        
+        /// Creates a viewpoint at the current map center and requested level.
+        /// - Parameters:
+        ///   - viewSize: The size of the map view.
+        ///   - level: The pyramid level; zero for full resolution.
+        ///   - center: The current map viewpoint's center.
+        /// - Returns: A viewpoint, or `nil` if the level is invalid.
+        func makeViewpoint(for viewSize: CGSize, level: Int, center: Point) -> Viewpoint? {
+            guard (0...levelCount).contains(level),
+                  let layer, layer.loadStatus == .loaded,
+                  let spatialReference = layer.fullExtent?.spatialReference,
+                  let center = GeometryEngine.project(center, into: spatialReference),
+                  let info = raster?.info else {
+                return nil
+            }
+            let scale = pow(2.0, Double(level))
+            let width = viewSize.width * info.cellSizeX * scale
+            let height = viewSize.height * info.cellSizeY * scale
+            guard width > 0, height > 0 else { return nil }
+            return Viewpoint(
+                boundingGeometry: Envelope(
+                    center: center,
+                    width: width,
+                    height: height
+                )
+            )
         }
         
         /// Copies the raster to a temporary directory. Each time uses a unique
@@ -240,7 +196,9 @@ private extension GenerateRasterPyramidsView {
         /// Tears down the model and cleans up resources.
         func tearDown() {
             pyramids = nil
-            map.removeAllOperationalLayers()
+            if let layer = layer.take() {
+                map.removeOperationalLayer(layer)
+            }
             if let buildOperation = buildOperation.take() {
                 buildOperation.cancel()
             }
@@ -259,28 +217,4 @@ private extension URL {
     static var yosemiteGeoPDF: URL {
         Bundle.main.url(forResource: "YOSE_ParkMap", withExtension: "pdf")!
     }
-}
-
-/// A circular gauge progress view style.
-private struct GaugeProgressViewStyle: ProgressViewStyle {
-    func makeBody(configuration: Configuration) -> some View {
-        if let fractionCompleted = configuration.fractionCompleted {
-            let gradientStops: [Gradient.Stop] = [
-                .init(color: .accent, location: 0),
-                .init(color: .accent, location: fractionCompleted),
-                .init(color: .init(.tertiarySystemFill), location: fractionCompleted),
-                .init(color: .init(.tertiarySystemFill), location: 1)
-            ]
-            let gradient = AngularGradient(gradient: .init(stops: gradientStops), center: .center)
-            
-            Image(systemName: "circle.fill")
-                .foregroundStyle(gradient)
-                .rotationEffect(.degrees(-90))
-        }
-    }
-}
-
-private extension ProgressViewStyle where Self == GaugeProgressViewStyle {
-    /// A progress view that visually indicates its progress with a gauge.
-    static var gauge: Self { .init() }
 }

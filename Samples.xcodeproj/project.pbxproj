@@ -16,8 +16,8 @@
 		001C6DE127FE8A9400D472C2 /* AppSecrets.swift.masque in Sources */ = {isa = PBXBuildFile; fileRef = 001C6DD827FE585A00D472C2 /* AppSecrets.swift.masque */; };
 		002056C52DD7F6D30016B8A9 /* TakeScreenshotView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 002056C42DD7F6CF0016B8A9 /* TakeScreenshotView.swift */; };
 		002056E82DDD404C0016B8A9 /* DisplayOGCAPICollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 002056E72DDD40430016B8A9 /* DisplayOGCAPICollectionView.swift */; };
-		00246306309A700C000D70F5 /* GenerateRasterPyramidsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00246305309A700A000D70F5 /* GenerateRasterPyramidsView.swift */; };
-		002467CF309BEACA000D70F5 /* YOSE_ParkMap.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 002467CD309BEACA000D70F5 /* YOSE_ParkMap.pdf */; settings = {ASSET_TAGS = (GenerateRasterPyramids, ); }; };
+		00246306309A700C000D70F5 /* BuildRasterPyramidsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00246305309A700A000D70F5 /* BuildRasterPyramidsView.swift */; };
+		002467CF309BEACA000D70F5 /* YOSE_ParkMap.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 002467CD309BEACA000D70F5 /* YOSE_ParkMap.pdf */; settings = {ASSET_TAGS = (BuildRasterPyramids, ); }; };
 		00273CF42A82AB5900A7A77D /* SamplesSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00273CF32A82AB5900A7A77D /* SamplesSearchView.swift */; };
 		00273CF62A82AB8700A7A77D /* SampleLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00273CF52A82AB8700A7A77D /* SampleLink.swift */; };
 		0042E24328E4BF8F001F33D6 /* ShowExploratoryViewshedFromPointInSceneView.Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0042E24228E4BF8F001F33D6 /* ShowExploratoryViewshedFromPointInSceneView.Model.swift */; };
@@ -37,6 +37,7 @@
 		0074ABC428174F430037244A /* Sample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0074ABC128174F430037244A /* Sample.swift */; };
 		0074ABCD2817BCC30037244A /* SamplesApp+Samples.swift.tache in Sources */ = {isa = PBXBuildFile; fileRef = 0074ABCA2817B8DB0037244A /* SamplesApp+Samples.swift.tache */; };
 		0086F40128E3770A00974721 /* ShowExploratoryViewshedFromPointInSceneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0086F3FD28E3770900974721 /* ShowExploratoryViewshedFromPointInSceneView.swift */; };
+		008E5544309D4FC700692E81 /* BuildRasterPyramidsView.Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 008E5543309D4FC100692E81 /* BuildRasterPyramidsView.Model.swift */; };
 		00A7A1462A2FC58300F035F7 /* DisplayContentOfUtilityNetworkContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00A7A1432A2FC58300F035F7 /* DisplayContentOfUtilityNetworkContainerView.swift */; };
 		00A7A14A2A2FC5B700F035F7 /* DisplayContentOfUtilityNetworkContainerView.Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00A7A1492A2FC5B700F035F7 /* DisplayContentOfUtilityNetworkContainerView.Model.swift */; };
 		00ABA94E2BF6721700C0488C /* ShowGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00ABA94D2BF6721700C0488C /* ShowGridView.swift */; };
@@ -483,7 +484,7 @@
 		001C6DD827FE585A00D472C2 /* AppSecrets.swift.masque */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = AppSecrets.swift.masque; sourceTree = "<group>"; };
 		002056C42DD7F6CF0016B8A9 /* TakeScreenshotView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TakeScreenshotView.swift; sourceTree = "<group>"; };
 		002056E72DDD40430016B8A9 /* DisplayOGCAPICollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayOGCAPICollectionView.swift; sourceTree = "<group>"; };
-		00246305309A700A000D70F5 /* GenerateRasterPyramidsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenerateRasterPyramidsView.swift; sourceTree = "<group>"; };
+		00246305309A700A000D70F5 /* BuildRasterPyramidsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuildRasterPyramidsView.swift; sourceTree = "<group>"; };
 		002467CD309BEACA000D70F5 /* YOSE_ParkMap.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = YOSE_ParkMap.pdf; sourceTree = "<group>"; };
 		00273CF32A82AB5900A7A77D /* SamplesSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SamplesSearchView.swift; sourceTree = "<group>"; };
 		00273CF52A82AB8700A7A77D /* SampleLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleLink.swift; sourceTree = "<group>"; };
@@ -506,6 +507,7 @@
 		0074ABC128174F430037244A /* Sample.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sample.swift; sourceTree = "<group>"; };
 		0074ABCA2817B8DB0037244A /* SamplesApp+Samples.swift.tache */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "SamplesApp+Samples.swift.tache"; sourceTree = "<group>"; };
 		0086F3FD28E3770900974721 /* ShowExploratoryViewshedFromPointInSceneView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowExploratoryViewshedFromPointInSceneView.swift; sourceTree = "<group>"; };
+		008E5543309D4FC100692E81 /* BuildRasterPyramidsView.Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuildRasterPyramidsView.Model.swift; sourceTree = "<group>"; };
 		00A7A1432A2FC58300F035F7 /* DisplayContentOfUtilityNetworkContainerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DisplayContentOfUtilityNetworkContainerView.swift; sourceTree = "<group>"; };
 		00A7A1492A2FC5B700F035F7 /* DisplayContentOfUtilityNetworkContainerView.Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayContentOfUtilityNetworkContainerView.Model.swift; sourceTree = "<group>"; };
 		00ABA94D2BF6721700C0488C /* ShowGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowGridView.swift; sourceTree = "<group>"; };
@@ -975,12 +977,13 @@
 			path = "Display OGC API collection";
 			sourceTree = "<group>";
 		};
-		00246303309A6FF6000D70F5 /* Generate raster pyramids */ = {
+		00246303309A6FF6000D70F5 /* Build raster pyramids */ = {
 			isa = PBXGroup;
 			children = (
-				00246305309A700A000D70F5 /* GenerateRasterPyramidsView.swift */,
+				00246305309A700A000D70F5 /* BuildRasterPyramidsView.swift */,
+				008E5543309D4FC100692E81 /* BuildRasterPyramidsView.Model.swift */,
 			);
-			path = "Generate raster pyramids";
+			path = "Build raster pyramids";
 			sourceTree = "<group>";
 		};
 		002467CE309BEACA000D70F5 /* a5b6e3c425f34631bba1bfbf859d5052 */ = {
@@ -1168,6 +1171,7 @@
 				95E980732C26185000CB8912 /* Browse OGC API feature service */,
 				4C8127692DCED015006EF7D2 /* Browse WFS layers */,
 				88AF554D2DD7EA8A003F146E /* Browse WMS layers */,
+				00246303309A6FF6000D70F5 /* Build raster pyramids */,
 				1C9B74D229DB54560038B06F /* Change camera controller */,
 				4D2ADC5329C4F612003B367F /* Change map view background */,
 				1C0C1C3229D34DAE005C8B24 /* Change viewpoint */,
@@ -1234,7 +1238,6 @@
 				E088E1722863B5E600413100 /* Generate offline map */,
 				10B782032BE55C52007EAE6C /* Generate offline map with custom parameters */,
 				10D321942BDB1C2E00B39B1B /* Generate offline map with local basemap */,
-				00246303309A6FF6000D70F5 /* Generate raster pyramids */,
 				D7553CD62AE2DFEC00DC2A70 /* Geocode offline */,
 				0044288C29C90BD500160767 /* Get elevation at point on surface */,
 				D704AA562AB22B7A00A3BB63 /* Group layers together */,
@@ -3920,6 +3923,7 @@
 					ApplyStretchRenderer,
 					ApplySymbologyToShapefile,
 					AugmentRealityToShowTabletopScene,
+					BuildRasterPyramids,
 					ChangeCameraController,
 					ConfigureElectronicNavigationalCharts,
 					ControlAnnotationSublayerVisibility,
@@ -4346,7 +4350,7 @@
 				D7010EBF2B05616900D43F55 /* DisplaySceneFromMobileScenePackageView.swift in Sources */,
 				D7337C602ABD142D00A5D865 /* ShowMobileMapPackageExpirationDateView.swift in Sources */,
 				00E5401E27F3CCA200CF66D5 /* ContentView.swift in Sources */,
-				00246306309A700C000D70F5 /* GenerateRasterPyramidsView.swift in Sources */,
+				00246306309A700C000D70F5 /* BuildRasterPyramidsView.swift in Sources */,
 				D7634FAF2A43B7AC00F8AEFB /* CreateConvexHullAroundGeometriesView.swift in Sources */,
 				E066DD382860AB28004D3D5B /* StyleGraphicsWithRendererView.swift in Sources */,
 				108EC04129D25B2C000F35D0 /* QueryFeatureTableView.swift in Sources */,
@@ -4358,6 +4362,7 @@
 				88FB70D42DCD10B600EB76E3 /* AuthenticateWithIntegratedWindowsAuthenticationView.swift in Sources */,
 				88E52E812DCA703B00F48409 /* ApplyHillshadeRendererToRasterView.SettingsView.swift in Sources */,
 				D71C5F642AAA7A88006599FD /* CreateSymbolStylesFromWebStylesView.swift in Sources */,
+				008E5544309D4FC700692E81 /* BuildRasterPyramidsView.Model.swift in Sources */,
 				D7CC33FF2A31475C00198EDF /* ShowExploratoryLineOfSightBetweenPointsView.swift in Sources */,
 				D70BE5792A5624A80022CA02 /* CategoriesView.swift in Sources */,
 				10BD9EB42BF51B4B00ABDBD5 /* GenerateOfflineMapWithCustomParametersView.Model.swift in Sources */,
