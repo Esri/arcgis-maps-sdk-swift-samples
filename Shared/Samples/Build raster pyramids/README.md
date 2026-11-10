@@ -14,24 +14,24 @@ A hybrid raster format (such as geospatial PDF) containing vector data can parti
 
 The sample initially displays a geospatial PDF raster without pyramids. Pan and zoom to observe its display performance.
 
-Tap the "build" button and wait for the build to complete. Pan and zoom again to compare performance of the raster with pyramids.
+Tap the "build" button and wait for the build to complete. Pan and zoom again to compare the performance of the raster with pyramids.
 
 Tap the "delete" button to delete the pyramids and recreate the raster layer without them. Repeat the same navigation to compare the two states.
 
-Tap the "zoom" button to set the viewpoint to the raster's full resolution viewpoint.
+Tap the "zoom" button to set the viewpoint to the various pyramid levels, or the raster's native resolution when the pyramids aren't built.
 
 ## How it works
 
 1. Create and load a geospatial PDF `Raster` from the local file.
 2. Create a `RasterLayer` from the raster, add it to the map's operational layers, and set the initial viewpoint to its extent.
 3. Get the `pyramids` property after loading the raster.
-  * Use `RasterPyramids.activeBuildOperation` to determine if an operation is already running.
-4. When the build button is tapped, create `BuildRasterPyramidsParameters` and call `RasterPyramids.build(using:)` method.
-  * Start a `BuildRasterPyramidsOperation` that generates raster pyramids files alongside the raster file.
-  * Wait for the operation to complete.
-    * A successful `result` contains `RasterPyramidInfo` about the pyramid set that was built.
-    * If the operation fails or is canceled, the corresponding error is reported.
-5. When the delete button is tapped, call `RasterPyramids.delete()` method to remove the external pyramids. Recreate and re-add the raster layer.
+    * Use `RasterPyramids.activeBuildOperation` to determine if an operation is already running.
+4. When the build button is tapped, create `BuildRasterPyramidsParameters` and call the `RasterPyramids.build(using:)` method.
+    * Start a `BuildRasterPyramidsOperation` that generates raster pyramid files alongside the raster file.
+    * Wait for the operation to complete.
+        * A successful `result` contains `RasterPyramidInfo` about the pyramid set that was built.
+        * If the operation fails or is canceled, the corresponding error is reported.
+5. When the delete button is tapped, call the `RasterPyramids.delete()` method to remove the external pyramids. Recreate and re-add the raster layer.
 
 ## Relevant API
 
@@ -44,13 +44,13 @@ Tap the "zoom" button to set the viewpoint to the raster's full resolution viewp
 
 ## About the data
 
-The sample uses an open source [Park Map - Yosemite National Park](https://www.arcgis.com/home/item.html?id=a5b6e3c425f34631bba1bfbf859d5052) geospatial PDF containing vector cartography and raster to show the various features of Yosemite.
+The sample uses an open-source [Park Map - Yosemite National Park](https://www.arcgis.com/home/item.html?id=a5b6e3c425f34631bba1bfbf859d5052) geospatial PDF containing vector cartography and raster to show the various features of Yosemite.
 
 ## Additional information
 
 Pyramids only need to be built once for a raster dataset and can be reused when the raster is opened again. This sample allows deleting the pyramids to demonstrate the performance difference. The raster pyramids APIs build and delete external `.ovr` pyramid files; they do not delete embedded pyramids within the raster.
 
-For more information, see
+For more information, see:
 
 * [Build and manage raster pyramids](https://developers.arcgis.com/swift/layers/add-raster-data/#build-and-manage-raster-pyramids) on Esri Developer website
 * [Raster pyramids](https://doc.esri.com/en/arcgis-pro/latest/help/data/imagery/raster-pyramids.html) in the ArcGIS Pro documentation
