@@ -107,11 +107,19 @@ extension BuildRasterPyramidsView {
                 status = .notBuilt(additionalInfo: "Doesn't support pyramid")
                 return
             }
-            if let info = pyramids.info, info.isEmbedded {
-                // Pyramids can be embedded in the source raster dataset or
-                // stored in a separate pyramid file (.ovr). We cannot
-                // build pyramids for a raster if the pyramids are embedded.
-                status = .notBuilt(additionalInfo: "Embedded")
+            if let info = pyramids.info {
+                if info.isEmbedded {
+                    // Pyramids can be embedded in the source raster dataset or
+                    // stored in a separate pyramid file (.ovr). We cannot
+                    // build pyramids for a raster if the pyramids are embedded.
+                    status = .notBuilt(additionalInfo: "Embedded")
+                } else if info.fileURL != nil {
+                    // If the pyramids are not embedded, and the file path is
+                    // not nil, then the pyramids are built.
+                    status = .built
+                } else {
+                    fatalError("Unexpected state: pyramids.info is not-nil but pyramids aren't built or embedded.")
+                }
             } else {
                 status = .notBuilt(additionalInfo: "Ready")
             }
