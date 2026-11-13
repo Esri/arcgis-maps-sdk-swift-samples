@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import ArcGIS
-import SwiftUI
+import Foundation
 
 extension DisplayGeometryEditorInformationDuringInteractionView {
     /// A model that manages the map, graphics, and geometry editing session.
@@ -33,7 +33,7 @@ extension DisplayGeometryEditorInformationDuringInteractionView {
             )
             return map
         }()
-
+        
         /// The graphics overlay containing the geometries to edit.
         let graphicsOverlay = GraphicsOverlay(renderingMode: .dynamic)
         /// The geometry editor used to edit identified graphics.
@@ -44,15 +44,15 @@ extension DisplayGeometryEditorInformationDuringInteractionView {
             configuration.allowsDeletingSelectedElement = false
             configuration.allowsVertexSelection = false
             configuration.allowsPartCreation = false
-
+            
             let vertexTool = VertexTool()
             vertexTool.configuration = configuration
-
+            
             let geometryEditor = GeometryEditor()
             geometryEditor.tool = vertexTool
             return geometryEditor
         }()
-
+        
         /// A Boolean value indicating whether an editing session is active.
         private(set) var isEditing = false
         /// A Boolean value indicating whether the last edit can be undone.
@@ -61,10 +61,10 @@ extension DisplayGeometryEditorInformationDuringInteractionView {
         private(set) var canRedo = false
         /// The information displayed for the current editing interaction.
         private(set) var interactionInformation: String?
-
+        
         /// The graphic currently being edited.
         private var editingGraphic: Graphic?
-
+        
         /// The text displayed over the map.
         var informationText: String {
             if let interactionInformation {
@@ -75,19 +75,19 @@ extension DisplayGeometryEditorInformationDuringInteractionView {
                 "Tap a graphic to start the geometry editor."
             }
         }
-
+        
         init() {
             let lineSymbol = SimpleLineSymbol(color: .red, width: 2)
             let polygonSymbol = SimpleFillSymbol(color: .clear, outline: lineSymbol)
             let markerSymbol = SimpleMarkerSymbol(style: .circle, color: .blue, size: 8)
-
+            
             graphicsOverlay.addGraphics([
                 Graphic(geometry: Self.redlandsMultipoint, symbol: markerSymbol),
                 Graphic(geometry: Self.redlandsPolygon, symbol: polygonSymbol),
                 Graphic(geometry: Self.redlandsPolyline, symbol: lineSymbol)
             ])
         }
-
+        
         /// Starts editing the given graphic while keeping its original geometry visible.
         func startEditing(_ graphic: Graphic) {
             guard let geometry = graphic.geometry else { return }
@@ -96,42 +96,42 @@ extension DisplayGeometryEditorInformationDuringInteractionView {
             geometryEditor.selectGeometry()
             isEditing = true
         }
-
+        
         /// Saves the edited geometry to the graphic and stops editing.
         func saveEdits() {
             guard let editingGraphic else { return }
             editingGraphic.geometry = geometryEditor.stop()
             finishEditing()
         }
-
+        
         /// Discards the edited geometry and stops editing.
         func discardEdits() {
             guard editingGraphic != nil else { return }
             geometryEditor.stop()
             finishEditing()
         }
-
+        
         /// Observes whether geometry edits can be undone.
         func observeCanUndo() async {
             for await canUndo in geometryEditor.$canUndo {
                 self.canUndo = canUndo
             }
         }
-
+        
         /// Observes whether geometry edits can be redone.
         func observeCanRedo() async {
             for await canRedo in geometryEditor.$canRedo {
                 self.canRedo = canRedo
             }
         }
-
+        
         /// Observes interaction previews and updates the information text.
         func observeInteractionPreviews() async {
             for await preview in geometryEditor.interactionPreviews {
                 interactionInformation = preview.flatMap(information(for:))
             }
         }
-
+        
         /// Creates display information for an interaction preview.
         private func information(for preview: GeometryEditorInteractionPreview) -> String? {
             switch preview.interactionType {
@@ -167,7 +167,7 @@ extension DisplayGeometryEditorInformationDuringInteractionView {
                 return nil
             }
         }
-
+        
         /// Returns the first point in a supported geometry.
         private func firstPoint(in geometry: Geometry) -> Point? {
             switch geometry {
@@ -181,14 +181,14 @@ extension DisplayGeometryEditorInformationDuringInteractionView {
                 nil
             }
         }
-
+        
         /// Clears the editing state.
         private func finishEditing() {
             editingGraphic = nil
             interactionInformation = nil
             isEditing = false
         }
-
+        
         /// A polygon in Redlands, California.
         private static let redlandsPolygon: ArcGIS.Polygon = try! .fromJSON(
             Data(
@@ -197,7 +197,7 @@ extension DisplayGeometryEditorInformationDuringInteractionView {
                 """.utf8
             )
         )
-
+        
         /// A polyline in Redlands, California.
         private static let redlandsPolyline: Polyline = try! .fromJSON(
             Data(
@@ -206,7 +206,7 @@ extension DisplayGeometryEditorInformationDuringInteractionView {
                 """.utf8
             )
         )
-
+        
         /// A multipoint in Redlands, California.
         private static let redlandsMultipoint: Multipoint = try! .fromJSON(
             Data(

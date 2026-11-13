@@ -46,7 +46,7 @@ struct FilterFeaturesInSceneView: View {
         case .none:
             ProgressView("Loading model")
                 .task {
-                    modelResult = await Result(awaiting: Model.init)
+                    modelResult = await Result(catching: Model.init)
                 }
         }
     }

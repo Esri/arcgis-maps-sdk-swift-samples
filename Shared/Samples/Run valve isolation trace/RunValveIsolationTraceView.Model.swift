@@ -323,7 +323,7 @@ extension RunValveIsolationTraceView {
                     )
                     statusText = String(format: "Edge element at distance %.3f along edge added to the filter barriers.", element.fractionAlongEdge)
                 }
-            @unknown default:
+            default:
                 return
             }
             
