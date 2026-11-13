@@ -47,7 +47,7 @@ extension BuildRasterPyramidsView {
         @ObservationIgnored private var pyramids: RasterPyramids?
         /// The operation that builds the raster pyramids.
         private(set) var buildOperation: BuildRasterPyramidsOperation?
-        /// The number of pyramids levels.
+        /// The number of pyramid levels.
         var levelCount: Int {
             pyramids?.info?.levelCount ?? 0
         }
@@ -83,8 +83,8 @@ extension BuildRasterPyramidsView {
         /// Sets up the model.
         @MainActor
         func setup() async {
-            guard let rasterFile = prepareWorkingCopy() else { return }
-            let raster = Raster(fileURL: rasterFile)
+            guard let rasterFileURL = prepareWorkingCopy() else { return }
+            let raster = Raster(fileURL: rasterFileURL)
             let layer = RasterLayer(raster: raster)
             self.raster = raster
             do {

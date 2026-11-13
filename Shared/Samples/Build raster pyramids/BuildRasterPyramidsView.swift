@@ -40,15 +40,15 @@ struct BuildRasterPyramidsView: View {
     var body: some View {
         MapViewReader { mapView in
             MapView(map: model.map)
-                .onViewpointChanged(kind: .centerAndScale) {
-                    viewpointCenter = $0.targetGeometry as? Point
+                .onViewpointChanged(kind: .centerAndScale) { newViewpoint in
+                    viewpointCenter = newViewpoint.targetGeometry as? Point
                 }
-                .onDrawStatusChanged { drawStatus in
-                    withAnimation { self.drawStatus = drawStatus }
+                .onDrawStatusChanged { newDrawStatus in
+                    withAnimation { drawStatus = newDrawStatus }
                 }
                 .interactionModes(model.isBusy ? [] : .all)
-                .onGeometryChange(for: CGSize.self, of: \.size) {
-                    viewSize = $0
+                .onGeometryChange(for: CGSize.self, of: \.size) { newSize in
+                    viewSize = newSize
                 }
                 .overlay(alignment: .top) {
                     HStack {
@@ -83,8 +83,8 @@ struct BuildRasterPyramidsView: View {
                         } label: {
                             Image(systemName: "arrow.up.left.and.down.right.magnifyingglass")
                         }
-                        .onChange(of: model.levelCount) { _, levelCount in
-                            stepperValue = min(stepperValue, levelCount)
+                        .onChange(of: model.levelCount) { _, newLevelCount in
+                            stepperValue = min(stepperValue, newLevelCount)
                         }
                         .disabled(model.isBusy || viewSize == nil)
                         .popover(isPresented: $showsLevelStepper) {
