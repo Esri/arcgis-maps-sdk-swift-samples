@@ -139,7 +139,7 @@ extension BuildRasterPyramidsView {
                   let info = raster?.info else {
                 return nil
             }
-            let scale = pow(2.0, Double(level))
+            let scale = Double(2 << level)
             let width = viewSize.width * info.cellSizeX * scale
             let height = viewSize.height * info.cellSizeY * scale
             guard width > 0, height > 0 else { return nil }
