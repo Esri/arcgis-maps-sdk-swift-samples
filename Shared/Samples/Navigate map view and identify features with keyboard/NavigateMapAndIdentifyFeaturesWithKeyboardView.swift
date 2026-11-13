@@ -285,15 +285,17 @@ private extension View {
 }
 
 private extension URL {
+#if !targetEnvironment(macCatalyst)
     /// The URL of the Accessibility menu in the Settings app.
     static var accessibilitySettings: URL {
         URL(string: "App-prefs:ACCESSIBILITY")!
     }
-
+#else
     /// The URL of the Accessibility pane in the macOS System Settings app.
     static var macOSAccessibilitySettings: URL {
         URL(string: "x-apple.systempreferences:com.apple.Accessibility-Settings.extension")!
     }
+#endif
 }
 
 #Preview {

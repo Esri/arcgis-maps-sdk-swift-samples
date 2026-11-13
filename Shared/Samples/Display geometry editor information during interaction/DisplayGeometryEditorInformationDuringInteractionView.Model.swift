@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import ArcGIS
-import SwiftUI
+import Foundation
 
 extension DisplayGeometryEditorInformationDuringInteractionView {
     /// A model that manages the map, graphics, and geometry editing session.
