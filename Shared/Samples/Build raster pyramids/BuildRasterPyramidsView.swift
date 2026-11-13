@@ -34,8 +34,6 @@ struct BuildRasterPyramidsView: View {
     @State private var viewSize: CGSize?
     /// The center of the current map viewpoint.
     @State private var viewpointCenter: Point?
-    /// A Boolean value indicating whether the map view is drawing.
-    private var drawInProgress: Bool { drawStatus == .inProgress }
     
     var body: some View {
         MapViewReader { mapView in
@@ -61,7 +59,7 @@ struct BuildRasterPyramidsView: View {
                         if let operation = model.buildOperation {
                             ProgressView(operation.progress)
                                 .progressViewStyle(.gauge)
-                        } else if drawInProgress || model.isBusy {
+                        } else if drawStatus == .inProgress || model.isBusy {
                             ProgressView()
                         } else {
                             Image(systemName: "checkmark.circle")
@@ -123,7 +121,7 @@ struct BuildRasterPyramidsView: View {
                                 Task { await model.buildPyramids() }
                             }
                         }
-                        .disabled(drawInProgress || (model.status == .built ? !model.canDelete : !model.canBuild))
+                        .disabled(drawStatus == .inProgress || (model.status == .built ? !model.canDelete : !model.canBuild))
                     }
                 }
                 .errorAlert(presentingError: $model.error)
