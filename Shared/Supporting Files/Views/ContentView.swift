@@ -20,7 +20,7 @@ struct ContentView: View {
     @Environment(\.requestReview) private var requestReview
     
     /// The view model for requesting App Store reviews.
-    @Environment(\.requestReviewModel) private var requestReviewModel
+    @State private var requestReviewModel = RequestReviewModel()
     
     /// The visibility of the leading columns in the navigation split view.
     @State private var columnVisibility: NavigationSplitViewVisibility = .all

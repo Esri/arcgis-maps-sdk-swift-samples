@@ -156,7 +156,7 @@ extension TraceUtilityNetworkView {
                         )
                         add(element, at: mapPoint)
                     }
-                @unknown default:
+                default:
                     return
                 }
             } else {

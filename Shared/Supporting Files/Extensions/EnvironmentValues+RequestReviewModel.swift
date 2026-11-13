@@ -16,7 +16,7 @@ import SwiftUI
 
 extension EnvironmentValues {
     /// The view model for requesting App Store reviews.
-    @Entry var requestReviewModel = RequestReviewModel()
+    @Entry var requestReviewModel: RequestReviewModel?
 }
 
 /// A view model for requesting App Store reviews.
