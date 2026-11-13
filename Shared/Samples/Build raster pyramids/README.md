@@ -14,11 +14,11 @@ A hybrid raster format (such as geospatial PDF) containing vector data can parti
 
 The sample initially displays a geospatial PDF raster without pyramids. Pan and zoom to observe its display performance.
 
-Tap the "build" button and wait for the build to complete. Pan and zoom again to compare the performance of the raster with pyramids.
+Tap the Build button and wait for the build to complete. Pan and zoom again to compare the performance of the raster with pyramids.
 
-Tap the "delete" button to delete the pyramids and recreate the raster layer without them. Repeat the same navigation to compare the two states.
+Tap the Delete button to delete the pyramids and recreate the raster layer without them. Repeat the same navigation to compare the two states.
 
-Tap the "zoom" button to set the viewpoint to the various pyramid levels, or the raster's native resolution when the pyramids aren't built.
+Tap the Zoom button to set the viewpoint to the various pyramid levels, or the raster's native resolution when the pyramids aren't built.
 
 ## How it works
 
@@ -26,12 +26,12 @@ Tap the "zoom" button to set the viewpoint to the various pyramid levels, or the
 2. Create a `RasterLayer` from the raster, add it to the map's operational layers, and set the initial viewpoint to its extent.
 3. Get the `pyramids` property after loading the raster.
     * Use `RasterPyramids.activeBuildOperation` to determine if an operation is already running.
-4. When the build button is tapped, create `BuildRasterPyramidsParameters` and call the `RasterPyramids.build(using:)` method.
+4. When the Build button is tapped, create `BuildRasterPyramidsParameters` and call the `RasterPyramids.build(using:)` method.
     * Start a `BuildRasterPyramidsOperation` that generates raster pyramid files alongside the raster file.
     * Wait for the operation to complete.
         * A successful `result` contains `RasterPyramidInfo` about the pyramid set that was built.
         * If the operation fails or is canceled, the corresponding error is reported.
-5. When the delete button is tapped, call the `RasterPyramids.delete()` method to remove the external pyramids. Recreate and re-add the raster layer.
+5. When the Delete button is tapped, call the `RasterPyramids.delete()` method to remove the external pyramids. Recreate and re-add the raster layer.
 
 ## Relevant API
 
