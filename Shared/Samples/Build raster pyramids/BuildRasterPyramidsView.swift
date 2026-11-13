@@ -146,7 +146,7 @@ struct BuildRasterPyramidsView: View {
             "Pyramids built"
         case .notBuilt(let additionalInfo):
             "Pyramids not built: \(additionalInfo)"
-        case .error(let details):
+        case .failed(let details):
             "Error: \(details)"
         }
     }

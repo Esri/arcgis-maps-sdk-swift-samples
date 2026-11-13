@@ -25,7 +25,7 @@ extension BuildRasterPyramidsView {
             case building
             case built
             case notBuilt(additionalInfo: String)
-            case error(details: String)
+            case failed(details: String)
         }
         
         /// A map with light gray basemap and a raster layer.
@@ -57,7 +57,7 @@ extension BuildRasterPyramidsView {
             switch status {
             case .loading, .building:
                 true
-            case .built, .notBuilt, .error:
+            case .built, .notBuilt, .failed:
                 false
             }
         }
@@ -91,7 +91,7 @@ extension BuildRasterPyramidsView {
                 try await layer.load()
             } catch {
                 self.error = error
-                status = .error(details: "Failed to load raster layer")
+                status = .failed(details: "Failed to load raster layer")
                 return
             }
             self.layer = layer
@@ -166,7 +166,7 @@ extension BuildRasterPyramidsView {
             } catch {
                 try? FileManager.default.removeItem(at: directory)
                 self.error = error
-                status = .error(details: "Failed to copy raster")
+                status = .failed(details: "Failed to copy raster")
                 return nil
             }
         }
@@ -187,7 +187,7 @@ extension BuildRasterPyramidsView {
                 status = .built
             } catch {
                 self.error = error
-                status = .error(details: "Failed to build pyramids, \(error.localizedDescription)")
+                status = .failed(details: "Failed to build pyramids, \(error.localizedDescription)")
             }
         }
         
@@ -198,7 +198,7 @@ extension BuildRasterPyramidsView {
                 status = .notBuilt(additionalInfo: "Ready")
             } catch {
                 self.error = error
-                status = .error(details: "Failed to delete pyramids, \(error.localizedDescription)")
+                status = .failed(details: "Failed to delete pyramids, \(error.localizedDescription)")
             }
         }
         
