@@ -32,11 +32,8 @@ extension BuildRasterPyramidsView {
         let map = Map(basemapStyle: .arcGISLightGrayBase)
         /// The initial viewpoint for the map view.
         @ObservationIgnored private(set) var initialViewpoint: Viewpoint?
-        /// The error that occurred during raster pyramid operations.
-        var error: (any Error)?
         /// The status of the model's actions.
         private(set) var status: State = .loading
-        
         /// The directory that contains the raster and its pyramids.
         @ObservationIgnored private var temporaryDirectory: URL?
         /// The raster for building pyramids.
@@ -47,6 +44,7 @@ extension BuildRasterPyramidsView {
         @ObservationIgnored private var pyramids: RasterPyramids?
         /// The operation that builds the raster pyramids.
         private(set) var buildOperation: BuildRasterPyramidsOperation?
+        
         /// The number of pyramid levels.
         var levelCount: Int {
             pyramids?.info?.levelCount ?? 0
@@ -61,6 +59,7 @@ extension BuildRasterPyramidsView {
                 false
             }
         }
+        
         /// A Boolean value indicating whether the build pyramids operation
         /// can start.
         var canBuild: Bool {
@@ -71,6 +70,7 @@ extension BuildRasterPyramidsView {
             pyramids?.activeBuildOperation == nil &&
             buildOperation == nil
         }
+        
         /// A Boolean value indicating whether the pyramids can be deleted.
         var canDelete: Bool {
             !isBusy &&

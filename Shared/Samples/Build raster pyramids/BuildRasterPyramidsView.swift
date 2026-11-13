@@ -22,18 +22,21 @@ struct BuildRasterPyramidsView: View {
     @State private var showsLevelStepper = false
     /// The value of the stepper.
     @State private var stepperValue = 0
-    /// The pyramid level for calculation. Zero represents full resolution.
-    private var pyramidLevel: Int {
-        // The pyramid level is the inverse of the stepper value, i.e.,
-        // the stepper shows the full resolution as the maximum value.
-        model.levelCount - stepperValue
-    }
     /// The current draw status of the map view.
     @State private var drawStatus: DrawStatus = .inProgress
     /// The map view's size for calculating a full-resolution viewpoint.
     @State private var viewSize: CGSize?
     /// The center of the current map viewpoint.
     @State private var viewpointCenter: Point?
+    /// The error that occurred during raster pyramid operations.
+    @State private var error: (any Error)?
+    
+    /// The pyramid level for calculation. Zero represents full resolution.
+    private var pyramidLevel: Int {
+        // The pyramid level is the inverse of the stepper value, i.e.,
+        // the stepper shows the full resolution as the maximum value.
+        model.levelCount - stepperValue
+    }
     
     var body: some View {
         MapViewReader { mapView in
