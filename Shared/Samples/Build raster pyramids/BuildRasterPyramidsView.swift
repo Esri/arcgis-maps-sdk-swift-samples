@@ -51,14 +51,10 @@ struct BuildRasterPyramidsView: View {
                     viewSize = newSize
                 }
                 .overlay(alignment: .top) {
-                    HStack {
-                        Text("Status:")
-                        Text(status)
-                            .italic()
-                    }
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical, 6)
-                    .background(.thinMaterial, ignoresSafeAreaEdges: .horizontal)
+                    Text("Status: \(Text(status).italic())")
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 6)
+                        .background(.thinMaterial, ignoresSafeAreaEdges: .horizontal)
                 }
                 .toolbar {
                     ToolbarItemGroup(placement: .bottomBar) {
