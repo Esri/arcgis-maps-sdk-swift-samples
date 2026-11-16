@@ -334,15 +334,17 @@ private extension UpdateBasemapForContrastAccessibilityView {
 }
 
 private extension URL {
+#if !targetEnvironment(macCatalyst)
     /// The URL of this app's page in the Settings app.
     static var appSettings: URL {
         URL(string: UIApplication.openSettingsURLString)!
     }
-    
+#else
     /// The URL of the Accessibility pane in the macOS System Settings app.
     static var macOSAccessibilitySettings: URL {
         URL(string: "x-apple.systempreferences:com.apple.Accessibility-Settings.extension")!
     }
+#endif
     
     /// The URL of the high-contrast light basemap item.
     static var highContrastLightBasemap: URL {

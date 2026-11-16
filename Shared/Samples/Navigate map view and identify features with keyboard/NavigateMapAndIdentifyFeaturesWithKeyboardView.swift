@@ -148,7 +148,7 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
                                     modifiers: []
                                 )
                             }
-
+                            
                             Button("Dismiss callout") {
                                 Task { await dismissCallout() }
                             }
@@ -158,7 +158,7 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
                         .opacity(0)
                         .allowsHitTesting(false)
                         .accessibilityHidden(true)
-
+                        
                         if model.hasMoreThanNineSelectedFeatures {
                             Text("More than 9 restaurants are in the search area. Zoom in or pan to narrow the results.")
                                 .statusText()
@@ -245,7 +245,7 @@ struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
         calloutPlacement = nil
         statusMessage = ""
     }
-
+    
     /// The callout content for a restaurant feature.
     private func calloutContent(for feature: Feature) -> some View {
         let anchor = feature.geometry as? Point
@@ -285,15 +285,17 @@ private extension View {
 }
 
 private extension URL {
+#if !targetEnvironment(macCatalyst)
     /// The URL of the Accessibility menu in the Settings app.
     static var accessibilitySettings: URL {
         URL(string: "App-prefs:ACCESSIBILITY")!
     }
-
+#else
     /// The URL of the Accessibility pane in the macOS System Settings app.
     static var macOSAccessibilitySettings: URL {
         URL(string: "x-apple.systempreferences:com.apple.Accessibility-Settings.extension")!
     }
+#endif
 }
 
 #Preview {

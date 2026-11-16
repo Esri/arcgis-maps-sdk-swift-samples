@@ -140,7 +140,7 @@ private final class Model {
     func setUp() async throws {
         // Creates a discrete field viewshed function using a TIF file and viewshed parameters.
         let elevationField = try await ContinuousField.field(fromFilesAt: [.arranTIF], bandIndex: 0)
-        let elevationFunction = ContinuousFieldFunction.function(withResult: elevationField)
+        let elevationFunction = ContinuousFieldSupplier(field: elevationField)
         let viewshedFunction = ViewshedFunction(
             elevation: elevationFunction,
             parameters: viewshedParameters

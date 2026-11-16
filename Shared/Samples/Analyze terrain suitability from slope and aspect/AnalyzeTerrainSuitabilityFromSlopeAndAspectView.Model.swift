@@ -69,8 +69,8 @@ extension AnalyzeTerrainSuitabilityFromSlopeAndAspectView {
                 bandIndex: 0,
                 spatialReference: Self.utm30N
             )
-            let elevationFunction = ContinuousFieldFunction.function(
-                withResult: elevationField
+            let elevationFunction = ContinuousFieldSupplier(
+                field: elevationField
             )
             let inputs = TerrainAnalysisInputs(
                 slopeFunction: elevationFunction.slope(),

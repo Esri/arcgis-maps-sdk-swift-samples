@@ -48,10 +48,10 @@ struct SampleDetailView: View {
     private var sampleBody: some View {
         sample.makeBody()
             .onAppear {
-                requestReviewModel.sampleIsShowing = true
+                requestReviewModel?.sampleIsShowing = true
             }
             .onDisappear {
-                requestReviewModel.sampleIsShowing = false
+                requestReviewModel?.sampleIsShowing = false
             }
     }
     
