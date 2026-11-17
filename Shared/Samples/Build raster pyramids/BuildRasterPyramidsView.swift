@@ -167,6 +167,7 @@ struct BuildRasterPyramidsView: View {
                         }
                     } catch {
                         status = .failed(details: "Failed to load raster, \(error.localizedDescription)")
+                        return
                     }
                     if let pyramids = model.pyramids {
                         if let info = pyramids.info {
