@@ -57,10 +57,6 @@ struct BrowseBuildingFloorsView: View {
                         viewpoint: $viewpoint,
                         isNavigating: $isMapNavigating
                     )
-                    .frame(
-                        maxWidth: 400,
-                        maxHeight: 400
-                    )
                     .padding(.toolkitDefault)
                     .padding(.bottom, attributionBarHeight)
                 }
