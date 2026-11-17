@@ -137,11 +137,7 @@ extension BuildRasterPyramidsView {
             try pyramids.delete()
         }
         
-        /// Tears down the model and cleans up resources.
-        func tearDown() {
-            if let layer = layer.take() {
-                map.removeOperationalLayer(layer)
-            }
+        deinit {
             if let buildOperation = pyramids?.activeBuildOperation {
                 buildOperation.cancel()
             }

@@ -195,7 +195,6 @@ struct BuildRasterPyramidsView: View {
                         status = .notBuilt(additionalInfo: "Doesn't support pyramid")
                     }
                 }
-                .onTeardown { model.tearDown() }
         }
     }
     
