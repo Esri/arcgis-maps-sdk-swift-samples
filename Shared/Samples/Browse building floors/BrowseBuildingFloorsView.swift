@@ -41,7 +41,7 @@ struct BrowseBuildingFloorsView: View {
     @State private var attributionBarHeight: CGFloat?
     
     var body: some View {
-        MapView(map: map)
+        MapView(map: map, viewpoint: viewpoint)
             .onViewpointChanged(kind: .centerAndScale) { viewpoint = $0 }
             .onNavigatingChanged { isMapNavigating = $0 }
             .onAttributionBarHeightChanged { height in
