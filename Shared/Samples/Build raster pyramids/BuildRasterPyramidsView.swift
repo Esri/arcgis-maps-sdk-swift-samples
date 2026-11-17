@@ -30,6 +30,18 @@ struct BuildRasterPyramidsView: View {
     @State private var viewpointCenter: Point?
     /// The error that occurred during raster pyramid operations.
     @State private var error: (any Error)?
+    /// The status of the sample.
+    @State private var status: State = .loading
+    
+    /// A Boolean value indicating whether the sample is performing an action.
+    private var isBusy: Bool {
+        switch status {
+        case .loading, .building:
+            true
+        case .built, .notBuilt, .failed:
+            false
+        }
+    }
     
     /// The pyramid level for calculation. Zero represents full resolution.
     private var pyramidLevel: Int {
@@ -47,22 +59,22 @@ struct BuildRasterPyramidsView: View {
                 .onDrawStatusChanged { newDrawStatus in
                     withAnimation { drawStatus = newDrawStatus }
                 }
-                .interactionModes(model.isBusy ? [] : .all)
+                .interactionModes(isBusy ? [] : .all)
                 .onGeometryChange(for: CGSize.self, of: \.size) { newSize in
                     viewSize = newSize
                 }
                 .overlay(alignment: .top) {
-                    Text("Status: \(Text(status).italic())")
+                    Text("Status: \(Text(status.description).italic())")
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 6)
                         .background(.thinMaterial, ignoresSafeAreaEdges: .horizontal)
                 }
                 .toolbar {
                     ToolbarItemGroup(placement: .bottomBar) {
-                        if let operation = model.buildOperation {
+                        if let operation = model.pyramids?.activeBuildOperation {
                             ProgressView(operation.progress)
                                 .progressViewStyle(.gauge)
-                        } else if drawStatus == .inProgress || model.isBusy {
+                        } else if drawStatus == .inProgress || isBusy {
                             ProgressView()
                         } else {
                             Image(systemName: "checkmark.circle")
@@ -72,18 +84,20 @@ struct BuildRasterPyramidsView: View {
                         Spacer()
                         
                         // A button to show or hide the pyramid level stepper.
-                        Button {
+                        Button(
+                            "Zoom",
+                            systemImage: "arrow.up.left.and.down.right.magnifyingglass"
+                        ) {
                             showsLevelStepper = true
                             Task {
                                 await setViewpoint(pyramidLevel: pyramidLevel, mapView: mapView)
                             }
-                        } label: {
-                            Image(systemName: "arrow.up.left.and.down.right.magnifyingglass")
                         }
+                        .labelStyle(.iconOnly)
                         .onChange(of: model.levelCount) { _, newLevelCount in
                             stepperValue = min(stepperValue, newLevelCount)
                         }
-                        .disabled(model.isBusy || viewSize == nil)
+                        .disabled(drawStatus == .inProgress || isBusy || viewSize == nil)
                         .popover(isPresented: $showsLevelStepper) {
                             Group {
                                 if model.levelCount > 0 {
@@ -99,7 +113,7 @@ struct BuildRasterPyramidsView: View {
                                             await setViewpoint(pyramidLevel: pyramidLevel, mapView: mapView)
                                         }
                                     }
-                                    .disabled(model.isBusy)
+                                    .disabled(isBusy)
                                 } else {
                                     VStack {
                                         Text("Pyramid level: \(stepperValue)")
@@ -116,41 +130,71 @@ struct BuildRasterPyramidsView: View {
                         
                         Spacer()
                         
-                        // A button to build or delete the raster pyramids.
-                        Button(model.status == .built ? "Delete" : "Build") {
-                            if model.status == .built {
-                                model.deletePyramids()
-                            } else {
-                                Task { await model.buildPyramids() }
+                        // Buttons to build or delete the raster pyramids.
+                        if status == .built {
+                            Button("Delete") {
+                                do {
+                                    try model.deletePyramids()
+                                    status = .notBuilt(additionalInfo: "Ready")
+                                } catch {
+                                    status = .failed(details: "Failed to delete pyramids, \(error.localizedDescription)")
+                                }
                             }
+                            .disabled(drawStatus == .inProgress || !model.canDelete)
+                        } else {
+                            Button("Build") {
+                                Task {
+                                    do {
+                                        status = .building
+                                        try await model.buildPyramids()
+                                        status = .built
+                                    } catch {
+                                        status = .failed(details: "Failed to build pyramids, \(error.localizedDescription)")
+                                    }
+                                }
+                            }
+                            .disabled(drawStatus == .inProgress || !model.canBuild)
                         }
-                        .disabled(drawStatus == .inProgress || (model.status == .built ? !model.canDelete : !model.canBuild))
                     }
                 }
-                .errorAlert(presentingError: $model.error)
+                .errorAlert(presentingError: $error)
                 .task {
-                    await model.setup()
-                    if let initialViewpoint = model.initialViewpoint {
-                        await mapView.setViewpoint(initialViewpoint)
+                    do {
+                        status = .loading
+                        try await model.setUp()
+                        if let initialViewpoint = model.initialViewpoint {
+                            await mapView.setViewpoint(initialViewpoint)
+                        }
+                    } catch {
+                        status = .failed(details: "Failed to load raster, \(error.localizedDescription)")
+                    }
+                    if let pyramids = model.pyramids {
+                        if let info = pyramids.info {
+                            if info.isEmbedded {
+                                // Pyramids can be embedded in the source raster
+                                // dataset or stored in a separate pyramid file
+                                // (.ovr). We cannot build pyramids for a raster
+                                // if the pyramids are embedded.
+                                status = .notBuilt(additionalInfo: "Embedded")
+                            } else if info.fileURL != nil {
+                                // If the pyramids are not embedded, and the
+                                // file path is not nil, then the pyramids are
+                                // built.
+                                status = .built
+                            } else {
+                                fatalError("Unexpected state: pyramids.info is not-nil but pyramids aren't built or embedded.")
+                            }
+                        } else {
+                            status = .notBuilt(additionalInfo: "Ready")
+                        }
+                    } else {
+                        // This property is nil until the raster is loaded.
+                        // After the raster is loaded, this property is non-nil for
+                        // file-based rasters that supports pyramids.
+                        status = .notBuilt(additionalInfo: "Doesn't support pyramid")
                     }
                 }
                 .onTeardown { model.tearDown() }
-        }
-    }
-    
-    /// The status text for the model.
-    private var status: String {
-        switch model.status {
-        case .loading:
-            "Loading raster"
-        case .building:
-            "Building pyramids"
-        case .built:
-            "Pyramids built"
-        case .notBuilt(let additionalInfo):
-            "Pyramids not built: \(additionalInfo)"
-        case .failed(let details):
-            "Error: \(details)"
         }
     }
     
@@ -162,13 +206,38 @@ struct BuildRasterPyramidsView: View {
         guard let viewSize,
               let viewpointCenter,
               let viewpoint = model.makeViewpoint(
-                for: viewSize,
+                viewSize: viewSize,
                 level: level,
                 center: viewpointCenter
               ) else {
             return
         }
         await mapView.setViewpoint(viewpoint)
+    }
+    
+    /// The state of the sample.
+    private enum State: Equatable {
+        case loading
+        case building
+        case built
+        case notBuilt(additionalInfo: String)
+        case failed(details: String)
+        
+        /// The status text for the model.
+        var description: String {
+            switch self {
+            case .loading:
+                "Loading raster"
+            case .building:
+                "Building pyramids"
+            case .built:
+                "Pyramids built"
+            case .notBuilt(let additionalInfo):
+                "Pyramids not built: \(additionalInfo)"
+            case .failed(let details):
+                "Failure: \(details)"
+            }
+        }
     }
 }
 
