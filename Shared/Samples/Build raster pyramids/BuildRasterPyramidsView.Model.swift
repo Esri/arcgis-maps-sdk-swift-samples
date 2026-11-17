@@ -80,7 +80,7 @@ extension BuildRasterPyramidsView {
         /// Sets up the model.
         @MainActor
         func setUp() async throws {
-            let destination = temporaryDirectory.appendingPathComponent(URL.yosemiteGeoPDF.lastPathComponent)
+            let destination = temporaryDirectory.appending(path: URL.yosemiteGeoPDF.lastPathComponent)
             try FileManager.default.copyItem(at: .yosemiteGeoPDF, to: destination)
             let raster = Raster(fileURL: destination)
             let layer = RasterLayer(raster: raster)
