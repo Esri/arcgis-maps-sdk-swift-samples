@@ -64,7 +64,7 @@ struct BuildRasterPyramidsView: View {
                     viewSize = newSize
                 }
                 .overlay(alignment: .top) {
-                    Text("Status: \(Text(status.description).italic())")
+                    Text("Status: \(Text(status.message).italic())")
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 6)
                         .background(.thinMaterial, ignoresSafeAreaEdges: .horizontal)
@@ -224,7 +224,7 @@ struct BuildRasterPyramidsView: View {
         case failed(details: String)
         
         /// The status text for the model.
-        var description: String {
+        var message: String {
             switch self {
             case .loading:
                 "Loading raster"
