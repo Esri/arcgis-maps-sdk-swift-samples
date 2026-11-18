@@ -70,17 +70,17 @@ struct BuildRasterPyramidsView: View {
                         .background(.thinMaterial, ignoresSafeAreaEdges: .horizontal)
                 }
                 .toolbar {
-                    ToolbarItemGroup(placement: .bottomBar) {
-                        if let operation = model.pyramids?.activeBuildOperation {
-                            ProgressView(operation.progress)
-                                .progressViewStyle(.gauge)
-                        } else if drawStatus == .inProgress || isBusy {
-                            ProgressView()
-                        } else {
-                            Image(systemName: "checkmark.circle")
-                                .foregroundStyle(.green)
+                    if #available(iOS 26.0, *) {
+                        ToolbarItem(placement: .bottomBar) {
+                            actionProgressView
                         }
-                        
+                        .sharedBackgroundVisibility(.hidden)
+                    } else {
+                        ToolbarItem(placement: .bottomBar) {
+                            actionProgressView
+                        }
+                    }
+                    ToolbarItemGroup(placement: .bottomBar) {
                         Spacer()
                         
                         // A button to show or hide the pyramid level stepper.
@@ -195,6 +195,21 @@ struct BuildRasterPyramidsView: View {
                         status = .notBuilt(additionalInfo: "Doesn't support pyramid")
                     }
                 }
+        }
+    }
+    
+    /// A view that shows the progress various operations.
+    private var actionProgressView: some View {
+        Group {
+            if let operation = model.pyramids?.activeBuildOperation {
+                ProgressView(operation.progress)
+                    .progressViewStyle(.gauge)
+            } else if drawStatus == .inProgress || isBusy {
+                ProgressView()
+            } else {
+                Image(systemName: "checkmark.circle")
+                    .foregroundStyle(.green)
+            }
         }
     }
     
