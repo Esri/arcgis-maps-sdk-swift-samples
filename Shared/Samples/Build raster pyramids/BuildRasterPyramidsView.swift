@@ -198,7 +198,7 @@ struct BuildRasterPyramidsView: View {
         }
     }
     
-    /// A view that shows the progress various operations.
+    /// A view that shows the progress of various operations.
     private var actionProgressView: some View {
         Group {
             if let operation = model.pyramids?.activeBuildOperation {
