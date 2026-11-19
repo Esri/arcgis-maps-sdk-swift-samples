@@ -16,7 +16,7 @@ import ArcGIS
 import SwiftUI
 import TipKit
 
-struct NavigateMapAndIdentifyFeaturesWithKeyboardView: View {
+struct NavigateMapViewAndIdentifyFeaturesWithKeyboardView: View {
     /// Opens URLs using SwiftUI's environment-provided action.
     @Environment(\.openURL) private var openURL
     
@@ -300,6 +300,6 @@ private extension URL {
 
 #Preview {
     NavigationStack {
-        NavigateMapAndIdentifyFeaturesWithKeyboardView()
+        NavigateMapViewAndIdentifyFeaturesWithKeyboardView()
     }
 }

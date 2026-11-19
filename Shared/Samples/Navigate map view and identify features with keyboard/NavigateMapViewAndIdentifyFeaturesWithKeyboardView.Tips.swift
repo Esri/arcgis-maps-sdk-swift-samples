@@ -15,7 +15,7 @@
 import SwiftUI
 import TipKit
 
-extension NavigateMapAndIdentifyFeaturesWithKeyboardView {
+extension NavigateMapViewAndIdentifyFeaturesWithKeyboardView {
     /// A TipKit tip that explains the centered rectangle.
     struct AreaOfInterestTip: Tip {
         var title: Text {

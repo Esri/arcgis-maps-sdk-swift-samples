@@ -16,7 +16,7 @@ import ArcGIS
 import Foundation
 import UIKit
 
-extension NavigateMapAndIdentifyFeaturesWithKeyboardView {
+extension NavigateMapViewAndIdentifyFeaturesWithKeyboardView {
     /// The model for the sample.
     @MainActor
     @Observable
