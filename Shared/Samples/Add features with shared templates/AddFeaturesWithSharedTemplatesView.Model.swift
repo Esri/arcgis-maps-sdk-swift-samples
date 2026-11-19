@@ -16,7 +16,7 @@ import ArcGIS
 import Foundation
 import Observation
 
-extension AddFeaturesWithSharedTemplateView {
+extension AddFeaturesWithSharedTemplatesView {
     /// The view model for the sample.
     @MainActor
     @Observable
@@ -292,7 +292,7 @@ extension AddFeaturesWithSharedTemplateView {
     }
 }
 
-extension AddFeaturesWithSharedTemplateView.Model {
+extension AddFeaturesWithSharedTemplatesView.Model {
     /// An error associated with the shared template workflow.
     enum SampleError: Error {
         case sharedTemplateSourceNotFound

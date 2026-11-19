@@ -15,7 +15,7 @@
 import ArcGIS
 import SwiftUI
 
-struct AddFeaturesWithSharedTemplateView: View {
+struct AddFeaturesWithSharedTemplatesView: View {
     /// The view model for the sample.
     @State private var model = Model()
     
@@ -299,7 +299,7 @@ struct AddFeaturesWithSharedTemplateView: View {
     }
 }
 
-private extension AddFeaturesWithSharedTemplateView {
+private extension AddFeaturesWithSharedTemplatesView {
     /// A template's swatch, rendered when its picker row appears.
     struct TemplateSwatch: View {
         /// The template and target layer used to render the swatch.
@@ -339,7 +339,7 @@ private extension AddFeaturesWithSharedTemplateView {
     }
 }
 
-extension AddFeaturesWithSharedTemplateView.Model.SampleError: LocalizedError {
+extension AddFeaturesWithSharedTemplatesView.Model.SampleError: LocalizedError {
     var errorDescription: String? {
         switch self {
         case .sharedTemplateSourceNotFound:
@@ -352,6 +352,6 @@ extension AddFeaturesWithSharedTemplateView.Model.SampleError: LocalizedError {
 
 #Preview {
     NavigationStack {
-        AddFeaturesWithSharedTemplateView()
+        AddFeaturesWithSharedTemplatesView()
     }
 }

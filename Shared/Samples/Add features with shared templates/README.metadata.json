@@ -34,8 +34,8 @@
         "VertexTool"
     ],
     "snippets": [
-        "AddFeaturesWithSharedTemplateView.swift",
-        "AddFeaturesWithSharedTemplateView.Model.swift"
+        "AddFeaturesWithSharedTemplatesView.swift",
+        "AddFeaturesWithSharedTemplatesView.Model.swift"
     ],
     "title": "Add features with shared templates"
 }
