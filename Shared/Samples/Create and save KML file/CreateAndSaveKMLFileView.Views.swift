@@ -15,7 +15,7 @@
 import ArcGIS
 import SwiftUI
 
-extension CreateAndSaveKMLView {
+extension CreateAndSaveKMLFileView {
     /// The content of the main menu.
     var mainMenuContent: some View {
         VStack {

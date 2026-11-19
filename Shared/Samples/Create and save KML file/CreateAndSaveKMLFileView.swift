@@ -16,7 +16,7 @@ import ArcGIS
 import SwiftUI
 import UniformTypeIdentifiers
 
-struct CreateAndSaveKMLView: View {
+struct CreateAndSaveKMLFileView: View {
     /// The view model for this sample.
     @StateObject var model = Model()
     
@@ -68,7 +68,7 @@ struct CreateAndSaveKMLView: View {
     }
 }
 
-extension CreateAndSaveKMLView {
+extension CreateAndSaveKMLFileView {
     /// A KMZ file that can be used with the native file exporter.
     final class KMZFile: FileDocument {
         /// The KML document that is used to create the KMZ file.
@@ -137,6 +137,6 @@ private extension UTType {
 
 #Preview {
     NavigationStack {
-        CreateAndSaveKMLView()
+        CreateAndSaveKMLFileView()
     }
 }
