@@ -39,15 +39,11 @@ struct StylePointWithSceneSymbolView: View {
     
     /// The graphics overlay for the scene symbol graphics.
     @State private var graphicsOverlay: GraphicsOverlay = {
-        let graphicsOverlay = GraphicsOverlay()
+        // Add the scene symbol graphics to the graphics overlay.
+        let graphicsOverlay = GraphicsOverlay(graphics: makeGraphics())
         graphicsOverlay.sceneProperties.surfacePlacement = .absolute
         return graphicsOverlay
     }()
-    
-    init() {
-        // Add the scene symbol graphics to the graphics overlay.
-        graphicsOverlay.addGraphics(makeGraphics())
-    }
     
     var body: some View {
         // Add the scene and graphics overlay to a scene view.
@@ -56,7 +52,7 @@ struct StylePointWithSceneSymbolView: View {
     
     /// Creates a graphic for each simple marker scene symbol style.
     /// - Returns: A list of graphics.
-    private func makeGraphics() -> [Graphic] {
+    private static func makeGraphics() -> [Graphic] {
         // Create a simple maker scene symbol for each style.
         let sceneSymbols = SimpleMarkerSceneSymbol.Style.allCases.map { style in
             SimpleMarkerSceneSymbol(
