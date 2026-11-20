@@ -233,9 +233,3 @@ private struct SelectFeatureTypeView: View {
         }
     }
 }
-
-#Preview {
-    NavigationStack {
-        EditGeodatabaseWithTransactionsView()
-    }
-}

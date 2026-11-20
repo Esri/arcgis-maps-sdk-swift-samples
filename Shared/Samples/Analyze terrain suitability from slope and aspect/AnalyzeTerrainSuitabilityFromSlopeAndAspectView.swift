@@ -126,9 +126,3 @@ extension AnalyzeTerrainSuitabilityFromSlopeAndAspectView {
         }
     }
 }
-
-#Preview {
-    NavigationStack {
-        AnalyzeTerrainSuitabilityFromSlopeAndAspectView()
-    }
-}

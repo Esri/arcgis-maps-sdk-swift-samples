@@ -66,7 +66,3 @@ private extension URL {
         Bundle.main.url(forResource: "color", withExtension: "json")!
     }
 }
-
-#Preview {
-    ApplyFunctionToRasterFromFileView()
-}

@@ -59,7 +59,3 @@ struct ControlAnnotationSublayerVisibilityView: View {
             .errorAlert(presentingError: $error)
     }
 }
-
-#Preview {
-    ControlAnnotationSublayerVisibilityView()
-}

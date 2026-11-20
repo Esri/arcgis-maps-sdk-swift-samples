@@ -149,7 +149,3 @@ private extension URL {
         )!
     }
 }
-
-#Preview {
-    ShowShapefileMetadataView()
-}
