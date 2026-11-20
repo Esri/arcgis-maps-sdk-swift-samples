@@ -22,9 +22,6 @@ struct SelectFeaturesInSceneLayerView: View {
     /// The point on the screen where the user tapped.
     @State private var tapPoint: CGPoint?
     
-    /// The scene layer that is added on top of the scene.
-    @State private var sceneLayer = ArcGISSceneLayer(url: .brestBuildingService)
-    
     /// A scene with topographic basemap and a 3D buildings layer.
     @State private var scene: ArcGIS.Scene = {
         // Creates a scene and sets an initial viewpoint.
@@ -45,12 +42,15 @@ struct SelectFeaturesInSceneLayerView: View {
         surface.addElevationSource(ArcGISTiledElevationSource(url: .worldElevationService))
         // Sets the surface to the scene's base surface.
         scene.baseSurface = surface
+        // Creates the scene layer and adds it to the scene.
+        let sceneLayer = ArcGISSceneLayer(url: .brestBuildingService)
+        scene.addOperationalLayer(sceneLayer)
         return scene
     }()
     
-    /// Adds feature layer to scene in initialization.
-    init() {
-        scene.addOperationalLayer(sceneLayer)
+    /// The scene layer that is added on top of the scene.
+    private var sceneLayer: ArcGISSceneLayer {
+        scene.operationalLayers.first as! ArcGISSceneLayer
     }
     
     var body: some View {

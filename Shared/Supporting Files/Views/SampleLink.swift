@@ -16,7 +16,7 @@ import SwiftUI
 
 struct SampleLink: View {
     /// The sample to present.
-    private let sample: Sample
+    private let sample: any Sample
     
     /// The text to bold in the sample's name and description.
     private let textToBold: String
@@ -25,7 +25,7 @@ struct SampleLink: View {
     /// - Parameters:
     ///   - sample: The sample to present.
     ///   - textToBold: The text to bold in the sample's name and description.
-    init(_ sample: Sample, textToBold: String = "") {
+    init(_ sample: some Sample, textToBold: String = "") {
         self.sample = sample
         self.textToBold = textToBold
     }
@@ -40,7 +40,7 @@ struct SampleLink: View {
 private extension SampleLink {
     struct SampleRow: View {
         /// The sample for the row.
-        private let sample: Sample
+        private let sample: any Sample
         
         /// The name of the sample with attributes.
         private let attributedName: AttributedString
@@ -54,7 +54,7 @@ private extension SampleLink {
         /// The names of the favorite samples loaded from user defaults.
         @AppFavorites private var favoriteNames
         
-        init(_ sample: Sample, textToBold: String) {
+        init(_ sample: some Sample, textToBold: String) {
             self.sample = sample
             self.attributedName = sample.name.boldingFirstOccurrence(of: textToBold)
             self.attributedDescription = sample.description.boldingFirstOccurrence(of: textToBold)

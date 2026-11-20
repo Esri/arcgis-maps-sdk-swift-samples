@@ -15,12 +15,13 @@ This repository contains Swift sample code demonstrating the capabilities of the
 * Analysis - Perform spatial analysis via geoprocessing tasks and services
 * Cloud and Portal - Search for web maps and securely connect to your portal
 * Utility Networks - Work with utility networks, performing traces and exploring network elements
+* Accessibility - Improve map usability with adaptive text, symbols, contrast, and accessible interactions
 
 ## Requirements
 
-* [ArcGIS Maps SDK for Swift](https://developers.arcgis.com/swift/) 300.1 (or newer)
-* [ArcGIS Maps SDK for Swift Toolkit](https://github.com/Esri/arcgis-maps-sdk-swift-toolkit) 300.1 (or newer)
-* Xcode 26.0 (or newer)
+* [ArcGIS Maps SDK for Swift](https://developers.arcgis.com/swift/) 300.2 (or newer)
+* [ArcGIS Maps SDK for Swift Toolkit](https://github.com/Esri/arcgis-maps-sdk-swift-toolkit) 300.2 (or newer)
+* Xcode 27.0 (or newer)
 
 The *ArcGIS Maps SDK for Swift Samples app* has a *Minimum SDK* version of *18.0*, meaning that it can run on devices with *iOS 18.0* or newer.
 

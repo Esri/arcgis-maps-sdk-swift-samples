@@ -34,9 +34,9 @@
         "KMLStyle"
     ],
     "snippets": [
-        "CreateAndSaveKMLView.swift",
-        "CreateAndSaveKMLView.Model.swift",
-        "CreateAndSaveKMLView.Views.swift" 
+        "CreateAndSaveKMLFileView.swift",
+        "CreateAndSaveKMLFileView.Model.swift",
+        "CreateAndSaveKMLFileView.Views.swift"
     ],
     "title": "Create and save KML file"
 }

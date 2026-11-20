@@ -15,7 +15,6 @@
 import ArcGIS
 import SwiftUI
 
-@MainActor
 struct AddWFSLayerView: View {
     /// A map with a topographic basemap centered on downtown Seattle.
     @State private var map: Map = {

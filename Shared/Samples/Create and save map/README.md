@@ -14,7 +14,7 @@ When you run the sample, you will be challenged for an ArcGIS Online login. Ente
 
 ## How it works
 
-1. Set up the authenticator the manage authentication challenges.
+1. Set up the authenticator to manage authentication challenges.
 2. Create a new `Portal` with an authenticated connection and load it.
 3. Log in to the portal.
 4. Access the `PortalUser.Content` with `portal.user.content`, to get the user's list of portal folders.

@@ -137,7 +137,7 @@ private extension ApplyMapAlgebraView {
                 bandIndex: 0
             )
             // Creates a continuous field function from the elevation field.
-            let continuousFieldFunction = ContinuousFieldFunction.function(withResult: elevationField)
+            let continuousFieldFunction = ContinuousFieldSupplier(field: elevationField)
             // Masks out values below sea level to categorize only land.
             let elevationFieldFunction = continuousFieldFunction.mask(
                 selection: continuousFieldFunction.isGreaterThanOrEqualTo(0)

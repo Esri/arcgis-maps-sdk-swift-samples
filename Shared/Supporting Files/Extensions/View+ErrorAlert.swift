@@ -34,7 +34,7 @@ extension View {
                 error.wrappedValue = nil
             }
         } message: { error in
-            Text((error as? LocalizedError)?.errorDescription ?? String(reflecting: error))
+            Text((error as? any LocalizedError)?.errorDescription ?? String(reflecting: error))
         }
     }
 }

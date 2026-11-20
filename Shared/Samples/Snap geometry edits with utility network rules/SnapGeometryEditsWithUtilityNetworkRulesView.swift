@@ -264,7 +264,7 @@ extension SnapSource {
         switch self {
         case let graphicsOverlay as GraphicsOverlay:
             graphicsOverlay.id
-        case let layerContent as LayerContent:
+        case let layerContent as any LayerContent:
             layerContent.name
         default:
             "\(self)"

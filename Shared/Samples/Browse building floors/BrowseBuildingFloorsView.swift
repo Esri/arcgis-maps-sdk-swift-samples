@@ -41,7 +41,7 @@ struct BrowseBuildingFloorsView: View {
     @State private var attributionBarHeight: CGFloat?
     
     var body: some View {
-        MapView(map: map)
+        MapView(map: map, viewpoint: viewpoint)
             .onViewpointChanged(kind: .centerAndScale) { viewpoint = $0 }
             .onNavigatingChanged { isMapNavigating = $0 }
             .onAttributionBarHeightChanged { height in
@@ -56,10 +56,6 @@ struct BrowseBuildingFloorsView: View {
                         alignment: .bottomTrailing,
                         viewpoint: $viewpoint,
                         isNavigating: $isMapNavigating
-                    )
-                    .frame(
-                        maxWidth: 400,
-                        maxHeight: 400
                     )
                     .padding(.toolkitDefault)
                     .padding(.bottom, attributionBarHeight)

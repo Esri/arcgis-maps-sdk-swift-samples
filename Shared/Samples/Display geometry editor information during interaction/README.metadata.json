@@ -1,0 +1,36 @@
+{
+    "category": "Edit and Manage Data",
+    "description": "Use the geometry editor to see information about the geometry editor's previewed geometry during an editing interaction.",
+    "ignore": false,
+    "images": [
+        "display-geometry-editor-information-during-interaction.png"
+    ],
+    "keywords": [
+        "draw",
+        "edit",
+        "geometry editor",
+        "interaction preview",
+        "Geometry",
+        "GeometryEditor",
+        "GeometryEditor.interactionPreviews",
+        "GeometryEditorInteractionPreview",
+        "GeometryEditorInteractionType",
+        "Graphic",
+        "GraphicsOverlay"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "Geometry",
+        "GeometryEditor",
+        "GeometryEditor.interactionPreviews",
+        "GeometryEditorInteractionPreview",
+        "GeometryEditorInteractionType",
+        "Graphic",
+        "GraphicsOverlay"
+    ],
+    "snippets": [
+        "DisplayGeometryEditorInformationDuringInteractionView.swift",
+        "DisplayGeometryEditorInformationDuringInteractionView.Model.swift"
+    ],
+    "title": "Display geometry editor information during interaction"
+}

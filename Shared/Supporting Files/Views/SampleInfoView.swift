@@ -24,7 +24,7 @@ struct SampleInfoView: View {
     @State private var selectedSnippetIndex = 0
     
     /// The sample to view information for.
-    let sample: Sample
+    let sample: any Sample
     
     var body: some View {
         ZStack {

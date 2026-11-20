@@ -35,7 +35,7 @@ struct DisplayClustersView: View {
     @State private var identifyScreenPoint: CGPoint?
     
     /// The geoelements in the selected cluster.
-    @State private var geoElements: [GeoElement] = []
+    @State private var geoElements: [any GeoElement] = []
     
     /// The popup to be shown as the result of the layer identify operation.
     @State private var popup: Popup?
@@ -115,7 +115,7 @@ private struct ClusterDetailView: View {
     let popup: Popup
     
     /// The cluster's geoelements to display.
-    let geoElements: [GeoElement]
+    let geoElements: [any GeoElement]
     
     /// The action to dismiss the view.
     @Environment(\.dismiss) private var dismiss

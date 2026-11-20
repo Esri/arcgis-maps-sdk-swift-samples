@@ -131,7 +131,7 @@ private extension IdentifyKMLFeaturesView {
 private extension URL {
     /// A URL to an online KML file with forecast data.
     static var forecastKML: URL {
-        URL(string: "https://www.wpc.ncep.noaa.gov/kml/noaa_chart/WPC_Day1_SigWx_latest.kml")!
+        URL(string: "https://www.arcgis.com/sharing/rest/content/items/f5e0e5cd088846a5b97b7ed66a8bad5c/data")!
     }
 }
 

@@ -75,11 +75,11 @@ private extension SamplesSearchView {
     /// different sections in a list.
     struct SearchResult {
         /// The samples which name partially matches the search query.
-        let nameMatches: [Sample]
+        let nameMatches: [any Sample]
         /// The samples which description partially matches the search query.
-        let descriptionMatches: [Sample]
+        let descriptionMatches: [any Sample]
         /// The samples which one of the tags matches the search query.
-        let tagMatches: [Sample]
+        let tagMatches: [any Sample]
     }
     
     /// Searches through the list of samples to find ones that match the query.
@@ -87,9 +87,9 @@ private extension SamplesSearchView {
     ///   - query: The query to search with.
     private static func searchSamples(with query: String) -> SearchResult {
         let samples = SamplesApp.samples
-        let nameMatches: [Sample]
-        let descriptionMatches: [Sample]
-        let tagMatches: [Sample]
+        let nameMatches: [any Sample]
+        let descriptionMatches: [any Sample]
+        let tagMatches: [any Sample]
         
         // The names of the samples already found in a previous section.
         var previousSearchResults: Set<String> = []
