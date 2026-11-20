@@ -48,11 +48,6 @@ struct SelectFeaturesInSceneLayerView: View {
         return scene
     }()
     
-    /// Adds feature layer to scene in initialization.
-    init() {
-        scene.addOperationalLayer(sceneLayer)
-    }
-    
     var body: some View {
         SceneViewReader { sceneViewProxy in
             SceneView(scene: scene)
@@ -78,6 +73,11 @@ struct SelectFeaturesInSceneLayerView: View {
                     } catch {
                         self.error = error
                     }
+                }
+                .onAppear {
+                    // Adds the scene layer to the scene when the view appears.
+                    guard scene.operationalLayers.isEmpty else { return }
+                    scene.addOperationalLayer(sceneLayer)
                 }
         }
         .errorAlert(presentingError: $error)
