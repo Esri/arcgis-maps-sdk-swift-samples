@@ -31,9 +31,9 @@
         "Polygon"
     ],
     "snippets": [
-        "NavigateMapAndIdentifyFeaturesWithKeyboardView.swift",
-        "NavigateMapAndIdentifyFeaturesWithKeyboardView.Model.swift",
-        "NavigateMapAndIdentifyFeaturesWithKeyboardView.Tips.swift"
+        "NavigateMapViewAndIdentifyFeaturesWithKeyboardView.swift",
+        "NavigateMapViewAndIdentifyFeaturesWithKeyboardView.Model.swift",
+        "NavigateMapViewAndIdentifyFeaturesWithKeyboardView.Tips.swift"
     ],
     "title": "Navigate map view and identify features with keyboard"
 }

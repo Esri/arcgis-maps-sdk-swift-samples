@@ -153,11 +153,11 @@
 		7900C5F62A83FC3F002D430F /* AddCustomDynamicEntityDataSourceView.Vessel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7900C5F52A83FC3F002D430F /* AddCustomDynamicEntityDataSourceView.Vessel.swift */; };
 		790238CC2EA9859C00C39582 /* AddBuildingSceneLayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 790238CB2EA9859000C39582 /* AddBuildingSceneLayerView.swift */; };
 		792222DD2A81AA5D00619FFE /* AIS_MarineCadastre_SelectedVessels_CustomDataSource.jsonl in Resources */ = {isa = PBXBuildFile; fileRef = 792222DC2A81AA5D00619FFE /* AIS_MarineCadastre_SelectedVessels_CustomDataSource.jsonl */; settings = {ASSET_TAGS = (AddCustomDynamicEntityDataSource, ); }; };
-		79302F852A1ED4E30002336A /* CreateAndSaveKMLView.Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79302F842A1ED4E30002336A /* CreateAndSaveKMLView.Model.swift */; };
-		79302F872A1ED71B0002336A /* CreateAndSaveKMLView.Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79302F862A1ED71B0002336A /* CreateAndSaveKMLView.Views.swift */; };
+		79302F852A1ED4E30002336A /* CreateAndSaveKMLFileView.Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79302F842A1ED4E30002336A /* CreateAndSaveKMLFileView.Model.swift */; };
+		79302F872A1ED71B0002336A /* CreateAndSaveKMLFileView.Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79302F862A1ED71B0002336A /* CreateAndSaveKMLFileView.Views.swift */; };
 		798C2DA72AFC505600EE7E97 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 798C2DA62AFC505600EE7E97 /* PrivacyInfo.xcprivacy */; };
 		79B2B6E72F479415007E652A /* ConfigureSceneEnvironmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79B2B6E62F479411007E652A /* ConfigureSceneEnvironmentView.swift */; };
-		79B7B80A2A1BF8EC00F57C27 /* CreateAndSaveKMLView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79B7B8092A1BF8EC00F57C27 /* CreateAndSaveKMLView.swift */; };
+		79B7B80A2A1BF8EC00F57C27 /* CreateAndSaveKMLFileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79B7B8092A1BF8EC00F57C27 /* CreateAndSaveKMLFileView.swift */; };
 		79D22F822E9D8EA900B981A5 /* DisplayLocalSceneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79D22F812E9D8EA000B981A5 /* DisplayLocalSceneView.swift */; };
 		79D84D132A81711A00F45262 /* AddCustomDynamicEntityDataSourceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79D84D0D2A815C5B00F45262 /* AddCustomDynamicEntityDataSourceView.swift */; };
 		79E8A3062ED6326100432F4E /* FilterBuildingSceneLayerView.BuildingGroupSublayerToggleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79E8A3052ED6325D00432F4E /* FilterBuildingSceneLayerView.BuildingGroupSublayerToggleView.swift */; };
@@ -191,11 +191,11 @@
 		95321B302E554B31002E9DE2 /* ApplyRenderersToSceneLayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95321B2F2E554B20002E9DE2 /* ApplyRenderersToSceneLayerView.swift */; };
 		9533C382303BAF4700B79322 /* DisplayGeometryEditorInformationDuringInteractionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9533C381303BAF3F00B79322 /* DisplayGeometryEditorInformationDuringInteractionView.swift */; };
 		9533C385303BAF8500B79322 /* DisplayGeometryEditorInformationDuringInteractionView.Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9533C384303BAF8300B79322 /* DisplayGeometryEditorInformationDuringInteractionView.Model.swift */; };
-		9533C387303BE2AB00B79322 /* AddFeaturesWithSharedTemplateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9533C386303BE2A700B79322 /* AddFeaturesWithSharedTemplateView.swift */; };
-		9533C38A303BE34F00B79322 /* AddFeaturesWithSharedTemplateView.Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9533C389303BE34C00B79322 /* AddFeaturesWithSharedTemplateView.Model.swift */; };
+		9533C387303BE2AB00B79322 /* AddFeaturesWithSharedTemplatesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9533C386303BE2A700B79322 /* AddFeaturesWithSharedTemplatesView.swift */; };
+		9533C38A303BE34F00B79322 /* AddFeaturesWithSharedTemplatesView.Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9533C389303BE34C00B79322 /* AddFeaturesWithSharedTemplatesView.Model.swift */; };
 		9537AFD72C220EF0000923C5 /* ExchangeSetwithoutUpdates in Resources */ = {isa = PBXBuildFile; fileRef = 9537AFD62C220EF0000923C5 /* ExchangeSetwithoutUpdates */; settings = {ASSET_TAGS = (ConfigureElectronicNavigationalCharts, ); }; };
-		95398E6F2FDFAF1600E30CE8 /* NavigateMapAndIdentifyFeaturesWithKeyboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95398E6E2FDFAF1400E30CE8 /* NavigateMapAndIdentifyFeaturesWithKeyboardView.swift */; };
-		95398E732FE0C78B00E30CE8 /* NavigateMapAndIdentifyFeaturesWithKeyboardView.Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95398E722FE0C78800E30CE8 /* NavigateMapAndIdentifyFeaturesWithKeyboardView.Model.swift */; };
+		95398E6F2FDFAF1600E30CE8 /* NavigateMapViewAndIdentifyFeaturesWithKeyboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95398E6E2FDFAF1400E30CE8 /* NavigateMapViewAndIdentifyFeaturesWithKeyboardView.swift */; };
+		95398E732FE0C78B00E30CE8 /* NavigateMapViewAndIdentifyFeaturesWithKeyboardView.Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95398E722FE0C78800E30CE8 /* NavigateMapViewAndIdentifyFeaturesWithKeyboardView.Model.swift */; };
 		9547085C2C3C719800CA8579 /* EditFeatureAttachmentsView.Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9547085B2C3C719800CA8579 /* EditFeatureAttachmentsView.Model.swift */; };
 		954AEDEE2C01332600265114 /* SelectFeaturesInSceneLayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 954AEDED2C01332600265114 /* SelectFeaturesInSceneLayerView.swift */; };
 		955271612C0E6749009B1ED4 /* AddRasterFromServiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 955271602C0E6749009B1ED4 /* AddRasterFromServiceView.swift */; };
@@ -210,7 +210,7 @@
 		95A86A5B2E1C50C2000BF570 /* ShowPortalUserInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A86A5A2E1C50BF000BF570 /* ShowPortalUserInfoView.swift */; };
 		95B096A02E136365006AFA8F /* Dolmus3ds in Resources */ = {isa = PBXBuildFile; fileRef = 95B0969F2E136365006AFA8F /* Dolmus3ds */; settings = {ASSET_TAGS = (ShowExploratoryLineOfSightBetweenGeoelements, ); }; };
 		95D2EE0F2C334D1600683D53 /* ShowServiceAreaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95D2EE0E2C334D1600683D53 /* ShowServiceAreaView.swift */; };
-		95D2F9252FFF40A60011D3B9 /* NavigateMapAndIdentifyFeaturesWithKeyboardView.Tips.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95D2F9242FFF40A30011D3B9 /* NavigateMapAndIdentifyFeaturesWithKeyboardView.Tips.swift */; };
+		95D2F9252FFF40A60011D3B9 /* NavigateMapViewAndIdentifyFeaturesWithKeyboardView.Tips.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95D2F9242FFF40A30011D3B9 /* NavigateMapViewAndIdentifyFeaturesWithKeyboardView.Tips.swift */; };
 		95DEB9B62C127A92009BEC35 /* ShowViewshedCalculatedFromGeoprocessingTaskView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95DEB9B52C127A92009BEC35 /* ShowViewshedCalculatedFromGeoprocessingTaskView.swift */; };
 		95DF31802FD37D33005D06E7 /* UpdateBasemapForContrastAccessibilityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95DF317F2FD37D33005D06E7 /* UpdateBasemapForContrastAccessibilityView.swift */; };
 		95E980712C26183000CB8912 /* BrowseOGCAPIFeatureServiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95E980702C26183000CB8912 /* BrowseOGCAPIFeatureServiceView.swift */; };
@@ -625,11 +625,11 @@
 		7900C5F52A83FC3F002D430F /* AddCustomDynamicEntityDataSourceView.Vessel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCustomDynamicEntityDataSourceView.Vessel.swift; sourceTree = "<group>"; };
 		790238CB2EA9859000C39582 /* AddBuildingSceneLayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddBuildingSceneLayerView.swift; sourceTree = "<group>"; };
 		792222DC2A81AA5D00619FFE /* AIS_MarineCadastre_SelectedVessels_CustomDataSource.jsonl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = AIS_MarineCadastre_SelectedVessels_CustomDataSource.jsonl; sourceTree = "<group>"; };
-		79302F842A1ED4E30002336A /* CreateAndSaveKMLView.Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAndSaveKMLView.Model.swift; sourceTree = "<group>"; };
-		79302F862A1ED71B0002336A /* CreateAndSaveKMLView.Views.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAndSaveKMLView.Views.swift; sourceTree = "<group>"; };
+		79302F842A1ED4E30002336A /* CreateAndSaveKMLFileView.Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAndSaveKMLFileView.Model.swift; sourceTree = "<group>"; };
+		79302F862A1ED71B0002336A /* CreateAndSaveKMLFileView.Views.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAndSaveKMLFileView.Views.swift; sourceTree = "<group>"; };
 		798C2DA62AFC505600EE7E97 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		79B2B6E62F479411007E652A /* ConfigureSceneEnvironmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigureSceneEnvironmentView.swift; sourceTree = "<group>"; };
-		79B7B8092A1BF8EC00F57C27 /* CreateAndSaveKMLView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAndSaveKMLView.swift; sourceTree = "<group>"; };
+		79B7B8092A1BF8EC00F57C27 /* CreateAndSaveKMLFileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAndSaveKMLFileView.swift; sourceTree = "<group>"; };
 		79D22F812E9D8EA000B981A5 /* DisplayLocalSceneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayLocalSceneView.swift; sourceTree = "<group>"; };
 		79D84D0D2A815C5B00F45262 /* AddCustomDynamicEntityDataSourceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCustomDynamicEntityDataSourceView.swift; sourceTree = "<group>"; };
 		79E8A3052ED6325D00432F4E /* FilterBuildingSceneLayerView.BuildingGroupSublayerToggleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterBuildingSceneLayerView.BuildingGroupSublayerToggleView.swift; sourceTree = "<group>"; };
@@ -663,11 +663,11 @@
 		95321B2F2E554B20002E9DE2 /* ApplyRenderersToSceneLayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplyRenderersToSceneLayerView.swift; sourceTree = "<group>"; };
 		9533C381303BAF3F00B79322 /* DisplayGeometryEditorInformationDuringInteractionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayGeometryEditorInformationDuringInteractionView.swift; sourceTree = "<group>"; };
 		9533C384303BAF8300B79322 /* DisplayGeometryEditorInformationDuringInteractionView.Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayGeometryEditorInformationDuringInteractionView.Model.swift; sourceTree = "<group>"; };
-		9533C386303BE2A700B79322 /* AddFeaturesWithSharedTemplateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFeaturesWithSharedTemplateView.swift; sourceTree = "<group>"; };
-		9533C389303BE34C00B79322 /* AddFeaturesWithSharedTemplateView.Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFeaturesWithSharedTemplateView.Model.swift; sourceTree = "<group>"; };
+		9533C386303BE2A700B79322 /* AddFeaturesWithSharedTemplatesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFeaturesWithSharedTemplatesView.swift; sourceTree = "<group>"; };
+		9533C389303BE34C00B79322 /* AddFeaturesWithSharedTemplatesView.Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFeaturesWithSharedTemplatesView.Model.swift; sourceTree = "<group>"; };
 		9537AFD62C220EF0000923C5 /* ExchangeSetwithoutUpdates */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ExchangeSetwithoutUpdates; sourceTree = "<group>"; };
-		95398E6E2FDFAF1400E30CE8 /* NavigateMapAndIdentifyFeaturesWithKeyboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigateMapAndIdentifyFeaturesWithKeyboardView.swift; sourceTree = "<group>"; };
-		95398E722FE0C78800E30CE8 /* NavigateMapAndIdentifyFeaturesWithKeyboardView.Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigateMapAndIdentifyFeaturesWithKeyboardView.Model.swift; sourceTree = "<group>"; };
+		95398E6E2FDFAF1400E30CE8 /* NavigateMapViewAndIdentifyFeaturesWithKeyboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigateMapViewAndIdentifyFeaturesWithKeyboardView.swift; sourceTree = "<group>"; };
+		95398E722FE0C78800E30CE8 /* NavigateMapViewAndIdentifyFeaturesWithKeyboardView.Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigateMapViewAndIdentifyFeaturesWithKeyboardView.Model.swift; sourceTree = "<group>"; };
 		9547085B2C3C719800CA8579 /* EditFeatureAttachmentsView.Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditFeatureAttachmentsView.Model.swift; sourceTree = "<group>"; };
 		954AEDED2C01332600265114 /* SelectFeaturesInSceneLayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectFeaturesInSceneLayerView.swift; sourceTree = "<group>"; };
 		955271602C0E6749009B1ED4 /* AddRasterFromServiceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddRasterFromServiceView.swift; sourceTree = "<group>"; };
@@ -683,7 +683,7 @@
 		95A86A5A2E1C50BF000BF570 /* ShowPortalUserInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowPortalUserInfoView.swift; sourceTree = "<group>"; };
 		95B0969F2E136365006AFA8F /* Dolmus3ds */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Dolmus3ds; sourceTree = "<group>"; };
 		95D2EE0E2C334D1600683D53 /* ShowServiceAreaView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowServiceAreaView.swift; sourceTree = "<group>"; };
-		95D2F9242FFF40A30011D3B9 /* NavigateMapAndIdentifyFeaturesWithKeyboardView.Tips.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigateMapAndIdentifyFeaturesWithKeyboardView.Tips.swift; sourceTree = "<group>"; };
+		95D2F9242FFF40A30011D3B9 /* NavigateMapViewAndIdentifyFeaturesWithKeyboardView.Tips.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigateMapViewAndIdentifyFeaturesWithKeyboardView.Tips.swift; sourceTree = "<group>"; };
 		95DEB9B52C127A92009BEC35 /* ShowViewshedCalculatedFromGeoprocessingTaskView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowViewshedCalculatedFromGeoprocessingTaskView.swift; sourceTree = "<group>"; };
 		95DF317F2FD37D33005D06E7 /* UpdateBasemapForContrastAccessibilityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateBasemapForContrastAccessibilityView.swift; sourceTree = "<group>"; };
 		95E980702C26183000CB8912 /* BrowseOGCAPIFeatureServiceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowseOGCAPIFeatureServiceView.swift; sourceTree = "<group>"; };
@@ -2163,9 +2163,9 @@
 		79B7B8082A1BF8B300F57C27 /* Create and save KML file */ = {
 			isa = PBXGroup;
 			children = (
-				79302F842A1ED4E30002336A /* CreateAndSaveKMLView.Model.swift */,
-				79B7B8092A1BF8EC00F57C27 /* CreateAndSaveKMLView.swift */,
-				79302F862A1ED71B0002336A /* CreateAndSaveKMLView.Views.swift */,
+				79302F842A1ED4E30002336A /* CreateAndSaveKMLFileView.Model.swift */,
+				79B7B8092A1BF8EC00F57C27 /* CreateAndSaveKMLFileView.swift */,
+				79302F862A1ED71B0002336A /* CreateAndSaveKMLFileView.Views.swift */,
 			);
 			path = "Create and save KML file";
 			sourceTree = "<group>";
@@ -2395,8 +2395,8 @@
 		9533C388303BE2BA00B79322 /* Add features with shared templates */ = {
 			isa = PBXGroup;
 			children = (
-				9533C386303BE2A700B79322 /* AddFeaturesWithSharedTemplateView.swift */,
-				9533C389303BE34C00B79322 /* AddFeaturesWithSharedTemplateView.Model.swift */,
+				9533C386303BE2A700B79322 /* AddFeaturesWithSharedTemplatesView.swift */,
+				9533C389303BE34C00B79322 /* AddFeaturesWithSharedTemplatesView.Model.swift */,
 			);
 			path = "Add features with shared templates";
 			sourceTree = "<group>";
@@ -2412,9 +2412,9 @@
 		95398E702FDFAF2300E30CE8 /* Navigate map view and identify features with keyboard */ = {
 			isa = PBXGroup;
 			children = (
-				95398E6E2FDFAF1400E30CE8 /* NavigateMapAndIdentifyFeaturesWithKeyboardView.swift */,
-				95D2F9242FFF40A30011D3B9 /* NavigateMapAndIdentifyFeaturesWithKeyboardView.Tips.swift */,
-				95398E722FE0C78800E30CE8 /* NavigateMapAndIdentifyFeaturesWithKeyboardView.Model.swift */,
+				95398E6E2FDFAF1400E30CE8 /* NavigateMapViewAndIdentifyFeaturesWithKeyboardView.swift */,
+				95D2F9242FFF40A30011D3B9 /* NavigateMapViewAndIdentifyFeaturesWithKeyboardView.Tips.swift */,
+				95398E722FE0C78800E30CE8 /* NavigateMapViewAndIdentifyFeaturesWithKeyboardView.Model.swift */,
 			);
 			path = "Navigate map view and identify features with keyboard";
 			sourceTree = "<group>";
@@ -4165,7 +4165,7 @@
 				D757D14B2B6C46E50065F78F /* ListSpatialReferenceTransformationsView.Model.swift in Sources */,
 				218F35B829C28F4A00502022 /* AuthenticateWithOAuthView.swift in Sources */,
 				002056C52DD7F6D30016B8A9 /* TakeScreenshotView.swift in Sources */,
-				79B7B80A2A1BF8EC00F57C27 /* CreateAndSaveKMLView.swift in Sources */,
+				79B7B80A2A1BF8EC00F57C27 /* CreateAndSaveKMLFileView.swift in Sources */,
 				9533C385303BAF8500B79322 /* DisplayGeometryEditorInformationDuringInteractionView.Model.swift in Sources */,
 				1C293D502DCEA74C000B0822 /* AuthenticateWithTokenView.swift in Sources */,
 				D7C6420C2B4F47E10042B8F7 /* SearchForWebMapView.Model.swift in Sources */,
@@ -4216,7 +4216,7 @@
 				1C7B85E32DF0B86F00B267EA /* SetAtmosphereEffectInSceneView.swift in Sources */,
 				88AF55532DDBFA7B003F146E /* CreateAndSaveMapView.swift in Sources */,
 				D7201D042CC6D3B5004BDB7D /* AddVectorTiledLayerFromCustomStyleView.swift in Sources */,
-				9533C387303BE2AB00B79322 /* AddFeaturesWithSharedTemplateView.swift in Sources */,
+				9533C387303BE2AB00B79322 /* AddFeaturesWithSharedTemplatesView.swift in Sources */,
 				E004A6ED2849556E002A1FE6 /* CreatePlanarAndGeodeticBuffersView.swift in Sources */,
 				790238CC2EA9859C00C39582 /* AddBuildingSceneLayerView.swift in Sources */,
 				E041ABD7287DB04D0056009B /* SampleInfoView.swift in Sources */,
@@ -4236,7 +4236,7 @@
 				D7ABA2FF2A32881C0021822B /* ShowExploratoryViewshedFromGeoelementInSceneView.swift in Sources */,
 				E0FE32E728747778002C6ACA /* BrowseBuildingFloorsView.swift in Sources */,
 				954AEDEE2C01332600265114 /* SelectFeaturesInSceneLayerView.swift in Sources */,
-				95D2F9252FFF40A60011D3B9 /* NavigateMapAndIdentifyFeaturesWithKeyboardView.Tips.swift in Sources */,
+				95D2F9252FFF40A60011D3B9 /* NavigateMapViewAndIdentifyFeaturesWithKeyboardView.Tips.swift in Sources */,
 				002056E82DDD404C0016B8A9 /* DisplayOGCAPICollectionView.swift in Sources */,
 				1CC755E42DC95625004B346F /* ApplyFunctionToRasterFromFileView.swift in Sources */,
 				D7F8C0432B608F120072BFA7 /* AddFeaturesWithContingentValuesView.AddFeatureView.swift in Sources */,
@@ -4298,7 +4298,7 @@
 				1C42E04729D2396B004FC4BE /* ShowPopupView.swift in Sources */,
 				D72FE7032CE6D05600BBC0FE /* AppFavorites.swift in Sources */,
 				1C17E1CC2DE6458100A012CB /* GenerateGeodatabaseReplicaFromFeatureServiceView.Model.swift in Sources */,
-				79302F872A1ED71B0002336A /* CreateAndSaveKMLView.Views.swift in Sources */,
+				79302F872A1ED71B0002336A /* CreateAndSaveKMLFileView.Views.swift in Sources */,
 				D73FC0FD2AD4A18D0067A19B /* CreateMobileGeodatabaseView.swift in Sources */,
 				D7F2A02F2CD00F1C0008D981 /* ApplyDictionaryRendererToFeatureLayerView.swift in Sources */,
 				1C19B4F12A578E46001D2506 /* CreateLoadReportView.Views.swift in Sources */,
@@ -4314,7 +4314,7 @@
 				D7ECF5982AB8BE63003FB2BE /* RenderMultilayerSymbolsView.swift in Sources */,
 				D769C2122A29019B00030F61 /* SetUpLocationDrivenGeotriggersView.swift in Sources */,
 				00FA4E722DCBD7A9008A34CF /* ApplySimpleRendererToFeatureLayerView.swift in Sources */,
-				79302F852A1ED4E30002336A /* CreateAndSaveKMLView.Model.swift in Sources */,
+				79302F852A1ED4E30002336A /* CreateAndSaveKMLFileView.Model.swift in Sources */,
 				D7C3AB4A2B683291008909B9 /* SetFeatureRequestModeView.swift in Sources */,
 				95D2EE0F2C334D1600683D53 /* ShowServiceAreaView.swift in Sources */,
 				00FA4E662DCA738A008A34CF /* ApplyRGBRendererView.SettingsView.swift in Sources */,
@@ -4322,7 +4322,7 @@
 				D7058FB12ACB423C00A40F14 /* Animate3DGraphicView.Model.swift in Sources */,
 				D7BEBAC52CBDC0F800F882E7 /* AddElevationSourceFromTilePackageView.swift in Sources */,
 				4C81276B2DCED03D006EF7D2 /* BrowseWFSLayersView.swift in Sources */,
-				9533C38A303BE34F00B79322 /* AddFeaturesWithSharedTemplateView.Model.swift in Sources */,
+				9533C38A303BE34F00B79322 /* AddFeaturesWithSharedTemplatesView.Model.swift in Sources */,
 				D77D9C002BB2438200B38A6C /* AugmentRealityToShowHiddenInfrastructureView.ARSceneView.swift in Sources */,
 				889F9DB62E133CF10025A98E /* ShowMagnifierView.swift in Sources */,
 				0044CDDF2995C39E004618CE /* ShowDeviceLocationHistoryView.swift in Sources */,
@@ -4380,7 +4380,7 @@
 				007079212DE0E7E800E06300 /* ListGeodatabaseVersionsView.swift in Sources */,
 				0086F40128E3770A00974721 /* ShowExploratoryViewshedFromPointInSceneView.swift in Sources */,
 				0044289229C90C0B00160767 /* GetElevationAtPointOnSurfaceView.swift in Sources */,
-				95398E6F2FDFAF1600E30CE8 /* NavigateMapAndIdentifyFeaturesWithKeyboardView.swift in Sources */,
+				95398E6F2FDFAF1600E30CE8 /* NavigateMapViewAndIdentifyFeaturesWithKeyboardView.swift in Sources */,
 				00E1D90B2BC0AF97001AEB6A /* SnapGeometryEditsView.SnapSettingsView.swift in Sources */,
 				D7E440D72A1ECE7D005D74DE /* CreateBuffersAroundPointsView.swift in Sources */,
 				00D4EF802863842100B9CC30 /* AddFeatureLayersView.swift in Sources */,
@@ -4413,7 +4413,7 @@
 				00FA4E682DCA87A9008A34CF /* ApplyRGBRendererView.RangeSlider.swift in Sources */,
 				D75101812A2E493600B8FA48 /* ShowLabelsOnLayerView.swift in Sources */,
 				1C3B7DCB2A5F64FC00907443 /* AnalyzeNetworkWithSubnetworkTraceView.swift in Sources */,
-				95398E732FE0C78B00E30CE8 /* NavigateMapAndIdentifyFeaturesWithKeyboardView.Model.swift in Sources */,
+				95398E732FE0C78B00E30CE8 /* NavigateMapViewAndIdentifyFeaturesWithKeyboardView.Model.swift in Sources */,
 				00B042E8282EDC690072E1B4 /* SetBasemapView.swift in Sources */,
 				E004A6E62846A61F002A1FE6 /* StyleGraphicsWithSymbolsView.swift in Sources */,
 				0000FB6E2BBDB17600845921 /* Add3DTilesLayerView.swift in Sources */,
