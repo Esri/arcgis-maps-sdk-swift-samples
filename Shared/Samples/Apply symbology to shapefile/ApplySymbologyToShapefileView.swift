@@ -51,7 +51,3 @@ struct ApplySymbologyToShapefileView: View {
         MapView(map: map)
     }
 }
-
-#Preview {
-    ApplySymbologyToShapefileView()
-}
