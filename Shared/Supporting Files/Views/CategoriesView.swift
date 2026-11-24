@@ -75,7 +75,7 @@ struct CategoriesView: View {
                 case "Favorites":
                     FavoritesView()
                 default:
-                    List(SamplesApp.samples.filter { $0.category == selectedCategory }, id: \.name) {
+                    List(SamplesApp.samples.filter { $0.category == selectedCategory }) {
                         SampleLink($0)
                     }
                 }
@@ -168,7 +168,7 @@ private extension CategoriesView {
                 if !query.isEmpty {
                     SamplesSearchView(query: query)
                 } else {
-                    List(SamplesApp.samples, id: \.name) { sample in
+                    List(SamplesApp.samples) { sample in
                         SampleLink(sample, textToBold: query)
                     }
                 }

@@ -28,7 +28,7 @@ struct FavoritesView: View {
     ///
     /// This may contain less elements than `favoriteNames` if the user defaults has invalid values,
     /// such as the name of a sample that was added in another branch.
-    private var favoriteSamples: [any Sample] {
+    private var favoriteSamples: [Sample] {
         favoriteNames.compactMap { name in
             SamplesApp.samples.first(where: { $0.name == name })
         }
@@ -36,7 +36,7 @@ struct FavoritesView: View {
     
     var body: some View {
         List {
-            ForEach(favoriteSamples, id: \.name) { sample in
+            ForEach(favoriteSamples) { sample in
                 SampleLink(sample)
             }
             .onMove(perform: moveFavorites(fromOffsets:toOffset:))
@@ -105,7 +105,7 @@ private extension FavoritesView {
         @State private var query = ""
         
         /// The list of samples filtered by the search query.
-        private var filteredSamples: [any Sample] {
+        private var filteredSamples: [Sample] {
             query.isEmpty
             ? SamplesApp.samples
             : SamplesApp.samples.filter {
@@ -116,7 +116,7 @@ private extension FavoritesView {
         var body: some View {
             NavigationStack {
                 List {
-                    ForEach(filteredSamples, id: \.name) { sample in
+                    ForEach(filteredSamples) { sample in
                         Button {
                             if !favoriteNames.contains(sample.name) {
                                 favoriteNames.append(sample.name)

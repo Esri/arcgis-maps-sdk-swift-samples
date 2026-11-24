@@ -49,18 +49,17 @@ private struct SampleMetadata: Decodable {
 }
 
 extension SampleMetadata {
+    /// The name of the static member of the `Sample` type for this sample.
+    var memberName: String {
+        let upperCamelCase = viewName.dropLast(4)
+        return upperCamelCase.first!.lowercased() + upperCamelCase.dropFirst()
+    }
+    
     /// The SwiftUI View name of the root view of the sample. It is the same as
     /// the first filename without extension in the snippets array.
     var viewName: Substring {
         // E.g., ["DisplayMapView.swift", "SomeView.swift"] -> DisplayMapView
         snippets.first!.dropLast(6)
-    }
-    
-    /// The struct name of a sample which is derived by dropping "View" from
-    /// the name of the root view.
-    var structName: Substring {
-        // E.g., DisplayMapView -> DisplayMap
-        viewName.dropLast(4)
     }
     
     /// The tags of a sample.
@@ -83,9 +82,9 @@ guard arguments.count == 4 else {
     exit(1)
 }
 
-let samplesDirectoryURL = URL(fileURLWithPath: arguments[1], isDirectory: true)
-let templateURL = URL(fileURLWithPath: arguments[2], isDirectory: false)
-let outputFileURL = URL(fileURLWithPath: arguments[3], isDirectory: false)
+let samplesDirectoryURL = URL(filePath: arguments[1], directoryHint: .isDirectory)
+let templateURL = URL(filePath: arguments[2], directoryHint: .notDirectory)
+let outputFileURL = URL(filePath: arguments[3], directoryHint: .notDirectory)
 
 private let sampleMetadata: [SampleMetadata] = {
     let decoder = JSONDecoder()
@@ -95,11 +94,13 @@ private let sampleMetadata: [SampleMetadata] = {
     let fileManager = FileManager.default
     do {
         // Does a shallow traverse of the top level of samples directory.
-        return try fileManager.contentsOfDirectory(at: samplesDirectoryURL, includingPropertiesForKeys: nil, options: [.skipsHiddenFiles])
-            .filter(\.hasDirectoryPath)
+        return try fileManager
+            .contentsOfDirectory(at: samplesDirectoryURL, includingPropertiesForKeys: nil, options: [.skipsHiddenFiles])
             .compactMap { url in
+                guard url.hasDirectoryPath else { return nil }
+                
                 // Gets the metadata JSON under each subdirectory.
-                let metadataFile = url.appendingPathComponent("README.metadata.json")
+                let metadataFile = url.appending(component: "README.metadata.json")
                 guard fileManager.fileExists(atPath: metadataFile.path) else {
                     // Sometimes when Git switches branches, it leaves an empty directory
                     // that causes the decoder to throw an error. Here we skip the directories
@@ -114,71 +115,85 @@ private let sampleMetadata: [SampleMetadata] = {
                     exit(1)
                 }
             }
+            .sorted(by: { $0.title < $1.title })
     } catch {
         print("error: Decoding Samples: \(error.localizedDescription)")
         exit(1)
     }
 }()
 
-private let sampleStructs = sampleMetadata
-    .map { sample in
-        let portalItemIDs = (sample.offlineData ?? [])
-            .map { #"PortalItem.ID("\#($0)")!"# }
-        return """
-        \(sample.category == "Augmented Reality" ? "@available(macCatalyst, unavailable)" : "")
-        struct \(sample.structName): Sample {
-            var name: String { \"\(sample.title)\" }
-            var category: String { \"\(sample.category)\" }
-            var description: String { \"\(sample.description)\" }
-            var snippets: [String] { \(sample.snippets) }
-            var tags: Set<String> { \(sample.tags) }
-            \(portalItemIDs.isEmpty ? "" : "var hasDependencies: Bool { true }\n")
-            var hasTeardown: Bool { \(sample.hasTeardown ?? false) }
-            func makeBody() -> AnyView { .init(\(sample.viewName)()) }
+private var sampleExtension: String {
+    let staticMembers = sampleMetadata
+        .map { sample in
+            let member = """
+                    static var \(sample.memberName): Self {
+                        Self(
+                            name: \"\(sample.title)\",
+                            category: \"\(sample.category)\",
+                            description: \"\(sample.description)\",
+                            snippets: \(sample.snippets),
+                            tags: \(sample.tags),
+                            hasDependencies: \(!(sample.offlineData ?? []).isEmpty),
+                            hasTeardown: \(sample.hasTeardown ?? false),
+                            content: \(sample.viewName)()
+                        )
+                    }
+                """
+            return if sample.category == "Augmented Reality" {
+                """
+                    @available(macCatalyst, unavailable)
+                \(member /* Already indented. */)
+                """
+            } else {
+                member
+            }
+        }
+        .joined(separator: "\n    \n")
+    return """
+        @MainActor
+        private extension Sample {
+        \(staticMembers /* Already indented. */)
         }
         """
-    }
-    .joined(separator: "\n")
+}
 
 // The set of samples supported on all supported platforms.
 private let commonSamples = sampleMetadata
     .filter { $0.category != "Augmented Reality" }
-    .map { sample in "\(sample.structName)()" }
+    .map { sample in ".\(sample.memberName)" }
     .joined(separator: ",\n            ")
 
 // The set of samples supported only on iOS.
 private let iOSSpecificSamples = sampleMetadata
     .filter { $0.category == "Augmented Reality" }
-    .map { sample in "\(sample.structName)()" }
-    .joined(separator: ",\n                ")
+    .map { "            .\($0.memberName)" }
+    .joined(separator: ",\n")
 
 private let commonSamplesArrayRepresentation = """
-    [
+            [
                 \(commonSamples)
             ]
     """
 
 private let iOSSamplesArrayRepresentation = """
-    {
     #if !targetEnvironment(macCatalyst) && !targetEnvironment(simulator)
-                // Exclude AR samples from Mac Catalyst and Simulator targets
-                // as they don't have camera and sensors available.
-                [
-                    \(iOSSpecificSamples)
-                ]
+            // Exclude AR samples from Mac Catalyst and Simulator targets
+            // as they don't have camera and sensors available.
+            [
+    \(iOSSpecificSamples /* Already indented. */)
+            ]
     #else
-                []
+            []
     #endif
-            }()
     """
 
 do {
     let templateFile = try String(contentsOf: templateURL, encoding: .utf8)
     // Replaces the empty array code stub, i.e. [], with the array representation.
     let content = templateFile
-        .replacingOccurrences(of: "[/* common_samples */]", with: commonSamplesArrayRepresentation)
-        .replacingOccurrences(of: "[/* ios_samples */]", with: iOSSamplesArrayRepresentation)
-        .replacingOccurrences(of: "/* structs */", with: sampleStructs)
+        .replacingOccurrences(of: "/* common_samples */", with: commonSamplesArrayRepresentation)
+        .replacingOccurrences(of: "/* ios_samples */", with: iOSSamplesArrayRepresentation)
+        .replacingOccurrences(of: "/* samples */", with: sampleExtension)
     try content.write(to: outputFileURL, atomically: true, encoding: .utf8)
 } catch {
     print("error: Reading or writing template file: \(error.localizedDescription)")
