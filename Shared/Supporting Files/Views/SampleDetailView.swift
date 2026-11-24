@@ -16,7 +16,7 @@ import SwiftUI
 
 struct SampleDetailView: View {
     /// The sample to display in the view.
-    let sample: any Sample
+    let sample: Sample
     
     /// An environmental value we use to determine whether this device displays the UI in columns.
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
@@ -46,7 +46,7 @@ struct SampleDetailView: View {
     
     /// The sample's view body.
     private var sampleBody: some View {
-        sample.makeBody()
+        sample.view
             .onAppear {
                 requestReviewModel?.sampleIsShowing = true
             }
@@ -127,8 +127,4 @@ struct SampleDetailView: View {
             }
         }
     }
-}
-
-extension SampleDetailView: Identifiable {
-    nonisolated var id: String { sample.name }
 }

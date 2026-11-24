@@ -95,9 +95,9 @@ struct DownloadOfflineResourcesView: View {
                 guard onDemandResources.isEmpty else { return }
                 onDemandResources = await withTaskGroup { group in
                     for sample in SamplesApp.samples where sample.hasDependencies {
-                        group.addTask {
-                            let resource = await OnDemandResource(tags: sample.odrTags)
-                            return (sample.name, resource)
+                        group.addTask { [name = sample.name, tags = sample.odrTags] in
+                            let resource = await OnDemandResource(tags: tags)
+                            return (name, resource)
                         }
                     }
                     var resources: [String: OnDemandResource] = [:]

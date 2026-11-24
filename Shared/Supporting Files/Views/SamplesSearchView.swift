@@ -40,21 +40,21 @@ struct SamplesSearchView: View {
         List {
             if !searchResult.nameMatches.isEmpty {
                 Section("Name Results") {
-                    ForEach(searchResult.nameMatches, id: \.name) { sample in
+                    ForEach(searchResult.nameMatches) { sample in
                         SampleLink(sample, textToBold: query)
                     }
                 }
             }
             if !searchResult.descriptionMatches.isEmpty {
                 Section("Description Results") {
-                    ForEach(searchResult.descriptionMatches, id: \.name) { sample in
+                    ForEach(searchResult.descriptionMatches) { sample in
                         SampleLink(sample, textToBold: query)
                     }
                 }
             }
             if !searchResult.tagMatches.isEmpty {
                 Section("Tags Results") {
-                    ForEach(searchResult.tagMatches, id: \.name) { sample in
+                    ForEach(searchResult.tagMatches) { sample in
                         SampleLink(sample, textToBold: query)
                     }
                 }
@@ -75,11 +75,11 @@ private extension SamplesSearchView {
     /// different sections in a list.
     struct SearchResult {
         /// The samples which name partially matches the search query.
-        let nameMatches: [any Sample]
+        let nameMatches: [Sample]
         /// The samples which description partially matches the search query.
-        let descriptionMatches: [any Sample]
+        let descriptionMatches: [Sample]
         /// The samples which one of the tags matches the search query.
-        let tagMatches: [any Sample]
+        let tagMatches: [Sample]
     }
     
     /// Searches through the list of samples to find ones that match the query.
@@ -87,9 +87,9 @@ private extension SamplesSearchView {
     ///   - query: The query to search with.
     private static func searchSamples(with query: String) -> SearchResult {
         let samples = SamplesApp.samples
-        let nameMatches: [any Sample]
-        let descriptionMatches: [any Sample]
-        let tagMatches: [any Sample]
+        let nameMatches: [Sample]
+        let descriptionMatches: [Sample]
+        let tagMatches: [Sample]
         
         // The names of the samples already found in a previous section.
         var previousSearchResults: Set<String> = []

@@ -15,48 +15,81 @@
 import SwiftUI
 
 /// A type that represents a sample in the sample viewer.
-protocol Sample: Sendable {
+struct Sample {
     /// The name of the sample.
-    var name: String { get }
-    
+    let name: String
     /// The category in which the sample belongs.
-    var category: String { get }
-    
+    let category: String
     /// A brief description of the sample's functionalities.
-    var description: String { get }
-    
+    let description: String
     /// The relative paths to the code snippets.
-    var snippets: [String] { get }
-    
+    let snippets: [String]
     /// The tags of the sample.
-    var tags: Set<String> { get }
-    
+    let tags: Set<String>
     /// A Boolean value that indicates whether a sample has offline data dependencies.
-    var hasDependencies: Bool { get }
-    
+    let hasDependencies: Bool
     /// A Boolean value indicating whether a sample has an action that needs to
     /// be performed when its view disappears.
-    var hasTeardown: Bool { get }
+    let hasTeardown: Bool
+    /// The view for this example.
+    var view: AnyView { content() }
     
-    /// Creates the view for the sample.
-    @MainActor
-    func makeBody() -> AnyView
+    /// A closure that builds the view for this example.
+    private let content: () -> AnyView
+    
+    init<Content: View>(
+        name: String,
+        category: String,
+        description: String,
+        snippets: [String],
+        tags: Set<String>,
+        hasDependencies: Bool,
+        hasTeardown: Bool,
+        content: @autoclosure @escaping () -> Content
+    ) {
+        self.name = name
+        self.category = category
+        self.description = description
+        self.snippets = snippets
+        self.tags = tags
+        self.hasDependencies = hasDependencies
+        self.hasTeardown = hasTeardown
+        self.content = { .init(content()) }
+    }
 }
 
-// MARK: Computed Variables
+extension Sample: Equatable {
+    static func == (lhs: Self, rhs: Self) -> Bool {
+        return lhs.name == rhs.name
+    }
+}
+
+extension Sample: Hashable {
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(name)
+    }
+}
+
+extension Sample: Identifiable {
+    var id: String { name }
+}
+
+// MARK: Computed Properties
 
 extension Sample {
     /// The web URL to the sample's Esri Developer page.
     var esriDeveloperURL: URL {
-        let dashedName = name.replacingOccurrences(of: " ", with: "-").lowercased()
+        let dashedName = name
+            .replacingOccurrences(of: " ", with: "-")
+            .lowercased()
         return URL(string: "https://developers.arcgis.com/swift/sample-code")!
-            .appendingPathComponent(dashedName)
+            .appending(component: dashedName)
     }
     
     /// The URL to a sample's sub-directory on GitHub main branch.
     var gitHubURL: URL {
         URL(string: "https://github.com/Esri/arcgis-maps-sdk-swift-samples/tree/main/Shared/Samples")!
-            .appendingPathComponent(name)
+            .appending(component: name)
     }
     
     /// The URL to a sample's `README.md` file.
@@ -78,9 +111,6 @@ extension Sample {
             )
         }
     }
-    
-    /// By default, a sample doesn't have dependencies.
-    var hasDependencies: Bool { false }
     
     /// The on-demand resource tags for this sample.
     var odrTags: Set<String> {
